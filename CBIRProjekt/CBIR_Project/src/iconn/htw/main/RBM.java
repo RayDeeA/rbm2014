@@ -47,6 +47,34 @@ public class RBM {
 		}
 	}
 	
+	public Matrix runVisible(Matrix data) {
+		
+		int numberOfExamples = data.getHeight();
+		int numberOfChoicesPerExample = data.getWidth();
+		
+		Matrix hiddenStates = Matrix.createMatrixFilledWithNumber(numberOfExamples, numberOfChoicesPerExample + 1, 1.0f);
+		Matrix dataWithBias = data.expandfirstColumnWithOnes();
+		
+		Matrix hiddenProbs = dataWithBias.mult(this.weights).applyFloatFunction(sigmoidfunc);
+		hiddenStates = hiddenProbs.isGreaterThan(Matrix.createRandomMatrix(hiddenProbs.getHeight(), hiddenProbs.getWidth(), activationRandom));
+		
+		return hiddenStates.removefirstColumn();
+	}
+	
+	public Matrix runHidden(Matrix data) {
+		
+		int numberOfExamples = data.getHeight();
+		int numberOfChoicesPerExample = data.getWidth();
+		
+		Matrix visibleStates = Matrix.createMatrixFilledWithNumber(numberOfExamples, numberOfChoicesPerExample + 1, 1.0f);
+		Matrix dataWithBias = data.expandfirstColumnWithOnes();
+
+		Matrix visibleProbs = dataWithBias.mult(this.weights.trans()).applyFloatFunction(sigmoidfunc);
+		visibleProbs = visibleProbs.isGreaterThan(Matrix.createRandomMatrix(visibleProbs.getHeight(), visibleProbs.getWidth(), activationRandom));
+		
+		return visibleProbs.removefirstColumn();
+	}
+	
 	public Matrix useVisible(final Matrix data) {
 		final Matrix hiddenProbs = data.mult(weights).
 				applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
@@ -77,11 +105,22 @@ public class RBM {
 	}
 	
 	public static void main(String[] args) {
-		
 		final RBM rbm = new RBM(6,2);
-		System.out.println(rbm.weights.toString()); 
-			rbm.train(new Matrix(new double[][]{{1, 1, 1, 0, 0, 0}, {1, 0, 1, 0, 0, 0}, {1, 1, 1, 0, 0, 0}, {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 0, 0}, {0, 0, 1, 1, 1, 0}}), 50000);
-		System.out.println(rbm.weights.toString());
+		//System.out.println(rbm.weights.toString()); 
+		rbm.train(new Matrix(new double[][]{{1, 1, 1, 0, 0, 0}, {1, 0, 1, 0, 0, 0}, {1, 1, 1, 0, 0, 0}, {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 0, 0}, {0, 0, 1, 1, 1, 0}}), 50000);
+		//System.out.println(rbm.weights.toString());
+		
+		Matrix userInput = new Matrix( 
+				new double[][]{
+						{1,1,1,0,0,0},
+						{0,0,0,1,1,0}
+					}
+				);
+		Matrix hiddenStates = rbm.runVisible(userInput);
+		
+		System.out.println(userInput);
+		System.out.println(hiddenStates);
+		System.out.println(rbm.runHidden(hiddenStates));
 	}
 
 }

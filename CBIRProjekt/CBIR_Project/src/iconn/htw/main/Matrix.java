@@ -21,6 +21,16 @@ public class Matrix {
 		return new Matrix(coeff);
 	}
 	
+	static Matrix createMatrixFilledWithNumber(final int rows, final int cols, final double number) {
+		final double[][] coeff = new double[rows][cols];
+		
+		for(int i = 0; i < rows; i++)
+			for(int j = 0; j < cols; j++) {
+			coeff[i][j] = number;
+		}
+		return new Matrix(coeff);
+	}
+	
 	
 	public Matrix add(final Matrix m) {
 		if(coeff.length != m.coeff.length || coeff[0].length == m.coeff.length) throw new IllegalArgumentException();
@@ -139,6 +149,18 @@ public class Matrix {
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 1; j < result[0].length; j++) { 
 				result[i][j] = coeff[i][j - 1];
+			}
+		}
+		
+		return new Matrix(result);
+	}
+	
+	public Matrix removefirstColumn() {
+		final double[][] result = new double[coeff.length][coeff[0].length - 1];
+		
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 1; j < result[0].length; j++) { 
+				result[i][j] = coeff[i][j];
 			}
 		}
 		
