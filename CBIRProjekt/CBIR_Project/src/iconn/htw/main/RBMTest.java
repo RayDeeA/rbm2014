@@ -13,6 +13,7 @@ public class RBMTest {
     private int numHiddenWithBias;
     private int numVisibleWithBias;
     private double learningRate;
+    private double[][] randomMatrix;
     
     private Random randomGenerator = new Random();
     
@@ -25,15 +26,41 @@ public class RBMTest {
 		this.numVisibleWithBias = numVisbible + 1;
 		this.learningRate = learningRate;
 		
+		/*
 		this.weights = new double[numVisibleWithBias][numHiddenWithBias];
 	    for(int v = 1; v < numVisibleWithBias; v++) {
 	    	for(int h = 1; h < numHiddenWithBias; h++) {
 	    		weights[v][h] = 0.1 * randomGenerator.nextGaussian();
 	    	}
 	    }
+	    */
+		
+		this.weights = new double[][]{
+				{0.000,	0.000,	0.000},
+				{0.000,	-0.274,	0.002},
+				{0.000,	-0.107,	0.007},
+				{0.000,	-0.177,	-0.007},
+				{0.000,	-0.059,	-0.152},
+				{0.000,	-0.004,	-0.053},
+				{0.000,	-0.115,	-0.085}
+		};
+		
+		
+		
+		int rLength = numVisible;
+		int cLength = numHiddenWithBias;
+		
+    	randomMatrix = new double[][] {
+				{0.138,	0.664,	0.156},
+				{0.925,	0.786,	0.910},
+				{0.341,	0.548,	0.872},
+				{0.337,	0.813,	0.237},
+				{0.582,	0.631,	0.275},
+				{0.523,	0.428,	0.880}
+    	};
 	    
-	    printMatrix("Random weights:", weights);
-	    
+	    printMatrix("weights:", weights);
+	    printMatrix("Random matrix:", randomMatrix);
 	}
 	
 	public void printMatrix(String title, double[][] m){
@@ -154,7 +181,7 @@ public class RBMTest {
 	    	double[][] posHiddenStates = new double[rLength][cLength];
 		    for(int r = 0; r < rLength; r++) {
 		    	for(int c = 0; c < cLength; c++) {
-		    		posHiddenStates[r][c] = (posHiddenProbs[r][c] > randomGenerator.nextDouble()) ? 1 : 0; 
+		    		posHiddenStates[r][c] = (posHiddenProbs[r][c] > randomMatrix[r][c]) ? 1 : 0; 
 		    	}
 		    }
 		    if(i == maxEpochs-1) printMatrix("posHiddenStates:", posHiddenStates);
@@ -355,7 +382,8 @@ public class RBMTest {
 						{ 0, 0, 1, 1, 1, 0 },
 	    			   };
 
-		rbm.train(data, 5);
+		rbm.train(data, 1);
+		rbm.printMatrix("Weights", rbm.weights);
 		
 		double user[][] = {
 				// Gregory: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.

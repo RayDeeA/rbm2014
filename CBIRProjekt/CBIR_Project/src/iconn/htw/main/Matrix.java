@@ -5,14 +5,14 @@ import java.util.Arrays;
 
 public class Matrix {
 
-	private final float[][] coeff;
+	private final double[][] coeff;
 
-	public Matrix(final float[][] coeff) {
+	public Matrix(final double[][] coeff) {
 		this.coeff = coeff;
 	}
 	
 	static Matrix createRandomMatrix(final int visible, final int hidden, final IRandomFunction random) {
-		final float[][] coeff = new float[visible][hidden];
+		final double[][] coeff = new double[visible][hidden];
 		
 		for(int i = 0; i < visible; i++)
 			for(int j = 0; j < hidden; j++) {
@@ -25,7 +25,7 @@ public class Matrix {
 	public Matrix add(final Matrix m) {
 		if(coeff.length != m.coeff.length || coeff[0].length == m.coeff.length) throw new IllegalArgumentException();
 		
-		final float[][] result = new float[coeff.length][coeff[0].length];
+		final double[][] result = new double[coeff.length][coeff[0].length];
 		
 		for(int i = 0; i < result.length; i++)
 			for(int j = 0; j < result[0].length; j++)
@@ -37,7 +37,7 @@ public class Matrix {
 	public Matrix subt(final Matrix m) {
 		if(coeff.length != m.coeff.length || coeff[0].length == m.coeff.length) throw new IllegalArgumentException();
 		
-		final float[][] result = new float[coeff.length][coeff[0].length];
+		final double[][] result = new double[coeff.length][coeff[0].length];
 		
 		for(int i = 0; i < result.length; i++)
 			for(int j = 0; j < result[0].length; j++)
@@ -47,7 +47,7 @@ public class Matrix {
 	}
 	
 	public Matrix applyFloatFunction(final IFloatFunction func) {
-		final float[][] result = new float[coeff.length][coeff[0].length];
+		final double[][] result = new double[coeff.length][coeff[0].length];
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
@@ -57,12 +57,12 @@ public class Matrix {
 		return new Matrix(result);
 	}
 	
-	public Matrix mult(final float x) {
-		final float[][] result = new float[coeff.length][coeff[0].length];
+	public Matrix mult(final double x) {
+		final double[][] result = new double[coeff.length][coeff[0].length];
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
-				result[i][j] = x * result[i][j];
+				result[i][j] = x * coeff[i][j];
 			}
 		}
 		return new Matrix(result);
@@ -72,8 +72,8 @@ public class Matrix {
 	public Matrix mult(final Matrix m) {
 		if(coeff[0].length != m.coeff.length) throw new IllegalArgumentException();
 		
-		final float[][] mCoeff = m.coeff;
-		final float[][] result = new float[coeff.length][mCoeff[0].length];
+		final double[][] mCoeff = m.coeff;
+		final double[][] result = new double[coeff.length][mCoeff[0].length];
 		
 		for(int i=0; i < coeff.length; i++)   {                     
 			for(int j=0; j < result[0].length; j++) {                
@@ -87,7 +87,7 @@ public class Matrix {
 	}
 	
 	public Matrix trans() {
-		final float[][] result = new float[coeff[0].length][coeff.length];
+		final double[][] result = new double[coeff[0].length][coeff.length];
 		
 		for(int i=0; i < coeff.length; i++)
 			for(int j=0; j < coeff[0].length; j++)
@@ -95,25 +95,12 @@ public class Matrix {
 		
 		return new Matrix(result);
 	}
-	
-	public Vector mult(final Vector v) {
-		if(coeff.length != v.getLength()) throw new IllegalArgumentException();	
-		
-		final float[] result = new float[v.getLength()];
-		
-		for(int i = 0; i < coeff[0].length; i++) {
-			
-		}
-			
-		return new Vector(result);
-		
-	}
 
 	
 	public Matrix isGreaterThan(final Matrix m) {
-		final float[][] result = new float[coeff.length][coeff[0].length];
+		final double[][] result = new double[coeff.length][coeff[0].length];
 
-		final float[][] mCoeff = m.coeff;
+		final double[][] mCoeff = m.coeff;
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
@@ -124,8 +111,8 @@ public class Matrix {
 		return new Matrix(result);
 	}
 	
-	public float[][] getCoefficients() {
-		final float[][] result = new float[coeff.length][coeff[0].length];
+	public double[][] getCoefficients() {
+		final double[][] result = new double[coeff.length][coeff[0].length];
 		
 		for(int i = 0; i < coeff.length; i++) {
 			result[i] = coeff[i].clone();
@@ -134,7 +121,7 @@ public class Matrix {
 	}
 	
 	public Matrix expandfirstRowWithZeros() {
-		final float[][] result = new float[coeff.length + 1][coeff[0].length];
+		final double[][] result = new double[coeff.length + 1][coeff[0].length];
 		
 		for (int i = 1; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) { 
@@ -146,7 +133,7 @@ public class Matrix {
 	}
 	
 	public Matrix expandfirstColumnWithZeros() {
-		final float[][] result = new float[coeff.length][coeff[0].length + 1];
+		final double[][] result = new double[coeff.length][coeff[0].length + 1];
 		
 
 		for (int i = 0; i < result.length; i++) {
@@ -159,11 +146,23 @@ public class Matrix {
 	}
 	
 	public Matrix expandfirstColumnWithOnes() {
-		final float[][] result = new float[coeff.length][coeff[0].length + 1];
+		final double[][] result = new double[coeff.length][coeff[0].length + 1];
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) { 
 				result[i][j] = (j == 0) ? 1 : coeff[i][j - 1];
+			}
+		}
+		
+		return new Matrix(result);
+	}
+	
+	public Matrix fillFirstColumnWithOnes() {
+		final double[][] result = new double[coeff.length][coeff[0].length];
+		
+		for (int i = 0; i < coeff.length; i++) {
+			for (int j = 0; j < coeff[0].length; j++) { 
+				result[i][j] = (j == 0) ? 1 : coeff[i][j];
 			}
 		}
 		

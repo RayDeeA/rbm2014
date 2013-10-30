@@ -7,7 +7,7 @@ public class RBM {
 	private final IRandomFunction random;
 	private final IRandomFunction activationRandom;
 	
-	private final float learningRate = 0.1f;
+	private final double learningRate = 0.1f;
 	
 	private Matrix weights;
 	
@@ -18,11 +18,7 @@ public class RBM {
 		random = new GaussianRandom(0.1f, 0.0f);
 		activationRandom = new DefaultRandom(1.0f, 0.0f);
 
-		this.weights = Matrix.createRandomMatrix(visible, hidden, random).expandfirstColumnWithZeros().expandfirstRowWithZeros();//.mult(learningRate);
-	}
-	
-	public void runVisible(final Vector data) {
-		
+		weights = Matrix.createRandomMatrix(visible, hidden, random).expandfirstColumnWithZeros().expandfirstRowWithZeros();//.mult(learningRate);
 	}
 	
 	public void train(final Matrix data, final int epochs) {
@@ -33,14 +29,14 @@ public class RBM {
 			
 			final Matrix positiveHiddenProbs = dataWithBias.mult(weights).applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
 			
-			final Matrix hiddenStates = positiveHiddenProbs.isGreaterThan(Matrix.createRandomMatrix(
-							positiveHiddenProbs.getHeight(),
-							positiveHiddenProbs.getWidth(), activationRandom));
+			final Matrix hiddenStates = positiveHiddenProbs.isGreaterThan(Matrix.createRandomMatrix(positiveHiddenProbs.getHeight(), positiveHiddenProbs.getWidth(), activationRandom));
 			
 			final Matrix positiveFeedback = dataWithBias.trans().mult(positiveHiddenProbs);
 			
+			
+			
 			final Matrix negativeVisibleProbs = hiddenStates.mult(weights.trans())
-					.applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
+					.applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc).fillFirstColumnWithOnes();
 			
 			final Matrix negativeHiddenProbs = negativeVisibleProbs.mult(weights)
 					.applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
@@ -48,7 +44,6 @@ public class RBM {
 			final Matrix negativeFeedback = negativeVisibleProbs.trans().mult(negativeHiddenProbs);
 			
 			weights = weights.add(positiveFeedback.subt(negativeFeedback).mult(learningRate / dataWithBias.getHeight()));
-			
 		}
 	}
 	
@@ -72,7 +67,7 @@ public class RBM {
 		return visibleStates;
 	}
 	
-	public static String arrayToString(final float[] array) {
+	public static String arrayToString(final double[] array) {
 		String str = "";
 		
 		for (int i = 0; i < array.length; i++) {
@@ -83,9 +78,9 @@ public class RBM {
 	
 	public static void main(String[] args) {
 		
-		final RBM rbm = new RBM(5,3);
+		final RBM rbm = new RBM(6,2);
 		System.out.println(rbm.weights.toString()); 
-			rbm.train(new Matrix(new float[][]{{1,1,1,1,1}, {1,0,1,0,1}, {1,1,1,0,0}}), 1000);
+			rbm.train(new Matrix(new double[][]{{1, 1, 1, 0, 0, 0}, {1, 0, 1, 0, 0, 0}, {1, 1, 1, 0, 0, 0}, {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 0, 0}, {0, 0, 1, 1, 1, 0}}), 50000);
 		System.out.println(rbm.weights.toString());
 	}
 
