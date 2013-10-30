@@ -51,7 +51,7 @@ public class Matrix {
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
-				result[i][j] = func.function(result[i][j]);
+				result[i][j] = func.function(coeff[i][j]);
 			}
 		}
 		return new Matrix(result);
@@ -75,10 +75,13 @@ public class Matrix {
 		final float[][] mCoeff = m.coeff;
 		final float[][] result = new float[coeff.length][mCoeff[0].length];
 		
-		for(int i=0; i < coeff.length; i++)                        
-			for(int j=0; j < result[0].length; j++)                    
-				for(int k=0; k < mCoeff.length; k++)               
+		for(int i=0; i < coeff.length; i++)   {                     
+			for(int j=0; j < result[0].length; j++) {                
+				for(int k=0; k < mCoeff.length; k++) {    
 					result[i][j] += coeff[i][k] * mCoeff[k][j];
+				}
+			}
+		}
 		
 		return new Matrix(result);
 	}
@@ -114,8 +117,7 @@ public class Matrix {
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
-				if(coeff[i][j] > mCoeff[i][j]) result[i][j] = 1.0f;
-				else result[i][j] = 0.0f;
+				result[i][j] = (coeff[i][j] > mCoeff[i][j]) ? 1.0f : 0.0f;
 			}
 		}
 		

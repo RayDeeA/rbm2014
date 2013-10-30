@@ -31,8 +31,7 @@ public class RBM {
 		
 		for(int i = 0; i < epochs; i++) {
 			
-			final Matrix positiveHiddenProbs = dataWithBias.mult(weights).
-					applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
+			final Matrix positiveHiddenProbs = dataWithBias.mult(weights).applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
 			
 			final Matrix hiddenStates = positiveHiddenProbs.isGreaterThan(Matrix.createRandomMatrix(
 							positiveHiddenProbs.getHeight(),
@@ -86,8 +85,8 @@ public class RBM {
 		
 		final RBM rbm = new RBM(5,3);
 		System.out.println(rbm.weights.toString()); 
-			rbm.train(new Matrix(new float[][]{{1,1,1,1,1}, {1,0,1,0,1}, {1,1,1,0,0}}), 10);
-		 System.out.println(rbm.weights.toString());
+			rbm.train(new Matrix(new float[][]{{1,1,1,1,1}, {1,0,1,0,1}, {1,1,1,0,0}}), 1000);
+		System.out.println(rbm.weights.toString());
 	}
 
 }

@@ -5,7 +5,7 @@ import iconn.htw.main.Matrix;
 
 import org.junit.Test;
 
-public class RBMMatrixTest {
+public class MatrixTest {
 
 	@Test
 	public void mult1() {
