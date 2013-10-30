@@ -45,7 +45,7 @@ public class Matrix {
 	}
 	
 	public Matrix subt(final Matrix m) {
-		if(coeff.length != m.coeff.length || coeff[0].length == m.coeff.length) throw new IllegalArgumentException();
+		if(coeff.length != m.coeff.length || coeff[0].length != m.coeff[0].length) throw new IllegalArgumentException();
 		
 		final double[][] result = new double[coeff.length][coeff[0].length];
 		
@@ -160,7 +160,7 @@ public class Matrix {
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 1; j < result[0].length; j++) { 
-				result[i][j] = coeff[i][j];
+				result[i][j - 1] = coeff[i][j];
 			}
 		}
 		
@@ -216,5 +216,43 @@ public class Matrix {
 			str += "]\n";
 		}
 		return str;
+	}
+	
+	public boolean equals(Matrix m) {
+		if(this.getHeight() != m.getHeight() || this.getWidth() != m.getWidth()) return false;	
+		
+		for (int i = 0; i < coeff.length; i++) {
+			for (int j = 0; j < coeff[0].length; j++) {
+				if(coeff[i][j] != m.coeff[i][j])
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public double hasCommonValues(Matrix m) {
+		if(this.getHeight() != m.getHeight() || this.getWidth() != m.getWidth()) throw new IllegalArgumentException();
+		int commonValueCount = 0;
+		for (int i = 0; i < coeff.length; i++) {
+			for (int j = 0; j < coeff[0].length; j++) {
+				if(coeff[i][j] != m.coeff[i][j]) {
+					commonValueCount++;
+				}
+					
+			}
+		}
+		return commonValueCount / (double) (coeff.length * coeff[0].length);
+	}
+	
+	public double sumValues() {
+		double result = 0.0;
+		
+		for (int i = 0; i < coeff.length; i++) {
+			for (int j = 0; j < coeff[0].length; j++) {
+				result += coeff[i][j];
+			}
+		}
+		return result;
 	}
 }

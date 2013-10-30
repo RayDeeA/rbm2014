@@ -25,7 +25,7 @@ public class GaussianRandom implements IRandomFunction {
 
 
 	@Override
-	public float nextNumber() {
-		return scale * ((float) random.nextGaussian() * 0.5f + 0.5f) + offset;
+	public double nextNumber() {
+		return scale * ( random.nextGaussian() * 0.5f + 0.5f) + offset;
 	}
 }

@@ -351,6 +351,8 @@ public class RBMTest {
 	    	}
 	    }
 	    
+	    printMatrix("visible states", visibleStates);
+	    
 	    // Ignore bias
 	    double[][] visibleStatesWithoutBias = new double[numberOfExamples][this.numVisible];
 	    for(int r = 0; r < numberOfExamples; r++) {

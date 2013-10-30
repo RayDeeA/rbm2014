@@ -24,8 +24,8 @@ public class DefaultRandom implements IRandomFunction {
 
 
 	@Override
-	public float nextNumber() {
-		return scale * random.nextFloat() + offset;
+	public double nextNumber() {
+		return scale * random.nextDouble() + offset;
 	}
 
 }

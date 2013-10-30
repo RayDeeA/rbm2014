@@ -22,10 +22,12 @@ public class RBM {
 	}
 	
 	public void train(final Matrix data, final int epochs) {
-
+		final double maxMeanSquareError = 0.00002; 
+		double currentMeanSquareError = Double.MAX_VALUE;
+		
 		final Matrix dataWithBias = data.expandfirstColumnWithOnes();
 		
-		for(int i = 0; i < epochs; i++) {
+		for (int i = 0; i < epochs; i++) {
 			
 			final Matrix positiveHiddenProbs = dataWithBias.mult(weights).applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
 			
@@ -44,6 +46,9 @@ public class RBM {
 			final Matrix negativeFeedback = negativeVisibleProbs.trans().mult(negativeHiddenProbs);
 			
 			weights = weights.add(positiveFeedback.subt(negativeFeedback).mult(learningRate / dataWithBias.getHeight()));
+			
+			currentMeanSquareError = dataWithBias.subt(negativeVisibleProbs).applyFloatFunction(new Square()).sumValues();
+			//System.out.println("Mean Square Error:  " + currentMeanSquareError);
 		}
 	}
 	
@@ -70,57 +75,49 @@ public class RBM {
 		Matrix dataWithBias = data.expandfirstColumnWithOnes();
 
 		Matrix visibleProbs = dataWithBias.mult(this.weights.trans()).applyFloatFunction(sigmoidfunc);
-		visibleProbs = visibleProbs.isGreaterThan(Matrix.createRandomMatrix(visibleProbs.getHeight(), visibleProbs.getWidth(), activationRandom));
+		visibleStates = visibleProbs.isGreaterThan(Matrix.createRandomMatrix(visibleProbs.getHeight(), visibleProbs.getWidth(), activationRandom));
 		
-		return visibleProbs.removefirstColumn();
-	}
-	
-	public Matrix useVisible(final Matrix data) {
-		final Matrix hiddenProbs = data.mult(weights).
-				applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
-		
-		final Matrix hiddenStates = hiddenProbs.isGreaterThan(Matrix.createRandomMatrix(
-									hiddenProbs.getHeight(),
-									hiddenProbs.getWidth(), activationRandom));
-		return hiddenStates;
-	}
-	
-	public Matrix useHidden(final Matrix data) {
-		final Matrix visibleProbs = data.mult(weights.trans()).
-				applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
-		
-		final Matrix visibleStates = visibleProbs.isGreaterThan(Matrix.createRandomMatrix(
-									visibleProbs.getHeight(),
-									visibleProbs.getWidth(), activationRandom));
-		return visibleStates;
-	}
-	
-	public static String arrayToString(final double[] array) {
-		String str = "";
-		
-		for (int i = 0; i < array.length; i++) {
-			str += array[i] + (i != array.length -1 ? ", " : "");
-		}
-		return str;
+		return visibleStates.removefirstColumn();
 	}
 	
 	public static void main(String[] args) {
-		final RBM rbm = new RBM(6,2);
-		//System.out.println(rbm.weights.toString()); 
-		rbm.train(new Matrix(new double[][]{{1, 1, 1, 0, 0, 0}, {1, 0, 1, 0, 0, 0}, {1, 1, 1, 0, 0, 0}, {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 0, 0}, {0, 0, 1, 1, 1, 0}}), 50000);
-		//System.out.println(rbm.weights.toString());
+		
+		double similar = 0.0;
+		int testCount = 10;
+		
+		final Matrix trainData = new Matrix(
+				new double[][]{
+						// Alice: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
+						{ 1, 1, 1, 0, 0 },
+						// Bob: (Harry Potter = 1, Avatar = 0, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). SF/fantasy fan, but doesn't like Avatar.
+						{ 1, 0, 1, 0, 0 },
+						// Carol: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
+						{ 1, 1, 1, 0, 0 },
+						// David: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 1, Glitter = 0). Big Oscar winners fan.
+						{ 0, 0, 1, 1, 1 },
+						// Eric: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 0, Glitter = 0). Oscar winners fan, except for Titanic.
+						{ 0, 0, 1, 1, 0 },
+						// Fred: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 1, Glitter = 0). Big Oscar winners fan.
+						{ 0, 0, 1, 1, 1 },
+				});
 		
 		Matrix userInput = new Matrix( 
 				new double[][]{
-						{1,1,1,0,0,0},
-						{0,0,0,1,1,0}
+						{ 0, 0, 1, 1, 1 },
+						{ 1, 1, 0, 0, 0 }
 					}
 				);
-		Matrix hiddenStates = rbm.runVisible(userInput);
 		
-		System.out.println(userInput);
-		System.out.println(hiddenStates);
-		System.out.println(rbm.runHidden(hiddenStates));
+		final RBM rbm = new RBM(5,2); 
+		rbm.train(trainData, 5000);
+		for (int i = 0; i < testCount; i++) {
+			Matrix result = rbm.runHidden(rbm.runVisible(userInput));
+			
+			System.out.println(result);
+			
+			similar += userInput.hasCommonValues(result);
+		}
+		System.out.println("Common Values in percent:  " + similar / testCount);
 	}
 
 }
