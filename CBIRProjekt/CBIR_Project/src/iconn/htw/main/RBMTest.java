@@ -384,7 +384,7 @@ public class RBMTest {
 						{ 0, 0, 1, 1, 1, 0 },
 	    			   };
 
-		rbm.train(data, 1);
+		rbm.train(data, 1000);
 		rbm.printMatrix("Weights", rbm.weights);
 		
 		double user[][] = {
@@ -398,7 +398,7 @@ public class RBMTest {
 				{ 0, 1}
 		};
 		
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 1; i++) {
 			rbm.printMatrix("User", user);
 			double[][] result1 = rbm.runVisible(user);
 			rbm.printMatrix("Result", result1);

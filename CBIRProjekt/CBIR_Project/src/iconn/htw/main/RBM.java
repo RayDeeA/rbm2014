@@ -3,7 +3,6 @@ package iconn.htw.main;
 public class RBM {
 
 	private final IFloatFunction sigmoidfunc;
-	private final IFloatFunction activationfunc;
 	private final IRandomFunction random;
 	private final IRandomFunction activationRandom;
 	
@@ -14,7 +13,6 @@ public class RBM {
 	
 	public RBM(int visible, int hidden) {
 		sigmoidfunc = new DefaultSigmoid();
-		activationfunc = new DefaultActivation();
 		random = new GaussianRandom(0.1f, 0.0f);
 		activationRandom = new DefaultRandom(1.0f, 0.0f);
 
@@ -22,33 +20,29 @@ public class RBM {
 	}
 	
 	public void train(final Matrix data, final int epochs) {
-		final double maxMeanSquareError = 0.00002; 
-		double currentMeanSquareError = Double.MAX_VALUE;
 		
 		final Matrix dataWithBias = data.expandfirstColumnWithOnes();
-		
 		for (int i = 0; i < epochs; i++) {
 			
-			final Matrix positiveHiddenProbs = dataWithBias.mult(weights).applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
+			final Matrix positiveHiddenActivations = dataWithBias.mult(weights);
+			final Matrix positiveHiddenProbalities = positiveHiddenActivations.applyFloatFunction(sigmoidfunc);
 			
-			final Matrix hiddenStates = positiveHiddenProbs.isGreaterThan(Matrix.createRandomMatrix(positiveHiddenProbs.getHeight(), positiveHiddenProbs.getWidth(), activationRandom));
+			final Matrix positiveHiddenStates = positiveHiddenProbalities.isGreaterThan(
+					Matrix.createRandomMatrix(
+							positiveHiddenProbalities.getHeight(), 
+							positiveHiddenProbalities.getWidth(), 
+							activationRandom));
 			
-			final Matrix positiveFeedback = dataWithBias.trans().mult(positiveHiddenProbs);
+			final Matrix positiveAssociations = dataWithBias.trans().mult(positiveHiddenProbalities);
+			final Matrix negativeVisibleActivations = positiveHiddenStates.mult(weights.trans());
+			final Matrix negativeVisibleProbabilities = negativeVisibleActivations.applyFloatFunction(sigmoidfunc);
+			final Matrix negativeHiddenActivations = negativeVisibleProbabilities.mult(weights);
+			final Matrix negativeHiddenProbabilities = negativeHiddenActivations.applyFloatFunction(sigmoidfunc);	
+			final Matrix negativeAssociations = negativeVisibleProbabilities.trans().mult(negativeHiddenProbabilities);
 			
+			weights = weights.add(positiveAssociations.subt(negativeAssociations).mult(1 / data.getHeight()).mult(learningRate));
 			
-			
-			final Matrix negativeVisibleProbs = hiddenStates.mult(weights.trans())
-					.applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc).fillFirstColumnWithOnes();
-			
-			final Matrix negativeHiddenProbs = negativeVisibleProbs.mult(weights)
-					.applyFloatFunction(activationfunc).applyFloatFunction(sigmoidfunc);
-			
-			final Matrix negativeFeedback = negativeVisibleProbs.trans().mult(negativeHiddenProbs);
-			
-			weights = weights.add(positiveFeedback.subt(negativeFeedback).mult(learningRate / dataWithBias.getHeight()));
-			
-			currentMeanSquareError = dataWithBias.subt(negativeVisibleProbs).applyFloatFunction(new Square()).sumValues();
-			//System.out.println("Mean Square Error:  " + currentMeanSquareError);
+//			System.out.println("Mean Square Error:  " + dataWithBias.subt(negativeVisibleProbabilities).applyFloatFunction(new Square()).sumValues());
 		}
 	}
 	
@@ -109,7 +103,7 @@ public class RBM {
 				);
 		
 		final RBM rbm = new RBM(5,2); 
-		rbm.train(trainData, 5000);
+		rbm.train(trainData, 1_000);
 		for (int i = 0; i < testCount; i++) {
 			Matrix result = rbm.runHidden(rbm.runVisible(userInput));
 			

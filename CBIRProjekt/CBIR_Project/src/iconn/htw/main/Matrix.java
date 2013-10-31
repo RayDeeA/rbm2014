@@ -82,13 +82,12 @@ public class Matrix {
 	public Matrix mult(final Matrix m) {
 		if(coeff[0].length != m.coeff.length) throw new IllegalArgumentException();
 		
-		final double[][] mCoeff = m.coeff;
-		final double[][] result = new double[coeff.length][mCoeff[0].length];
+		final double[][] result = new double[coeff.length][m.coeff[0].length];
 		
 		for(int i=0; i < coeff.length; i++)   {                     
 			for(int j=0; j < result[0].length; j++) {                
-				for(int k=0; k < mCoeff.length; k++) {    
-					result[i][j] += coeff[i][k] * mCoeff[k][j];
+				for(int k=0; k < m.coeff.length; k++) {    
+					result[i][j] += coeff[i][k] * m.coeff[k][j];
 				}
 			}
 		}
@@ -114,7 +113,7 @@ public class Matrix {
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[0].length; j++) {
-				result[i][j] = (coeff[i][j] > mCoeff[i][j]) ? 1.0f : 0.0f;
+				result[i][j] = (coeff[i][j] > mCoeff[i][j]) ? 1.0 : 0.0;
 			}
 		}
 		
