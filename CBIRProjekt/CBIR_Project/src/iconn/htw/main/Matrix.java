@@ -78,6 +78,17 @@ public class Matrix {
 		return new Matrix(result);
 	}
 	
+	public Matrix divide(final double x) {
+		final double[][] result = new double[coeff.length][coeff[0].length];
+		
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[0].length; j++) {
+				result[i][j] = coeff[i][j] / x;
+			}
+		}
+		return new Matrix(result);
+	}
+	
 	
 	public Matrix mult(final Matrix m) {
 		if(coeff[0].length != m.coeff.length) throw new IllegalArgumentException();

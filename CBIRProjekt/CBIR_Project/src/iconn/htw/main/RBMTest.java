@@ -3,8 +3,10 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
 
+import de.htw.iconn.rbm.IRBM;
 
-public class RBMTest {
+
+public class RBMTest implements IRBM {
     
 	private boolean debug = true;
 	
@@ -15,10 +17,23 @@ public class RBMTest {
     private double learningRate;
     private double[][] randomMatrix;
     
+    private double error;
+    
     private Random randomGenerator = new Random();
     
     private double[][] weights;
+    
+    public RBMTest(int numVisbible, int numHidden, double learningRate, double[][] weights) {
     	
+		this.numHidden = numHidden;
+		this.numVisible = numVisbible;
+		this.numHiddenWithBias = numHidden + 1;
+		this.numVisibleWithBias = numVisbible + 1;
+		this.learningRate = learningRate;
+		
+		this.weights = weights;
+    }
+    
 	public RBMTest(int numVisbible, int numHidden, double learningRate) {
 		this.numHidden = numHidden;
 		this.numVisible = numVisbible;
@@ -26,41 +41,13 @@ public class RBMTest {
 		this.numVisibleWithBias = numVisbible + 1;
 		this.learningRate = learningRate;
 		
-		/*
+		
 		this.weights = new double[numVisibleWithBias][numHiddenWithBias];
 	    for(int v = 1; v < numVisibleWithBias; v++) {
 	    	for(int h = 1; h < numHiddenWithBias; h++) {
-	    		weights[v][h] = 0.1 * randomGenerator.nextGaussian();
+	    		weights[v][h] = this.learningRate * randomGenerator.nextGaussian();
 	    	}
 	    }
-	    */
-		
-		this.weights = new double[][]{
-				{0.000,	0.000,	0.000},
-				{0.000,	-0.274,	0.002},
-				{0.000,	-0.107,	0.007},
-				{0.000,	-0.177,	-0.007},
-				{0.000,	-0.059,	-0.152},
-				{0.000,	-0.004,	-0.053},
-				{0.000,	-0.115,	-0.085}
-		};
-		
-		
-		
-		int rLength = numVisible;
-		int cLength = numHiddenWithBias;
-		
-    	randomMatrix = new double[][] {
-				{0.138,	0.664,	0.156},
-				{0.925,	0.786,	0.910},
-				{0.341,	0.548,	0.872},
-				{0.337,	0.813,	0.237},
-				{0.582,	0.631,	0.275},
-				{0.523,	0.428,	0.880}
-    	};
-	    
-	    printMatrix("weights:", weights);
-	    printMatrix("Random matrix:", randomMatrix);
 	}
 	
 	public void printMatrix(String title, double[][] m){
@@ -139,7 +126,16 @@ public class RBMTest {
         return result;
     }
 	
-	public void train(double[][] data, int maxEpochs) {
+	@Override
+	public double error(double[][] trainingData) {
+		
+		
+		
+		return error;
+	}
+	
+	@Override
+	public void train(double[][] trainingData, int max_epochs) {
 		/*
 	    Train the machine.
 
@@ -148,8 +144,8 @@ public class RBMTest {
 	    data: A matrix where each row is a training example consisting of the states of visible units.    
 	    */
 
-		int numberOfExamples = data.length;
-		int numberOfChoicesPerExample = data[0].length;
+		int numberOfExamples = trainingData.length;
+		int numberOfChoicesPerExample = trainingData[0].length;
 
 	    // Insert bias units of 1 into the first column.
 	    double[][] dataWithBias = new double[numberOfExamples][numberOfChoicesPerExample + 1];
@@ -158,69 +154,55 @@ public class RBMTest {
 	    		if(c == 0) {
 	    			dataWithBias[r][c] = 1;
 	    		} else {
-	    			dataWithBias[r][c] = data[r][c-1];
+	    			dataWithBias[r][c] = trainingData[r][c-1];
 	    		}
 	    	}
 	    }
 	    
-	    printMatrix("Data With Bias:", dataWithBias);
-	    
-	    for (int i = 0; i < maxEpochs; i++) {
+	    for (int i = 0; i < max_epochs; i++) {
 	    	
 	    	// Clamp to the data and sample from the hidden units. 
 		    // (This is the "positive CD phase", aka the reality phase.)
 	    	double[][] posHiddenActivations = multiplicar(dataWithBias, this.weights);
-	    	if(i == maxEpochs-1) printMatrix("posHiddenActivations:", posHiddenActivations);
 	    	
 	    	int rLength = dataWithBias.length;
 	    	int cLength = this.weights[0].length;
 	    	
 	    	double[][] posHiddenProbs = logistic(posHiddenActivations);
-	    	if(i == maxEpochs-1) printMatrix("posHiddenProbs:", posHiddenProbs);
 	    	
+	    	/*
 	    	double[][] posHiddenStates = new double[rLength][cLength];
 		    for(int r = 0; r < rLength; r++) {
 		    	for(int c = 0; c < cLength; c++) {
 		    		posHiddenStates[r][c] = (posHiddenProbs[r][c] > randomMatrix[r][c]) ? 1 : 0; 
 		    	}
 		    }
-		    if(i == maxEpochs-1) printMatrix("posHiddenStates:", posHiddenStates);
+		    */
 		    
 		    double[][] dataWithBiasT = transposeMatrix(dataWithBias);
-		    if(i == maxEpochs-1) printMatrix("dataWithBiasT:", dataWithBiasT);
 		    
 		    double[][] posAssociations = multiplicar(dataWithBiasT, posHiddenProbs);
-		    if(i == maxEpochs-1) printMatrix("posAssociations:", posAssociations);
-		    
 		    
 		    
 		    double[][] weightsT = transposeMatrix(this.weights);
-		    if(i == maxEpochs-1) printMatrix("weightsT:", weightsT);
 		    
-		    double[][] negVisibleActivations = multiplicar(posHiddenStates, weightsT);
-		    if(i == maxEpochs-1) printMatrix("negVisibleActivations:", negVisibleActivations);
+		    double[][] negVisibleActivations = multiplicar(posHiddenProbs, weightsT);
 		    
 		    double[][] negVisibleProbs = logistic(negVisibleActivations);
-		    if(i == maxEpochs-1) printMatrix("negVisibleProbs:", negVisibleProbs);
 		    
 		    for(int r = 0; r < negVisibleProbs.length; r++) {
 		    	for(int c = 0; c < negVisibleProbs[0].length; c++) {
 		    		if(c==0) negVisibleProbs[r][c] = 1;
 		    	}
 		    }
-		    if(i == maxEpochs-1) printMatrix("negVisibleProbs (repaired weights):", negVisibleProbs);
 		    
 		    double[][] negHiddenActivations = multiplicar(negVisibleProbs, this.weights);
-		    if(i == maxEpochs-1) printMatrix("negHiddenActivations:", negHiddenActivations);
 		    
 		    double[][] negHiddenProbs = logistic(negHiddenActivations);
-		    if(i == maxEpochs-1) printMatrix("negHiddenProbs:", negHiddenProbs);
 		    
 		    double[][] negVisibleProbsT = transposeMatrix(negVisibleProbs);
-		    if(i == maxEpochs-1) printMatrix("negVisibleProbsT:", negVisibleProbsT);
 		    
 		    double[][] negAssociations = multiplicar(negVisibleProbsT, negHiddenProbs);
-		    if(i == maxEpochs-1) printMatrix("negAssociations:", negAssociations);
 		    
 		    // Update weights
 		    for(int r = 0; r < weights.length; r++) {
@@ -228,24 +210,22 @@ public class RBMTest {
 		    		weights[r][c] += this.learningRate * ((posAssociations[r][c] - negAssociations[r][c]) / numberOfExamples);
 		    	}
 		    }
-		    if(i == maxEpochs-1) printMatrix("weights:", weights);
 		    
-		    double error = 0;
+		    error = 0;
 		    for(int r = 0; r < negVisibleProbs.length; r++) {
 		    	for(int c = 0; c < negVisibleProbs[0].length; c++) {
 		    		error += (dataWithBias[r][c] - negVisibleProbs[r][c]) * (dataWithBias[r][c] - negVisibleProbs[r][c]);
 		    	}
 		    }
-		    
-		    System.out.format("Epoch %s: error is %s \n", i, error);
+		    System.out.println("Im the right one! Trust me please!!!");
+		    System.out.println(error);
 
 	    }
-	    
-	    printMatrix("final weights", weights);
 
 	}
 	
-	private double[][] runVisible(double[][] data) {
+	@Override
+	public double[][] run_visual(double[][] userData) {
 		/*
 	    Assuming the RBM has been trained (so that weights for the network have been learned),
 	    run the network on a set of visible units, to get a sample of the hidden units.
@@ -260,15 +240,17 @@ public class RBMTest {
 	    units in the data matrix passed in.
 		*/
 		
-		int numberOfExamples = data.length;
-		int numberOfChoicesPerExample = data[0].length;
+		int numberOfExamples = userData.length;
+		int numberOfChoicesPerExample = userData[0].length;
 		
+		/*
 		double[][] hiddenStates = new double[numberOfExamples][this.numHidden + 1];
 	    for(int r = 0; r < numberOfExamples; r++) {
 	    	for(int c = 0; c < this.numHidden + 1; c++) {
 	    		hiddenStates[r][c] = 1;
 	    	}
 	    }
+	    */
 		// printMatrix("hiddenStates:", hiddenStates);
 		
 	    // Insert bias units of 1 into the first column.
@@ -278,7 +260,7 @@ public class RBMTest {
 	    		if(c == 0) {
 	    			dataWithBias[r][c] = 1;
 	    		} else {
-	    			dataWithBias[r][c] = data[r][c-1];
+	    			dataWithBias[r][c] = userData[r][c-1];
 	    		}
 	    	}
 	    }
@@ -293,18 +275,20 @@ public class RBMTest {
 	    // printMatrix("hiddenProbs:", hiddenProbs);
 	    
 	    // Turn the hidden units on with their specified probabilities.
+	    /*
 	    for(int r = 0; r < numberOfExamples; r++) {
 	    	for(int c = 0; c < this.numHidden + 1; c++) {
 	    		hiddenStates[r][c] = (hiddenProbs[r][c] > randomGenerator.nextDouble()) ? 1 : 0; 
 	    	}
 	    }
+	    */
 	    // printMatrix("hiddenStates:", hiddenProbs);
 
 	    
 	    double[][] hiddenStatesWithoutBias = new double[numberOfExamples][this.numHidden];
 	    for(int r = 0; r < numberOfExamples; r++) {
 	    	for(int c = 1; c < this.numHidden + 1; c++) {
-	    		hiddenStatesWithoutBias[r][c - 1] = hiddenStates[r][c];
+	    		hiddenStatesWithoutBias[r][c - 1] = hiddenProbs[r][c];
 	    	}
 	    }
 
@@ -312,13 +296,15 @@ public class RBMTest {
 	    return hiddenStatesWithoutBias;
 	}
 	
-	private double[][] runHidden(double[][] data) {
+	@Override
+	public double[][] run_hidden(double[][] hiddenData) {
 
-		int numberOfExamples = data.length;
-		int numberOfChoicesPerExample = data[0].length;
+		int numberOfExamples = hiddenData.length;
+		int numberOfChoicesPerExample = hiddenData[0].length;
 	    
 	    // Create a matrix, where each row is to be the visible units (plus a bias unit)
 		double[][] visibleStates = new double[numberOfExamples][this.numVisible + 1];
+		
 	    for(int r = 0; r < numberOfExamples; r++) {
 	    	for(int c = 0; c < this.numVisible + 1; c++) {
 	    		visibleStates[r][c] = 1;
@@ -332,7 +318,7 @@ public class RBMTest {
 	    		if(c == 0) {
 	    			dataWithBias[r][c] = 1;
 	    		} else {
-	    			dataWithBias[r][c] = data[r][c-1];
+	    			dataWithBias[r][c] = hiddenData[r][c-1];
 	    		}
 	    	}
 	    }
@@ -345,11 +331,13 @@ public class RBMTest {
 	    double[][] visibleProbs = this.logistic(visibleActivations);
 	    
 	    // Turn the visible units on with their specified probabilities.
+	    /*
 	    for(int r = 0; r < visibleStates.length; r++) {
 	    	for(int c = 0; c < visibleStates[0].length; c++) {
 	    		visibleStates[r][c] = visibleProbs[r][c] > randomGenerator.nextDouble() ? 1 : 0;
 	    	}
 	    }
+	    */
 	    
 	    printMatrix("visible states", visibleStates);
 	    
@@ -363,6 +351,16 @@ public class RBMTest {
 	    
 	    return visibleStatesWithoutBias;
 	    
+	}
+	
+	@Override
+	public void setWeights(double[][] weights) {
+		this.weights = weights;
+	}
+	
+	@Override
+	public double[][] getWeights() {
+		return this.weights;
 	}
 
 
@@ -400,9 +398,9 @@ public class RBMTest {
 		
 		for(int i = 0; i < 1; i++) {
 			rbm.printMatrix("User", user);
-			double[][] result1 = rbm.runVisible(user);
+			double[][] result1 = rbm.run_visual(user);
 			rbm.printMatrix("Result", result1);
-			double[][] result2 = rbm.runHidden(result1);
+			double[][] result2 = rbm.run_hidden(result1);
 			rbm.printMatrix("Check", result2);
 			System.out.println("");
 		}

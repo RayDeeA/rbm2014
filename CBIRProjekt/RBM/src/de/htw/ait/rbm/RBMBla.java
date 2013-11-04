@@ -2,8 +2,10 @@ package de.htw.ait.rbm;
 
 import java.util.Random;
 
+import de.htw.iconn.rbm.IRBM;
 
-public class RBM {
+
+public class RBMBla implements IRBM {
 
 	int num_visible = 6;
 	int num_hidden = 2;
@@ -12,25 +14,26 @@ public class RBM {
 	
 	double[][] weights; 
 	
-	public RBM(int numVisible, int numHidden, double learningRate) {
+	public RBMBla(int numVisible, int numHidden, double learningRate) {
 		num_visible =   numVisible;
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
 		
-		// initial zufällige Gewichte		
+		// initial zuf��llige Gewichte		
 		weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
 				weights[v][h] = 0.1*random.nextGaussian();
 	}
 
-	public RBM(int numVisible, int numHidden, double learningRate, double[][] weights) {
+	public RBMBla(int numVisible, int numHidden, double learningRate, double[][] weights) {
 		this.num_visible =   numVisible;
 		this.num_hidden =    numHidden;
 		this.learning_rate = learningRate;		
 		this.weights = weights;
 	}
 
+	@Override
 	public void train(double[][] trainingData, int max_epochs ) {
 		
 		int num_examples = trainingData.length; 
@@ -167,6 +170,7 @@ public class RBM {
 				weights[v][h] += learning_rate * (pos_associations[v][h] - neg_associations[v][h]) / num_examples;
 	}
 
+	@Override
 	public double error(double[][] trainingData) {
 		
 		int num_examples = trainingData.length; 
@@ -255,6 +259,8 @@ public class RBM {
     	hidden_states: A matrix where each row consists of the hidden units activated from the visible
     	units in the data matrix passed in.
 	*/
+	
+	@Override
 	public double[][] run_visual(double[][] userData) {
 		
 		 int num_examples = userData.length;
@@ -302,6 +308,8 @@ public class RBM {
 	visible_states: A matrix where each row consists of the visible units activated from the hidden
 	units in the data matrix passed in.
 	*/
+	
+	@Override
 	public double[][] run_hidden(double[][] hiddenData) {
 		
 		int num_examples = hiddenData.length;
@@ -332,12 +340,12 @@ public class RBM {
 		 return visible_states_;
 	}
 
-
+	@Override
 	public void setWeights(double[][] weights) {
 		this.weights = weights;
 	}
 
-
+	@Override
 	public double[][] getWeights() {
 		return this.weights;
 	}

@@ -1,6 +1,6 @@
 package de.htw.ait.rbm.test;
 import de.htw.ait.rbm.Matrix;
-import de.htw.ait.rbm.RBM;
+import de.htw.ait.rbm.RBMBla;
 
 
 public class RBMTestMain {
@@ -33,7 +33,7 @@ public class RBMTestMain {
 
 	public static void main(String[] args) {
 		
-		RBM rbm = new RBM(trainingData[0].length, num_hidden, 0.1);
+		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		
 		rbm.train(trainingData, max_epochs);
 	

@@ -1,10 +1,12 @@
 package de.htw.cbir;
 
+import iconn.htw.main.RBMTest;
+
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
-import de.htw.ait.rbm.RBM;
 import de.htw.cbir.model.Pic;
+import de.htw.iconn.rbm.IRBM;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public class DCTRBM {
@@ -18,27 +20,27 @@ public class DCTRBM {
 	private int inputSize;
 	private int outputSize;
 	
-	private RBM rbm;
+	private IRBM rbm;
 	
 	/**
 	 * 
-	 * @param inputSize Gültig sind 3,6,9,12 oder 15
+	 * @param inputSize G��ltig sind 3,6,9,12 oder 15
 	 * @param outputSize
 	 */
 	public DCTRBM(int inputSize, int outputSize) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
-		this.rbm = new RBM(inputSize, outputSize, learnRate);
+		this.rbm = new RBMTest(inputSize, outputSize, learnRate);
 	}
 	
-	public DCTRBM(int inputSize, int outputSize, RBM rbm) {
+	public DCTRBM(int inputSize, int outputSize, IRBM rbm) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
 		this.rbm = rbm;
 	}
 	
 	public DCTRBM shallowCopy() {
-		RBM newRBM = new RBM(inputSize, outputSize, learnRate, rbm.getWeights());
+		IRBM newRBM = new RBMTest(inputSize, outputSize, learnRate, rbm.getWeights());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
 	
@@ -62,7 +64,7 @@ public class DCTRBM {
 	
 	/**
 	 * Erstelle ein Trainingsarray mit den Daten aller Bilder.
-	 * Für jedes Bild besorge die 15 Byte DCT Daten.
+	 * F��r jedes Bild besorge die 15 Byte DCT Daten.
 	 * Normalisiere das Gesamtergebnis.
 	 * 
 	 * @param images
@@ -75,12 +77,12 @@ public class DCTRBM {
 		dimensionMin = new double[inputSize];
 		dimensionMax = new double[inputSize];
 		
-		// Berechne für alle Bilder die DCT Koeffi
+		// Berechne f��r alle Bilder die DCT Koeffi
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage bi = images[i].getDisplayImage();
 			float[] fvFloat = FeatureVector2opt.getFeatureVectorDCT(bi);
 		
-			// es werden nicht immer alle DCT Koeffi benötigt
+			// es werden nicht immer alle DCT Koeffi ben��tigt
 			for (int j = 0; j < inputSize; j++) {
 				float val = fvFloat[j];
 				

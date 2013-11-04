@@ -33,14 +33,16 @@ public class RBM {
 							positiveHiddenProbalities.getWidth(), 
 							activationRandom));
 			
-			final Matrix positiveAssociations = dataWithBias.trans().mult(positiveHiddenProbalities);
+			final Matrix positiveAssociations = (dataWithBias.trans()).mult(positiveHiddenProbalities);
 			final Matrix negativeVisibleActivations = positiveHiddenStates.mult(weights.trans());
 			final Matrix negativeVisibleProbabilities = negativeVisibleActivations.applyFloatFunction(sigmoidfunc);
 			final Matrix negativeHiddenActivations = negativeVisibleProbabilities.mult(weights);
 			final Matrix negativeHiddenProbabilities = negativeHiddenActivations.applyFloatFunction(sigmoidfunc);	
 			final Matrix negativeAssociations = negativeVisibleProbabilities.trans().mult(negativeHiddenProbabilities);
 			
-			weights = weights.add(positiveAssociations.subt(negativeAssociations).mult(1 / data.getHeight()).mult(learningRate));
+			weights = weights.add(  ((positiveAssociations.subt(negativeAssociations)).divide(data.getHeight())).mult(learningRate) );
+			
+
 			
 //			System.out.println("Mean Square Error:  " + dataWithBias.subt(negativeVisibleProbabilities).applyFloatFunction(new Square()).sumValues());
 		}
@@ -57,7 +59,7 @@ public class RBM {
 		Matrix hiddenProbs = dataWithBias.mult(this.weights).applyFloatFunction(sigmoidfunc);
 		hiddenStates = hiddenProbs.isGreaterThan(Matrix.createRandomMatrix(hiddenProbs.getHeight(), hiddenProbs.getWidth(), activationRandom));
 		
-		return hiddenStates.removefirstColumn();
+		return hiddenProbs.removefirstColumn();
 	}
 	
 	public Matrix runHidden(Matrix data) {
@@ -68,10 +70,10 @@ public class RBM {
 		Matrix visibleStates = Matrix.createMatrixFilledWithNumber(numberOfExamples, numberOfChoicesPerExample + 1, 1.0f);
 		Matrix dataWithBias = data.expandfirstColumnWithOnes();
 
-		Matrix visibleProbs = dataWithBias.mult(this.weights.trans()).applyFloatFunction(sigmoidfunc);
+		Matrix visibleProbs = (dataWithBias.mult(this.weights.trans())).applyFloatFunction(sigmoidfunc);
 		visibleStates = visibleProbs.isGreaterThan(Matrix.createRandomMatrix(visibleProbs.getHeight(), visibleProbs.getWidth(), activationRandom));
 		
-		return visibleStates.removefirstColumn();
+		return visibleProbs.removefirstColumn();
 	}
 	
 	public static void main(String[] args) {
@@ -88,22 +90,23 @@ public class RBM {
 						// Carol: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
 						{ 1, 1, 1, 0, 0 },
 						// David: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 1, Glitter = 0). Big Oscar winners fan.
-						{ 0, 0, 1, 1, 1 },
+						{ 0, 0, 0, 1, 1 },
 						// Eric: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 0, Glitter = 0). Oscar winners fan, except for Titanic.
-						{ 0, 0, 1, 1, 0 },
+						{ 0, 0, 0, 1, 0 },
 						// Fred: (Harry Potter = 0, Avatar = 0, LOTR 3 = 1, Gladiator = 1, Titanic = 1, Glitter = 0). Big Oscar winners fan.
-						{ 0, 0, 1, 1, 1 },
+						{ 0, 0, 0, 1, 1 },
 				});
+		
 		
 		Matrix userInput = new Matrix( 
 				new double[][]{
-						{ 0, 0, 1, 1, 1 },
-						{ 1, 1, 0, 0, 0 }
+						{ 0, 0, 0, 1, 1 },
+						{ 1, 1, 1, 0, 0 }
 					}
 				);
 		
 		final RBM rbm = new RBM(5,2); 
-		rbm.train(trainData, 1_000);
+		rbm.train(trainData, 5_000);
 		for (int i = 0; i < testCount; i++) {
 			Matrix result = rbm.runHidden(rbm.runVisible(userInput));
 			
