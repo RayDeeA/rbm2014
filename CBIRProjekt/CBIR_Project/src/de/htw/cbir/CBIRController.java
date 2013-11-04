@@ -22,6 +22,7 @@ import de.htw.cma.GeneticDCTRBMError;
 import de.htw.cma.GeneticHistogram;
 import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
+import iconn.htw.sorter.*;
 
 public class CBIRController {
 
@@ -68,6 +69,8 @@ public class CBIRController {
 			System.out.println("raw error "+ dctRBM.getRawError(allImages));
 
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		}  else if(cmd.equalsIgnoreCase("DCT_CJ")) {
+			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		}
 		
 		sorter.getFeatureVectors();
@@ -81,7 +84,7 @@ public class CBIRController {
 	 * @return SorterNamen
 	 */
 	public String[] getSorterNames() {
-		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV50", "FV15DCT", "DCTRBM" };
+		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ" };
 	}
 
 	public ImageManager getImageManager() {
