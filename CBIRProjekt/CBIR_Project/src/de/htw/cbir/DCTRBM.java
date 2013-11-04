@@ -1,10 +1,9 @@
 package de.htw.cbir;
 
-import iconn.htw.main.RBMTest;
-
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
+import de.htw.ait.rbm.RBMBla;
 import de.htw.cbir.model.Pic;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
@@ -24,13 +23,13 @@ public class DCTRBM {
 	
 	/**
 	 * 
-	 * @param inputSize G��ltig sind 3,6,9,12 oder 15
+	 * @param inputSize Gueltig sind 3,6,9,12 oder 15
 	 * @param outputSize
 	 */
 	public DCTRBM(int inputSize, int outputSize) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
-		this.rbm = new RBMTest(inputSize, outputSize, learnRate);
+		this.rbm = new RBMBla(inputSize, outputSize, learnRate);
 	}
 	
 	public DCTRBM(int inputSize, int outputSize, IRBM rbm) {
@@ -40,7 +39,7 @@ public class DCTRBM {
 	}
 	
 	public DCTRBM shallowCopy() {
-		IRBM newRBM = new RBMTest(inputSize, outputSize, learnRate, rbm.getWeights());
+		IRBM newRBM = new RBMBla(inputSize, outputSize, learnRate, rbm.getWeights());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
 	
@@ -77,12 +76,12 @@ public class DCTRBM {
 		dimensionMin = new double[inputSize];
 		dimensionMax = new double[inputSize];
 		
-		// Berechne f��r alle Bilder die DCT Koeffi
+		// Berechne fuer alle Bilder die DCT Koeffi
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage bi = images[i].getDisplayImage();
 			float[] fvFloat = FeatureVector2opt.getFeatureVectorDCT(bi);
 		
-			// es werden nicht immer alle DCT Koeffi ben��tigt
+			// es werden nicht immer alle DCT Koeffi benoetigt
 			for (int j = 0; j < inputSize; j++) {
 				float val = fvFloat[j];
 				

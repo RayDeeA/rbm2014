@@ -22,6 +22,8 @@ import de.htw.cma.GeneticDCTRBMError;
 import de.htw.cma.GeneticHistogram;
 import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
+import de.htw.iconn.rbm.IRBM;
+import iconn.htw.main.RBMTest;
 import iconn.htw.sorter.*;
 
 public class CBIRController {
@@ -67,10 +69,18 @@ public class CBIRController {
 			dctRBM.train(allImages, 3000);
 			System.out.println("error "+ dctRBM.getError(allImages));
 			System.out.println("raw error "+ dctRBM.getRawError(allImages));
-
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
-		}  else if(cmd.equalsIgnoreCase("DCT_CJ")) {
+		} else if(cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_RM")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBMTest(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		}
 		
 		sorter.getFeatureVectors();
@@ -84,7 +94,7 @@ public class CBIRController {
 	 * @return SorterNamen
 	 */
 	public String[] getSorterNames() {
-		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ" };
+		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ", "DCTRBM_RM" };
 	}
 
 	public ImageManager getImageManager() {
