@@ -11,9 +11,16 @@ import de.htw.cbir.sorter.*;
 import iconn.htw.helper.MathHelper;
 
 public class Sorter_DCT_CJ extends Sorter{
+	
+	private int counter;
+	//val equals 2 results in 15 dimensional feature vector (3 + val * 2 * 3)
+	private int numberOfDctValuesPerDimension = 2;
+	//reduce image to size (val * val)
+	private int parts = 8;
 
 	public Sorter_DCT_CJ(Pic[] images, Settings settings, ForkJoinPool pool) {
 		super(images, settings, pool);
+		counter = 0;
 	}
 
 	@Override
@@ -43,11 +50,8 @@ public class Sorter_DCT_CJ extends Sorter{
 
 	@Override
 	protected double[] getFeatureVector(Pic image) {
+		System.out.println(++counter);
 		BufferedImage bi = image.getDisplayImage();
-		
-		//using 2 values per dimension results in 15 dimensional feature vector
-		int numberOfDctValuesPerDimension = 2;
-		int parts = 8;
 		
 		int w = bi.getWidth();
 		int h = bi.getHeight();
