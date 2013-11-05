@@ -26,6 +26,7 @@ public class CBIRUI  {
 	
 	// GUI Elemente
 	private JFrame frame;
+	private RBMVisualizationFrame rbmFrame;
 	private ImageGrid grid;
 	
 	// allgemeine Variablen
@@ -45,6 +46,9 @@ public class CBIRUI  {
 		// lass alles zeichnen
 		repaint();
 		PrecisionRecallTable.initializeGraph();
+		
+		rbmFrame = new RBMVisualizationFrame();
+		
 	}
 	
 	/**
@@ -166,6 +170,10 @@ public class CBIRUI  {
                 question, "Input number", JOptionPane.PLAIN_MESSAGE);
 		s = s.replace(",", ".");
 		return Double.parseDouble(s);
+	}
+	
+	public RBMVisualizationFrame getRBMVis(){
+		return this.rbmFrame;
 	}
 
 }
