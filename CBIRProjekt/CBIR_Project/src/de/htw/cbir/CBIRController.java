@@ -23,7 +23,8 @@ import de.htw.cma.GeneticHistogram;
 import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
-import iconn.htw.main.RBMTest;
+import iconn.htw.main.RBMJBlas;
+import iconn.htw.main.RBMOriginal;
 import iconn.htw.sorter.*;
 
 public class CBIRController {
@@ -77,7 +78,7 @@ public class CBIRController {
 			int outputSize = 10;
 			double learnRate = 1.0;
 			int epochs = 10000;
-			IRBM rbm = new RBMTest(inputSize, outputSize, learnRate);
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate);
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			dctRBM.train(allImages, epochs);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
