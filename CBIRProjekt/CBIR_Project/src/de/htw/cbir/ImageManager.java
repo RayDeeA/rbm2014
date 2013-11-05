@@ -17,7 +17,7 @@ import de.htw.cbir.model.Pic;
 
 public class ImageManager {
 
-	private static String startDirectory = "images";
+	private static String startDirectory = "CBIR_Project/images";
 	
 	private Pic[] images;
 	private File imageDirectory;

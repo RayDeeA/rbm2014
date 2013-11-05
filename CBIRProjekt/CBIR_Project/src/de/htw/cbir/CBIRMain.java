@@ -23,7 +23,7 @@ public class CBIRMain {
 		
 		// setzte die Standart interpolation
 		String setName = imageManager.getImageSetName();
-		RGBInterpolation cube = RGBInterpolation.load(Paths.get("solutions/"+setName+"/4x4x4RGB.csa"));
+		RGBInterpolation cube = RGBInterpolation.load(Paths.get("CBIR_Project/solutions/"+setName+"/4x4x4RGB.csa"));
 		ColorMetric.setDistanceInterface(cube);
 	}
 }

@@ -127,6 +127,10 @@ public class DCTRBM {
 	public int getHiddenCount() {
 		return outputSize;
 	}
+	
+	public double[][] getWeights() {
+		return rbm.getWeights();
+	}
 
 	public void setWeights(double[][] weights) {
 		rbm.setWeights(weights);
@@ -145,5 +149,7 @@ public class DCTRBM {
 			System.out.println();
 		}
 	}
+	
+	
 	
 }

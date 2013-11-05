@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.gui.CBIRUI;
+import de.htw.cbir.gui.RBMVisualizationFrame;
 import de.htw.cbir.histogram.IDWHistogramFactory;
 import de.htw.cbir.model.ImagePair;
 import de.htw.cbir.model.Pic;
@@ -32,7 +33,10 @@ public class CBIRController {
 	private Settings settings;
 	private ImageManager imageManager;
 	
+	
 	private CBIRUI ui;
+	private final RBMVisualizationFrame visualizationFrame;
+	
 	private Sorter sorter;
 	private ForkJoinPool pool;
 	
@@ -41,8 +45,9 @@ public class CBIRController {
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
 		
+		this.visualizationFrame = new RBMVisualizationFrame();
 		// GUI Elemente
-		this.ui = new CBIRUI(this);
+		this.ui = new CBIRUI(this, this.visualizationFrame);
 	}
 	
 	public void changeSorter(ActionEvent e) {
@@ -67,7 +72,13 @@ public class CBIRController {
 			dctRBM.train(allImages, 0);
 			System.out.println("error "+ dctRBM.getError(allImages));
 			System.out.println("raw error "+ dctRBM.getRawError(allImages));
-			dctRBM.train(allImages, 3000);
+			
+			
+			for(int i = 0; i < 300; i++) {
+				dctRBM.train(allImages, 100);
+				visualizationFrame.update(dctRBM.getWeights());
+			}
+			
 			System.out.println("error "+ dctRBM.getError(allImages));
 			System.out.println("raw error "+ dctRBM.getRawError(allImages));
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);

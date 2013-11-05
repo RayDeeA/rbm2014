@@ -9,19 +9,22 @@ public class RBMVisualizationFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private RBMVisualizationPanel panel;
 	
+	private final int width = 600;
+	private final int height = 600;
+	
 	public RBMVisualizationFrame(){		
 		super("RBMVisualization");
-		panel = new RBMVisualizationPanel(this);
-		this.setSize(new Dimension(600, 600));
-		this.add(panel);	
+		
+		this.setSize(new Dimension(width, height));
+			
 		this.setVisible(true);
-	}
-	
-	public Dimension frameSize(){
-		return new Dimension(this.getWidth(), this.getHeight());
+		panel = new RBMVisualizationPanel(this);
+		this.add(panel);
+		
 	}
 
-	public void update(BufferedImage image){
-		panel.update(image);
+	public void update(double[][] weights){
+		panel.update(weights);
 	}
+
 }

@@ -32,9 +32,9 @@ public class CBIRUI  {
 	// allgemeine Variablen
 	private CBIRController controller;
 	
-	public CBIRUI(CBIRController controller) {
+	public CBIRUI(CBIRController controller, RBMVisualizationFrame rbmFrame) {
 		this.controller = controller;
-		
+		this.rbmFrame = rbmFrame;
 		
 		// Hauptfenster
 		frame = createMainFrame();
@@ -46,8 +46,6 @@ public class CBIRUI  {
 		// lass alles zeichnen
 		repaint();
 		PrecisionRecallTable.initializeGraph();
-		
-		rbmFrame = new RBMVisualizationFrame();
 		
 	}
 	
@@ -105,6 +103,7 @@ public class CBIRUI  {
 			}
 		});
 		testMenu.add(mI_all);
+		
 		
 		int index = 0;
 		for (String groupName : controller.getImageManager().getGroupNames()) {

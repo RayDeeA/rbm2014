@@ -72,7 +72,7 @@ public class RBMJBlas implements IRBM {
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {
 		
-		Printer.printMatrix("JBLAS Weights", weights);
+//		Printer.printMatrix("JBLAS Weights", weights);
 		
 		
 		DoubleMatrix data = new DoubleMatrix(trainingData);
@@ -80,7 +80,7 @@ public class RBMJBlas implements IRBM {
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
 		final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
 		
-		Printer.printMatrix("JBLAS DataWithBias", dataWithBias);
+//		Printer.printMatrix("JBLAS DataWithBias", dataWithBias);
 	    
 	    for (int i = 0; i < max_epochs; i++) {
 	    	
