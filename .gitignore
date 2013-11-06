@@ -1,2 +1,4 @@
 *.class
 CBIRProject/cma/bin/.gitignore
+
+/CBIRProjekt/cma/bin

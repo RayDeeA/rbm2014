@@ -19,9 +19,9 @@ import de.htw.cbir.sorter.Sorter_FV15DCT;
 import de.htw.cbir.sorter.Sorter_IDWHistogram;
 import de.htw.cbir.sorter.Sorter_RGBInterpolation;
 import de.htw.cma.GeneticColorDistance;
+import de.htw.cma.GeneticDCTRBM;
 import de.htw.cma.GeneticDCTRBMError;
 import de.htw.cma.GeneticHistogram;
-import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
@@ -30,7 +30,12 @@ import de.htw.iconn.rbm.RBMJBlasRandomValueFixedPosition;
 import de.htw.iconn.rbm.RBMJBlasRandomValueFixedRow;
 import de.htw.iconn.rbm.RBMJBlasRandomValueVariablePosition;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
-import de.htw.iconn.sorter.*;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+import de.htw.iconn.sorter.Sorter_DCT_CJ;
 
 public class CBIRController {
 
@@ -118,8 +123,76 @@ public class CBIRController {
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
-		} else if(cmd.equalsIgnoreCase("DCTRBM_GA")) {
-
+		} else if(cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		}  else if(cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_TanHMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_GaussMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_LinearUnclippedMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if(cmd.equalsIgnoreCase("DCTRBM_RC")) {
@@ -132,7 +205,16 @@ public class CBIRController {
 	}
 	
 	public String[] getSorterNames() {
-		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ","RBMJBlas_Sigmoid", "DCTRBM_RM", "DCTRBM_CJ", "DCTRBM_GA", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
+
+		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", 
+				"FV15DCT", "DCTRBM", "DCT_CJ","RBMJBlas_Sigmoid","DCTRBM_RM", "DCTRBM_CJ",
+				"DCTRBM_DefaultLogisticMatrixFunction",
+				"DCTRBM_RectifierMatrixFunction",
+				"DCTRBM_TanHMatrixFunction",
+				"DCTRBM_GaussMatrixFunction",
+				"DCTRBM_LinearClippedMatrixFunction",
+				"DCTRBM_LinearUnclippedMatrixFunction",
+				"DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
 
 	public ImageManager getImageManager() {
