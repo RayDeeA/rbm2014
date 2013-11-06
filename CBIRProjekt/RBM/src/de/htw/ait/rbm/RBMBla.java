@@ -19,7 +19,7 @@ public class RBMBla implements IRBM {
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
 		
-		// initial zuf��llige Gewichte		
+		// initial zuf������llige Gewichte		
 		weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -350,5 +350,9 @@ public class RBMBla implements IRBM {
 		return this.weights;
 	}
 	
+	@Override
+	public double[][] getWeightsWithBIAS() {
+		return this.weights;
+	}
 	
 }
