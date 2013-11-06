@@ -25,6 +25,10 @@ import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.RBMJBlasRandomValueFixedColumn;
+import de.htw.iconn.rbm.RBMJBlasRandomValueFixedPosition;
+import de.htw.iconn.rbm.RBMJBlasRandomValueFixedRow;
+import de.htw.iconn.rbm.RBMJBlasRandomValueVariablePosition;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.sorter.*;
 
@@ -94,6 +98,16 @@ public class CBIRController {
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_RM")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 0.1;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlasRandomValueFixedPosition(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), 1000);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_CJ")) {
 			int inputSize = 15;
 			int outputSize = 10;
@@ -118,7 +132,7 @@ public class CBIRController {
 	}
 	
 	public String[] getSorterNames() {
-		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ","RBMJBlas_Sigmoid", "DCTRBM_CJ", "DCTRBM_GA", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
+		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ","RBMJBlas_Sigmoid", "DCTRBM_RM", "DCTRBM_CJ", "DCTRBM_GA", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
 
 	public ImageManager getImageManager() {
