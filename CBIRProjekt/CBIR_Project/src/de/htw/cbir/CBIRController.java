@@ -109,7 +109,7 @@ public class CBIRController {
 			double learnRate = 0.1;
 			int epochs = 10000;
 			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlasRandomValueFixedPosition(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), 1000);
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);

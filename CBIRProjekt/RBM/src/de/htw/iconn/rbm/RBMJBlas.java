@@ -66,7 +66,6 @@ public class RBMJBlas implements IRBM {
 	    	
 	    	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 	    	
-	  
 	    	final DoubleMatrix posHiddenProbs = sigmoid.function(posHiddenActivations);  	
 	    	
 	    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
