@@ -10,5 +10,5 @@ public class DefaultLinear implements IFloatFunction {
 	public double function(double x, double min, double max) {
 		return (x-min) / (max - min);
 	}
-
+	
 }
