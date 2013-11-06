@@ -27,7 +27,9 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
 import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
 import de.htw.iconn.rbm.functions.TanHMatrixFunction;
@@ -149,16 +151,6 @@ public class CBIRController {
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
-		} else if(cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
 			int inputSize = 15;
 			int outputSize = 10;
@@ -176,6 +168,26 @@ public class CBIRController {
 			int epochs = 10000;
 			int updateFrequency = 100;
 			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_HardClipMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
@@ -199,6 +211,8 @@ public class CBIRController {
 				"DCTRBM_GaussMatrixFunction",
 				"DCTRBM_LinearClippedMatrixFunction",
 				"DCTRBM_LinearUnclippedMatrixFunction",
+				"DCTRBM_LinearInterpolatedMatrixFunction",
+				"DCTRBM_HardClipMatrixFunction",				
 				"DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
 
