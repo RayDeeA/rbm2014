@@ -246,7 +246,7 @@ public class CBIRController {
 	
 	public void sortByImage(Pic queryImage) {
 
-		// wurde bereits ein Sortieralgorithmus ausgew��hlt
+		// wurde bereits ein Sortieralgorithmus ausgewählt
 		if(sorter == null) {
 			System.out.println("No sorting algorithm selected");
 			return;
@@ -272,7 +272,7 @@ public class CBIRController {
 
 	public void triggerTests(ActionEvent e) {
 		
-		// wurde bereits ein Sortieralgorithmus ausgew��hlt
+		// wurde bereits ein Sortieralgorithmus ausgewählt
 		if(sorter == null) {
 			System.out.println("No sorting algorithm selected");
 			return;
@@ -283,7 +283,7 @@ public class CBIRController {
 		Pic[] allImages = imageManager.getImages();
 		CBIREvaluation eval = new CBIREvaluation(sorter, allImages, pool);
 		
-		// welche Teste sollen durchgef��hrt werden
+		// welche Teste sollen durchgeführt werden
 		if(cmd.equals("Alle")) {
 			eval.testAll(true, cmd);
 		} else {
@@ -339,7 +339,7 @@ public class CBIRController {
 			
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und 
-			// eine Normalisierung sp��ter stattfinden kann
+			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0); 
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 		
@@ -353,7 +353,7 @@ public class CBIRController {
 			
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und 
-			// eine Normalisierung sp��ter stattfinden kann
+			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0); 
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 		
