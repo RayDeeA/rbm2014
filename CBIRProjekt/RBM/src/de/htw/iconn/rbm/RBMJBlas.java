@@ -1,7 +1,4 @@
 package de.htw.iconn.rbm;
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Random;
 
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
@@ -11,27 +8,14 @@ import de.htw.iconn.rbm.functions.ISigmoid;
 
 public class RBMJBlas implements IRBM {
     
-	private boolean debug = true;
-	
-    private int numHidden;
-    private int numVisible;
-    private int numHiddenWithBias;
-    private int numVisibleWithBias;
     private double learningRate;
-    private double[][] randomMatrix;
     private final ISigmoid sigmoid;
     
     private double error;
     
-    private Random randomGenerator = new Random();
-    
     private DoubleMatrix weights;
     
     public RBMJBlas(int numVisbible, int numHidden, double learningRate, double[][] weights, ISigmoid sigmoid) {
-		this.numHidden = numHidden;
-		this.numVisible = numVisbible;
-		this.numHiddenWithBias = numHidden + 1;
-		this.numVisibleWithBias = numVisbible + 1;
 		this.learningRate = learningRate;
 		this.sigmoid = sigmoid;
 		
@@ -46,15 +30,11 @@ public class RBMJBlas implements IRBM {
     }
     
 	public RBMJBlas(int numVisbible, int numHidden, double learningRate, ISigmoid sigmoid) {
-		this.numHidden = numHidden;
-		this.numVisible = numVisbible;
-		this.numHiddenWithBias = numHidden + 1;
-		this.numVisibleWithBias = numVisbible + 1;
 		this.learningRate = learningRate;
 		this.sigmoid = sigmoid;
 		
 		
-		this.weights = DoubleMatrix.randn(numVisible, numHidden).mmul(learningRate);
+		this.weights = DoubleMatrix.randn(numVisbible, numHidden).mmul(learningRate);
 		
 		final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
 		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 	1);
@@ -66,9 +46,6 @@ public class RBMJBlas implements IRBM {
 	
 	@Override
 	public double error(double[][] trainingData) {
-		
-		
-		
 		return error;
 	}
 	

@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +76,7 @@ public class ImageManager {
 			}
 		}
 		
-		// packe die Bilder in ihre Endgültige Form
+		// packe die Bilder in ihre Endg��ltige Form
 		images = new Pic[list.size()];
 		for (int i = 0; i < list.size(); i++) {
 			addImage(list.get(i), i);
@@ -91,7 +90,7 @@ public class ImageManager {
 	
 	private void addImage(Pic image, int index) {
 		
-		// das Bild wird zur allgemeinen Liste hinzugefügt
+		// das Bild wird zur allgemeinen Liste hinzugef��gt
 		images[index] = image;
 		
 		// und in eine Gruppenliste einsortiert
@@ -135,7 +134,7 @@ public class ImageManager {
 
 		int maxOrigImgSize = Math.max(iw,ih);
 
-		// maximale Kantenlänge
+		// maximale Kantenl��nge
 		float thumbSize = 128;
 
 		//skalierungsfaktor bestimmen:

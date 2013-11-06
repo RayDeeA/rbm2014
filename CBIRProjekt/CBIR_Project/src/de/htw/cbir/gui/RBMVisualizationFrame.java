@@ -1,7 +1,6 @@
 package de.htw.cbir.gui;
 
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 
 public class RBMVisualizationFrame extends JFrame{

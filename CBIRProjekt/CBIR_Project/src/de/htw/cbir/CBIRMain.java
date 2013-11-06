@@ -19,7 +19,7 @@ public class CBIRMain {
 		imageManager.load();
 		
 		// Zeige die GUI an
-		CBIRController controller = new CBIRController(settings, imageManager);
+		new CBIRController(settings, imageManager);
 		
 		// setzte die Standart interpolation
 		String setName = imageManager.getImageSetName();

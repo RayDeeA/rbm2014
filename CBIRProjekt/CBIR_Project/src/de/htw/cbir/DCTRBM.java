@@ -3,7 +3,6 @@ package de.htw.cbir;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
-import de.htw.ait.rbm.RBMBla;
 import de.htw.cbir.model.Pic;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
@@ -65,7 +64,7 @@ public class DCTRBM {
 	
 	/**
 	 * Erstelle ein Trainingsarray mit den Daten aller Bilder.
-	 * F������r jedes Bild besorge die 15 Byte DCT Daten.
+	 * Für jedes Bild besorge die 15 Byte DCT Daten.
 	 * Normalisiere das Gesamtergebnis.
 	 * 
 	 * @param images

@@ -17,10 +17,6 @@ public class IDWHistogramTest {
 
 	public static void main(String[] args) {
 		
-		int histogramBins = 15;
-		if(args.length > 0)
-			histogramBins = Integer.parseInt(args[0]);
-		
 		// lade alle Bilder aus dem Ordner
 		ImageManager imageManager = new ImageManager();
 		imageManager.loadImages(new File("images//colors"));
