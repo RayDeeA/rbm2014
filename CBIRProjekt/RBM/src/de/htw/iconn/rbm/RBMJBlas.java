@@ -6,7 +6,7 @@ import java.util.Random;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
-import de.htw.iconn.rbm.functions.ISigmoid;
+import de.htw.iconn.rbm.functions.ILogistic;
 
 
 public class RBMJBlas implements IRBM {
@@ -19,7 +19,7 @@ public class RBMJBlas implements IRBM {
     private int numVisibleWithBias;
     private double learningRate;
     private double[][] randomMatrix;
-    private final ISigmoid sigmoid;
+    private final ILogistic sigmoid;
     
     private double error;
     
@@ -27,7 +27,7 @@ public class RBMJBlas implements IRBM {
     
     private DoubleMatrix weights;
     
-    public RBMJBlas(int numVisbible, int numHidden, double learningRate, double[][] weights, ISigmoid sigmoid) {
+    public RBMJBlas(int numVisbible, int numHidden, double learningRate, double[][] weights, ILogistic sigmoid) {
 		this.numHidden = numHidden;
 		this.numVisible = numVisbible;
 		this.numHiddenWithBias = numHidden + 1;
@@ -45,7 +45,7 @@ public class RBMJBlas implements IRBM {
 		
     }
     
-	public RBMJBlas(int numVisbible, int numHidden, double learningRate, ISigmoid sigmoid) {
+	public RBMJBlas(int numVisbible, int numHidden, double learningRate, ILogistic sigmoid) {
 		this.numHidden = numHidden;
 		this.numVisible = numVisbible;
 		this.numHiddenWithBias = numHidden + 1;
@@ -90,13 +90,13 @@ public class RBMJBlas implements IRBM {
 	    	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 	    	
 	  
-	    	final DoubleMatrix posHiddenProbs = sigmoid.sigmoid(posHiddenActivations);  	
+	    	final DoubleMatrix posHiddenProbs = sigmoid.function(posHiddenActivations);  	
 	    	
 	    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
 		    
 		    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
 		    
-		    final DoubleMatrix negVisibleProbs = sigmoid.sigmoid(negVisibleActivations);
+		    final DoubleMatrix negVisibleProbs = sigmoid.function(negVisibleActivations);
 		    		    
 		    
 		    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
@@ -104,7 +104,7 @@ public class RBMJBlas implements IRBM {
 		    
 		    final DoubleMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);		    
 		   
-		    final DoubleMatrix negHiddenProbs = sigmoid.sigmoid(negHiddenActivations);	    
+		    final DoubleMatrix negHiddenProbs = sigmoid.function(negHiddenActivations);	    
 		    
 		    final DoubleMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);	 
 		    
@@ -143,7 +143,7 @@ public class RBMJBlas implements IRBM {
 	    final DoubleMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 		
 	    // Calculate the probabilities of turning the hidden units on.
-	    final DoubleMatrix hiddenProbs = sigmoid.sigmoid(hiddenActivations);
+	    final DoubleMatrix hiddenProbs = sigmoid.function(hiddenActivations);
 	    
 	    final DoubleMatrix hiddenProbsWithoutBias = hiddenProbs.getRange(0,hiddenProbs.getRows(), 1, hiddenProbs.getColumns());
 
@@ -164,7 +164,7 @@ public class RBMJBlas implements IRBM {
 		DoubleMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
 	  
 	    // Calculate the probabilities of turning the visible units on.
-		DoubleMatrix visibleProbs = sigmoid.sigmoid(visibleActivations);
+		DoubleMatrix visibleProbs = sigmoid.function(visibleActivations);
 	     
 	    // Ignore bias
 		final DoubleMatrix visibleProbsWithoutBias = visibleProbs.getRange(0,visibleProbs.getRows(), 1, visibleProbs.getColumns());

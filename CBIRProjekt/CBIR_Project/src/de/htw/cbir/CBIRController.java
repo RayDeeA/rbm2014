@@ -25,7 +25,7 @@ import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.sorter.*;
 
 public class CBIRController {
@@ -90,7 +90,7 @@ public class CBIRController {
 			double learnRate = 1.0;
 			int epochs = 10000;
 			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
@@ -100,7 +100,7 @@ public class CBIRController {
 			double learnRate = 1.0;
 			int epochs = 10000;
 			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);

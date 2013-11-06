@@ -7,7 +7,7 @@ import de.htw.ait.rbm.RBMBla;
 import de.htw.cbir.model.Pic;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public class DCTRBM {
@@ -31,7 +31,7 @@ public class DCTRBM {
 	public DCTRBM(int inputSize, int outputSize) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
-		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
+		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 	}
 	
 	public DCTRBM(int inputSize, int outputSize, IRBM rbm) {
@@ -41,7 +41,7 @@ public class DCTRBM {
 	}
 	
 	public DCTRBM shallowCopy() {
-		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights(), new DefaultSigmoidMatrixFunction());
+		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights(), new DefaultLogisticMatrixFunction());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
 	

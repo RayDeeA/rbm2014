@@ -3,7 +3,7 @@ package de.htw.iconn.rbm.test;
 import static org.junit.Assert.*;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMOriginal;
-import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Test;
@@ -37,18 +37,17 @@ public class RBMJBlasTest {
 		final DoubleMatrix initialWeights = DoubleMatrix.rand(numVisible, numHidden);
 		
 		RBMOriginal rbm = new RBMOriginal(numVisible, numHidden, learningRate, initialWeights.dup().toArray2());
-		RBMJBlas rbmJ = new RBMJBlas(numVisible, numHidden, learningRate, initialWeights.dup().toArray2(), new DefaultSigmoidMatrixFunction());
+		RBMJBlas rbmJ = new RBMJBlas(numVisible, numHidden, learningRate, initialWeights.dup().toArray2(), new DefaultLogisticMatrixFunction());
 		
 		rbm.train(trainingData, 1);
 		rbmJ.train(trainingData, epochs);
 		
-		assert2D(rbmJ.getWeights(), rbm.getWeights(), delta);
+		assert2D(rbmJ.getWeightsWithBIAS(), rbm.getWeights(), delta);
 		
 		
 	}
 	
-	private void assert2D(double[][] expecteds, double[][] actuals, double delta) {
-		
+	private void assert2D(double[][] expecteds, double[][] actuals, double delta) {		
 		for (int i = 0; i < actuals.length; i++) {
 			assertArrayEquals(expecteds[i], actuals[i], delta);
 			
