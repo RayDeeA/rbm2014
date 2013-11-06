@@ -113,7 +113,7 @@ public class RBMVectorTest {
 	
 	public void train()
 	{		
-		// training über epochen mit gegebenen daten
+		// training ��ber epochen mit gegebenen daten
 		for (int e = 0; e < max_epochs; e++) {
 			for (double[] td : trainingData) {
 				rbm.train(td);
