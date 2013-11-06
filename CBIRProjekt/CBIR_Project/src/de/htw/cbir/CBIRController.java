@@ -26,6 +26,12 @@ import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import iconn.htw.main.RBMJBlas;
 import iconn.htw.main.RBMOriginal;
+import iconn.htw.main.RBM_CJ;
+import iconn.htw.main.RBM_GA;
+import iconn.htw.main.RBM_MU;
+import iconn.htw.main.RBM_RC;
+import iconn.htw.main.RBM_RM;
+import iconn.htw.main.RBM_SR;
 import iconn.htw.sorter.*;
 
 public class CBIRController {
@@ -89,7 +95,52 @@ public class CBIRController {
 			int outputSize = 10;
 			double learnRate = 1.0;
 			int epochs = 10000;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate);
+			IRBM rbm = new RBM_RM(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_CJ")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBM_CJ(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_GA")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBM_GA(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_MU")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBM_MU(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_RC")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBM_RC(inputSize, outputSize, learnRate);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM.train(allImages, epochs);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_SR")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			IRBM rbm = new RBM_SR(inputSize, outputSize, learnRate);
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			dctRBM.train(allImages, epochs);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
@@ -100,13 +151,13 @@ public class CBIRController {
 	
 	
 	/**
-	 * TODO: füge hier weitere Sortiermöglichkeiten hinzu
+	 * TODO: f��ge hier weitere Sortierm��glichkeiten hinzu
 	 * Alle hier genannten Sorter Namen werden im Sortiermenu angezeigt
 	 * 
 	 * @return SorterNamen
 	 */
 	public String[] getSorterNames() {
-		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ", "DCTRBM_RM" };
+		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ", "DCTRBM_RM", "DCTRBM_CJ", "DCTRBM_GA", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
 
 	public ImageManager getImageManager() {
@@ -124,7 +175,7 @@ public class CBIRController {
 	
 	public void sortByImage(Pic queryImage) {
 
-		// wurde bereits ein Sortieralgorithmus ausgewählt
+		// wurde bereits ein Sortieralgorithmus ausgew��hlt
 		if(sorter == null) {
 			System.out.println("No sorting algorithm selected");
 			return;
@@ -150,7 +201,7 @@ public class CBIRController {
 
 	public void triggerTests(ActionEvent e) {
 		
-		// wurde bereits ein Sortieralgorithmus ausgewählt
+		// wurde bereits ein Sortieralgorithmus ausgew��hlt
 		if(sorter == null) {
 			System.out.println("No sorting algorithm selected");
 			return;
@@ -161,7 +212,7 @@ public class CBIRController {
 		Pic[] allImages = imageManager.getImages();
 		CBIREvaluation eval = new CBIREvaluation(sorter, allImages, pool);
 		
-		// welche Teste sollen durchgeführt werden
+		// welche Teste sollen durchgef��hrt werden
 		if(cmd.equals("Alle")) {
 			eval.testAll(true, cmd);
 		} else {
@@ -217,7 +268,7 @@ public class CBIRController {
 			
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und 
-			// eine Normalisierung später stattfinden kann
+			// eine Normalisierung sp��ter stattfinden kann
 			rbm.train(allImages, 0); 
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 		
@@ -231,7 +282,7 @@ public class CBIRController {
 			
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und 
-			// eine Normalisierung später stattfinden kann
+			// eine Normalisierung sp��ter stattfinden kann
 			rbm.train(allImages, 0); 
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 		
