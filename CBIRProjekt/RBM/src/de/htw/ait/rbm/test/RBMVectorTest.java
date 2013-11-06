@@ -18,6 +18,7 @@ public class RBMVectorTest {
 	static int[] COLD = new int[]{1,0,0,0,0,0,0,0,0,0}; // cold
 	static int[] WARM = new int[]{0,0,1,0,1,0,0,0,0,0}; // warm, hot
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		String filename = "rbm.data";
 		RBMVectorTest rbm = new RBMVectorTest();
@@ -113,7 +114,7 @@ public class RBMVectorTest {
 	
 	public void train()
 	{		
-		// training ��ber epochen mit gegebenen daten
+		// training ������ber epochen mit gegebenen daten
 		for (int e = 0; e < max_epochs; e++) {
 			for (double[] td : trainingData) {
 				rbm.train(td);
