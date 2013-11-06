@@ -9,5 +9,6 @@ public interface IRBM {
 
 	public void setWeights(double[][] weights);
 	public double[][] getWeights();
+	public double[][] getWeightsWithBIAS();
 
 }

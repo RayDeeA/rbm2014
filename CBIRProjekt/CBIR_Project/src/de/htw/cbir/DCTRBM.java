@@ -1,6 +1,8 @@
 package de.htw.cbir;
 
+import iconn.htw.main.DefaultSigmoidMatrixFunction;
 import iconn.htw.main.RBMJBlas;
+
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
@@ -30,7 +32,7 @@ public class DCTRBM {
 	public DCTRBM(int inputSize, int outputSize) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
-		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate);
+		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
 	}
 	
 	public DCTRBM(int inputSize, int outputSize, IRBM rbm) {
@@ -40,7 +42,7 @@ public class DCTRBM {
 	}
 	
 	public DCTRBM shallowCopy() {
-		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights());
+		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights(), new DefaultSigmoidMatrixFunction());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
 	

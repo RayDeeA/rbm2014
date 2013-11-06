@@ -4,11 +4,11 @@ import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
 
-public class CustomMatrixFunctions extends MatrixFunctions {
+public class DefaultSigmoidMatrixFunction extends MatrixFunctions implements ISigmoid {
 	
 	// 1.0 / (1.0 + Math.exp(-m_ij)
 	
-	public static DoubleMatrix sigmoid(DoubleMatrix m) {
+	public  DoubleMatrix sigmoid(DoubleMatrix m) {
 		
 		final DoubleMatrix negM = m.neg();
 		final DoubleMatrix negExpM = MatrixFunctions.exp(negM);

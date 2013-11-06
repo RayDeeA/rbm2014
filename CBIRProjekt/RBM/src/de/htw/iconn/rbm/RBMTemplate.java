@@ -34,7 +34,11 @@ public class RBMTemplate implements IRBM {
 
 	@Override
 	public double[][] getWeights() {
-		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public double[][] getWeightsWithBIAS() {
 		return null;
 	}
 
