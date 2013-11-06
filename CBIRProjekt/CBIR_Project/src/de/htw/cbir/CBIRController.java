@@ -90,67 +90,34 @@ public class CBIRController {
 			int outputSize = 10;
 			double learnRate = 1.0;
 			int epochs = 10000;
+			int updateFrequency = 100;
 			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			dctRBM.train(allImages, epochs);
+			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_CJ")) {
-//			int inputSize = 15;
-//			int outputSize = 10;
-//			double learnRate = 1.0;
-//			int epochs = 10000;
-////			IRBM rbm = new RBM_CJ(inputSize, outputSize, learnRate);
-//			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-//			dctRBM.train(allImages, epochs);
-//			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 1.0;
+			int epochs = 10000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultSigmoidMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_GA")) {
-//			int inputSize = 15;
-//			int outputSize = 10;
-//			double learnRate = 1.0;
-//			int epochs = 10000;
-//			IRBM rbm = new RBM_GA(inputSize, outputSize, learnRate);
-//			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-//			dctRBM.train(allImages, epochs);
-//			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+
 		} else if(cmd.equalsIgnoreCase("DCTRBM_MU")) {
-//			int inputSize = 15;
-//			int outputSize = 10;
-//			double learnRate = 1.0;
-//			int epochs = 10000;
-//			IRBM rbm = new RBM_MU(inputSize, outputSize, learnRate);
-//			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-//			dctRBM.train(allImages, epochs);
-//			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+
 		} else if(cmd.equalsIgnoreCase("DCTRBM_RC")) {
-//			int inputSize = 15;
-//			int outputSize = 10;
-//			double learnRate = 1.0;
-//			int epochs = 10000;
-//			IRBM rbm = new RBM_RC(inputSize, outputSize, learnRate);
-//			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-//			dctRBM.train(allImages, epochs);
-//			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+
 		} else if(cmd.equalsIgnoreCase("DCTRBM_SR")) {
-//			int inputSize = 15;
-//			int outputSize = 10;
-//			double learnRate = 1.0;
-//			int epochs = 10000;
-//			IRBM rbm = new RBM_SR(inputSize, outputSize, learnRate);
-//			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-//			dctRBM.train(allImages, epochs);
-//			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			
 		}
 		
 		sorter.getFeatureVectors();
 	}
 	
-	
-	/**
-	 * TODO: f��ge hier weitere Sortierm��glichkeiten hinzu
-	 * Alle hier genannten Sorter Namen werden im Sortiermenu angezeigt
-	 * 
-	 * @return SorterNamen
-	 */
 	public String[] getSorterNames() {
 		return new String[]  {  "None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ","RBMJBlas_Sigmoid", "DCTRBM_CJ", "DCTRBM_GA", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
@@ -285,6 +252,13 @@ public class CBIRController {
 			GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evalulation, pool);
 			gh.run();
 		}
-	}	
-
+	}
+	
+	private void updateVisualization(int epochs, int updateFrequency, DCTRBM dctrbm){
+		int update = epochs/ updateFrequency;
+		for(int i = 0; i < update; i++) {
+			dctrbm.train(imageManager.getImages(), updateFrequency);
+			visualizationFrame.update(dctrbm.getWeights());
+		}
+	}
 }
