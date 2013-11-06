@@ -1,4 +1,4 @@
-package de.htw.iconn.main;
+package de.htw.iconn.rbm.functions;
 
 import org.jblas.DoubleMatrix;
 

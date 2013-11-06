@@ -5,9 +5,9 @@ import java.nio.file.Path;
 
 import de.htw.ait.rbm.RBMBla;
 import de.htw.cbir.model.Pic;
-import de.htw.iconn.main.DefaultSigmoidMatrixFunction;
-import de.htw.iconn.main.RBMJBlas;
 import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public class DCTRBM {

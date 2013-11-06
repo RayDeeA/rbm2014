@@ -14,7 +14,6 @@
 			<attribute name="javadoc_location" value="file:/home/christoph/Dokumente/Studium/Master/Master%20Projekt/CBIRProjekt/libs/commons-lang3-3.1/apidocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/processingLib/core.jar"/>
 	<classpathentry kind="lib" path="libs/JBlas/jblas-1.2.3.jar"/>
 	<classpathentry kind="output" path="cma/bin"/>
 </classpath>

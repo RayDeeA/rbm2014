@@ -1,9 +1,9 @@
-package de.htw.iconn.main;
+package de.htw.iconn.rbm;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
 
-import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.helper.Printer;
 
 
 public class RBMOriginal implements IRBM {

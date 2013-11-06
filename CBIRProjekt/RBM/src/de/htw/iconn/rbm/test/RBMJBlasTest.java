@@ -1,9 +1,9 @@
-package de.htw.iconn.test;
+package de.htw.iconn.rbm.test;
 
 import static org.junit.Assert.*;
-import de.htw.iconn.main.DefaultSigmoidMatrixFunction;
-import de.htw.iconn.main.RBMJBlas;
-import de.htw.iconn.main.RBMOriginal;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.RBMOriginal;
+import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Test;

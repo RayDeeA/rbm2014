@@ -23,9 +23,9 @@ import de.htw.cma.GeneticDCTRBMError;
 import de.htw.cma.GeneticHistogram;
 import de.htw.cma.GeneticDCTRBM;
 import de.htw.color.ColorConverter.ColorSpace;
-import de.htw.iconn.main.DefaultSigmoidMatrixFunction;
-import de.htw.iconn.main.RBMJBlas;
 import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.functions.DefaultSigmoidMatrixFunction;
 import de.htw.iconn.sorter.*;
 
 public class CBIRController {

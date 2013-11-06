@@ -1,4 +1,4 @@
-package de.htw.iconn.main;
+package de.htw.iconn.rbm;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
@@ -6,7 +6,7 @@ import java.util.Random;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
-import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.functions.ISigmoid;
 
 
 public class RBMJBlas implements IRBM {
