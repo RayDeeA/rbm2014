@@ -177,7 +177,7 @@ public class RBM_RC implements IRBM {
 	
 	@Override
 	public double[][] getWeights() {
-		return this.weights.toArray2();
+		return (this.weights.getRange(1, weights.getRows(), 1, weights.getColumns())).toArray2();
 	}
 
 }
