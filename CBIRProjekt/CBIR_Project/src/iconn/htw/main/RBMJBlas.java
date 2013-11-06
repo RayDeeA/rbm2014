@@ -179,5 +179,10 @@ public class RBMJBlas implements IRBM {
 	public double[][] getWeights() {
 		return (this.weights.getRange(1, weights.getRows(), 1, weights.getColumns())).toArray2();
 	}
+	
+	@Override
+	public double[][] getWeightsWithBIAS() {
+		return this.weights.toArray2();
+	}
 
 }

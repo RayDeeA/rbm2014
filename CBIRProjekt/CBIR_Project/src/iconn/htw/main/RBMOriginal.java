@@ -380,6 +380,11 @@ public class RBMOriginal implements IRBM {
 	public double[][] getWeights() {
 		return this.weights;
 	}
+	
+	@Override
+	public double[][] getWeightsWithBIAS() {
+		return this.weights;
+	}
 
 
 	public static void main(String[] args) {
