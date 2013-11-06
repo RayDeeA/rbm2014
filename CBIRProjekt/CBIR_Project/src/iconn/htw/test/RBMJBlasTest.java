@@ -1,6 +1,7 @@
 package iconn.htw.test;
 
 import static org.junit.Assert.*;
+import iconn.htw.main.DefaultSigmoidMatrixFunction;
 import iconn.htw.main.RBMJBlas;
 import iconn.htw.main.RBMOriginal;
 
@@ -36,7 +37,7 @@ public class RBMJBlasTest {
 		final DoubleMatrix initialWeights = DoubleMatrix.rand(numVisible, numHidden);
 		
 		RBMOriginal rbm = new RBMOriginal(numVisible, numHidden, learningRate, initialWeights.dup().toArray2());
-		RBMJBlas rbmJ = new RBMJBlas(numVisible, numHidden, learningRate, initialWeights.dup().toArray2());
+		RBMJBlas rbmJ = new RBMJBlas(numVisible, numHidden, learningRate, initialWeights.dup().toArray2(), new DefaultSigmoidMatrixFunction());
 		
 		rbm.train(trainingData, 1);
 		rbmJ.train(trainingData, epochs);
