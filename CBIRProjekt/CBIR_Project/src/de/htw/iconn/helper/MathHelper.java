@@ -1,4 +1,4 @@
-package iconn.htw.helper;
+package de.htw.iconn.helper;
 
 public final class MathHelper {
 

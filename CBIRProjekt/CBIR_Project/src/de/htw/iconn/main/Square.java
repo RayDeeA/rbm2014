@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class Square implements IFloatFunction {
 
@@ -6,6 +6,5 @@ public class Square implements IFloatFunction {
 	public double function(double x) {
 		return x * x;
 	}
-
 
 }

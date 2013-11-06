@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class DefaultActivation implements IFloatFunction {
 
@@ -8,3 +8,4 @@ public class DefaultActivation implements IFloatFunction {
 	}
 
 }
+ 

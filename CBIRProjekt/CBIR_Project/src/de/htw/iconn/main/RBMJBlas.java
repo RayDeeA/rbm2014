@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
@@ -165,7 +165,7 @@ public class RBMJBlas implements IRBM {
 	  
 	    // Calculate the probabilities of turning the visible units on.
 		DoubleMatrix visibleProbs = sigmoid.sigmoid(visibleActivations);
-	    
+	     
 	    // Ignore bias
 		final DoubleMatrix visibleProbsWithoutBias = visibleProbs.getRange(0,visibleProbs.getRows(), 1, visibleProbs.getColumns());
 

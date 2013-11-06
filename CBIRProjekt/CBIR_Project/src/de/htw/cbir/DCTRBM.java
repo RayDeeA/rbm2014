@@ -1,13 +1,12 @@
 package de.htw.cbir;
 
-import iconn.htw.main.DefaultSigmoidMatrixFunction;
-import iconn.htw.main.RBMJBlas;
-
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
 import de.htw.ait.rbm.RBMBla;
 import de.htw.cbir.model.Pic;
+import de.htw.iconn.main.DefaultSigmoidMatrixFunction;
+import de.htw.iconn.main.RBMJBlas;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
@@ -66,7 +65,7 @@ public class DCTRBM {
 	
 	/**
 	 * Erstelle ein Trainingsarray mit den Daten aller Bilder.
-	 * F��r jedes Bild besorge die 15 Byte DCT Daten.
+	 * F������r jedes Bild besorge die 15 Byte DCT Daten.
 	 * Normalisiere das Gesamtergebnis.
 	 * 
 	 * @param images

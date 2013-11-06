@@ -1,6 +1,6 @@
-package iconn.htw.visualisation.processing;
+package de.htw.iconn.visualisation.processing;
 
-import iconn.htw.main.RBMOriginal;
+import de.htw.iconn.main.RBMOriginal;
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
@@ -13,7 +13,7 @@ public class Main_VisualisationTest extends PApplet {
 	int rectSize = 20;
 	private int mH;
 	private int mW;
-
+ 
 	RBMOriginal rbm;
 
 	public void setup() {

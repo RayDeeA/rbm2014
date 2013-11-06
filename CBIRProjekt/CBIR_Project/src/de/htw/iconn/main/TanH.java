@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class TanH implements IFloatFunction {
 
@@ -14,5 +14,5 @@ public class TanH implements IFloatFunction {
 	public double function(double x) {
 		return (double) Math.tanh(x);
 	}
-
+ 
 }

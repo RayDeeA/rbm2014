@@ -1,7 +1,8 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public interface IRandomFunction {
 
 	double nextNumber();
 
 }
+ 

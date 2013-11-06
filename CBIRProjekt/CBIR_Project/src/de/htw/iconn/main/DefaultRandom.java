@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 import java.util.Random;
 
 
@@ -13,7 +13,7 @@ public class DefaultRandom implements IRandomFunction {
 		this.random = new Random(seed);
 		this.scale = scale;
 		this.offset = offset;
-	}
+	} 
 	
 	public DefaultRandom(float scale, float offset) {
 

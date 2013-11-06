@@ -1,11 +1,10 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 import java.text.DecimalFormat;
 
 import org.jblas.DoubleMatrix;
 
 public class Printer {
-	
 	
 	public static void printMatrix(final String name, final double[][] m) {
 		

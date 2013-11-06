@@ -1,4 +1,4 @@
-package iconn.htw.sorter;
+package de.htw.iconn.sorter;
 
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,7 @@ import java.util.concurrent.ForkJoinPool;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
 import de.htw.cbir.sorter.*;
-import iconn.htw.helper.MathHelper;
+import de.htw.iconn.helper.MathHelper;
 
 public class Sorter_DCT_CJ extends Sorter{
 	

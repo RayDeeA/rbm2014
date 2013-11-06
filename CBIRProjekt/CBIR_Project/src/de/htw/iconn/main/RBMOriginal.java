@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Random;
@@ -374,7 +374,7 @@ public class RBMOriginal implements IRBM {
 	@Override
 	public void setWeights(double[][] weights) {
 		this.weights = weights;
-	}
+	} 
 	
 	@Override
 	public double[][] getWeights() {

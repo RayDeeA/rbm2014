@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class Rectifier implements IFloatFunction {
 
@@ -15,3 +15,4 @@ public class Rectifier implements IFloatFunction {
 	}
 
 }
+ 

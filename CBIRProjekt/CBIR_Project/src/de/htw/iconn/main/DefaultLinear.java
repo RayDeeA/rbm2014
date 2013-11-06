@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class DefaultLinear implements IFloatFunction {
 
@@ -12,3 +12,4 @@ public class DefaultLinear implements IFloatFunction {
 	}
 	
 }
+ 

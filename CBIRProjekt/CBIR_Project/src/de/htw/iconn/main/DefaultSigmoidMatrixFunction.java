@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
@@ -15,7 +15,7 @@ public class DefaultSigmoidMatrixFunction extends MatrixFunctions implements ISi
 		final DoubleMatrix negExpPlus1M = negExpM.add(1.0);
 		final DoubleMatrix OneDivideNegExpPlusOneM = MatrixFunctions.pow(negExpPlus1M, -1.0); 
 		
-		
+		 
 		return OneDivideNegExpPlusOneM;
 		
 	}

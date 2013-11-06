@@ -1,9 +1,9 @@
-package iconn.htw.test;
+package de.htw.iconn.test;
 
 import static org.junit.Assert.*;
-import iconn.htw.main.DefaultSigmoidMatrixFunction;
-import iconn.htw.main.RBMJBlas;
-import iconn.htw.main.RBMOriginal;
+import de.htw.iconn.main.DefaultSigmoidMatrixFunction;
+import de.htw.iconn.main.RBMJBlas;
+import de.htw.iconn.main.RBMOriginal;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class RBMJBlasTest {
 		final int numVisible = 5;
 		final int numHidden = 2;
 		final int epochs = 1;
-		
+		 
 		final double[][] trainingData = new double[][]{
 				// Alice: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
 				{ 1, 1, 1, 0, 0 },

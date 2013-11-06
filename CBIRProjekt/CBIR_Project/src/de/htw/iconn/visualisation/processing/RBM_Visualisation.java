@@ -1,4 +1,4 @@
-package iconn.htw.visualisation.processing;
+package de.htw.iconn.visualisation.processing;
 
 import processing.core.PApplet;
 

@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 import java.util.Random;
 
 
@@ -15,7 +15,7 @@ public class GaussianRandom implements IRandomFunction {
 		this.scale = scale;
 		this.offset = offset;
 	}
-	
+	 
 	public GaussianRandom(float scale, float offset) {
 
 		this.random = new Random();

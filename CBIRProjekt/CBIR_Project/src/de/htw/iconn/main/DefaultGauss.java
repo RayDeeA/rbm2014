@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class DefaultGauss implements IFloatFunction {
 
@@ -12,7 +12,7 @@ public class DefaultGauss implements IFloatFunction {
 	    
 	    // x^2
 		double distancePow2 = x * x;
-		
+		 
 	    // 1/(sqrt(2 * pi * sigma)) * e ^ (-(x)^2/(2 * sigma^2))
 	    return OneDivSqrt2PISigma * Math.exp((float)(-(distancePow2))/TwoTimes2SigmaPow2);
 	}

@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 public class RBM {
 
@@ -15,7 +15,7 @@ public class RBM {
 		sigmoidfunc = new DefaultSigmoid();
 		random = new GaussianRandom(0.1f, 0.0f);
 		activationRandom = new DefaultRandom(1.0f, 0.0f);
-
+ 
 		weights = Matrix.createRandomMatrix(visible, hidden, random).expandfirstColumnWithZeros().expandfirstRowWithZeros();//.mult(learningRate);
 	}
 	

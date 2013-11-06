@@ -1,4 +1,4 @@
-package iconn.htw.main;
+package de.htw.iconn.main;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ public class Matrix {
 
 	public Matrix(final double[][] coeff) {
 		this.coeff = coeff;
-	}
+	} 
 	
 	static Matrix createRandomMatrix(final int visible, final int hidden, final IRandomFunction random) {
 		final double[][] coeff = new double[visible][hidden];

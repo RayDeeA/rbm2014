@@ -1,7 +1,7 @@
-package iconn.htw.test;
+package de.htw.iconn.test;
 
 import static org.junit.Assert.*;
-import iconn.htw.main.Matrix;
+import de.htw.iconn.main.Matrix;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class MatrixTest {
 	public void mult1() {
 		final Matrix a = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}});
 		final Matrix b = new Matrix(new double[][]{{1, 2}, {3, 4}, {5, 6}});
-		
+		 
 		final Matrix c = a.mult(b);
 
 		assertArrayEquals(c.getCoefficients()[0], new double[]{22, 28}, 0.01f);
