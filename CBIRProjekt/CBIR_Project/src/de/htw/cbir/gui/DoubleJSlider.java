@@ -57,7 +57,7 @@ public class DoubleJSlider extends JSlider {
 	}
     
     @Override
-    public Hashtable createStandardLabels( int increment, int start ) {
+    public Hashtable<Object, Object> createStandardLabels( int increment, int start ) {
         if ( start > getMaximum() || start < getMinimum() ) {
             throw new IllegalArgumentException( "Slider label start point out of range." );
         }
@@ -70,13 +70,22 @@ public class DoubleJSlider extends JSlider {
         final Dictionary labelTable = getLabelTable();
         
         class SmartHashtable extends Hashtable<Object, Object> implements PropertyChangeListener {
-            int increment = 0;
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -134136796808822321L;
+			int increment = 0;
             int start = 0;
             boolean startAtMin = false;
             
 
             class LabelUIResource extends JLabel implements UIResource {
-                public LabelUIResource( String text, int alignment ) {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 5734299568875729481L;
+
+				public LabelUIResource( String text, int alignment ) {
                     super( text, alignment );
                     setName("Slider.label");
                 }
@@ -117,7 +126,7 @@ public class DoubleJSlider extends JSlider {
                 if ( e.getPropertyName().equals( "minimum" ) ||
                      e.getPropertyName().equals( "maximum" ) ) {
 
-                    Enumeration keys = getLabelTable().keys();
+                    Enumeration<Object> keys = getLabelTable().keys();
                     Hashtable<Object, Object> hashtable = new Hashtable<Object, Object>();
 
                     // Save the labels that were added by the developer

@@ -1,21 +1,17 @@
 package de.htw.iconn.rbm;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Random;
 
 import de.htw.iconn.rbm.helper.Printer;
 
 
 public class RBMOriginal implements IRBM {
-    
-	private boolean debug = true;
 	
     private int numHidden;
     private int numVisible;
     private int numHiddenWithBias;
     private int numVisibleWithBias;
     private double learningRate;
-    private double[][] randomMatrix;
     
     private double error;
     
@@ -174,9 +170,6 @@ public class RBMOriginal implements IRBM {
 		    // (This is the "positive CD phase", aka the reality phase.)
 	    	double[][] posHiddenActivations = multiplicar(dataWithBias, this.weights);
 	    	Printer.printMatrix("posHiddenActivations", posHiddenActivations);
-	    	
-	    	int rLength = dataWithBias.length;
-	    	int cLength = this.weights[0].length;
 	    	
 	    	double[][] posHiddenProbs = logistic(posHiddenActivations);
 	    	Printer.printMatrix("posHiddenProbs", posHiddenProbs);
@@ -367,7 +360,7 @@ public class RBMOriginal implements IRBM {
 	    	}
 	    }
 	    
-	    return visibleStatesWithoutBias;
+	    return visibleProbs;
 	    
 	}
 	
@@ -412,11 +405,6 @@ public class RBMOriginal implements IRBM {
 				// Gregory: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
 				{ 0, 0, 1, 1, 1, 0 },
 				{ 1, 1, 1, 0, 0, 0 }
-		};
-		
-		double hidden[][] = {
-				{ 1, 0},
-				{ 0, 1}
 		};
 		
 		for(int i = 0; i < 1; i++) {
