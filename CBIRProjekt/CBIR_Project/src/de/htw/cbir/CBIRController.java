@@ -30,6 +30,7 @@ import de.htw.iconn.rbm.RBMJBlasRandomValueFixedPosition;
 import de.htw.iconn.rbm.RBMJBlasRandomValueFixedRow;
 import de.htw.iconn.rbm.RBMJBlasRandomValueVariablePosition;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
+import de.htw.iconn.rbm.functions.BasicSigmoidMatrixFunction;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
 import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
@@ -206,6 +207,16 @@ public class CBIRController {
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		} else if(cmd.equalsIgnoreCase("DCTRBM_BasicSigmoidMatrixFunction")) {
+			int inputSize = 15;
+			int outputSize = 10;
+			double learnRate = 0.1;
+			int epochs = 20000;
+			int updateFrequency = 100;
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new BasicSigmoidMatrixFunction());
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if(cmd.equalsIgnoreCase("DCTRBM_RC")) {
@@ -228,7 +239,8 @@ public class CBIRController {
 				"DCTRBM_LinearClippedMatrixFunction",
 				"DCTRBM_LinearUnclippedMatrixFunction",
 				"DCTRBM_LinearInterpolatedMatrixFunction",
-				"DCTRBM_HardClipMatrixFunction",				
+				"DCTRBM_HardClipMatrixFunction",
+				"DCTRBM_BasicSigmoidMatrixFunction",
 				"DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR" };
 	}
 
