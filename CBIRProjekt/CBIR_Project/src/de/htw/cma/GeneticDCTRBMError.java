@@ -97,7 +97,9 @@ public class GeneticDCTRBMError {
 	private void MAP(double[] input, RBMVisualizationFrame frame) {
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
-		frame.update(weights);
+		
+		// error of 42 added because of signature of update method to write on label
+		frame.update(weights, 42.0);
 		eval.getSorter().getFeatureVectors();
 		double map = eval.testAll(false, "DCT RBM Error reduction");
 		System.out.println("MAP: "+map);
