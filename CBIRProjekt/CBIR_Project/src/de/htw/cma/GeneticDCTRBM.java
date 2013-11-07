@@ -83,7 +83,9 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 			//System.out.println("MAP: "+(1-bestFitness));
 			cma.writeToDefaultFiles();
 			int outmod = 10;
-			frame.update(convert(cma.getBestRecentX()));
+			
+			// error of 42 added because of signature of update method to write on label
+			frame.update(convert(cma.getBestRecentX()), 42.0);
 			if (cma.getCountIter() % (10*outmod) == 1) {
 				cma.printlnAnnotation(); // might write file as well
 				save(cma.getBestX(), frame);
@@ -108,7 +110,8 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		// speichere die besten gewichte
 		double[][] weights = convert(input);
 		//rbm.setWeights(weights);
-		frame.update(weights);
+		// error of 42 added because of signature of update method to write on label
+		frame.update(weights, 42.0);
 		
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();

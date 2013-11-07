@@ -46,6 +46,8 @@ public class CBIRController {
 	private Settings settings;
 	private ImageManager imageManager;
 	
+	private double error;
+	private double rawError;
 	
 	private CBIRUI ui;
 	private final RBMVisualizationFrame visualizationFrame;
@@ -83,13 +85,17 @@ public class CBIRController {
 		} else if(cmd.equalsIgnoreCase("DCTRBM")) {
 			DCTRBM dctRBM = new DCTRBM(15, 10);
 			dctRBM.train(allImages, 0);
-			System.out.println("error "+ dctRBM.getError(allImages));
-			System.out.println("raw error "+ dctRBM.getRawError(allImages));
 			
+			// made global for update RBMVisualizationFrame.update()
+			error = dctRBM.getError(allImages);
+			rawError = dctRBM.getRawError(allImages);
+			
+			System.out.println("error "+ error);
+			System.out.println("raw error "+ rawError);			
 			
 			for(int i = 0; i < 300; i++) {
 				dctRBM.train(allImages, 100);
-				visualizationFrame.update(dctRBM.getWeights());
+				visualizationFrame.update(dctRBM.getWeights(), error);
 			}
 			
 			System.out.println("error "+ dctRBM.getError(allImages));
@@ -380,7 +386,7 @@ public class CBIRController {
 		int update = epochs/ updateFrequency;
 		for(int i = 0; i < update; i++) {
 			dctrbm.train(imageManager.getImages(), updateFrequency);
-			visualizationFrame.update(dctrbm.getWeights());
+			visualizationFrame.update(dctrbm.getWeights(), error);
 		}
 	}
 }
