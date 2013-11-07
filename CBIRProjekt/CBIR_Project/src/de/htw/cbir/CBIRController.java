@@ -81,7 +81,7 @@ public class CBIRController {
 		} else if(cmd.equalsIgnoreCase("FV15DCT")) {
 			sorter = new Sorter_FV15DCT(allImages, settings, pool);
 		} else if(cmd.equalsIgnoreCase("DCTRBM")) {
-			DCTRBM dctRBM = new DCTRBM(15, 10);
+			DCTRBM dctRBM = new DCTRBM(15, 4);
 			dctRBM.train(allImages, 0);
 			System.out.println("error "+ dctRBM.getError(allImages));
 			System.out.println("raw error "+ dctRBM.getRawError(allImages));
