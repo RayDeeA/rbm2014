@@ -46,7 +46,36 @@ public class RBMJBlas implements IRBM {
 	
 	@Override
 	public double error(double[][] trainingData) {
-		return error;
+		DoubleMatrix data = new DoubleMatrix(trainingData);
+		
+		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
+		final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
+		
+    	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
+    	
+    	final DoubleMatrix posHiddenProbs = sigmoid.function(posHiddenActivations);  	
+    	
+    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
+    	
+    	
+	    
+	    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
+	    
+	    final DoubleMatrix negVisibleProbs = sigmoid.function(negVisibleActivations);
+	    
+	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
+	    
+	    final DoubleMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);		    
+	   
+	    final DoubleMatrix negHiddenProbs = sigmoid.function(negHiddenActivations);	    
+	    
+	    final DoubleMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);	
+		
+	    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learningRate / data.getRows() ) );
+	    double currentError = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
+	    
+		
+		return currentError;
 	}
 	
 	@Override
