@@ -190,7 +190,7 @@ public class CBIRController {
 		} else if(cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
 			int inputSize = 15;
 			int outputSize = 10;
-			double learnRate = 1.0;
+			double learnRate = 0.1;
 			int epochs = 10000;
 			int updateFrequency = 100;
 			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction());

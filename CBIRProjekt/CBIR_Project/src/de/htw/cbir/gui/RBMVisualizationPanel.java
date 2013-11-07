@@ -72,29 +72,37 @@ public class RBMVisualizationPanel extends JPanel {
 
 		final double[][] result = new double[weights.length][weights[0].length];
 
-		double max = 0;
-
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.length; i++) 
 			for (int j = 0; j < result[0].length; j++) {
-
-				final double currentAbs = Math.abs(weights[i][j]);
-
-				if (currentAbs > max) {
-					max = currentAbs;
-				}
+				result[i][j] = Math.max(-1, Math.min(1, (weights[i][j] / 5.0f)));
 			}
-		}
-		if (max != 0){
-			for (int i = 0; i < result.length; i++) {
-				for (int j = 0; j < result[0].length; j++) {
-
-					result[i][j] = weights[i][j] / max;
-				}
-			}
-			return result;
-		}else{
-			return weights;
-		}
+		
+		return result;
 	}
 
-}
+//		double max = 0;
+//
+//		for (int i = 0; i < result.length; i++) {
+//			for (int j = 0; j < result[0].length; j++) {
+//
+//				final double currentAbs = Math.abs(weights[i][j]);
+//
+//				if (currentAbs > max) {
+//					max = currentAbs;
+//				}
+//			}
+//		}
+//		if (max != 0){
+//			for (int i = 0; i < result.length; i++) {
+//				for (int j = 0; j < result[0].length; j++) {
+//
+//					result[i][j] = weights[i][j] / max;
+//				}
+//			}
+//			return result;
+//		}else{
+//			return weights;
+//		}
+//	}
+
+	}

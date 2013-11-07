@@ -17,7 +17,6 @@ public class LinearInterpolatedMatrixFunction extends MatrixFunctions implements
 		double maxMinusMin = max - min;
 		for (int y = 0; y < duplicateM.length; y++) {
 			for (int x = 0; x < duplicateM[y].length; x++) {
-
 				duplicateM[y][x] = (duplicateM[y][x] - min) / maxMinusMin;
 			}
 		}

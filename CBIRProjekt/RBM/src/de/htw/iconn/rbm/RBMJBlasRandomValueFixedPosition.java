@@ -72,7 +72,7 @@ public class RBMJBlasRandomValueFixedPosition implements IRBM {
 	    		double max = this.weights.max();
 	    		double min = this.weights.min();
 	    		
-	    		double randomValue = (min + (max - min) * Random.nextDouble());
+	    		double randomValue = (min + (max - min) * Random.nextDouble()) ;
 	    		
 	    		this.weights.put(randomRow, randomColumn, randomValue);
 	    	}
