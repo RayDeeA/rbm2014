@@ -22,31 +22,25 @@ public class Sorter_DCTRBM extends Sorter {
 	///////////////////////////////////////////
 	// visualize the feature data as image
 	//
-	@Override
-	protected BufferedImage getFeatureImage(Pic image) {
+	 @Override
+	 protected BufferedImage getFeatureImage(Pic image) {
 
-		int w = 1;
-		int h = 1;
+	  double[] fv = image.getFeatureVector();
+	  int height = 256, width = fv.length;
+	  int [] pixels = new int [width * height];
+	  BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	  
+	  for (int y = 0; y <  height; y++) {
+	   for (int x = 0; x < width; x++) {
+	    int i = y * width + x;
+	    double val = fv[x]*height;
+	    pixels[i] = (val > height-1 - y) ? 0xFFFFFFFF : 0xFF777777;
+	   }    
+	  }
 
-		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D big = bi.createGraphics();
-
-		int[] pixels = new int[h * w];
-
-		double[] featureVector = image.getFeatureVector();
-		int r = (int) featureVector[0];
-		int g = (int) featureVector[1];
-		int b = (int) featureVector[2];
-
-		pixels[0] = (0xFF << 24) | (r << 16) | (g << 8) | b;
-
-		BufferedImage bThumb = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		bThumb.setRGB(0, 0, w, h, pixels, 0, w);
-
-		big.drawImage(bThumb, 0, 0, w, h, null);
-		big.dispose();
-		return bi;
-	}
+	  bi.setRGB(0, 0, width, height, pixels, 0, width);
+	  return bi;
+	 }
 
 	@Override
 	protected double[] getFeatureVector(Pic image) {
