@@ -7,6 +7,7 @@ import java.util.concurrent.ForkJoinPool;
 import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
+import de.htw.cbir.gui.RBMVisualizationFrame;
 import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 
 public class GeneticDCTRBMError {
@@ -32,7 +33,7 @@ public class GeneticDCTRBMError {
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
 		
-		// initial zufällige Gewichte
+		// initial zuf��llige Gewichte
 		double[][] weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -41,7 +42,7 @@ public class GeneticDCTRBMError {
 		return convert(weights);
 	}
 
-	public void run() {
+	public void run(RBMVisualizationFrame frame) {
 		
 		// new a CMA-ES and set some initial values
 		CMAEvolutionStrategy cma = new CMAEvolutionStrategy();
@@ -60,7 +61,7 @@ public class GeneticDCTRBMError {
             // --- core iteration step ---
 			double[][] pop = cma.samplePopulation(); // get a new population of solutions
 			
-			// erstelle nur gültige candidaten
+			// erstelle nur g��ltige candidaten
 			GeneticForkResample ft = new GeneticForkResample(this, cma, pop, 0, pop.length);
 			pool.invoke(ft);
 			
@@ -76,7 +77,7 @@ public class GeneticDCTRBMError {
 			// output to files and console 
 			cma.writeToDefaultFiles();
 			System.out.println("-------------------------");
-			MAP(cma.getBestX());
+			MAP(cma.getBestX(), frame);
 			save(cma.getBestX());
 			System.out.println("Fitnes: "+(1-valueOf(cma.getBestX())));
 			System.out.println("RBM raw Error: "+getRawError(cma.getBestX()));
@@ -93,9 +94,10 @@ public class GeneticDCTRBMError {
 		cma.println("best function value " + cma.getBestFunctionValue() + " at evaluation " + cma.getBestEvaluationNumber());
 	}
 	
-	private void MAP(double[] input) {
+	private void MAP(double[] input, RBMVisualizationFrame frame) {
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
+		frame.update(weights);
 		eval.getSorter().getFeatureVectors();
 		double map = eval.testAll(false, "DCT RBM Error reduction");
 		System.out.println("MAP: "+map);

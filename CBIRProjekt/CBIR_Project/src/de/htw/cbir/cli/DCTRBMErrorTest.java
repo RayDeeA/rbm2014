@@ -20,7 +20,7 @@ public class DCTRBMErrorTest {
 		ImageManager imageManager = new ImageManager();
 		imageManager.loadImages(new File("images//WebImages_71x6"));
 		
-		// keine Besonderen Settings sind nötig
+		// keine Besonderen Settings sind n��tig
 		Settings settings = new Settings();
 		
 		// erstelle die Sortierart und das Histogram ein
@@ -34,13 +34,13 @@ public class DCTRBMErrorTest {
 		
 		DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 		// nur damit die Datenanalysiert werden und 
-		// eine Normalisierung später stattfinden kann
+		// eine Normalisierung sp��ter stattfinden kann
 		rbm.train(allImages, 0); 
 		Sorter_DCTRBM sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 	
 		CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
 		GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evalulation, pool);
-		gh.run();
+		//gh.run();
 		
 		
 		//--------------------- laden -----------------------		

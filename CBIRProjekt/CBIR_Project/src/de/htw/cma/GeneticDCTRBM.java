@@ -5,6 +5,7 @@ import java.util.Random;
 
 import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.DCTRBM;
+import de.htw.cbir.gui.RBMVisualizationFrame;
 import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 
@@ -29,7 +30,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
 		
-		// initial zufällige Gewichte
+		// initial zuf��llige Gewichte
 		double[][] weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -38,7 +39,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		return convert(weights);
 	}
 
-	public void run() {
+	public void run(RBMVisualizationFrame frame) {
 		IObjectiveFunction fitfun = this;
 		
 		// new a CMA-ES and set some initial values
@@ -82,9 +83,10 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 			//System.out.println("MAP: "+(1-bestFitness));
 			cma.writeToDefaultFiles();
 			int outmod = 10;
+			frame.update(convert(cma.getBestRecentX()));
 			if (cma.getCountIter() % (10*outmod) == 1) {
 				cma.printlnAnnotation(); // might write file as well
-				save(cma.getBestX());
+				save(cma.getBestX(), frame);
 			}
 			if (cma.getCountIter() % outmod == 1)
 				cma.println(); 
@@ -101,11 +103,12 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		cma.println("best function value " + cma.getBestFunctionValue() + " at evaluation " + cma.getBestEvaluationNumber());
 	}
 	
-	private void save(double[] input) {
+	private void save(double[] input, RBMVisualizationFrame frame) {
 
 		// speichere die besten gewichte
 		double[][] weights = convert(input);
-		rbm.setWeights(weights);
+		//rbm.setWeights(weights);
+		frame.update(weights);
 		
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();

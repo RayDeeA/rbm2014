@@ -358,7 +358,7 @@ public class CBIRController {
 		
 			CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
 			GeneticDCTRBM gh = new GeneticDCTRBM(rbm, imageManager.getImageSetName(), evalulation);
-			gh.run();
+			gh.run(visualizationFrame);
 		} else if(cmd.equalsIgnoreCase("reduziere den RBM Fehler")) {
 			
 			int inputSize = 15;
@@ -372,7 +372,7 @@ public class CBIRController {
 		
 			CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
 			GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evalulation, pool);
-			gh.run();
+			gh.run(visualizationFrame);
 		}
 	}
 	
