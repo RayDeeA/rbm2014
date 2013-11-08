@@ -93,7 +93,7 @@ public class CBIRController {
 			System.out.println("error "+ error);
 			System.out.println("raw error "+ rawError);			
 			
-			for(int i = 0; i < 100; i++) {
+			for(int i = 0; i < 30; i++) {
 				dctRBM.train(allImages, 100);
 				visualizationFrame.update(dctRBM.getWeights(), error);
 			}

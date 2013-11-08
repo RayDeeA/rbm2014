@@ -140,8 +140,8 @@ public class RBMJBlas implements IRBM {
 	    final DoubleMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 		
 	    // Calculate the probabilities of turning the hidden units on.
-//	    final DoubleMatrix hiddenProbs = sigmoid.function(hiddenActivations);
-	    final DoubleMatrix hiddenProbs = hiddenActivations;
+	    final DoubleMatrix hiddenProbs = sigmoid.function(hiddenActivations);
+//	    final DoubleMatrix hiddenProbs = hiddenActivations;
 	    
 	    final DoubleMatrix hiddenProbsWithoutBias = hiddenProbs.getRange(0,hiddenProbs.getRows(), 1, hiddenProbs.getColumns());
 
