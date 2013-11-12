@@ -10,6 +10,8 @@ import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
 import de.htw.cbir.sorter.Sorter_DCTRBM;
 import de.htw.cma.GeneticDCTRBMError;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
 
 
 public class DCTRBMErrorTest {
@@ -18,7 +20,7 @@ public class DCTRBMErrorTest {
 		
 		// lade alle Bilder aus dem Ordner
 		ImageManager imageManager = new ImageManager();
-		imageManager.loadImages(new File("images//WebImages_71x6"));
+		imageManager.loadImages(new File("CBIR_Project//images//WebImages_71x6"));
 		
 		// keine Besonderen Settings sind n��tig
 		Settings settings = new Settings();
@@ -30,9 +32,9 @@ public class DCTRBMErrorTest {
 		
 		// ------------------- neu erstellen --------------s---------
 		int inputSize = 15;
-		int outputSize = 10;
+		int outputSize = 4;
 		
-		DCTRBM rbm = new DCTRBM(inputSize, outputSize);
+		DCTRBM rbm = new DCTRBM(inputSize, outputSize, new RBMJBlas(inputSize, outputSize, 0.1, new LinearClippedMatrixFunction()));
 		// nur damit die Datenanalysiert werden und 
 		// eine Normalisierung sp��ter stattfinden kann
 		rbm.train(allImages, 0); 
@@ -40,7 +42,7 @@ public class DCTRBMErrorTest {
 	
 		CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
 		GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evalulation, pool);
-		//gh.run();
+		gh.run();
 		
 		
 		//--------------------- laden -----------------------		

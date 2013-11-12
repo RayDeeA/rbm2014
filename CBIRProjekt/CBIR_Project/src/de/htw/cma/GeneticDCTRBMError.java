@@ -42,7 +42,7 @@ public class GeneticDCTRBMError {
 		return convert(weights);
 	}
 
-	public void run(RBMVisualizationFrame frame) {
+	public void run() {
 		
 		// new a CMA-ES and set some initial values
 		CMAEvolutionStrategy cma = new CMAEvolutionStrategy();
@@ -77,7 +77,7 @@ public class GeneticDCTRBMError {
 			// output to files and console 
 			cma.writeToDefaultFiles();
 			System.out.println("-------------------------");
-			MAP(cma.getBestX(), frame);
+			MAP(cma.getBestX());
 			save(cma.getBestX());
 			System.out.println("Fitnes: "+(1-valueOf(cma.getBestX())));
 			System.out.println("RBM raw Error: "+getRawError(cma.getBestX()));
@@ -94,12 +94,10 @@ public class GeneticDCTRBMError {
 		cma.println("best function value " + cma.getBestFunctionValue() + " at evaluation " + cma.getBestEvaluationNumber());
 	}
 	
-	private void MAP(double[] input, RBMVisualizationFrame frame) {
+	private void MAP(double[] input) {
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
 		
-		// error of 42 added because of signature of update method to write on label
-		frame.update(weights, 42.0);
 		eval.getSorter().getFeatureVectors();
 		double map = eval.testAll(false, "DCT RBM Error reduction");
 		System.out.println("MAP: "+map);

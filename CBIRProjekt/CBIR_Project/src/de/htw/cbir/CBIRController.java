@@ -413,7 +413,7 @@ public class CBIRController {
 					pool);
 			GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager,
 					evalulation, pool);
-			gh.run(visualizationFrame);
+			gh.run();
 		}
 	}
 
