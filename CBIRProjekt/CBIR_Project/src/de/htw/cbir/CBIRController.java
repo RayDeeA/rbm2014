@@ -19,9 +19,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import de.htw.cbir.gui.CBIRUI;
 import de.htw.cbir.gui.RBMVisualizationFrame;
@@ -46,9 +43,9 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMJBlasRandomed;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
-import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
 import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
 import de.htw.iconn.rbm.functions.ILogistic;
 import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
@@ -71,9 +68,14 @@ public class CBIRController {
 
 	private Sorter sorter;
 	private ForkJoinPool pool;
-	private double[][] getLoggingData;
+//	private double[][] getLoggingData;
 	private ArrayList<double[][]> logData;
 
+	private int inputSize = 15;
+	private int outputSize = 10;
+	private double learnRate = 1.0;
+	private int epochs = 10000;
+	private int updateFrequency = 100;
 
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
@@ -143,6 +145,12 @@ public class CBIRController {
 		
 	}
 
+	public  Sorter_DCTRBM quickCreateRBM(Pic[] allImages, IRBM rbm){
+		DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+		updateVisualization(epochs, updateFrequency, dctRBM);
+		return new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+	}
+	
 	public void changeSorter(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -179,8 +187,6 @@ public class CBIRController {
 				visualizationFrame.update(dctRBM.getWeights(), error);
 				logData.add(i, dctRBM.getWeights());
 			}
-			
-
 
 //			for (int i = 0; i < 30; i++) {
 //				dctRBM.train(allImages, 100);
@@ -193,135 +199,31 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("RBMJBlas_Sigmoid")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 0.1;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 0.1;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_TanHMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_GaussMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearUnclippedMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 0.1;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_HardClipMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 1.0;
-			int epochs = 10000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_BasicSigmoidMatrixFunction")) {
-			int inputSize = 15;
-			int outputSize = 10;
-			double learnRate = 0.1;
-			int epochs = 20000;
-			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction());
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {
@@ -452,8 +354,6 @@ public class CBIRController {
 			gh.run();
 		} else if (cmd.equalsIgnoreCase("Finde RBM Weights")) {
 
-			int inputSize = 15;
-			int outputSize = 10;
 
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und
@@ -465,8 +365,6 @@ public class CBIRController {
 			GeneticDCTRBM gh = new GeneticDCTRBM(rbm, imageManager.getImageSetName(), evalulation);
 			gh.run(visualizationFrame);
 		} else if (cmd.equalsIgnoreCase("reduziere den RBM Fehler")) {
-			int inputSize = 15;
-			int outputSize = 10;
 
 			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
 			// nur damit die Datenanalysiert werden und
@@ -489,62 +387,62 @@ public class CBIRController {
 		}
 	}
 
-	private double[][] serializeXMLToData(File xmlFile) {
+//	private double[][] serializeXMLToData(File xmlFile) {
+//
+//		try {
+//
+//			File file = new File("test.xml");
+//
+//			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
+//					.newDocumentBuilder();
+//
+//			Document doc = dBuilder.parse(file);
+//
+//			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+//
+//			if (doc.hasChildNodes()) {
+//				printNote(doc.getChildNodes());			 
+//			}
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//		return getLoggingData;
+//	}
 
-		try {
-
-			File file = new File("test.xml");
-
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-
-			Document doc = dBuilder.parse(file);
-
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-
-			if (doc.hasChildNodes()) {
-				printNote(doc.getChildNodes());			 
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return getLoggingData;
-	}
-
-	private static void printNote(NodeList nodeList) {
-
-		for (int count = 0; count < nodeList.getLength(); count++) {
-
-			Node tempNode = nodeList.item(count);
-
-			// make sure it's element node.
-			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-
-				// get node name and value
-				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
-				System.out.println("Node Value =" + tempNode.getTextContent());
-				//System.out.println("Value: "+ tempNode.getNextSibling().getNodeValue().toString());
-
-				if (tempNode.hasAttributes()) {
-
-					// get attributes names and values
-					NamedNodeMap nodeMap = tempNode.getAttributes();
-
-					for (int i = 0; i < nodeMap.getLength(); i++) {
-
-						Node node = nodeMap.item(i);
-						System.out.println("attr name : " + node.getNodeName());
-						System.out.println("attr value : " + node.getNodeValue());
-					}
-				}
-				if (tempNode.hasChildNodes()) {
-					// loop again if has child nodes
-					printNote(tempNode.getChildNodes());
-				}
-				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
-			}
-		}
-	}
+//	private static void printNote(NodeList nodeList) {
+//
+//		for (int count = 0; count < nodeList.getLength(); count++) {
+//
+//			Node tempNode = nodeList.item(count);
+//
+//			// make sure it's element node.
+//			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
+//
+//				// get node name and value
+//				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+//				System.out.println("Node Value =" + tempNode.getTextContent());
+//				//System.out.println("Value: "+ tempNode.getNextSibling().getNodeValue().toString());
+//
+//				if (tempNode.hasAttributes()) {
+//
+//					// get attributes names and values
+//					NamedNodeMap nodeMap = tempNode.getAttributes();
+//
+//					for (int i = 0; i < nodeMap.getLength(); i++) {
+//
+//						Node node = nodeMap.item(i);
+//						System.out.println("attr name : " + node.getNodeName());
+//						System.out.println("attr value : " + node.getNodeValue());
+//					}
+//				}
+//				if (tempNode.hasChildNodes()) {
+//					// loop again if has child nodes
+//					printNote(tempNode.getChildNodes());
+//				}
+//				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
+//			}
+//		}
+//	}
 
 	private void serializeDataToXML(ArrayList<double[][]> data, Date actDate, String machine){
 
