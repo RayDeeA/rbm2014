@@ -20,7 +20,7 @@ public class CBIRUI  {
 	// Fenstertitel festlegen
 	private static final String str = "IR Project";
 	
-	// anfägnliche Fenstergröße
+	// anf��gnliche Fenstergr����e
 	private static final int frameSizeX = 500; 
 	private static final int frameSizeY = 500;
 	
@@ -46,7 +46,6 @@ public class CBIRUI  {
 		// lass alles zeichnen
 		repaint();
 		PrecisionRecallTable.initializeGraph();
-		
 	}
 	
 	/**
@@ -104,6 +103,22 @@ public class CBIRUI  {
 		});
 		testMenu.add(mI_all);
 		
+		// Menu "Logistik testen"
+		JMenu logisticTestMenu = new JMenu("Logistik testen");
+		ButtonGroup logisticTestButtonGroup = new ButtonGroup();
+		String[] logisticTestMethodNames = controller.getLogisticsTestNames();
+		for (String logisticTestMethod : logisticTestMethodNames) {
+			JRadioButtonMenuItem logisticTestMethodName = new JRadioButtonMenuItem(logisticTestMethod,true);
+			logisticTestMethodName.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					controller.changeLogisticTest(e);
+				}
+			});
+			logisticTestMenu.add(logisticTestMethodName);
+			buttonGroup.add(logisticTestMethodName);
+		}
+		menuBar.add(logisticTestMenu);
 		
 		int index = 0;
 		for (String groupName : controller.getImageManager().getGroupNames()) {

@@ -9,7 +9,7 @@ public class LinearUnclippedMatrixFunction extends MatrixFunctions implements
 	// linear and no clipping
 
 	public DoubleMatrix function(DoubleMatrix m) {
-		return m;
+		return MatrixFunctions.abs(m);
 	}
 
 }

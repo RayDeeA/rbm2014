@@ -129,7 +129,7 @@ public class CBIREvaluation {
 	 */
 	private double test(Pic queryImage, int num, PrecisionRecallTable table) {
 		
-		// sortiere alle Bilder nach der Ähnlichkeit zum Querybild 
+		// sortiere alle Bilder nach der ��hnlichkeit zum Querybild 
 		ImagePair[] result = sortBySimilarity(queryImage);
 		
 		// berechne die eigentliche Average Precision

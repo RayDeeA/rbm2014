@@ -6,7 +6,7 @@ import org.jblas.MatrixFunctions;
 public class HardClipMatrixFunction extends MatrixFunctions implements
 		ILogistic {
 
-	// 
+	// x < 0 = 0 and x > 0 = 1
 
 	public DoubleMatrix function(DoubleMatrix m) {
 		double[][] duplicateM = m.dup().toArray2();

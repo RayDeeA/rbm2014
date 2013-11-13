@@ -27,10 +27,11 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMJBlasRandomed;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
-import de.htw.iconn.rbm.functions.BasicSigmoidMatrixFunction;
+import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
 import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
 import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
@@ -60,6 +61,62 @@ public class CBIRController {
 		this.visualizationFrame = new RBMVisualizationFrame();
 		// GUI Elemente
 		this.ui = new CBIRUI(this, this.visualizationFrame);
+	}
+	
+	public void changeLogisticTest(ActionEvent e) {
+		int inputSize = 15;
+		int outputSize = 4;
+
+		Pic[] allImages = imageManager.getImages();
+
+		ILogistic logisticFunction = null;
+		
+		String cmd = e.getActionCommand();
+		if (cmd.equalsIgnoreCase("Standard")) {
+			logisticFunction = new GeneralisedLogisticFunction();
+		} else if (cmd.equalsIgnoreCase("Gaussian")) {
+			logisticFunction = new GaussMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("Hard Clip")) {
+			logisticFunction = new HardClipMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("Linear Clipped")) {
+			logisticFunction = new LinearClippedMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("Linear Interpolated")) {
+			logisticFunction = new LinearInterpolatedMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("Linear Unclipped (Absolute Value)")) {
+			logisticFunction = new LinearUnclippedMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("Rectifier")) {
+			logisticFunction = new RectifierMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("TanH")) {
+			logisticFunction = new TanHMatrixFunction();
+		}
+		
+		IRBM rbm = new RBMJBlas(inputSize, outputSize, 0.1, logisticFunction);
+		DCTRBM dctrbm = new DCTRBM(inputSize, outputSize, rbm);
+		// nur damit die Datenanalysiert werden und
+		// eine Normalisierung später stattfinden kann
+		dctrbm.train(allImages, 0);
+		
+		this.sorter = new Sorter_DCTRBM(allImages, settings, dctrbm, pool);
+		
+		CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
+		GeneticDCTRBMError gh = new GeneticDCTRBMError(dctrbm, imageManager, evalulation, pool);
+		gh.run();
+		
+	}
+	
+	public String[] getLogisticsTestNames() {
+
+		return new String[] { 
+			"Standard", 
+			"Gaussian", 
+			"Hard Clip", 
+			"Linear Clipped", 
+			"Linear Interpolated", 
+			"Linear Unclipped (Absolute Value)", 
+			"Rectifier", 
+			"TanH" 
+		};
+		
 	}
 
 	public void changeSorter(ActionEvent e) {
@@ -229,7 +286,7 @@ public class CBIRController {
 			double learnRate = 0.1;
 			int epochs = 20000;
 			int updateFrequency = 100;
-			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new BasicSigmoidMatrixFunction());
+			IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction());
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
@@ -376,7 +433,6 @@ public class CBIRController {
 			GeneticDCTRBM gh = new GeneticDCTRBM(rbm, imageManager.getImageSetName(), evalulation);
 			gh.run(visualizationFrame);
 		} else if (cmd.equalsIgnoreCase("reduziere den RBM Fehler")) {
-
 			int inputSize = 15;
 			int outputSize = 10;
 
