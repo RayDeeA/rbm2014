@@ -365,7 +365,7 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public void setWeights(double[][] weights) {
+	public void setWeightsWithBias(double[][] weights) {
 		this.weights = weights;
 	} 
 	
@@ -416,6 +416,16 @@ public class RBMOriginal implements IRBM {
 			System.out.println("");
 		}
 		
+	}
+
+	@Override
+	public int getInputSize() {
+		return numVisible;
+	}
+
+	@Override
+	public int getOutputSize() {
+		return numHidden;
 	}
 
 }

@@ -10,6 +10,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import de.htw.cbir.CBIRController;
+
 public class RBMVisualizationFrame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -23,6 +25,7 @@ public class RBMVisualizationFrame extends JFrame{
 	private JPanel errorPanel;
 	private String errorText;
 	private String weightText;
+	private CBIRController controller;
 
 	private final static int width = 600;
 	private final static int height = 800;
@@ -32,6 +35,10 @@ public class RBMVisualizationFrame extends JFrame{
 		super("RBMVisualization");
 		this.createAndShowGUI();
 
+	}
+	
+	public void setControllerRef(CBIRController contr) {
+		this.controller = contr;
 	}
 
 	public static void main(String args[]) {
@@ -122,8 +129,10 @@ public class RBMVisualizationFrame extends JFrame{
 	/**
 	 * method that saves the current visualization data
 	 */
-	private static void saveFile() {
+	private void saveFile() {
 
+		this.controller.saveButtonPressed();
+		
 	}
 
 	/**
