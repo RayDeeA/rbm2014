@@ -133,7 +133,7 @@ public class DCTRBM {
 	}
 
 	public void setWeights(double[][] weights) {
-		rbm.setWeights(weights);
+		rbm.setWeightsWithBias(weights);
 	}
 
 	public void save(Path path) {
