@@ -6,7 +6,7 @@ import org.jblas.MatrixFunctions;
 public class LinearInterpolatedMatrixFunction extends MatrixFunctions implements
 		ILogistic {
 
-	//
+	// Interpolated between 0 and 1
 
 	public DoubleMatrix function(DoubleMatrix m) {
 

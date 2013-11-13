@@ -13,17 +13,29 @@ import de.htw.cbir.gui.DoubleJSlider;
 
 public class Settings implements ChangeListener {
 
-	public static enum SettingOption { LUM };
-	
+	public static enum SettingOption {
+		LUM, INPUT_SIZE, OUTPUT_SIZE
+	};
+
 	protected EventListenerList listenerList = new EventListenerList();
 	private double lumValue;
+	private int inputSizeValue;
+	private int outpotSizeValue;
 
 	public double getLumValue() {
 		return lumValue;
 	}
-	
+
 	public void setLumValue(double d) {
 		lumValue = d;
+	}
+
+	public int getInputSizeValue() {
+		return inputSizeValue;
+	}
+
+	public void setInputSizeValue(int inputSizeValue) {
+		this.inputSizeValue = inputSizeValue;
 	}
 
 	/**
@@ -34,39 +46,62 @@ public class Settings implements ChangeListener {
 	 */
 	public void bind(final SettingOption option, JSlider slider) {
 		slider.setName(option.toString());
-		slider.addChangeListener(this);		
+		slider.addChangeListener(this);
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		
+
 		JComponent jComp = (JComponent) e.getSource();
 		SettingOption option = SettingOption.valueOf(jComp.getName());
-		
+
 		switch (option) {
-			case LUM:
-				DoubleJSlider slider = (DoubleJSlider)jComp;
-				if(!slider.getValueIsAdjusting()) {
-					lumValue = slider.getDoubleValue();
-					fireEvent(new ActionEvent(this, 1, option.toString()));
-				}
-				break;
-	
-			default:
-				break;
+		case LUM:
+			DoubleJSlider slider = (DoubleJSlider) jComp;
+			if (!slider.getValueIsAdjusting()) {
+				lumValue = slider.getDoubleValue();
+				fireEvent(new ActionEvent(this, 1, option.toString()));
+			}
+			break;
+		case INPUT_SIZE:
+			JSlider slider2 = (JSlider) jComp;
+			if (!slider2.getValueIsAdjusting()) {
+				setInputSizeValue(slider2.getValue());
+				fireEvent(new ActionEvent(this, 1, option.toString()));
+			}
+			break;
+		case OUTPUT_SIZE:
+			JSlider output = (JSlider) jComp;
+			if (!output.getValueIsAdjusting()) {
+				setInputSizeValue(output.getValue());
+				fireEvent(new ActionEvent(this, 1, option.toString()));
+			}
+			break;
+
+		default:
+			break;
 		}
 	}
-	
+
 	private void fireEvent(ActionEvent ev) {
 		Object[] listeners = listenerList.getListenerList();
-	    for (int i = 0; i < listeners.length; i = i+2) {
-	      if (listeners[i] == ActionListener.class) {
-	        ((ActionListener) listeners[i+1]).actionPerformed(ev);
-	      }
-	    }
+		for (int i = 0; i < listeners.length; i = i + 2) {
+			if (listeners[i] == ActionListener.class) {
+				((ActionListener) listeners[i + 1]).actionPerformed(ev);
+			}
+		}
 	}
-	
+
 	public void addChangeListener(ActionListener listener) {
 		listenerList.add(ActionListener.class, listener);
 	}
+
+	public int getOutpotSizeValue() {
+		return outpotSizeValue;
+	}
+
+	public void setOutputSizeValue(int outpotSizeValue) {
+		this.outpotSizeValue = outpotSizeValue;
+	}
+
 }

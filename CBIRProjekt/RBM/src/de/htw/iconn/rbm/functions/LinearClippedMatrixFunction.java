@@ -6,7 +6,7 @@ import org.jblas.MatrixFunctions;
 public class LinearClippedMatrixFunction extends MatrixFunctions implements
 		ILogistic {
 
-	// linear but clipped (0 .. 1)
+	// min(max(0, x), 1)
 
 	public DoubleMatrix function(DoubleMatrix m) {
 		double[][] duplicateM = m.dup().mul(0.5).add(0.5).toArray2();

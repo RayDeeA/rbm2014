@@ -4,6 +4,8 @@ import java.nio.file.Paths;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 
+import org.jblas.DoubleMatrix;
+
 import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
@@ -21,6 +23,9 @@ public class GeneticDCTRBMError {
 	private DCTRBM rbm;
 	private ForkJoinPool pool;
 	
+	private double bestMap = 0;
+	private double[][] bestWeights = null;
+	
 	public GeneticDCTRBMError(DCTRBM rbm, ImageManager imageManager, CBIREvaluation evalulation, ForkJoinPool pool) {
 		this.imageManager	= imageManager;
 		this.rbm 			= rbm;
@@ -33,7 +38,7 @@ public class GeneticDCTRBMError {
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
 		
-		// initial zuf��llige Gewichte
+		// initial zufällige Gewichte
 		double[][] weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -56,12 +61,13 @@ public class GeneticDCTRBMError {
 		cma.writeToDefaultFilesHeaders(0); // 0 == overwrites old files
 
 		// iteration loop
+		int p = 0;
 		while(cma.stopConditions.getNumber() == 0) {
 
             // --- core iteration step ---
 			double[][] pop = cma.samplePopulation(); // get a new population of solutions
 			
-			// erstelle nur g��ltige candidaten
+			// erstelle nur gültige candidaten
 			GeneticForkResample ft = new GeneticForkResample(this, cma, pop, 0, pop.length);
 			pool.invoke(ft);
 			
@@ -76,11 +82,25 @@ public class GeneticDCTRBMError {
 
 			// output to files and console 
 			cma.writeToDefaultFiles();
-			System.out.println("-------------------------");
-			MAP(cma.getBestX());
+			System.out.println("========== Population: " + p++ + "==========" );
+			
+			double map = MAP(cma.getBestX());
+			if(map > bestMap) { 
+				bestMap = map;
+				bestWeights = convert(cma.getBestX());
+			};
+			
+			System.out.println("MAP: " + map);
+			System.out.println("Best MAP was:" + bestMap);
+			System.out.println("Fitness: "+(1-valueOf(cma.getBestX())));
+			System.out.println("RBM raw Error: "+getRawError(cma.getBestX()));	
+			
+			System.out.println("---------- Best Weights ----------");
+			new DoubleMatrix(bestWeights).print();
+			
+			System.out.println("");
+			
 			save(cma.getBestX());
-			System.out.println("Fitnes: "+(1-valueOf(cma.getBestX())));
-			System.out.println("RBM raw Error: "+getRawError(cma.getBestX()));
 		}
 		// evaluate mean value as it is the best estimator for the optimum
 		cma.setFitnessOfMeanX(valueOf(cma.getMeanX())); // updates the best ever solution 
@@ -94,13 +114,14 @@ public class GeneticDCTRBMError {
 		cma.println("best function value " + cma.getBestFunctionValue() + " at evaluation " + cma.getBestEvaluationNumber());
 	}
 	
-	private void MAP(double[] input) {
+	private double MAP(double[] input) {
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
 		
 		eval.getSorter().getFeatureVectors();
 		double map = eval.testAll(false, "DCT RBM Error reduction");
-		System.out.println("MAP: "+map);
+		
+		return map;
 	}
 
 	private void save(double[] input) {
