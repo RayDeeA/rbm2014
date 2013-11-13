@@ -64,8 +64,6 @@ public class CBIRController {
 
 	private double error;
 	private double rawError;
-	
-	
 
 	private CBIRUI ui;
 	private final RBMVisualizationFrame visualizationFrame;
@@ -73,13 +71,17 @@ public class CBIRController {
 	private Sorter sorter;
 	private ForkJoinPool pool;
 	private double[][] getLoggingData;
+	private ArrayList<double[][]> logData;
+
 
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
+		this.logData = new ArrayList<double[][]>();
 
 		this.visualizationFrame = new RBMVisualizationFrame();
+		this.visualizationFrame.setControllerRef(this);
 		// GUI Elemente
 		this.ui = new CBIRUI(this, this.visualizationFrame);
 	}
@@ -116,10 +118,18 @@ public class CBIRController {
 			System.out.println("error " + error);
 			System.out.println("raw error " + rawError);
 
-			for (int i = 0; i < 30; i++) {
+			for(int i = 0; i < 30; i++) {	
 				dctRBM.train(allImages, 100);
 				visualizationFrame.update(dctRBM.getWeights(), error);
+				logData.add(i, dctRBM.getWeights());
 			}
+			
+
+
+//			for (int i = 0; i < 30; i++) {
+//				dctRBM.train(allImages, 100);
+//				visualizationFrame.update(dctRBM.getWeights(), error);
+//			}
 
 			System.out.println("error " + dctRBM.getError(allImages));
 			System.out.println("raw error " + dctRBM.getRawError(allImages));
@@ -569,4 +579,8 @@ public class CBIRController {
 			tfe.printStackTrace();
 		}
 	}
+	
+	public void saveButtonPressed() {
+		// triggered by save button in VisFrame
+		serializeDataToXML(logData, null, null);	}
 }
