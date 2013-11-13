@@ -79,6 +79,9 @@ public class CBIRController {
 
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
+		settings.setInputSizeValue(inputSize);
+		settings.setOutputSizeValue(outputSize);
+		
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
 		this.logData = new ArrayList<double[][]>();
@@ -90,8 +93,8 @@ public class CBIRController {
 	}
 	
 	public void changeLogisticTest(ActionEvent e) {
-		int inputSize = 15;
-		int outputSize = 4;
+		inputSize = settings.getInputSizeValue();
+		outputSize = settings.getOutpotSizeValue();
 
 		Pic[] allImages = imageManager.getImages();
 
@@ -147,6 +150,8 @@ public class CBIRController {
 	
 	public void changeSorter(ActionEvent e) {
 		IRBM rbm = null;
+		inputSize = settings.getInputSizeValue();
+		outputSize = settings.getOutpotSizeValue();
 		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -322,6 +327,9 @@ public class CBIRController {
 	 */
 	public void triggerAutomaticTests(ActionEvent e) {
 
+		inputSize = settings.getInputSizeValue();
+		outputSize = settings.getOutpotSizeValue();
+		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
 

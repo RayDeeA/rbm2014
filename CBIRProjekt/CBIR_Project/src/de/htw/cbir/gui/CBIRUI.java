@@ -10,44 +10,45 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
 
 import de.htw.cbir.CBIRController;
 import de.htw.cbir.model.PrecisionRecallTable;
 import de.htw.cbir.model.Settings.SettingOption;
 
-public class CBIRUI  {
+public class CBIRUI {
 
 	// Fenstertitel festlegen
 	private static final String str = "IR Project";
-	
+
 	// anf��gnliche Fenstergr����e
-	private static final int frameSizeX = 500; 
+	private static final int frameSizeX = 500;
 	private static final int frameSizeY = 500;
-	
+
 	// GUI Elemente
 	private JFrame frame;
 	private RBMVisualizationFrame rbmFrame;
 	private ImageGrid grid;
-	
+
 	// allgemeine Variablen
 	private CBIRController controller;
-	
+
 	public CBIRUI(CBIRController controller, RBMVisualizationFrame rbmFrame) {
 		this.controller = controller;
 		this.rbmFrame = rbmFrame;
-		
+
 		// Hauptfenster
 		frame = createMainFrame();
-		
+
 		// Komponente die die Bilder darstellt
 		grid = new ImageGrid(controller, frameSizeX, frameSizeY);
 		frame.add(grid);
-		
+
 		// lass alles zeichnen
 		repaint();
 		PrecisionRecallTable.initializeGraph();
 	}
-	
+
 	/**
 	 * Alles neuzeichnen
 	 */
@@ -55,9 +56,10 @@ public class CBIRUI  {
 		// zeichne die Bilder
 		grid.doDrawing();
 	}
-	
+
 	/**
 	 * Erstelle das Hauptfenster
+	 * 
 	 * @return
 	 */
 	private JFrame createMainFrame() {
@@ -68,18 +70,19 @@ public class CBIRUI  {
 		jFrame.setVisible(true);
 		return jFrame;
 	}
-	
+
 	private JMenuBar createMenuBar() {
-		
-		// Menubar 
+
+		// Menubar
 		JMenuBar menuBar = new JMenuBar();
-		
+
 		// Menu "Algorithm"
 		JMenu methodMenu = new JMenu("Algorithm");
 		ButtonGroup buttonGroup = new ButtonGroup();
 		String[] methodNames = controller.getSorterNames();
 		for (String methodName : methodNames) {
-			JRadioButtonMenuItem mI_methodName = new JRadioButtonMenuItem(methodName,true);
+			JRadioButtonMenuItem mI_methodName = new JRadioButtonMenuItem(
+					methodName, true);
 			mI_methodName.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -90,10 +93,10 @@ public class CBIRUI  {
 			buttonGroup.add(mI_methodName);
 		}
 		menuBar.add(methodMenu);
-		
+
 		// Menu "Testen"
 		JMenu testMenu = new JMenu("Testen");
-		
+
 		JMenuItem mI_all = new JMenuItem("Alle");
 		mI_all.addActionListener(new ActionListener() {
 			@Override
@@ -102,13 +105,13 @@ public class CBIRUI  {
 			}
 		});
 		testMenu.add(mI_all);
-		
+
 		// Menu "Logistik testen"
 		JMenu logisticTestMenu = new JMenu("Logistik testen");
-		ButtonGroup logisticTestButtonGroup = new ButtonGroup();
 		String[] logisticTestMethodNames = controller.getLogisticsTestNames();
 		for (String logisticTestMethod : logisticTestMethodNames) {
-			JRadioButtonMenuItem logisticTestMethodName = new JRadioButtonMenuItem(logisticTestMethod,true);
+			JRadioButtonMenuItem logisticTestMethodName = new JRadioButtonMenuItem(
+					logisticTestMethod, true);
 			logisticTestMethodName.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -119,7 +122,7 @@ public class CBIRUI  {
 			buttonGroup.add(logisticTestMethodName);
 		}
 		menuBar.add(logisticTestMenu);
-		
+
 		int index = 0;
 		for (String groupName : controller.getImageManager().getGroupNames()) {
 			JMenuItem mI_group = new JMenuItem(groupName);
@@ -130,18 +133,20 @@ public class CBIRUI  {
 				}
 			});
 			testMenu.add(mI_group);
-			
+
 			// brich nach 20 ab
-			if(index++ > 20) break;
+			if (index++ > 20)
+				break;
 		}
 		menuBar.add(testMenu);
-		
+
 		// Menu "Einstellungen"
 		JMenu settingsMenu = new JMenu("Einstellungen");
-		
+
 		// Menupunkt "Helligkeit"
 		JMenu m_lumValue = new JMenu("Lum Wert");
-		final DoubleJSlider lumSlider = DoubleJSlider.createDoubleJSlider(0, 5, 0, 1);
+		final DoubleJSlider lumSlider = DoubleJSlider.createDoubleJSlider(0, 5,
+				0, 1);
 		lumSlider.setMajorTickSpacing(1);
 		lumSlider.setMinorTickSpacing(0.1);
 		lumSlider.setPaintTicks(true);
@@ -149,14 +154,37 @@ public class CBIRUI  {
 		controller.getSettings().bind(SettingOption.LUM, lumSlider);
 		m_lumValue.add(lumSlider);
 		settingsMenu.add(m_lumValue);
+
+		// Menupunkt "inputSize"
+		JMenu m_inputSizeValue = new JMenu("inputSize");
+		final JSlider inputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, 10);
+		inputSizeSlider.setMajorTickSpacing(5);
+		inputSizeSlider.setMinorTickSpacing(1);
+		inputSizeSlider.setPaintTicks(true);
+		inputSizeSlider.setPaintLabels(true);
+		controller.getSettings().bind(SettingOption.INPUT_SIZE, inputSizeSlider);
+		m_inputSizeValue.add(inputSizeSlider);
+		settingsMenu.add(m_inputSizeValue);
 		
+		// Menupunkt "inputSize"
+		JMenu m_outputSizeValue = new JMenu("outputSize");
+		final JSlider outputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, 10);
+		outputSizeSlider.setMajorTickSpacing(5);
+		outputSizeSlider.setMinorTickSpacing(1);
+		outputSizeSlider.setPaintTicks(true);
+		outputSizeSlider.setPaintLabels(true);
+		controller.getSettings().bind(SettingOption.OUTPUT_SIZE, outputSizeSlider);
+		m_outputSizeValue.add(outputSizeSlider);
+		settingsMenu.add(m_outputSizeValue);
+
 		menuBar.add(settingsMenu);
-		
-		
+
 		// Menu "Automatisch"
 		JMenu autmaticMenu = new JMenu("Automatisch");
-		
-		String[] automaticNames = new String[] { "Finde besten Lum-Wert", "Finde ColorSpace Distance", "Finde Genetic Histogram", "Finde RBM Weights", "reduziere den RBM Fehler" };
+
+		String[] automaticNames = new String[] { "Finde besten Lum-Wert",
+				"Finde ColorSpace Distance", "Finde Genetic Histogram",
+				"Finde RBM Weights", "reduziere den RBM Fehler" };
 		for (String automaticName : automaticNames) {
 			JMenuItem mI_group = new JMenuItem(automaticName);
 			mI_group.addActionListener(new ActionListener() {
@@ -167,26 +195,26 @@ public class CBIRUI  {
 			});
 			autmaticMenu.add(mI_group);
 		}
-		
+
 		menuBar.add(autmaticMenu);
-		
+
 		return menuBar;
 	}
 
 	public int askNumber(String question) {
-		String s = (String)JOptionPane.showInputDialog(frame,
-                question, "Input number", JOptionPane.PLAIN_MESSAGE);
+		String s = (String) JOptionPane.showInputDialog(frame, question,
+				"Input number", JOptionPane.PLAIN_MESSAGE);
 		return Integer.parseInt(s);
 	}
-	
+
 	public double askDouble(String question) {
-		String s = (String)JOptionPane.showInputDialog(frame,
-                question, "Input number", JOptionPane.PLAIN_MESSAGE);
+		String s = (String) JOptionPane.showInputDialog(frame, question,
+				"Input number", JOptionPane.PLAIN_MESSAGE);
 		s = s.replace(",", ".");
 		return Double.parseDouble(s);
 	}
-	
-	public RBMVisualizationFrame getRBMVis(){
+
+	public RBMVisualizationFrame getRBMVis() {
 		return this.rbmFrame;
 	}
 
