@@ -73,7 +73,7 @@ public class CBIRController {
 
 	private int inputSize = 15;
 	private int outputSize = 10;
-	private double learnRate = 1.0;
+	private double learnRate = 0.1;
 	private int epochs = 10000;
 	private int updateFrequency = 100;
 
@@ -119,7 +119,7 @@ public class CBIRController {
 			logisticFunction = new TanHMatrixFunction();
 		}
 		
-		IRBM rbm = new RBMJBlas(inputSize, outputSize, 0.1, logisticFunction);
+		IRBM rbm = new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction);
 		DCTRBM dctrbm = new DCTRBM(inputSize, outputSize, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
