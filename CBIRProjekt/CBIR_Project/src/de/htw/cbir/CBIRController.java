@@ -144,16 +144,13 @@ public class CBIRController {
 		};
 		
 	}
-
-	public  Sorter_DCTRBM quickCreateRBM(Pic[] allImages, IRBM rbm){
-		DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-		updateVisualization(epochs, updateFrequency, dctRBM);
-		return new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
-	}
 	
 	public void changeSorter(ActionEvent e) {
+		IRBM rbm = null;
+		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
+		
 		if (cmd.equalsIgnoreCase("ColorMean"))
 			sorter = new Sorter_ColorMean(allImages, settings, pool);
 		else if (cmd.equalsIgnoreCase("ColorMean2"))
@@ -199,31 +196,31 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("RBMJBlas_Sigmoid")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));			
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_TanHMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_GaussMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearUnclippedMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_HardClipMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_BasicSigmoidMatrixFunction")) {
-			sorter = quickCreateRBM(allImages, new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction()));
+			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {
@@ -231,7 +228,11 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCTRBM_SR")) {
 
 		}
-
+		if(rbm != null) {
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			updateVisualization(epochs, updateFrequency, dctRBM);
+			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+		}
 		sorter.getFeatureVectors();
 	}
 

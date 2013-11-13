@@ -1,10 +1,6 @@
 package de.htw.cbir;
 
-import java.nio.file.Paths;
-
 import de.htw.cbir.model.Settings;
-import de.htw.color.ColorMetric;
-import de.htw.interpolation.RGBInterpolation;
 
 public class CBIRMain {
 
@@ -22,8 +18,8 @@ public class CBIRMain {
 		new CBIRController(settings, imageManager);
 		
 		// setzte die Standart interpolation
-		String setName = imageManager.getImageSetName();
-		RGBInterpolation cube = RGBInterpolation.load(Paths.get("CBIR_Project/solutions/"+setName+"/4x4x4RGB.csa"));
-		ColorMetric.setDistanceInterface(cube);
+//		String setName = imageManager.getImageSetName();
+//		RGBInterpolation cube = RGBInterpolation.load(Paths.get("CBIR_Project/solutions/"+setName+"/4x4x4RGB.csa"));
+//		ColorMetric.setDistanceInterface(cube);
 	}
 }
