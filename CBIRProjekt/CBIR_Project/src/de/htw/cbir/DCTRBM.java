@@ -40,7 +40,7 @@ public class DCTRBM {
 	}
 	
 	public DCTRBM shallowCopy() {
-		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights(), new DefaultLogisticMatrixFunction());
+		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
 	
@@ -129,7 +129,7 @@ public class DCTRBM {
 	}
 	
 	public double[][] getWeights() {
-		return rbm.getWeights();
+		return rbm.getWeights()[0];
 	}
 
 	public void setWeights(double[][] weights) {
@@ -142,7 +142,7 @@ public class DCTRBM {
 
 	public void printWeightAnalyse() {
 		System.out.println("weights");
-		double[][] weights = rbm.getWeights();
+		double[][] weights = rbm.getWeights()[0];
 		for (int i = 0; i < weights.length; i++) {
 			for (int j = 0; j < weights[0].length; j++)
 				System.out.printf("%6.2f ", weights[i][j]);

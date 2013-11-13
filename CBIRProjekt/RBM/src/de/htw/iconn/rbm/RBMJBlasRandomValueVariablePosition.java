@@ -172,13 +172,13 @@ public class RBMJBlasRandomValueVariablePosition implements IRBM {
 	}
 	
 	@Override
-	public double[][] getWeights() {
-		return (this.weights.getRange(1, weights.getRows(), 1, weights.getColumns())).toArray2();
+	public double[][][] getWeights() {
+		return new double[][][]{(this.weights.getRange(1, weights.getRows(), 1, weights.getColumns())).toArray2()};
 	}
 	
 	@Override
-	public double[][] getWeightsWithBIAS() {
-		return this.weights.toArray2();
+	public double[][][] getWeightsWithBIAS() {
+		return new double[][][]{this.weights.toArray2()};
 	}
 
 	@Override
