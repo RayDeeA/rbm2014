@@ -105,8 +105,21 @@ public class RBMCascade implements IRBM {
 
 	@Override
 	public double[][][] getWeightsWithBIAS() {
+		LinkedList<double[][]> weights = new LinkedList<>();
 		
-		return null;
+		for (IRBM rbm : rbms) {
+			if(rbm instanceof RBMCascade) {
+				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBIAS();
+				for (double[][] ds : cascadeWeights) {
+					weights.add(ds);
+				}
+			}
+			else {
+				weights.add(rbm.getWeightsWithBIAS()[0]);
+			}
+		}
+		
+		return (double[][][])weights.toArray();
 	}
 
 	@Override
