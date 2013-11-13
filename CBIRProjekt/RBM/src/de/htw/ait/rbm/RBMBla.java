@@ -341,7 +341,7 @@ public class RBMBla implements IRBM {
 	}
 
 	@Override
-	public void setWeights(double[][] weights) {
+	public void setWeightsWithBias(double[][] weights) {
 		this.weights = weights;
 	}
 
@@ -353,6 +353,18 @@ public class RBMBla implements IRBM {
 	@Override
 	public double[][] getWeightsWithBIAS() {
 		return this.weights;
+	}
+
+	@Override
+	public int getInputSize() {
+
+		return num_visible;
+	}
+
+	@Override
+	public int getOutputSize() {
+		
+		return num_hidden;
 	}
 	
 }

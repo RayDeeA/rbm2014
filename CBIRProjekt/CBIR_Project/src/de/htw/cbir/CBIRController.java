@@ -2,7 +2,26 @@ package de.htw.cbir;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.concurrent.ForkJoinPool;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import de.htw.cbir.gui.CBIRUI;
 import de.htw.cbir.gui.RBMVisualizationFrame;
@@ -42,7 +61,7 @@ public class CBIRController {
 
 	private Settings settings;
 	private ImageManager imageManager;
-	
+
 	private double error;
 	private double rawError;
 
@@ -51,13 +70,18 @@ public class CBIRController {
 
 	private Sorter sorter;
 	private ForkJoinPool pool;
+	private double[][] getLoggingData;
+	private ArrayList<double[][]> logData;
+
 
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
+		this.logData = new ArrayList<double[][]>();
 
 		this.visualizationFrame = new RBMVisualizationFrame();
+		this.visualizationFrame.setControllerRef(this);
 		// GUI Elemente
 		this.ui = new CBIRUI(this, this.visualizationFrame);
 	}
@@ -94,10 +118,18 @@ public class CBIRController {
 			System.out.println("error " + error);
 			System.out.println("raw error " + rawError);
 
-			for (int i = 0; i < 30; i++) {
+			for(int i = 0; i < 30; i++) {	
 				dctRBM.train(allImages, 100);
 				visualizationFrame.update(dctRBM.getWeights(), error);
+				logData.add(i, dctRBM.getWeights());
 			}
+			
+
+
+//			for (int i = 0; i < 30; i++) {
+//				dctRBM.train(allImages, 100);
+//				visualizationFrame.update(dctRBM.getWeights(), error);
+//			}
 
 			System.out.println("error " + dctRBM.getError(allImages));
 			System.out.println("raw error " + dctRBM.getRawError(allImages));
@@ -425,4 +457,130 @@ public class CBIRController {
 			visualizationFrame.update(dctrbm.getWeights(), error);
 		}
 	}
+
+	private double[][] serializeXMLToData(File xmlFile) {
+
+		try {
+
+			File file = new File("test.xml");
+
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+
+			Document doc = dBuilder.parse(file);
+
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+			if (doc.hasChildNodes()) {
+				printNote(doc.getChildNodes());			 
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return getLoggingData;
+	}
+
+	private static void printNote(NodeList nodeList) {
+
+		for (int count = 0; count < nodeList.getLength(); count++) {
+
+			Node tempNode = nodeList.item(count);
+
+			// make sure it's element node.
+			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
+
+				// get node name and value
+				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+				System.out.println("Node Value =" + tempNode.getTextContent());
+				//System.out.println("Value: "+ tempNode.getNextSibling().getNodeValue().toString());
+
+				if (tempNode.hasAttributes()) {
+
+					// get attributes names and values
+					NamedNodeMap nodeMap = tempNode.getAttributes();
+
+					for (int i = 0; i < nodeMap.getLength(); i++) {
+
+						Node node = nodeMap.item(i);
+						System.out.println("attr name : " + node.getNodeName());
+						System.out.println("attr value : " + node.getNodeValue());
+					}
+				}
+				if (tempNode.hasChildNodes()) {
+					// loop again if has child nodes
+					printNote(tempNode.getChildNodes());
+				}
+				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
+			}
+		}
+	}
+
+	private void serializeDataToXML(ArrayList<double[][]> data, Date actDate, String machine){
+
+		try {
+
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+			// root elements
+			Document doc = docBuilder.newDocument();
+			Element rootElement = doc.createElement("RBM_"+ machine);
+			doc.appendChild(rootElement);
+
+			// sample elements
+			Element sample = doc.createElement("sample");
+			rootElement.appendChild(sample);
+
+			// set attribute to staff element
+			Attr attr = doc.createAttribute("id");
+			attr.setValue("1");
+			sample.setAttributeNode(attr);
+
+			int count =0;
+
+			final Iterator<double[][]> it = data.iterator();
+			while (it.hasNext()) {
+
+				double[][] array2d = it.next();
+
+				//Sample Name's ("Matrix_"+count)
+				Element element = doc.createElement("Matrix_"+count);
+				for (int i = 0; i < array2d.length; i++) {
+					element.appendChild(doc.createElement("Row_"+ i));
+					for(int j = 0; j< array2d[0].length; j++){
+						double currentValue = array2d[i][j];
+						element.appendChild(doc.createTextNode( Double.toString(Math.round(currentValue*1e5)/1e5) + ( j != array2d[0].length - 1 ? "," : "")));
+					}	
+				}
+				count++;
+				sample.appendChild(element);
+
+				data.iterator().next();
+			}
+			System.out.println("Finished");
+
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			//Name of File
+			StreamResult result = new StreamResult(new File("test.xml"));
+
+			// Output to console for testing
+			// StreamResult result = new StreamResult(System.out);
+
+			transformer.transform(source, result);
+
+			System.out.println("File saved!");
+
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+	
+	public void saveButtonPressed() {
+		// triggered by save button in VisFrame
+		serializeDataToXML(logData, null, null);	}
 }

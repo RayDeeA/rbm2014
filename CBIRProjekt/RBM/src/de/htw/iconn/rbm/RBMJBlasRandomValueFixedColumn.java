@@ -168,7 +168,7 @@ public class RBMJBlasRandomValueFixedColumn implements IRBM {
 	}
 	
 	@Override
-	public void setWeights(double[][] weights) {
+	public void setWeightsWithBias(double[][] weights) {
 		this.weights = new DoubleMatrix(weights);
 	}
 	
@@ -180,6 +180,16 @@ public class RBMJBlasRandomValueFixedColumn implements IRBM {
 	@Override
 	public double[][] getWeightsWithBIAS() {
 		return this.weights.toArray2();
+	}
+
+	@Override
+	public int getInputSize() {
+		return weights.getRows();
+	}
+
+	@Override
+	public int getOutputSize() {
+		return weights.getColumns();
 	}
 
 }
