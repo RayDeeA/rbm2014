@@ -8,8 +8,8 @@ public interface IRBM {
 	public double[][] run_hidden(double[][] hiddenData);
 
 	public void setWeightsWithBias(double[][] weights);
-	public double[][] getWeights();
-	public double[][] getWeightsWithBIAS();
+	public double[][][] getWeights();
+	public double[][][] getWeightsWithBIAS();
 	
 	public int getInputSize();
 	public int getOutputSize();

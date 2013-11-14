@@ -346,13 +346,13 @@ public class RBMBla implements IRBM {
 	}
 
 	@Override
-	public double[][] getWeights() {
-		return this.weights;
+	public double[][][] getWeights() {
+		return new double[][][]{this.weights};
 	}
 	
 	@Override
-	public double[][] getWeightsWithBIAS() {
-		return this.weights;
+	public double[][][] getWeightsWithBIAS() {
+		return new double[][][]{this.weights};
 	}
 
 	@Override

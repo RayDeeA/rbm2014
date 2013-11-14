@@ -1,5 +1,7 @@
 package de.htw.iconn.rbm;
 
+import java.util.LinkedList;
+
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 
 
@@ -21,7 +23,7 @@ public class RBMCascade implements IRBM {
 		
 	}
 	
-	public RBMCascade(int learningRate, DefaultLogisticMatrixFunction logistic, int ...inputsizes) {
+	public RBMCascade(double learningRate, DefaultLogisticMatrixFunction logistic, int ...inputsizes) {
 		
 		rbms = new IRBM[inputsizes.length];
 		
@@ -57,44 +59,77 @@ public class RBMCascade implements IRBM {
 
 	@Override
 	public double[][] run_visual(double[][] userData) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		double[][] data = userData;
+		for (int i = 0; i < rbms.length; i++) {
+
+			data = rbms[i].run_visual(data);
+		}
+		return data;
 	}
 
 	@Override
 	public double[][] run_hidden(double[][] hiddenData) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		double[][] data = hiddenData;
+		for (int i = 0; i < rbms.length; i++) {
+
+			data = rbms[i].run_hidden(data);
+		}
+		return data;
 	}
 
 	@Override
 	public void setWeightsWithBias(double[][] weights) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public double[][] getWeights() {
-		// TODO Auto-generated method stub
-		return null;
+	public double[][][] getWeights() {
+		LinkedList<double[][]> weights = new LinkedList<>();
+		
+		for (IRBM rbm : rbms) {
+			if(rbm instanceof RBMCascade) {
+				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeights();
+				for (double[][] ds : cascadeWeights) {
+					weights.add(ds);
+				}
+			}
+			else {
+				weights.add(rbm.getWeights()[0]);
+			}
+		}
+		
+		return (double[][][])weights.toArray();
 	}
 
 	@Override
-	public double[][] getWeightsWithBIAS() {
-		// TODO Auto-generated method stub
-		return null;
+	public double[][][] getWeightsWithBIAS() {
+		LinkedList<double[][]> weights = new LinkedList<>();
+		
+		for (IRBM rbm : rbms) {
+			if(rbm instanceof RBMCascade) {
+				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBIAS();
+				for (double[][] ds : cascadeWeights) {
+					weights.add(ds);
+				}
+			}
+			else {
+				weights.add(rbm.getWeightsWithBIAS()[0]);
+			}
+		}
+		
+		return (double[][][])weights.toArray();
 	}
 
 	@Override
 	public int getInputSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return rbms[0].getInputSize();
 	}
 
 	@Override
 	public int getOutputSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return rbms[rbms.length - 1].getOutputSize();
 	}
 
 }
