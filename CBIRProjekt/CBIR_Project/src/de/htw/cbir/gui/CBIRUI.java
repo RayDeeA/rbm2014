@@ -33,6 +33,8 @@ public class CBIRUI {
 	// allgemeine Variablen
 	private CBIRController controller;
 
+
+	
 	public CBIRUI(CBIRController controller, RBMVisualizationFrame rbmFrame) {
 		this.controller = controller;
 		this.rbmFrame = rbmFrame;
@@ -157,7 +159,7 @@ public class CBIRUI {
 
 		// Menupunkt "inputSize"
 		JMenu m_inputSizeValue = new JMenu("inputSize");
-		final JSlider inputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, 10);
+		final JSlider inputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, controller.getInputSize());
 		inputSizeSlider.setMajorTickSpacing(5);
 		inputSizeSlider.setMinorTickSpacing(1);
 		inputSizeSlider.setPaintTicks(true);
@@ -168,7 +170,7 @@ public class CBIRUI {
 		
 		// Menupunkt "inputSize"
 		JMenu m_outputSizeValue = new JMenu("outputSize");
-		final JSlider outputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, 10);
+		final JSlider outputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, controller.getOutputSize());
 		outputSizeSlider.setMajorTickSpacing(5);
 		outputSizeSlider.setMinorTickSpacing(1);
 		outputSizeSlider.setPaintTicks(true);

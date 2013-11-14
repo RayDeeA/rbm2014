@@ -71,14 +71,23 @@ public class CBIRController {
 //	private double[][] getLoggingData;
 	private ArrayList<double[][]> logData;
 
+	
 	private int inputSize = 15;
-	private int outputSize = 10;
+	private int outputSize = 4;
+	
 	private double learnRate = 1.0;
 	private int epochs = 10000;
 	private int updateFrequency = 100;
 
+	public int getInputSize(){
+		return inputSize;
+	}
+	public int getOutputSize(){
+		return outputSize;
+	}
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
+
 		settings.setInputSizeValue(inputSize);
 		settings.setOutputSizeValue(outputSize);
 		
