@@ -2,6 +2,7 @@ package de.htw.iconn.rbm;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import de.htw.iconn.rbm.functions.ILogistic;
 import de.htw.iconn.rbm.helper.Printer;
 
 
@@ -426,6 +427,18 @@ public class RBMOriginal implements IRBM {
 	@Override
 	public int getOutputSize() {
 		return numHidden;
+	}
+
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

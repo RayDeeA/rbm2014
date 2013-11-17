@@ -130,7 +130,7 @@ public class RBMVisualizationFrame extends JFrame{
 	 */
 	private void saveFile() {
 
-		this.controller.saveButtonPressed();
+		//this.controller.saveButtonPressed();
 		
 	}
 

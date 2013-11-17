@@ -3,6 +3,7 @@ package de.htw.iconn.rbm;
 import java.util.LinkedList;
 
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
 
 
 public class RBMCascade implements IRBM {
@@ -130,6 +131,18 @@ public class RBMCascade implements IRBM {
 	@Override
 	public int getOutputSize() {
 		return rbms[rbms.length - 1].getOutputSize();
+	}
+
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

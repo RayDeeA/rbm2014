@@ -192,4 +192,16 @@ public class RBMJBlasRandomValueFixedColumn implements IRBM {
 		return weights.getColumns();
 	}
 
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

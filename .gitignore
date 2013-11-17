@@ -1,4 +1,3 @@
 *.class
-CBIRProject/cma/bin/.gitignore
-
-/CBIRProjekt/cma/bin
+CBIRProjekt/cma/bin/.gitignore
+CBIRProjekt/logs

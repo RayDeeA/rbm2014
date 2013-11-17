@@ -1,5 +1,7 @@
 package de.htw.iconn.rbm;
 
+import de.htw.iconn.rbm.functions.ILogistic;
+
 public interface IRBM {
 
 	public void train(double[][] trainingData, int max_epochs );
@@ -13,5 +15,7 @@ public interface IRBM {
 	
 	public int getInputSize();
 	public int getOutputSize();
+	public double getLearnRate();
+	public ILogistic getLogisticFunction();
 
 }

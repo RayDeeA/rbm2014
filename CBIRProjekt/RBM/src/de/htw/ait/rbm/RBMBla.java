@@ -3,6 +3,7 @@ package de.htw.ait.rbm;
 import java.util.Random;
 
 import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.functions.ILogistic;
 
 
 public class RBMBla implements IRBM {
@@ -19,7 +20,7 @@ public class RBMBla implements IRBM {
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
 		
-		// initial zuf������llige Gewichte		
+		// initial zufaellige Gewichte		
 		weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -365,6 +366,18 @@ public class RBMBla implements IRBM {
 	public int getOutputSize() {
 		
 		return num_hidden;
+	}
+
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

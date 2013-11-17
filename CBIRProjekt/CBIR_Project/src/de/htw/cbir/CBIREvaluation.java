@@ -15,11 +15,13 @@ public class CBIREvaluation {
 	private Pic[] images;
 	private Sorter sorter;
 	private ForkJoinPool pool;
+	private CBIREvaluationModel evaluationModel;
 	
-	public CBIREvaluation(Sorter sorter, Pic[] images, ForkJoinPool pool) {
+	public CBIREvaluation(Sorter sorter, Pic[] images, ForkJoinPool pool, CBIREvaluationModel evaluationModel) {
 		this.images = images;
 		this.sorter = sorter;
 		this.pool = pool;
+		this.evaluationModel = evaluationModel;
 	}
 	
 	public Sorter getSorter() {
@@ -59,6 +61,9 @@ public class CBIREvaluation {
 		// beende die Analyse und zeige eventuell Ergebnisse
 		table.finish();
 		
+		evaluationModel.setMAP(MAP);
+		evaluationModel.setEvaluationType("testAll");
+		
 		return MAP;
 	}
 	
@@ -82,6 +87,9 @@ public class CBIREvaluation {
 		
 		// analyse
 		table.finish();
+		
+		evaluationModel.setMAP(MAP);
+		evaluationModel.setEvaluationType("test");
 		
 		return MAP;
 	}
@@ -201,5 +209,9 @@ public class CBIREvaluation {
 		}
 		
 		return map;
+	}
+	
+	public CBIREvaluationModel getEvaluationModel(){
+		return this.evaluationModel;
 	}
 }

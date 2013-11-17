@@ -1,11 +1,14 @@
 package de.htw.iconn.rbm;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,96 +26,64 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.CBIREvaluationModel;
 import de.htw.iconn.rbm.functions.ILogistic;
 
 public class RBMLogger implements IRBM, IRBMLogger{
-	private Path logFolder = FileSystems.getDefault().getPath("RBMLogs");
 	
 	private IRBM rbm;
-	private int numVisible, numHidden;
-	private double learningRate;
-	private String logisticName;
-	private String rbmName;
-	
-	public RBMLogger(int numVisible, int numHidden, double learningRate, ILogistic sigmoid) {
-		this.rbm = new RBMJBlas(numVisible, numHidden, learningRate, sigmoid);
-		this.numVisible = numVisible;
-		this.numHidden = numHidden;
-		this.learningRate = learningRate;
-		this.logisticName = sigmoid.getClass().getSimpleName();
-		this.rbmName = this.rbm.getClass().getSimpleName();
-	}
-	
-	public RBMLogger(int numVisible, int numHidden, double learningRate, double[][] weights, ILogistic sigmoid) {
-		this.rbm = new RBMJBlas(numVisible, numHidden, learningRate, weights, sigmoid);
-		this.numVisible = numVisible;
-		this.numHidden = numHidden;
-		this.learningRate = learningRate;
-		this.logisticName = sigmoid.getClass().getSimpleName();
-		this.rbmName = this.rbm.getClass().getSimpleName();
-	}
 	
 	public RBMLogger(IRBM rbm){
 		this.rbm = rbm;
-		this.numVisible = rbm.getInputSize();
-		this.numHidden = rbm.getOutputSize();
-		this.learningRate = 0;
-		this.logisticName = "NA";
-		this.rbmName = this.rbm.getClass().getSimpleName();
-	}
-
-	@Override
-	public void train(double[][] trainingData, int max_epochs) {
-		rbm.train(trainingData, max_epochs);
-	}
-
-	@Override
-	public double error(double[][] trainingData) {
-		return rbm.error(trainingData);
-	}
-
-	@Override
-	public double[][] run_visible(double[][] userData) {
-		return rbm.run_visible(userData);
-	}
-
-	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return rbm.run_visible(hiddenData);
-	}
-
-	@Override
-	public void setWeightsWithBias(double[][] weights) {
-		rbm.setWeightsWithBias(weights);
-	}
-
-	@Override
-	public double[][][] getWeights() {
-		return rbm.getWeights();
-	}
-
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return rbm.getWeightsWithBias();
-	}
-
-	@Override
-	public int getInputSize() {
-		return rbm.getInputSize();
-	}
-
-	@Override
-	public int getOutputSize() {
-		return rbm.getOutputSize();
 	}
 	
-	public void log(){
-		System.out.println("Log");
+	public void log(CBIREvaluationModel evaluationModel){
+		//Paths
+		String logString = "RBMLogs";
+		String csvString = "logs.csv";
+		
+		//values to log
+		String rbmName = this.getRbmName();
+		int inputSize = this.getInputSize();
+		int outputSize = this.getOutputSize();
+		double learnRate = this.getLearnRate();
+		String logisticFunctionName = this.getLogisticFunctionName();
+		double mAP = evaluationModel.getMAP();
+		double error = evaluationModel.getError();		
+		int epochs = evaluationModel.getEpochs();
+		int imageSetSize = evaluationModel.getImageSetSize();
+		String evaluationType = evaluationModel.getEvaluationType();
+		
+		//start logging
+		Date date = new Date();
+		String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(date);
+		String headLine = "RBM,evaluationType,inputSize,outputSize,learnRate,epochs,logisticFunction,error,mAP,imageSetSize,date";
+		String logLine = rbmName + "," + evaluationType + "," + inputSize + "," + outputSize + "," + learnRate + "," + epochs + "," + logisticFunctionName + "," + error + "," + mAP + "," + imageSetSize + "," + dateString;
+		System.out.println(logLine);		
+		Path logPath = FileSystems.getDefault().getPath(logString);	
+		Path csvPath = FileSystems.getDefault().getPath(logString, csvString);
+		File csvFile;
+		boolean csvExistent = true;
+		
 		try {
-			if(Files.notExists(logFolder, LinkOption.NOFOLLOW_LINKS))
-				Files.createDirectory(logFolder);
+			if(Files.notExists(logPath, LinkOption.NOFOLLOW_LINKS)){
+				Files.createDirectory(logPath);
+			}
+			if(Files.notExists(csvPath, LinkOption.NOFOLLOW_LINKS)){
+				csvFile = new File(logString + "/" + csvString);
+				csvFile.createNewFile();
+				csvExistent = false;
+			}
 			
+			BufferedWriter output = new BufferedWriter(new FileWriter(logString + "/" + csvString, true));
+			if(!csvExistent){
+				output.append(headLine);
+				output.newLine();
+			}
+			output.append(logLine);
+			output.newLine();
+			output.flush();
+			output.close();		
 		} catch (IOException e) {
 			System.out.println("Could not create RBMLogs folder");
 			e.printStackTrace();
@@ -182,5 +153,68 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
 		}
+	}
+
+	@Override
+	public void train(double[][] trainingData, int max_epochs) {
+		rbm.train(trainingData, max_epochs);
+	}
+
+	@Override
+	public double error(double[][] trainingData) {
+		return rbm.error(trainingData);
+	}
+
+	@Override
+	public double[][] run_visible(double[][] userData) {
+		return rbm.run_visible(userData);
+	}
+
+	@Override
+	public double[][] run_hidden(double[][] hiddenData) {
+		return rbm.run_visible(hiddenData);
+	}
+
+	@Override
+	public void setWeightsWithBias(double[][] weights) {
+		rbm.setWeightsWithBias(weights);
+	}
+
+	@Override
+	public double[][][] getWeights() {
+		return rbm.getWeights();
+	}
+
+	@Override
+	public double[][][] getWeightsWithBias() {
+		return rbm.getWeightsWithBias();
+	}
+
+	@Override
+	public int getInputSize() {
+		return rbm.getInputSize();
+	}
+
+	@Override
+	public int getOutputSize() {
+		return rbm.getOutputSize();
+	}
+
+	@Override
+	public double getLearnRate() {
+		return rbm.getLearnRate();
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		return rbm.getLogisticFunction();
+	}
+	
+	public String getLogisticFunctionName(){
+		return rbm.getLogisticFunction().getClass().getSimpleName();
+	}
+	
+	public String getRbmName(){
+		return rbm.getClass().getSimpleName();
 	}
 }
