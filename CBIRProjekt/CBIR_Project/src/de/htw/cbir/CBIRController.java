@@ -40,6 +40,7 @@ import de.htw.cma.GeneticDCTRBMError;
 import de.htw.cma.GeneticHistogram;
 import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.IRBMLogger;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMJBlasRandomed;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
@@ -246,6 +247,10 @@ public class CBIRController {
 		if(rbm != null) {
 			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);
+			if(rbm instanceof IRBMLogger){
+				IRBMLogger logger = (IRBMLogger)(rbm);
+				logger.log();
+			}
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		}
 		sorter.getFeatureVectors();

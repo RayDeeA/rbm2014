@@ -119,7 +119,6 @@ public class RBMVisualizationFrame extends JFrame{
 		errorText = Double.toString(error);
 		visPanel.update(weights);
 		errorLabel.setText("Error: " + errorText); 
-		System.out.println("update");
 		this.pack();
 
 	}
