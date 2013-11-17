@@ -147,7 +147,7 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visual(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");
@@ -173,7 +173,7 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visual(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");

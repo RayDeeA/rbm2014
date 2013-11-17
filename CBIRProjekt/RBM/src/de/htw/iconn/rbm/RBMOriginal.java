@@ -236,7 +236,7 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 		/*
 	    Assuming the RBM has been trained (so that weights for the network have been learned),
 	    run the network on a set of visible units, to get a sample of the hidden units.
@@ -375,7 +375,7 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		return new double[][][]{this.weights};
 	}
 
@@ -409,7 +409,7 @@ public class RBMOriginal implements IRBM {
 		
 		for(int i = 0; i < 1; i++) {
 			rbm.printMatrix("User", user);
-			double[][] result1 = rbm.run_visual(user);
+			double[][] result1 = rbm.run_visible(user);
 			rbm.printMatrix("Result", result1);
 			double[][] result2 = rbm.run_hidden(result1);
 			rbm.printMatrix("Check", result2);

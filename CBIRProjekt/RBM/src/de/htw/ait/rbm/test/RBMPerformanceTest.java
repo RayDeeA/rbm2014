@@ -25,7 +25,7 @@ public class RBMPerformanceTest {
 		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		rbm.train(trainingData, max_epochs);
 	
-		double[][] hidden_data = rbm.run_visual(trainingData);
+		double[][] hidden_data = rbm.run_visible(trainingData);
 		double[][] reconstructed_data = rbm.run_hidden(hidden_data);
 		
 		double diff = 0;

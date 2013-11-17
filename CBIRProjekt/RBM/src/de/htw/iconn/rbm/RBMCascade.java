@@ -40,7 +40,7 @@ public class RBMCascade implements IRBM {
 		
 		for (int i = 0; i < rbms.length; i++) {
 			rbms[i].train(data, max_epochs);
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 	}
 
@@ -51,19 +51,19 @@ public class RBMCascade implements IRBM {
 		double[][] data = trainingData;
 		for (int i = 0; i < rbms.length; i++) {
 			sumError += rbms[i].error(data);
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 		
 		return sumError;
 	}
 
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 		
 		double[][] data = userData;
 		for (int i = 0; i < rbms.length; i++) {
 
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 		return data;
 	}
@@ -104,18 +104,18 @@ public class RBMCascade implements IRBM {
 	}
 
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		LinkedList<double[][]> weights = new LinkedList<>();
 		
 		for (IRBM rbm : rbms) {
 			if(rbm instanceof RBMCascade) {
-				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBIAS();
+				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBias();
 				for (double[][] ds : cascadeWeights) {
 					weights.add(ds);
 				}
 			}
 			else {
-				weights.add(rbm.getWeightsWithBIAS()[0]);
+				weights.add(rbm.getWeightsWithBias()[0]);
 			}
 		}
 		

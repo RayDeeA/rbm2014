@@ -116,7 +116,7 @@ public class DCTRBM {
 			useData[0][j] = (fvFloat[j] + Math.abs(dimensionMin[j])) / (Math.abs(dimensionMin[j]) + Math.abs(dimensionMax[j]));
 		
 		// ermittle die hidden Neurons		
-		double[][] hidden_data = rbm.run_visual(useData);
+		double[][] hidden_data = rbm.run_visible(useData);
 		return hidden_data[0];
 	}
 

@@ -43,6 +43,7 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMJBlasRandomed;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
+import de.htw.iconn.rbm.RBMLogger;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
 import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
@@ -210,9 +211,9 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("RBMJBlas_Sigmoid")) {
-			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
+			rbm = new RBMLogger(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
-			rbm = new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
+			rbm = new RBMLogger(new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
 			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {

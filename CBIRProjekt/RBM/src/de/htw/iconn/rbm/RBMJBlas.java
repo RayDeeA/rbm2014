@@ -15,7 +15,7 @@ public class RBMJBlas implements IRBM {
     
     private DoubleMatrix weights;
     
-    public RBMJBlas(int input, int output, double learningRate, double[][] weights, ILogistic sigmoid) {
+    public RBMJBlas(int numVisible, int numHidden, double learningRate, double[][] weights, ILogistic sigmoid) {
 		this.learningRate = learningRate;
 		this.sigmoid = sigmoid;
 		
@@ -29,12 +29,12 @@ public class RBMJBlas implements IRBM {
 		
     }
     
-	public RBMJBlas(int numVisbible, int numHidden, double learningRate, ILogistic sigmoid) {
+	public RBMJBlas(int numVisible, int numHidden, double learningRate, ILogistic sigmoid) {
 		this.learningRate = learningRate;
 		this.sigmoid = sigmoid;
 		
 		
-		this.weights = DoubleMatrix.randn(numVisbible, numHidden).mmul(learningRate);
+		this.weights = DoubleMatrix.randn(numVisible, numHidden).mmul(learningRate);
 		
 		final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
 		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 	1);
@@ -128,7 +128,7 @@ public class RBMJBlas implements IRBM {
 	}
 	
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 
 		DoubleMatrix data = new DoubleMatrix(userData);
 		
@@ -182,7 +182,7 @@ public class RBMJBlas implements IRBM {
 	}
 	
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		return new double[][][]{this.weights.toArray2()};
 	}
 

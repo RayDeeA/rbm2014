@@ -261,7 +261,7 @@ public class RBMBla implements IRBM {
 	*/
 	
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 		
 		 int num_examples = userData.length;
 		 
@@ -351,7 +351,7 @@ public class RBMBla implements IRBM {
 	}
 	
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		return new double[][][]{this.weights};
 	}
 
