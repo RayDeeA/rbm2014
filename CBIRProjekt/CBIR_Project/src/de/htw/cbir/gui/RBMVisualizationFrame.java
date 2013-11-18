@@ -18,7 +18,6 @@ public class RBMVisualizationFrame extends JFrame{
 	private static RBMVisualizationPanel visPanel;
 	private static JPanel menuPanel;
 
-	private static JButton saveButton;
 	private static JButton loadButton;
 	private static JSlider slider;
 	private JLabel errorLabel;
@@ -61,16 +60,6 @@ public class RBMVisualizationFrame extends JFrame{
 		menuPanel = new JPanel(new BorderLayout(23, 23));
 		visPanel = new RBMVisualizationPanel(this, new Dimension(width, width));
 
-		// save
-		saveButton = new JButton("save");
-		saveButton.setPreferredSize(new Dimension(width/3, menuHeight));
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveFile();
-			}        	
-		});	
-		saveButton.setVisible(true);
-
 		// load
 		loadButton = new JButton("load");
 		loadButton.setPreferredSize(new Dimension(width/3, menuHeight));
@@ -96,8 +85,7 @@ public class RBMVisualizationFrame extends JFrame{
 		});
 		slider.setVisible(true);
 
-		menuPanel.add(saveButton, BorderLayout.WEST);
-		menuPanel.add(loadButton, BorderLayout.CENTER);
+		menuPanel.add(loadButton, BorderLayout.WEST);
 		menuPanel.add(slider, BorderLayout.EAST);
 
 		visPanel.setPreferredSize(new Dimension(width, width));
@@ -121,17 +109,6 @@ public class RBMVisualizationFrame extends JFrame{
 		errorLabel.setText("Error: " + errorText); 
 		this.pack();
 
-	}
-
-	//	frame.getContentPane().addMouseMotionListener(new MouseMotionAdapter()
-
-	/**
-	 * method that saves the current visualization data
-	 */
-	private void saveFile() {
-
-		//this.controller.saveButtonPressed();
-		
 	}
 
 	/**
