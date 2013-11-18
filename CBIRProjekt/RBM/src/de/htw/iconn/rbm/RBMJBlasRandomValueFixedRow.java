@@ -204,4 +204,9 @@ public class RBMJBlasRandomValueFixedRow implements IRBM {
 		return null;
 	}
 
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
+
 }

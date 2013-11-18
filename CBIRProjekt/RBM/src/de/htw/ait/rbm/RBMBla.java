@@ -379,5 +379,10 @@ public class RBMBla implements IRBM {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
 	
 }

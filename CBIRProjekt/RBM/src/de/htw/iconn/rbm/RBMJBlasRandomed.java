@@ -291,4 +291,9 @@ public class RBMJBlasRandomed implements IRBM {
 	public ILogistic getLogisticFunction() {
 		return this.logisticFunction;
 	}
+
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
 }

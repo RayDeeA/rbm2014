@@ -6,12 +6,26 @@ public class CBIREvaluationModel {
 	private int epochs;
 	private String evaluationType;
 	private int imageSetSize;
+	private double[][] resultWeights;
+	private double[][] startWeights;
 		
-	public CBIREvaluationModel(){
+	public CBIREvaluationModel(int imageSetSize){
 		this.epochs = 0;
 		this.mAP = 0.0;
 		this.error = 0.0;
 		this.evaluationType = "NA";
+		this.resultWeights = null;
+		this.startWeights = null;
+		this.imageSetSize = imageSetSize;
+	}
+	public CBIREvaluationModel(){
+		this(0);
+	}
+	public double[][] getStartWeights() {
+		return startWeights;
+	}
+	public void setStartWeights(double[][] startWeights) {
+		this.startWeights = startWeights;
 	}
 	public double getMAP() {
 		return mAP;
@@ -43,10 +57,18 @@ public class CBIREvaluationModel {
 	public void setImageSetSize(int imageSetSize) {
 		this.imageSetSize = imageSetSize;
 	}
+	public double[][] getResultWeights() {
+		return resultWeights;
+	}
+	public void setResultWeights(double[][] resultWeights) {
+		this.resultWeights = resultWeights;
+	}
 	public void reset(){
 		this.epochs = 0;
 		this.mAP = 0.0;
 		this.error = 0.0;
 		this.evaluationType = "NA";
-	}
+		this.resultWeights = null;
+		this.startWeights = null;
+	}	
 }

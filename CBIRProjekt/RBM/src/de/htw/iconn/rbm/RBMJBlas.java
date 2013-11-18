@@ -206,4 +206,9 @@ public class RBMJBlas implements IRBM {
 		return this.logisticFunction;
 	}
 
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
+
 }

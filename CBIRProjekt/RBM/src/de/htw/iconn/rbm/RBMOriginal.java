@@ -441,4 +441,9 @@ public class RBMOriginal implements IRBM {
 		return null;
 	}
 
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
+
 }

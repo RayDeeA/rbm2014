@@ -17,5 +17,6 @@ public interface IRBM {
 	public int getOutputSize();
 	public double getLearnRate();
 	public ILogistic getLogisticFunction();
+	public boolean hasBias();
 
 }

@@ -68,7 +68,6 @@ public class GeneticDCTRBMError {
 		int p = 0;
 		double error = 0.0;
 		while (cma.stopConditions.getNumber() == 0) {
-
 			// --- core iteration step ---
 			double[][] pop = cma.samplePopulation(); // get a new population of
 														// solutions
@@ -131,8 +130,10 @@ public class GeneticDCTRBMError {
 		
 		CBIREvaluationModel evaluationModel = evaluation.getEvaluationModel();
 		evaluationModel.setMAP(bestMap);
-		evaluationModel.setError(error);
 		evaluationModel.setEvaluationType("evolution");
+		evaluationModel.setResultWeights(bestWeights);
+		evaluationModel.setEpochs(p);
+		evaluationModel.setError(error);
 	}
 
 	private double MAP(double[] input) {

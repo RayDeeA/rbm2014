@@ -145,4 +145,10 @@ public class RBMCascade implements IRBM {
 		return null;
 	}
 
+	@Override
+	public boolean hasBias() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -53,12 +53,13 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		int epochs = evaluationModel.getEpochs();
 		int imageSetSize = evaluationModel.getImageSetSize();
 		String evaluationType = evaluationModel.getEvaluationType();
+		String includingBias = this.includingBias();
 		
 		//start logging
 		Date date = new Date();
 		String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(date);
-		String headLine = "RBM,evaluationType,inputSize,outputSize,learnRate,epochs,logisticFunction,error,mAP,imageSetSize,date";
-		String logLine = rbmName + "," + evaluationType + "," + inputSize + "," + outputSize + "," + learnRate + "," + epochs + "," + logisticFunctionName + "," + error + "," + mAP + "," + imageSetSize + "," + dateString;
+		String headLine = "RBM,evaluationType,inputSize,outputSize,includingBias,learnRate,epochs,logisticFunction,error,mAP,imageSetSize,date";
+		String logLine = rbmName + "," + evaluationType + "," + inputSize + "," + outputSize + "," + includingBias + "," + learnRate + "," + epochs + "," + logisticFunctionName + "," + error + "," + mAP + "," + imageSetSize + "," + dateString;
 		System.out.println(logLine);		
 		Path logPath = FileSystems.getDefault().getPath(logString);	
 		Path csvPath = FileSystems.getDefault().getPath(logString, csvString);
@@ -211,10 +212,27 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 	
 	public String getLogisticFunctionName(){
-		return rbm.getLogisticFunction().getClass().getSimpleName();
+		if(rbm.getLogisticFunction() != null){
+			return rbm.getLogisticFunction().getClass().getSimpleName();
+		}else{
+			return "NA";
+		}
 	}
 	
 	public String getRbmName(){
 		return rbm.getClass().getSimpleName();
+	}
+
+	@Override
+	public boolean hasBias() {
+		return rbm.hasBias();
+	}
+	
+	public String includingBias(){
+		if(this.hasBias()){
+			return "yes";
+		}else{
+			return "no";
+		}
 	}
 }

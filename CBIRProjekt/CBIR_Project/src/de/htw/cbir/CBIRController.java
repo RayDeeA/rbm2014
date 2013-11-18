@@ -54,7 +54,8 @@ public class CBIRController {
 
 	private Sorter sorter;
 	private ForkJoinPool pool;
-	private IRBM rbm;	
+	private IRBM rbm;
+	private DCTRBM dctRBM;
 	private CBIREvaluation evaluation;
 	private CBIREvaluationModel evaluationModel;
 	
@@ -73,7 +74,6 @@ public class CBIRController {
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;
 		
-		evaluationModel = new CBIREvaluationModel();
 		settings.setInputSizeValue(inputSize);
 		settings.setOutputSizeValue(outputSize);
 		
@@ -84,6 +84,8 @@ public class CBIRController {
 		this.visualizationFrame.setControllerRef(this);
 		// GUI Elemente
 		this.ui = new CBIRUI(this, this.visualizationFrame);
+		
+		this.evaluationModel = new CBIREvaluationModel(imageManager.getImageCount());
 	}
 	
 	public void changeLogisticTest(ActionEvent e) {
@@ -115,7 +117,7 @@ public class CBIRController {
 			logisticFunction = new TanHMatrixFunction();
 		}
 		
-		rbm = new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction);
+		rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction));
 		DCTRBM dctrbm = new DCTRBM(inputSize, outputSize, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
@@ -126,7 +128,7 @@ public class CBIRController {
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 		GeneticDCTRBMError gh = new GeneticDCTRBMError(dctrbm, imageManager, evaluation, pool);
 		gh.run();
-		
+		rbmEvolutionLog();
 	}
 	
 	public String[] getLogisticsTestNames() {
@@ -225,17 +227,35 @@ public class CBIRController {
 
 		}
 		if(rbm != null) {
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, rbm);
+			dctRBM = new DCTRBM(inputSize, outputSize, rbm);
 			updateVisualization(epochs, updateFrequency, dctRBM);			
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		}
 		sorter.getFeatureVectors();
+		rbmLog();
 	}
 	
 	public void rbmLog(){
+		System.out.println("RBM Log:");
+		if(rbm != null && rbm instanceof IRBMLogger){
+			if(dctRBM != null){
+				evaluationModel.setError(dctRBM.getError(imageManager.getImages()));
+			}
+			if(sorter != null){
+				evaluation = new CBIREvaluation(sorter, imageManager.getImages(), pool, evaluationModel);
+				evaluationModel.setMAP(evaluation.testAll(true, "Alle"));
+			}
+			evaluationModel.setEpochs(epochs);
+			evaluationModel.setEvaluationType("training");
+			IRBMLogger logger = (IRBMLogger)(rbm);
+			logger.log(evaluationModel);
+		}
+	}
+	
+	public void rbmEvolutionLog(){
+		System.out.println("RBM Evolution Log:");
 		if(rbm != null && rbm instanceof IRBMLogger){
 			IRBMLogger logger = (IRBMLogger)(rbm);
-			evaluationModel.setImageSetSize(imageManager.getImageCount());
 			logger.log(evaluationModel);
 		}
 	}
@@ -317,8 +337,6 @@ public class CBIRController {
 			Pic[] queryImages = imageManager.getImageInGroup(cmd).toArray(new Pic[0]);
 			evaluation.test(queryImages, true, cmd);
 		}
-		
-		rbmLog();
 	}
 
 	/**
@@ -386,7 +404,6 @@ public class CBIRController {
 			GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evaluation, pool);
 			gh.run();
 		}
-		rbmLog();
 	}
 
 	private void updateVisualization(int epochs, int updateFrequency,

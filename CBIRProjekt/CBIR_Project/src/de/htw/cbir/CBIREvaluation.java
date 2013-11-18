@@ -61,9 +61,6 @@ public class CBIREvaluation {
 		// beende die Analyse und zeige eventuell Ergebnisse
 		table.finish();
 		
-		evaluationModel.setMAP(MAP);
-		evaluationModel.setEvaluationType("testAll");
-		
 		return MAP;
 	}
 	
@@ -87,9 +84,6 @@ public class CBIREvaluation {
 		
 		// analyse
 		table.finish();
-		
-		evaluationModel.setMAP(MAP);
-		evaluationModel.setEvaluationType("test");
 		
 		return MAP;
 	}
