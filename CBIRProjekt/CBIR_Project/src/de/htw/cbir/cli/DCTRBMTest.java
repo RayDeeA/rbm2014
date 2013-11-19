@@ -28,11 +28,11 @@ public class DCTRBMTest {
 		
 		if(args.length > 1)
 			imageSetName = args[1];
-		else if(args.length > 2)
+		if(args.length > 2)
 			inputSize = Integer.parseInt(args[2]);
-		else if(args.length > 3)
+		if(args.length > 3)
 			outputSize = Integer.parseInt(args[3]);
-		else if(args.length > 4)
+		if(args.length > 4)
 			learnRate = Double.parseDouble(args[4]);
 		
 		// lade alle Bilder aus dem Ordner

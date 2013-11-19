@@ -411,3 +411,13 @@ Iteration,#Fevals: rb Function Value Delta( best ,worst) |idx: Max SD idx: Min S
 (9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1382710664676 (Fri Oct 25 16:17:44 CEST 2013)
 (9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1382710902767 (Fri Oct 25 16:21:42 CEST 2013)
 (9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1382710939841 (Fri Oct 25 16:22:19 CEST 2013)
+(9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1384858355920 (Tue Nov 19 11:52:35 CET 2013)
+Iteration,#Fevals: rb Function Value Delta( best ,worst) |idx: Max SD idx: Min SD  | minsigD  sigma Axisratio | time, in eig
+    1(19),     19: 6.5868774992598440e-01 (+0e+00,1e-01) | 127: 4.9e+00 93: 4.9e+00 | 4.9e+00 4.9e+00   1.00   |  4.8  0.0 
+(9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1384859718238 (Tue Nov 19 12:15:18 CET 2013)
+Iteration,#Fevals: rb Function Value Delta( best ,worst) |idx: Max SD idx: Min SD  | minsigD  sigma Axisratio | time, in eig
+    1(19),     19: 6.4091102477333930e-01 (+0e+00,1e-01) | 112: 4.9e+00 130: 4.9e+00 | 4.9e+00 4.9e+00   1.00   |  5.0  0.0 
+(9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1384859783309 (Tue Nov 19 12:16:23 CET 2013)
+Iteration,#Fevals: rb Function Value Delta( best ,worst) |idx: Max SD idx: Min SD  | minsigD  sigma Axisratio | time, in eig
+    1(19),     19: 6.7384638946136510e-01 (+0e+00,8e-02) | 14: 4.9e+00 69: 4.9e+00 | 4.9e+00 4.9e+00   1.00   |  4.8  0.0 
+(9,19)-CMA-ES(mu_eff=5.6), Ver="0.99.40", dimension=176, 0 diagonal iter., randomSeed=1384863848405 (Tue Nov 19 13:24:08 CET 2013)
