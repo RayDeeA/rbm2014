@@ -21,7 +21,7 @@ public class DCTRBMTest {
 		ImageManager imageManager = new ImageManager();
 		imageManager.loadImages(new File("images//WebImages_71x6"));
 		
-		// keine Besonderen Settings sind n��tig
+		// keine Besonderen Settings sind nötig
 		Settings settings = new Settings();
 		
 		// erstelle die Sortierart und das Histogram ein
@@ -32,10 +32,11 @@ public class DCTRBMTest {
 		// ------------------- neu erstellen --------------s---------
 		int inputSize = 15;
 		int outputSize = 10;
+		double learnRate = 0.1;
 		
-		DCTRBM rbm = new DCTRBM(inputSize, outputSize);
+		DCTRBM rbm = new DCTRBM(inputSize, outputSize, learnRate);
 		// nur damit die Datenanalysiert werden und 
-		// eine Normalisierung sp��ter stattfinden kann
+		// eine Normalisierung später stattfinden kann
 		rbm.train(allImages, 0); 
 		Sorter_DCTRBM sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 	

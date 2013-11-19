@@ -14,6 +14,7 @@ import javax.swing.JSlider;
 
 import de.htw.cbir.CBIRController;
 import de.htw.cbir.model.PrecisionRecallTable;
+import de.htw.cbir.model.Settings;
 import de.htw.cbir.model.Settings.SettingOption;
 
 public class CBIRUI {
@@ -21,7 +22,7 @@ public class CBIRUI {
 	// Fenstertitel festlegen
 	private static final String str = "IR Project";
 
-	// anf��gnliche Fenstergr����e
+	// anfängliche Fenstergröße
 	private static final int frameSizeX = 500;
 	private static final int frameSizeY = 500;
 
@@ -144,40 +145,78 @@ public class CBIRUI {
 
 		// Menu "Einstellungen"
 		JMenu settingsMenu = new JMenu("Einstellungen");
-
+		Settings settings = controller.getSettings();
+		
 		// Menupunkt "Helligkeit"
 		JMenu m_lumValue = new JMenu("Lum Wert");
-		final DoubleJSlider lumSlider = DoubleJSlider.createDoubleJSlider(0, 5,
-				0, 1);
+		final DoubleJSlider lumSlider = DoubleJSlider.createDoubleJSlider(0, 5, settings.getLuminance(), 1);
 		lumSlider.setMajorTickSpacing(1);
 		lumSlider.setMinorTickSpacing(0.1);
 		lumSlider.setPaintTicks(true);
 		lumSlider.setPaintLabels(true);
-		controller.getSettings().bind(SettingOption.LUM, lumSlider);
+		settings.bind(SettingOption.LUMINANCE, lumSlider);
 		m_lumValue.add(lumSlider);
 		settingsMenu.add(m_lumValue);
 
-		// Menupunkt "inputSize"
-		JMenu m_inputSizeValue = new JMenu("inputSize");
-		final JSlider inputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, controller.getInputSize());
-		inputSizeSlider.setMajorTickSpacing(5);
-		inputSizeSlider.setMinorTickSpacing(1);
-		inputSizeSlider.setPaintTicks(true);
-		inputSizeSlider.setPaintLabels(true);
-		controller.getSettings().bind(SettingOption.INPUT_SIZE, inputSizeSlider);
-		m_inputSizeValue.add(inputSizeSlider);
-		settingsMenu.add(m_inputSizeValue);
-		
-		// Menupunkt "inputSize"
-		JMenu m_outputSizeValue = new JMenu("outputSize");
-		final JSlider outputSizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 30, controller.getOutputSize());
-		outputSizeSlider.setMajorTickSpacing(5);
-		outputSizeSlider.setMinorTickSpacing(1);
-		outputSizeSlider.setPaintTicks(true);
-		outputSizeSlider.setPaintLabels(true);
-		controller.getSettings().bind(SettingOption.OUTPUT_SIZE, outputSizeSlider);
-		m_outputSizeValue.add(outputSizeSlider);
-		settingsMenu.add(m_outputSizeValue);
+		// Menu "Einstellungen->RBM"
+		JMenu rbmSettingsMenu = new JMenu("RBM");
+					
+			// Menupunkt "Einstellungen->RBM->RBM Epochs"
+			JMenu m_epochs = new JMenu("Epochs (in K)");
+			final JSlider epochsSlider = new JSlider(0, 30, settings.getEpochs() / 1000);
+			epochsSlider.setMajorTickSpacing(5);
+			epochsSlider.setMinorTickSpacing(1);
+			epochsSlider.setPaintTicks(true);
+			epochsSlider.setPaintLabels(true);
+			settings.bind(SettingOption.EPOCHS, epochsSlider);
+			m_epochs.add(epochsSlider);
+			rbmSettingsMenu.add(m_epochs);
+			
+			// Menupunkt "Einstellungen->RBM->Update Frequency"
+			JMenu m_updateFrequency = new JMenu("Update Frequency");
+			final JSlider updateFrequencySlider = new JSlider(0, 300, settings.getUpdateFrequency());
+			updateFrequencySlider.setMajorTickSpacing(100);
+			updateFrequencySlider.setMinorTickSpacing(50);
+			updateFrequencySlider.setPaintTicks(true);
+			updateFrequencySlider.setPaintLabels(true);
+			settings.bind(SettingOption.UPDATE_FREQUENCY, updateFrequencySlider);
+			m_updateFrequency.add(updateFrequencySlider);
+			rbmSettingsMenu.add(m_updateFrequency);
+	
+			// Menupunkt "Einstellungen->RBM->Learnrate"
+			JMenu m_rbmLearnRate = new JMenu("Learnrate");
+			final DoubleJSlider rbmLearnRateSlider = DoubleJSlider.createDoubleJSlider(0, 2, settings.getLearnRate(), 1);
+			rbmLearnRateSlider.setMajorTickSpacing(0.5);
+			rbmLearnRateSlider.setMinorTickSpacing(0.1);
+			rbmLearnRateSlider.setPaintTicks(true);
+			rbmLearnRateSlider.setPaintLabels(true);
+			settings.bind(SettingOption.LEARN_RATE, rbmLearnRateSlider);
+			m_rbmLearnRate.add(rbmLearnRateSlider);
+			rbmSettingsMenu.add(m_rbmLearnRate);
+			
+			// Menupunkt "Einstellungen->RBM->Input size"
+			JMenu m_rbmInputSize = new JMenu("Input size");
+			final JSlider rbmInputSizeSlider = new JSlider(0, 15, settings.getInputSize());
+			rbmInputSizeSlider.setMajorTickSpacing(5);
+			rbmInputSizeSlider.setMinorTickSpacing(1);
+			rbmInputSizeSlider.setPaintTicks(true);
+			rbmInputSizeSlider.setPaintLabels(true);
+			settings.bind(SettingOption.INPUT_SIZE, rbmInputSizeSlider);
+			m_rbmInputSize.add(rbmInputSizeSlider);
+			rbmSettingsMenu.add(m_rbmInputSize);
+	
+			// Menupunkt "Einstellungen->RBM->Output Size"
+			JMenu m_rbmOutputSize = new JMenu("Output Size");
+			final JSlider rbmOutputSizeSlider = new JSlider(0, 30, settings.getOutputSize());
+			rbmOutputSizeSlider.setMajorTickSpacing(5);
+			rbmOutputSizeSlider.setMinorTickSpacing(1);
+			rbmOutputSizeSlider.setPaintTicks(true);
+			rbmOutputSizeSlider.setPaintLabels(true);
+			settings.bind(SettingOption.OUTPUT_SIZE, rbmOutputSizeSlider);
+			m_rbmOutputSize.add(rbmOutputSizeSlider);
+			rbmSettingsMenu.add(m_rbmOutputSize);
+
+		settingsMenu.add(rbmSettingsMenu);
 
 		menuBar.add(settingsMenu);
 

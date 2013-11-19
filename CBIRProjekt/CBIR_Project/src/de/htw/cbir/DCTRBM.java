@@ -11,7 +11,7 @@ import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public class DCTRBM {
 
-	private static double learnRate = 0.1;
+	
 	
 	// Datananalyse
 	private double dimensionMin[], dimensionMax[];
@@ -19,6 +19,7 @@ public class DCTRBM {
 	// Anzahl der Eingangs und Ausgangsneuronen
 	private int inputSize;
 	private int outputSize;
+	private double learnRate;
 	
 	private IRBM rbm;
 	
@@ -27,9 +28,10 @@ public class DCTRBM {
 	 * @param inputSize Gueltig sind 3,6,9,12 oder 15
 	 * @param outputSize
 	 */
-	public DCTRBM(int inputSize, int outputSize) {
+	public DCTRBM(int inputSize, int outputSize, double learnRate) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
+		this.learnRate = learnRate;
 		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 	}
 	

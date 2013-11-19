@@ -58,25 +58,9 @@ public class CBIRController {
 	private DCTRBM dctRBM;
 	private CBIREvaluation evaluation;
 	private CBIREvaluationModel evaluationModel;
-	
-	private int inputSize = 15;
-	private int outputSize = 4;
-	private double learnRate = 0.1;
-	private int epochs = 10000;
-	private int updateFrequency = 100;
 
-	public int getInputSize(){
-		return inputSize;
-	}
-	public int getOutputSize(){
-		return outputSize;
-	}
 	public CBIRController(Settings settings, ImageManager imageManager) {
-		this.settings = settings;
-		
-		settings.setInputSizeValue(inputSize);
-		settings.setOutputSizeValue(outputSize);
-		
+		this.settings = settings;		
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
 
@@ -91,8 +75,9 @@ public class CBIRController {
 	public void changeLogisticTest(ActionEvent e) {
 		evaluationModel.reset();
 		
-		inputSize = settings.getInputSizeValue();
-		outputSize = settings.getOutpotSizeValue();
+		int inputSize = settings.getInputSize();
+		int outputSize = settings.getOutputSize();
+		double learnRate = settings.getLearnRate();
 
 		Pic[] allImages = imageManager.getImages();
 
@@ -149,8 +134,13 @@ public class CBIRController {
 	public void changeSorter(ActionEvent e) {
 		evaluationModel.reset();
 		rbm = null;
-		inputSize = settings.getInputSizeValue();
-		outputSize = settings.getOutpotSizeValue();
+		
+		int epochs = settings.getEpochs();
+		int updateFrequency = settings.getUpdateFrequency();
+		int inputSize = settings.getInputSize();
+		int outputSize = settings.getOutputSize();
+		double learnRate = settings.getLearnRate();
+		
 		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -173,7 +163,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("FV15DCT")) {
 			sorter = new Sorter_FV15DCT(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("DCTRBM")) {
-			DCTRBM dctRBM = new DCTRBM(15, 4);
+			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, learnRate);
 			dctRBM.train(allImages, 0);
 
 			// made global for update RBMVisualizationFrame.update()
@@ -183,8 +173,9 @@ public class CBIRController {
 			System.out.println("error " + error);
 			System.out.println("raw error " + rawError);
 
-			for(int i = 0; i < 30; i++) {	
-				dctRBM.train(allImages, 100);
+			int rounds = epochs / updateFrequency;
+			for(int i = 0; i < rounds; i++) {	
+				dctRBM.train(allImages, updateFrequency);
 				visualizationFrame.update(dctRBM.getWeights(), error);
 			}
 
@@ -245,7 +236,7 @@ public class CBIRController {
 				evaluation = new CBIREvaluation(sorter, imageManager.getImages(), pool, evaluationModel);
 				evaluationModel.setMAP(evaluation.testAll(true, "Alle"));
 			}
-			evaluationModel.setEpochs(epochs);
+			evaluationModel.setEpochs(settings.getEpochs());
 			evaluationModel.setEvaluationType("training");
 			IRBMLogger logger = (IRBMLogger)(rbm);
 			logger.log(evaluationModel);
@@ -346,8 +337,9 @@ public class CBIRController {
 	 */
 	public void triggerAutomaticTests(ActionEvent e) {
 
-		inputSize = settings.getInputSizeValue();
-		outputSize = settings.getOutpotSizeValue();
+		int inputSize = settings.getInputSize();
+		int outputSize = settings.getOutputSize();
+		double learnRate = settings.getLearnRate();
 		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -358,7 +350,7 @@ public class CBIRController {
 			for (int i = 0; i < 50; i += 2) {
 
 				// berechne die Featurevektoren
-				sett.setLumValue((double) i / 10);
+				sett.setLuminance((double) i / 10);
 				sorter = new Sorter_ColorMean2(allImages, sett, pool);
 				sorter.getFeatureVectors();
 
@@ -383,7 +375,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("Finde RBM Weights")) {
 
 
-			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
+			DCTRBM rbm = new DCTRBM(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0);
@@ -394,7 +386,7 @@ public class CBIRController {
 			gh.run(visualizationFrame);
 		} else if (cmd.equalsIgnoreCase("reduziere den RBM Fehler")) {
 
-			DCTRBM rbm = new DCTRBM(inputSize, outputSize);
+			DCTRBM rbm = new DCTRBM(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0);
