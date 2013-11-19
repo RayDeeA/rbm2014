@@ -30,7 +30,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
 		
-		// initial zuf��llige Gewichte
+		// initial zufällige Gewichte
 		double[][] weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
@@ -85,7 +85,8 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 			int outmod = 10;
 			
 			// error of 42 added because of signature of update method to write on label
-			frame.update(convert(cma.getBestRecentX()), 42.0);
+			if(frame != null)
+				frame.update(convert(cma.getBestRecentX()), 42.0);
 			if (cma.getCountIter() % (10*outmod) == 1) {
 				cma.printlnAnnotation(); // might write file as well
 				save(cma.getBestX(), frame);
@@ -111,7 +112,8 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		double[][] weights = convert(input);
 		//rbm.setWeights(weights);
 		// error of 42 added because of signature of update method to write on label
-		frame.update(weights, 42.0);
+		if(frame != null)
+			frame.update(weights, 42.0);
 		
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
@@ -144,7 +146,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
 		eval.getSorter().getFeatureVectors();
-		return 1 - eval.testAll(false, "ColorSpaceDistance");
+		return 1 - eval.testAll(false, "CMA increase MAP");
 	}
 		
 	@Override
