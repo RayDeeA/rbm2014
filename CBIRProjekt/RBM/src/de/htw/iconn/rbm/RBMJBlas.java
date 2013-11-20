@@ -18,32 +18,27 @@ public class RBMJBlas implements IRBM {
     private DoubleMatrix weights;
     
 	public RBMJBlas(int numVisible, int numHidden, double learningRate, ILogistic sigmoid) {
+		this(numVisible, numHidden, learningRate, sigmoid, false, 0);
+	}
+	
+	public RBMJBlas(int numVisible, int numHidden, double learningRate, ILogistic sigmoid, boolean useSeed, int seed) {
 		this.learnRate = learningRate;
 		this.logisticFunction = sigmoid;
 		
-		this.weights = DoubleMatrix.randn(numVisible, numHidden).mmul(0.1);
+		if(useSeed) {
+			Random random = new Random(seed);
+			double[][] weights = new double[numVisible][numHidden];
+			for (int v = 0; v < numVisible; v++) 
+				for (int h = 0; h < numHidden; h++) 
+					weights[v][h] = 0.1 * random.nextGaussian();
+			
+			this.weights = new DoubleMatrix(weights);
+		} else {
+			this.weights = DoubleMatrix.randn(numVisible, numHidden).mmul(0.1);
+		}
 		
 		final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
 		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 1);
-		
-		this.weights = DoubleMatrix.concatHorizontally(oneVectorCol, this.weights);
-		this.weights = DoubleMatrix.concatVertically(oneVectorRow, this.weights);
-	}
-	
-	public RBMJBlas(int numVisible, int numHidden, double learningRate, ILogistic sigmoid, int seed) {
-		this.learnRate = learningRate;
-		this.logisticFunction = sigmoid;
-		
-		Random random = new Random(seed);
-		double[][] weights = new double[numVisible][numHidden];
-		for (int v = 0; v < numVisible; v++) 
-			for (int h = 0; h < numHidden; h++) 
-				weights[v][h] = 0.1*random.nextGaussian();
-		
-		this.weights = new DoubleMatrix(weights);
-		
-		final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
-		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 	1);
 		
 		this.weights = DoubleMatrix.concatHorizontally(oneVectorCol, this.weights);
 		this.weights = DoubleMatrix.concatVertically(oneVectorRow, this.weights);
@@ -56,7 +51,7 @@ public class RBMJBlas implements IRBM {
 		this.weights = new DoubleMatrix(weights);
 		
 		final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
-		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 	1);
+		final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 1);
 		
 		this.weights = DoubleMatrix.concatHorizontally(oneVectorCol, this.weights);
 		this.weights = DoubleMatrix.concatVertically(oneVectorRow, this.weights);
@@ -74,33 +69,26 @@ public class RBMJBlas implements IRBM {
     	
     	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);  	
     	
-    	   	
+    	posHiddenProbs.putColumn(0, DoubleMatrix.ones(posHiddenProbs.getRows(), 1)); 	
 	    
 	    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
 	    
 	    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
 	    
-	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
-	    		     
+	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));	     
 		
 	    double currentError = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
-	    
 		
 		return currentError;
 	}
 	
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {
-		
-//		Printer.printMatrix("JBLAS Weights", weights);
-		
-		
+
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
 		final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
-		
-//		Printer.printMatrix("JBLAS DataWithBias", dataWithBias);
 	    
 	    for (int i = 0; i < max_epochs; i++) {
 	    	
@@ -122,25 +110,11 @@ public class RBMJBlas implements IRBM {
 		   
 		    final DoubleMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
 		    
-		    
 		    final DoubleMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);	 
 		    
 		    // Update weights
 		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learnRate / data.getRows() ) );
 		    error = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
-		    
-
-//		    Printer.printMatrix("JBLAS posHiddenActivations", posHiddenActivations);
-//		    Printer.printMatrix("JBLAS posHiddenProbs", posHiddenProbs);
-//		    Printer.printMatrix("JBLAS posAssociations", posAssociations);
-//		    Printer.printMatrix("JBLAS negVisibleActivations", negVisibleActivations);
-//		    Printer.printMatrix("JBLAS negVisibleProbs", negVisibleProbs);
-//		    Printer.printMatrix("JBLAS negHiddenActivations", negHiddenActivations);
-//		    Printer.printMatrix("JBLAS negHiddenProbs", negHiddenProbs);
-//		    Printer.printMatrix("JBLAS negAssociations", negAssociations);		
-//		    
-//		    Printer.printMatrix("JBLAS weights", weights);
-//		    System.out.println(data.getRows());
 		    
 		    System.out.println(error);
 	    }
@@ -161,7 +135,7 @@ public class RBMJBlas implements IRBM {
 		
 	    // Calculate the probabilities of turning the hidden units on.
 	    final DoubleMatrix hiddenProbs = logisticFunction.function(hiddenActivations);
-//	    final DoubleMatrix hiddenProbs = hiddenActivations;
+	    //final DoubleMatrix hiddenProbs = hiddenActivations;
 	    
 	    final DoubleMatrix hiddenProbsWithoutBias = hiddenProbs.getRange(0,hiddenProbs.getRows(), 1, hiddenProbs.getColumns());
 

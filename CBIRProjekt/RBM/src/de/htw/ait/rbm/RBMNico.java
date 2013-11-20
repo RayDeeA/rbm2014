@@ -16,23 +16,14 @@ public class RBMNico implements IRBM {
 	double[][] weights; 
 	
 	public RBMNico(int numVisible, int numHidden, double learningRate) {
-		num_visible =   numVisible;
-		num_hidden =    numHidden;
-		learning_rate = learningRate;
-		random = new Random();
-		
-		// initial zufaellige Gewichte		
-		weights = new double[num_visible+1][num_hidden+1];
-		for (int v = 1; v < num_visible+1; v++) 
-			for (int h = 1; h < num_hidden+1; h++) 
-				weights[v][h] = 0.1*random.nextGaussian();
+		this(numVisible, numHidden, learningRate, false, 0);
 	}
 	
-	public RBMNico(int numVisible, int numHidden, double learningRate, int seed) {
+	public RBMNico(int numVisible, int numHidden, double learningRate, boolean useSeed, int seed) {
 		num_visible =   numVisible;
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
-		random = new Random(seed);
+		random = (useSeed) ? new Random(seed) : new Random();
 		
 		// initial zufaellige Gewichte		
 		weights = new double[num_visible+1][num_hidden+1];
@@ -40,7 +31,7 @@ public class RBMNico implements IRBM {
 			for (int h = 1; h < num_hidden+1; h++) 
 				weights[v][h] = 0.1 * random.nextGaussian();
 	}
-
+	
 	public RBMNico(int numVisible, int numHidden, double learningRate, double[][] weights) {
 		this.num_visible =   numVisible;
 		this.num_hidden =    numHidden;
