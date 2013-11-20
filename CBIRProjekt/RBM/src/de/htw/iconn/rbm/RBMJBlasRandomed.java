@@ -8,8 +8,8 @@ import de.htw.iconn.rbm.functions.ILogistic;
 
 public class RBMJBlasRandomed implements IRBM {
     
-    private double learningRate;
-    private final ILogistic sigmoid;
+    private double learnRate;
+    private final ILogistic logisticFunction;
     
     
     private double offset = .01;
@@ -19,9 +19,9 @@ public class RBMJBlasRandomed implements IRBM {
     
     private DoubleMatrix weights;
     
-    public RBMJBlasRandomed(int numVisbible, int numHidden, double learningRate, double[][] weights, ILogistic sigmoid) {
-		this.learningRate = learningRate;
-		this.sigmoid = sigmoid;
+    public RBMJBlasRandomed(int numVisbible, int numHidden, double learnRate, double[][] weights, ILogistic logisticFunction) {
+		this.learnRate = learnRate;
+		this.logisticFunction = logisticFunction;
 		
 		this.weights = new DoubleMatrix(weights);
 		
@@ -33,9 +33,9 @@ public class RBMJBlasRandomed implements IRBM {
 		
     }
     
-	public RBMJBlasRandomed(int numVisbible, int numHidden, double learningRate, ILogistic sigmoid) {
-		this.learningRate = learningRate;
-		this.sigmoid = sigmoid;
+	public RBMJBlasRandomed(int numVisbible, int numHidden, double learningRate, ILogistic logisticFunction) {
+		this.learnRate = learningRate;
+		this.logisticFunction = logisticFunction;
 		
 		
 		this.weights = DoubleMatrix.randn(numVisbible, numHidden).mmul(learningRate);
@@ -57,7 +57,7 @@ public class RBMJBlasRandomed implements IRBM {
 		
     	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
     	
-    	final DoubleMatrix posHiddenProbs = sigmoid.function(posHiddenActivations);  	
+    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);  	
     	
     	// Attempt to find a equivalent to:
     	// hidden_states[:,:] = hidden_probs > np.random.rand(num_examples, self.num_hidden + 1).
@@ -84,7 +84,7 @@ public class RBMJBlasRandomed implements IRBM {
 		
 	    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
 	    
-	    final DoubleMatrix negVisibleProbs = sigmoid.function(negVisibleActivations);
+	    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
 	    
 	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
 	    		     
@@ -112,7 +112,7 @@ public class RBMJBlasRandomed implements IRBM {
 	    	
 	    	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 	    	
-	    	final DoubleMatrix posHiddenProbs = sigmoid.function(posHiddenActivations);  	
+	    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);  	
 	    	
 	    	
     	 	// Attempt to find a equivalent to:
@@ -147,7 +147,7 @@ public class RBMJBlasRandomed implements IRBM {
 		    
 			// end of new stuff --
 		    
-		    final DoubleMatrix negVisibleProbs = sigmoid.function(negVisibleActivations);
+		    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
 		    		    
 		    
 		    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
@@ -155,12 +155,12 @@ public class RBMJBlasRandomed implements IRBM {
 		    
 		    final DoubleMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);		    
 		   
-		    final DoubleMatrix negHiddenProbs = sigmoid.function(negHiddenActivations);	    
+		    final DoubleMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);	    
 		    
 		    final DoubleMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);	 
 		    
 		    // Update weights
-		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learningRate / data.getRows() ) );
+		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learnRate / data.getRows() ) );
 		    error = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
 		    
 
@@ -182,7 +182,7 @@ public class RBMJBlasRandomed implements IRBM {
 	}
 	
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 
 		DoubleMatrix data = new DoubleMatrix(userData);
 		
@@ -194,7 +194,7 @@ public class RBMJBlasRandomed implements IRBM {
 	    final DoubleMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 		
 	    // Calculate the probabilities of turning the hidden units on.
-	    final DoubleMatrix hiddenProbs = sigmoid.function(hiddenActivations);
+	    final DoubleMatrix hiddenProbs = logisticFunction.function(hiddenActivations);
 //	    final DoubleMatrix hiddenProbs = hiddenActivations;
 	    double[][] randomMatrix = DoubleMatrix.rand(userData.length, userData[0].length+1).toArray2();
     	
@@ -231,7 +231,7 @@ public class RBMJBlasRandomed implements IRBM {
 		DoubleMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
 	  
 	    // Calculate the probabilities of turning the visible units on.
-		DoubleMatrix visibleProbs = sigmoid.function(visibleActivations);
+		DoubleMatrix visibleProbs = logisticFunction.function(visibleActivations);
 		
 	    double[][] randomMatrix = DoubleMatrix.rand(hiddenData.length, hiddenData[0].length+1).toArray2();
     	
@@ -268,7 +268,7 @@ public class RBMJBlasRandomed implements IRBM {
 	}
 	
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		return new double[][][]{this.weights.toArray2()};
 	}
 
@@ -282,4 +282,18 @@ public class RBMJBlasRandomed implements IRBM {
 		return weights.getColumns();
 	}
 
+	@Override
+	public double getLearnRate() {
+		return this.learnRate;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		return this.logisticFunction;
+	}
+
+	@Override
+	public boolean hasBias() {
+		return true;
+	}
 }

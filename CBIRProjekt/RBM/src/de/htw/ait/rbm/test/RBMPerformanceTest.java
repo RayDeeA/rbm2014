@@ -1,5 +1,5 @@
 package de.htw.ait.rbm.test;
-import de.htw.ait.rbm.RBMNico;
+import de.htw.ait.rbm.RBMBla;
 
 
 public class RBMPerformanceTest {
@@ -22,10 +22,10 @@ public class RBMPerformanceTest {
 		}
 		
 		
-		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
+		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		rbm.train(trainingData, max_epochs);
 	
-		double[][] hidden_data = rbm.run_visual(trainingData);
+		double[][] hidden_data = rbm.run_visible(trainingData);
 		double[][] reconstructed_data = rbm.run_hidden(hidden_data);
 		
 		double diff = 0;

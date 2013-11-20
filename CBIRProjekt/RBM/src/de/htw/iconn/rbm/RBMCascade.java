@@ -3,6 +3,7 @@ package de.htw.iconn.rbm;
 import java.util.LinkedList;
 
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
 
 
 public class RBMCascade implements IRBM {
@@ -40,7 +41,7 @@ public class RBMCascade implements IRBM {
 		
 		for (int i = 0; i < rbms.length; i++) {
 			rbms[i].train(data, max_epochs);
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 	}
 
@@ -51,19 +52,19 @@ public class RBMCascade implements IRBM {
 		double[][] data = trainingData;
 		for (int i = 0; i < rbms.length; i++) {
 			sumError += rbms[i].error(data);
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 		
 		return sumError;
 	}
 
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 		
 		double[][] data = userData;
 		for (int i = 0; i < rbms.length; i++) {
 
-			data = rbms[i].run_visual(data);
+			data = rbms[i].run_visible(data);
 		}
 		return data;
 	}
@@ -104,18 +105,18 @@ public class RBMCascade implements IRBM {
 	}
 
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		LinkedList<double[][]> weights = new LinkedList<>();
 		
 		for (IRBM rbm : rbms) {
 			if(rbm instanceof RBMCascade) {
-				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBIAS();
+				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBias();
 				for (double[][] ds : cascadeWeights) {
 					weights.add(ds);
 				}
 			}
 			else {
-				weights.add(rbm.getWeightsWithBIAS()[0]);
+				weights.add(rbm.getWeightsWithBias()[0]);
 			}
 		}
 		
@@ -130,6 +131,24 @@ public class RBMCascade implements IRBM {
 	@Override
 	public int getOutputSize() {
 		return rbms[rbms.length - 1].getOutputSize();
+	}
+
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasBias() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

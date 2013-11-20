@@ -24,9 +24,9 @@ public class DoubleJSlider extends JSlider {
     	
     	int precision = (int) Math.pow(10, digitsBehindDecimal);
     	
-    	final int imin = ((int)min*precision);
-    	final int imax = ((int)max*precision);
-    	final int ivalue = ((int)value*precision);
+    	final int imin = (int)(min*precision);
+    	final int imax = (int)(max*precision);
+    	final int ivalue = (int)(value*precision);
 
         return new DoubleJSlider(imin, imax, ivalue, digitsBehindDecimal);  
     }
@@ -45,6 +45,11 @@ public class DoubleJSlider extends JSlider {
         super.setMajorTickSpacing(n * precision);
     }
     
+	public void setMajorTickSpacing(double d) {
+		int precision = (int) Math.pow(10, digitsBehindDecimal);
+		super.setMajorTickSpacing((int)(d * precision));
+	}
+	
     @Override
     public void setMinorTickSpacing(int n) {
     	int precision = (int) Math.pow(10, digitsBehindDecimal);

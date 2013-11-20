@@ -1,6 +1,6 @@
 package de.htw.ait.rbm.test;
 import de.htw.ait.rbm.Matrix;
-import de.htw.ait.rbm.RBMNico;
+import de.htw.ait.rbm.RBMBla;
 
 
 public class RBMTestMain {
@@ -33,7 +33,7 @@ public class RBMTestMain {
 
 	public static void main(String[] args) {
 		
-		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
+		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		
 		rbm.train(trainingData, max_epochs);
 	
@@ -43,7 +43,7 @@ public class RBMTestMain {
 		Matrix.mprint(useData);
 		
 		System.out.println("Hidden Data:");
-		double[][] hidden_data = rbm.run_visual(useData);
+		double[][] hidden_data = rbm.run_visible(useData);
 		
 		System.out.println("Visual activities:");
 		double[][] visual_data = rbm.run_hidden(hidden_data);

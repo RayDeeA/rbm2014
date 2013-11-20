@@ -12,11 +12,11 @@ import de.htw.cbir.model.Settings;
 
 public class Sorter_DCTRBM extends Sorter {
 
-	private DCTRBM dctRGBM;
+	private DCTRBM dctRBM;
 	
 	public Sorter_DCTRBM(Pic[] pics, Settings settings, DCTRBM dctRBM, ForkJoinPool pool) {
 		super(pics, settings, pool);
-		this.dctRGBM = dctRBM;
+		this.dctRBM = dctRBM;
 	}
 
 	///////////////////////////////////////////
@@ -44,7 +44,7 @@ public class Sorter_DCTRBM extends Sorter {
 
 	@Override
 	protected double[] getFeatureVector(Pic image) {
-		return dctRGBM.getHidden(image);
+		return dctRBM.getHidden(image);
 	}
 
 	@Override

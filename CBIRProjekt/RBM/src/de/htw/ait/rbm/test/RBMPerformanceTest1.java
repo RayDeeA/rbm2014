@@ -1,6 +1,6 @@
 package de.htw.ait.rbm.test;
 import de.htw.ait.rbm.Matrix;
-import de.htw.ait.rbm.RBMNico;
+import de.htw.ait.rbm.RBMBla;
 import de.htw.ait.rbm.RBMVector;
 
 
@@ -126,7 +126,7 @@ public class RBMPerformanceTest1 {
 	
 	private static void singleOld(double[][] trainingData, String[] names, long nanosec)
 	{
-		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
+		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		
 		// training �ber epochen mit gegebenen daten
 		for (int e = 0; e < max_epochs; e++) {
@@ -147,7 +147,7 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visual(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");
@@ -164,7 +164,7 @@ public class RBMPerformanceTest1 {
 	
 	private static void old(double[][] trainingData, String[] names, long nanosec) 
 	{
-		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
+		RBMBla rbm = new RBMBla(trainingData[0].length, num_hidden, 0.1);
 		rbm.train(trainingData, max_epochs);
 		double error = rbm.error(trainingData);
 		System.out.println("calc Error "+error);
@@ -173,7 +173,7 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visual(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");

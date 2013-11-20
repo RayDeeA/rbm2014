@@ -113,7 +113,7 @@ public class RBMJBlasSeparatedWeights implements IRBM {
 	}
 	
 	@Override
-	public double[][] run_visual(double[][] userData) {
+	public double[][] run_visible(double[][] userData) {
 
 		DoubleMatrix data = new DoubleMatrix(userData);
 		
@@ -167,7 +167,7 @@ public class RBMJBlasSeparatedWeights implements IRBM {
 	}
 	
 	@Override
-	public double[][][] getWeightsWithBIAS() {
+	public double[][][] getWeightsWithBias() {
 		return new double[][][]{this.weights.toArray2(), this.backWeights.toArray2()};
 	}
 
@@ -179,6 +179,23 @@ public class RBMJBlasSeparatedWeights implements IRBM {
 	@Override
 	public int getOutputSize() {
 		return weights.getColumns();
+	}
+
+	@Override
+	public double getLearnRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ILogistic getLogisticFunction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasBias() {
+		return true;
 	}
 
 }

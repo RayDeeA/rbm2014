@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.CBIREvaluation;
+import de.htw.cbir.CBIREvaluationModel;
 import de.htw.cbir.ImageManager;
 import de.htw.cbir.histogram.IDWHistogramFactory;
 import de.htw.cbir.model.Pic;
@@ -45,7 +46,7 @@ public class IDWHistogramTest {
 		Sorter sorter = new Sorter_IDWHistogram(allImages, settings, factory, pool);
 		
 		// berechne für das Histogram gute Histogram Punkte mit Hilfe von ES
-		CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool);
+		CBIREvaluation evalulation = new CBIREvaluation(sorter, allImages, pool, new CBIREvaluationModel());
 		GeneticHistogram gh = new GeneticHistogram(factory.getRGBDataPoints(), 0.1, imageManager.getImageSetName(), evalulation, factory);
 		gh.run();
 		

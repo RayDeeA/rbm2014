@@ -1,4 +1,5 @@
 *.class
-CBIRProject/cma/bin/.gitignore
-
-/CBIRProjekt/cma/bin
+CBIRProjekt/cma/bin
+CBIRProjekt/RBMLogs
+CBIRProjekt/test.xml
+CBIRProjekt/*.dat

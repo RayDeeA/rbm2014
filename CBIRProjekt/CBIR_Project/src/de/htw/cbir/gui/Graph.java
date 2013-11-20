@@ -24,8 +24,7 @@ public class Graph
 		frame.setTitle("Precision-Recall-Graph");
 		frame.setSize(width+margin_left+margin_right, height+margin_top+margin_bottom);
 		frame.setLocation(500, 0);
-//		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(false);
 	}
 

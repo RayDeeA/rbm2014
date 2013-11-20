@@ -52,8 +52,8 @@ public class Sorter_ColorMean2 extends Sorter
 				
 		double lum = (r+g+b)/3; 
 		featureVector[0] = lum; 
-		featureVector[1] = settings.getLumValue()*(lum-b);
-		featureVector[2] = settings.getLumValue()*(lum-r);
+		featureVector[1] = settings.getLuminance()*(lum-b);
+		featureVector[2] = settings.getLuminance()*(lum-r);
 				
 		return featureVector;
 	}
@@ -95,13 +95,13 @@ public class Sorter_ColorMean2 extends Sorter
 
 	@Override
 	public String getName() {
-		return "ColorMean2 (Sat: "+settings.getLumValue()+")";
+		return "ColorMean2 (Sat: "+settings.getLuminance()+")";
 	}
 
 	@Override
 	public void settingsChanged(ActionEvent e) {
 		SettingOption option = Settings.SettingOption.valueOf(e.getActionCommand());
-		if(option == Settings.SettingOption.LUM)
+		if(option == Settings.SettingOption.LUMINANCE)
 			getFeatureVectors();
 	}
 }
