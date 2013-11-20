@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.concurrent.ForkJoinPool;
 
-import de.htw.ait.rbm.RBMBla;
+import de.htw.ait.rbm.RBMNico;
 import de.htw.cbir.gui.CBIRUI;
 import de.htw.cbir.gui.RBMVisualizationFrame;
 import de.htw.cbir.histogram.IDWHistogramFactory;
@@ -190,7 +190,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
 			rbm = new RBMLogger(new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));			
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), 4));			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
 			rbm = new RBMLogger(new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {

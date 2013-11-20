@@ -6,19 +6,20 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.functions.ILogistic;
 
 
-public class RBMBla implements IRBM {
+public class RBMNico implements IRBM {
 
 	int num_visible = 6;
 	int num_hidden = 2;
 	double learning_rate = 0.1;
-	private static Random random = new Random();
+	private static Random random;
 	
 	double[][] weights; 
 	
-	public RBMBla(int numVisible, int numHidden, double learningRate) {
+	public RBMNico(int numVisible, int numHidden, double learningRate) {
 		num_visible =   numVisible;
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
+		random = new Random();
 		
 		// initial zufaellige Gewichte		
 		weights = new double[num_visible+1][num_hidden+1];
@@ -26,8 +27,21 @@ public class RBMBla implements IRBM {
 			for (int h = 1; h < num_hidden+1; h++) 
 				weights[v][h] = 0.1*random.nextGaussian();
 	}
+	
+	public RBMNico(int numVisible, int numHidden, double learningRate, int seed) {
+		num_visible =   numVisible;
+		num_hidden =    numHidden;
+		learning_rate = learningRate;
+		random = new Random(seed);
+		
+		// initial zufaellige Gewichte		
+		weights = new double[num_visible+1][num_hidden+1];
+		for (int v = 1; v < num_visible+1; v++) 
+			for (int h = 1; h < num_hidden+1; h++) 
+				weights[v][h] = 0.1 * random.nextGaussian();
+	}
 
-	public RBMBla(int numVisible, int numHidden, double learningRate, double[][] weights) {
+	public RBMNico(int numVisible, int numHidden, double learningRate, double[][] weights) {
 		this.num_visible =   numVisible;
 		this.num_hidden =    numHidden;
 		this.learning_rate = learningRate;		
