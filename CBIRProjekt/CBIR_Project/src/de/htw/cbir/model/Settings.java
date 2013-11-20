@@ -1,9 +1,15 @@
 package de.htw.cbir.model;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -14,7 +20,7 @@ import de.htw.cbir.gui.DoubleJSlider;
 public class Settings implements ChangeListener {
 
 	public static enum SettingOption {
-		LUMINANCE, INPUT_SIZE, OUTPUT_SIZE, LEARN_RATE, EPOCHS, UPDATE_FREQUENCY
+		LUMINANCE, INPUT_SIZE, OUTPUT_SIZE, LEARN_RATE, EPOCHS, UPDATE_FREQUENCY, SEED
 	};
 
 	protected EventListenerList listenerList = new EventListenerList();
@@ -24,6 +30,8 @@ public class Settings implements ChangeListener {
 	private double learnRate = 0.1;
 	private int epochs = 10000;
 	private int updateFrequency = 100;
+	private boolean useSeed = false;
+	private int seed = 0;
 
 	public double getLuminance() {
 		return luminance;
@@ -74,6 +82,22 @@ public class Settings implements ChangeListener {
 		this.updateFrequency = updateFrequency;
 	}
 
+	public boolean isUseSeed() {
+		return useSeed;
+	}
+
+	public void setUseSeed(boolean useSeed) {
+		this.useSeed = useSeed;
+	}
+
+	public int getSeed() {
+		return seed;
+	}
+
+	public void setSeed(int seed) {
+		this.seed = seed;
+	}
+
 	/**
 	 * Binding für die verschiedenen UI Elemente
 	 * 
@@ -84,6 +108,25 @@ public class Settings implements ChangeListener {
 		slider.setName(option.toString());
 		slider.addChangeListener(this);
 	}
+	
+	public void bind(final SettingOption option, JRadioButtonMenuItem radioButton) {
+		radioButton.setName(option.toString());
+		radioButton.addChangeListener(this);
+	}
+	
+	public String getSelectedButtonText(JMenu menu) {
+		
+		for (Component child : menu.getComponents()) {
+			if (child instanceof JRadioButtonMenuItem) {
+				JRadioButtonMenuItem radioButton = (JRadioButtonMenuItem)child;
+				
+	            if (radioButton.isSelected()) {
+	                return radioButton.getText();
+	            }
+			}
+		}
+        return null;
+    }
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
@@ -133,6 +176,23 @@ public class Settings implements ChangeListener {
 				setEpochs(epochsSlider.getValue() * 1000);
 				fireEvent(new ActionEvent(this, 1, option.toString()));
 			}
+			break;
+			
+		case SEED: 
+			JRadioButtonMenuItem radioButton = (JRadioButtonMenuItem) jComp;
+			
+			if(radioButton.isSelected()) {
+				String valueString = radioButton.getText();
+				if(valueString.equals("NO")) {
+					setUseSeed(false);
+					setSeed(0);
+				} else {
+					setUseSeed(true);
+					setSeed(Integer.parseInt(valueString));
+				}
+				fireEvent(new ActionEvent(this, 1, option.toString()));
+			}
+			
 			break;
 			
 		default:

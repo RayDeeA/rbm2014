@@ -55,7 +55,6 @@ public class RBMJBlas implements IRBM {
 		
 		this.weights = DoubleMatrix.concatHorizontally(oneVectorCol, this.weights);
 		this.weights = DoubleMatrix.concatVertically(oneVectorRow, this.weights);
-		
     }
 	
 	@Override

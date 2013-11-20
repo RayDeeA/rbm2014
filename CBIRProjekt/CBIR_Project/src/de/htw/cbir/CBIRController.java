@@ -141,7 +141,8 @@ public class CBIRController {
 		int inputSize = settings.getInputSize();
 		int outputSize = settings.getOutputSize();
 		double learnRate = settings.getLearnRate();
-		
+		boolean useSeed = settings.isUseSeed();
+		int seed = settings.getSeed();
 		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -186,31 +187,29 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("RBMJBlas_Sigmoid")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
-		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
-			rbm = new RBMLogger(new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));			
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
 			rbm = new RBMLogger(new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_TanHMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_GaussMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearUnclippedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_HardClipMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_BasicSigmoidMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction()));
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {

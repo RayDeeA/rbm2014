@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -33,8 +34,6 @@ public class CBIRUI {
 
 	// allgemeine Variablen
 	private CBIRController controller;
-
-
 	
 	public CBIRUI(CBIRController controller, RBMVisualizationFrame rbmFrame) {
 		this.controller = controller;
@@ -215,6 +214,33 @@ public class CBIRUI {
 			settings.bind(SettingOption.OUTPUT_SIZE, rbmOutputSizeSlider);
 			m_rbmOutputSize.add(rbmOutputSizeSlider);
 			rbmSettingsMenu.add(m_rbmOutputSize);
+			
+			JMenu m_Seed = new JMenu("Seed");
+	        JRadioButtonMenuItem m_SeedNo = new JRadioButtonMenuItem("NO");
+	        m_SeedNo.setSelected(true);
+	        m_SeedNo.setHorizontalTextPosition(JMenuItem.RIGHT);
+	        JRadioButtonMenuItem m_Seed1 = new JRadioButtonMenuItem("1");
+	        m_Seed1.setHorizontalTextPosition(JMenuItem.RIGHT);
+	        JRadioButtonMenuItem m_Seed2 = new JRadioButtonMenuItem("2");
+	        m_Seed2.setHorizontalTextPosition(JMenuItem.RIGHT);
+	        JRadioButtonMenuItem m_Seed3 = new JRadioButtonMenuItem("3");
+	        m_Seed3.setHorizontalTextPosition(JMenuItem.RIGHT);
+			
+	        ButtonGroup group = new ButtonGroup(  );
+	        group.add(m_SeedNo);
+	        group.add(m_Seed1);
+	        group.add(m_Seed2);
+	        group.add(m_Seed3);
+			m_Seed.add(m_SeedNo);
+			m_Seed.add(m_Seed1);
+			m_Seed.add(m_Seed2);
+			m_Seed.add(m_Seed3);
+			
+			settings.bind(SettingOption.SEED, m_SeedNo);
+			settings.bind(SettingOption.SEED, m_Seed1);
+			settings.bind(SettingOption.SEED, m_Seed2);
+			settings.bind(SettingOption.SEED, m_Seed3);
+			rbmSettingsMenu.add(m_Seed);
 
 		settingsMenu.add(rbmSettingsMenu);
 
