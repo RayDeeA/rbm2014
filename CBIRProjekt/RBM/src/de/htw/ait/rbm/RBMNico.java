@@ -5,28 +5,42 @@ import java.util.Random;
 import de.htw.iconn.rbm.IRBM;
 
 
-public class RBMBla implements IRBM {
+public class RBMNico implements IRBM {
 
-	int num_visible = 6;
-	int num_hidden = 2;
+	int num_visible;
+	int num_hidden;
 	double learning_rate = 0.1;
-	private static Random random = new Random();
+	private static Random random;
 	
 	double[][] weights; 
 	
-	public RBMBla(int numVisible, int numHidden, double learningRate) {
-		num_visible =   numVisible;
-		num_hidden =    numHidden;
-		learning_rate = learningRate;
+	public RBMNico(int numVisible, int numHidden, double learningRate) {
+		this.num_visible =   numVisible;
+		this.num_hidden =    numHidden;
+		this.learning_rate = learningRate;
+		this.random = new Random();
 		
-		// initial zuf������llige Gewichte		
-		weights = new double[num_visible+1][num_hidden+1];
+		// initial zufällige Gewichte		
+		this.weights = new double[num_visible+1][num_hidden+1];
 		for (int v = 1; v < num_visible+1; v++) 
 			for (int h = 1; h < num_hidden+1; h++) 
-				weights[v][h] = 0.1*random.nextGaussian();
+				this.weights[v][h] = 0.1*random.nextGaussian();
+	}
+	
+	public RBMNico(int numVisible, int numHidden, double learningRate, int seed) {
+		this.num_visible =   numVisible;
+		this.num_hidden =    numHidden;
+		this.learning_rate = learningRate;
+		this.random = new Random(seed);
+		
+		// initial zufällige Gewichte		
+		this.weights = new double[num_visible+1][num_hidden+1];
+		for (int v = 1; v < num_visible+1; v++) 
+			for (int h = 1; h < num_hidden+1; h++) 
+				this.weights[v][h] = 0.1*random.nextGaussian();
 	}
 
-	public RBMBla(int numVisible, int numHidden, double learningRate, double[][] weights) {
+	public RBMNico(int numVisible, int numHidden, double learningRate, double[][] weights) {
 		this.num_visible =   numVisible;
 		this.num_hidden =    numHidden;
 		this.learning_rate = learningRate;		

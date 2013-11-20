@@ -49,7 +49,7 @@ public class Sorter_DCTRBM extends Sorter {
 
 	@Override
 	public double getDistance(double[] fv1, double[] fv2) {
-		return getEuclideanDist(fv1, fv2);
+		return getL1Dist(fv1, fv2);
 	}
 
 	@Override

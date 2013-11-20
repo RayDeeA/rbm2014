@@ -20,6 +20,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import de.htw.ait.rbm.RBMNico;
 import de.htw.cbir.gui.CBIRUI;
 import de.htw.cbir.gui.RBMVisualizationFrame;
 import de.htw.cbir.histogram.IDWHistogramFactory;
@@ -214,7 +215,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("RBMJBlasRandomed_Sigmoid")) {
 			rbm = new RBMJBlasRandomed(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());			
+			rbm = new RBMNico(15, 4, 0.1f);			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
 			rbm = new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
