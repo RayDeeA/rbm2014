@@ -117,7 +117,7 @@ public class CBIRController {
 		rbmEvolutionLog();
 	}
 	
-	public String[] getLogisticsTestNames() {
+	public String[] getLogisticsNames() {
 
 		return new String[] { 
 			"Standard", 
@@ -143,6 +143,7 @@ public class CBIRController {
 		double learnRate = settings.getLearnRate();
 		boolean useSeed = settings.isUseSeed();
 		int seed = settings.getSeed();
+		ILogistic logisticFunction = settings.getLogisticFunction();
 		
 		String cmd = e.getActionCommand();
 		Pic[] allImages = imageManager.getImages();
@@ -192,30 +193,14 @@ public class CBIRController {
 			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
 			rbm = new RBMLogger(new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_DefaultLogisticMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_RectifierMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new RectifierMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_TanHMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new TanHMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_GaussMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GaussMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearClippedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearClippedMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearUnclippedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearUnclippedMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_LinearInterpolatedMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new LinearInterpolatedMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_HardClipMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new HardClipMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_BasicSigmoidMatrixFunction")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new GeneralisedLogisticFunction(), useSeed, seed));
 		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_SR")) {
 
+		} else if (cmd.equalsIgnoreCase("DCTRBM_JBlas")) {
+			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed));
 		}
 		if(rbm != null) {
 			dctRBM = new DCTRBM(inputSize, outputSize, rbm);
@@ -255,17 +240,9 @@ public class CBIRController {
 
 		return new String[] { 
 			"None", "ColorMean", "ColorMean2",
-			"IDW Histogram", "FV15DCT", "DCTRBM", "DCT_CJ",
-			"RBMJBlas_Sigmoid", "DCTRBM_RM", "DCTRBM_CJ",
-			"DCTRBM_DefaultLogisticMatrixFunction",
-			"DCTRBM_RectifierMatrixFunction", "DCTRBM_TanHMatrixFunction",
-			"DCTRBM_GaussMatrixFunction",
-			"DCTRBM_LinearClippedMatrixFunction",
-			"DCTRBM_LinearUnclippedMatrixFunction",
-			"DCTRBM_LinearInterpolatedMatrixFunction",
-			"DCTRBM_HardClipMatrixFunction",
-			"DCTRBM_BasicSigmoidMatrixFunction", "DCTRBM_MU", "DCTRBM_RC",
-			"DCTRBM_SR", "RBMJBlasRandomed_Sigmoid" 
+			"IDW Histogram", "FV15DCT", "DCTRBM",
+			"DCTRCJ_RM", "DCTRBM_RM", "DCTRBM_CJ", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR",
+			"DCTRBM_JBlas"
 		};
 	}
 

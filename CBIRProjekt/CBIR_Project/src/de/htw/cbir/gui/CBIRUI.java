@@ -17,6 +17,14 @@ import de.htw.cbir.CBIRController;
 import de.htw.cbir.model.PrecisionRecallTable;
 import de.htw.cbir.model.Settings;
 import de.htw.cbir.model.Settings.SettingOption;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
 
 public class CBIRUI {
 
@@ -110,7 +118,7 @@ public class CBIRUI {
 
 		// Menu "Logistik testen"
 		JMenu logisticTestMenu = new JMenu("Logistik testen");
-		String[] logisticTestMethodNames = controller.getLogisticsTestNames();
+		String[] logisticTestMethodNames = controller.getLogisticsNames();
 		for (String logisticTestMethod : logisticTestMethodNames) {
 			JRadioButtonMenuItem logisticTestMethodName = new JRadioButtonMenuItem(
 					logisticTestMethod, true);
@@ -241,6 +249,20 @@ public class CBIRUI {
 			settings.bind(SettingOption.SEED, m_Seed2);
 			settings.bind(SettingOption.SEED, m_Seed3);
 			rbmSettingsMenu.add(m_Seed);
+			
+			JMenu m_Logistic = new JMenu("Logistic");
+			ButtonGroup logisticGroup = new ButtonGroup(  );
+			String[] logisticNames = controller.getLogisticsNames();
+			for(int i = 0; i < logisticNames.length; i++) {
+				JRadioButtonMenuItem logisticItem = new JRadioButtonMenuItem(logisticNames[i]);
+				if(i == 0) logisticItem.setSelected(true);
+				logisticItem.setHorizontalTextPosition(JMenuItem.RIGHT);
+				logisticGroup.add(logisticItem);
+				m_Logistic.add(logisticItem);
+				settings.bind(SettingOption.LOGISTIC_FUNCTION, logisticItem);
+			}
+
+			rbmSettingsMenu.add(m_Logistic);
 
 		settingsMenu.add(rbmSettingsMenu);
 
