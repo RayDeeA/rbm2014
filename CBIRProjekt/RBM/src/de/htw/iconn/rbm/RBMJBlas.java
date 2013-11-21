@@ -115,9 +115,9 @@ public class RBMJBlas implements IRBM {
 		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learnRate / data.getRows() ) );
 		    error = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
 		    
-		    System.out.println(error);
+		    //System.out.println(error);
 	    }
-
+	    System.out.println(error);
 	}
 	
 	@Override

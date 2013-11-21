@@ -176,7 +176,7 @@ public class RBMJBlasRandomed implements IRBM {
 //		    Printer.printMatrix("JBLAS weights", weights);
 //		    System.out.println(data.getRows());
 		    
-		    System.out.println(error);
+		    //System.out.println(error);
 	    }
 
 	}
