@@ -58,7 +58,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		//start logging
 		Date date = new Date();
 		String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(date);
-		String headLine = "RBM,evaluationType,inputSize,outputSize,includingBias,learnRate,epochs,logisticFunction,error,mAP,imageSetSize,date";
+		String headLine = "RBM;evaluationType;inputSize;outputSize;includingBias;learnRate;epochs;logisticFunction;error;mAP;imageSetSize;date";
 		String mApWithComma = (mAP+"").replace(".", ",");
 		String errorWithComma = (error+"").replace(".", ",");
 		
