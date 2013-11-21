@@ -194,18 +194,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_SR")) {
-			rbm = new RBMLogger(new VisWrapper(visualizationFrame, new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)));
-			
-			error = dctRBM.getError(allImages);
-			rawError = dctRBM.getRawError(allImages);
-
-			int rounds = epochs / updateFrequency;
-			for(int i = 0; i < rounds; i++) {	
-				dctRBM.train(allImages, updateFrequency);
-				visualizationFrame.update(dctRBM.getWeights(), error);
-				System.out.println("rounds: " + rounds + " updateFrequency: " + updateFrequency);
-			}
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			rbm = new RBMLogger(new VisWrapper(visualizationFrame , new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)));
 			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_JBlas")) {
 			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed));

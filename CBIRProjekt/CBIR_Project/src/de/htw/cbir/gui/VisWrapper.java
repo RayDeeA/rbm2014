@@ -45,6 +45,7 @@ public class VisWrapper implements IRBM{
 	public VisWrapper(RBMVisualizationFrame visframe, IRBM rbm) {
 		this.rbm = rbm;
 		this.visframe = visframe;
+		
 	}
 	
 	public void interrupt() {
@@ -88,6 +89,8 @@ public class VisWrapper implements IRBM{
 		int tempnumber = gap;
 		while (tempnumber < maxepochs) {
 			
+			System.out.println("in while loop");
+			
 			// run number of gaps
 			rbm.train(trainingData, gap);
 			
@@ -106,7 +109,13 @@ public class VisWrapper implements IRBM{
 	}
 	
 	private double[][] reducematrix(double[][][] weights) {
-		return weights[1];
+		
+		return weights[0];
+		
+	}
+	
+	private int getNumberOfCascades(double[][][] weights) {
+		return weights.length;
 	}
 
 	@Override
