@@ -130,7 +130,7 @@ public class GeneticDCTRBMError {
 		
 		CBIREvaluationModel evaluationModel = evaluation.getEvaluationModel();
 		evaluationModel.setMAP(bestMap);
-		evaluationModel.setEvaluationType("evolution");
+		evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.EVOLUTION);
 		evaluationModel.setResultWeights(bestWeights);
 		evaluationModel.setEpochs(p);
 		evaluationModel.setError(error);

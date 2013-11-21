@@ -28,7 +28,6 @@ import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.IRBMLogger;
 import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.RBMJBlasRandomed;
 import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
 import de.htw.iconn.rbm.RBMLogger;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
@@ -115,7 +114,7 @@ public class CBIRController {
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 		GeneticDCTRBMError gh = new GeneticDCTRBMError(dctrbm, imageManager, evaluation, pool);
 		gh.run();
-		rbmEvolutionLog();
+		rbmLog();
 	}
 	
 	public String[] getLogisticsNames() {
@@ -206,31 +205,29 @@ public class CBIRController {
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		}
 		sorter.getFeatureVectors();
+		
+		// Store data for logger
+		evaluationModel.setUseSeed(useSeed);
+		evaluationModel.setSeed(seed);
 		rbmLog();
 	}
 	
 	public void rbmLog(){
 		System.out.println("RBM Log:");
 		if(rbm != null && rbm instanceof IRBMLogger){
-			if(dctRBM != null){
-				evaluationModel.setError(dctRBM.getError(imageManager.getImages()));
+			if(evaluationModel.getEvaluationType() != CBIREvaluationModel.evaluationType.EVOLUTION){
+				if(dctRBM != null){
+					evaluationModel.setError(dctRBM.getError(imageManager.getImages()));
+				}
+				if(sorter != null){
+					evaluation = new CBIREvaluation(sorter, imageManager.getImages(), pool, evaluationModel);
+					evaluationModel.setMAP(evaluation.testAll(true, "Alle"));
+				}
+				evaluationModel.setEpochs(settings.getEpochs());
+				evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.TRAINING);
 			}
-			if(sorter != null){
-				evaluation = new CBIREvaluation(sorter, imageManager.getImages(), pool, evaluationModel);
-				evaluationModel.setMAP(evaluation.testAll(true, "Alle"));
-			}
-			evaluationModel.setEpochs(settings.getEpochs());
-			evaluationModel.setEvaluationType("training");
 			IRBMLogger logger = (IRBMLogger)(rbm);
-			logger.log(evaluationModel);
-		}
-	}
-	
-	public void rbmEvolutionLog(){
-		System.out.println("RBM Evolution Log:");
-		if(rbm != null && rbm instanceof IRBMLogger){
-			IRBMLogger logger = (IRBMLogger)(rbm);
-			logger.log(evaluationModel);
+			logger.finalCsvLog(evaluationModel);
 		}
 	}
 

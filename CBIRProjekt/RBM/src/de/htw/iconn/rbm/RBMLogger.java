@@ -37,7 +37,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		this.rbm = rbm;
 	}
 	
-	public void log(CBIREvaluationModel evaluationModel){
+	public void finalCsvLog(CBIREvaluationModel evaluationModel){
 		//Paths
 		String logString = "RBMLogs";
 		String csvString = "logs.csv";
@@ -52,18 +52,18 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		double error = evaluationModel.getError();		
 		int epochs = evaluationModel.getEpochs();
 		int imageSetSize = evaluationModel.getImageSetSize();
-		String evaluationType = evaluationModel.getEvaluationType();
+		String evaluationType = evaluationModel.getEvaluationType().toString();
 		String includingBias = this.includingBias();
+		String useSeed = this.useSeed(evaluationModel.getUseSeed());
+		int seed = evaluationModel.getSeed();
 		
 		//start logging
 		Date date = new Date();
 		String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(date);
-		String headLine = "RBM;evaluationType;inputSize;outputSize;includingBias;learnRate;epochs;logisticFunction;error;mAP;imageSetSize;date";
-		String mApWithComma = (mAP+"").replace(".", ",");
-		String errorWithComma = (error+"").replace(".", ",");
+		String headLine = "RBM;evaluationType;inputSize;outputSize;includingBias;learnRate;epochs;logisticFunction;seed;useSeed;error;mAP;imageSetSize;date";
 		
 		//System.out.println(mApWithComma);
-		String logLine = rbmName + ";" + evaluationType + ";" + inputSize + ";" + outputSize + ";" + includingBias + ";" + learnRate + ";" + epochs + ";" + logisticFunctionName + ";" + errorWithComma + ";" + mApWithComma + ";" + imageSetSize + ";" + dateString;
+		String logLine = rbmName + ";" + evaluationType + ";" + inputSize + ";" + outputSize + ";" + includingBias + ";" + learnRate + ";" + epochs + ";" + logisticFunctionName + "; " + seed + ";" + useSeed + ";" + error + ";" + mAP + ";" + imageSetSize + ";" + dateString;
 		System.out.println(logLine);		
 		Path logPath = FileSystems.getDefault().getPath(logString);	
 		Path csvPath = FileSystems.getDefault().getPath(logString, csvString);
@@ -232,8 +232,16 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		return rbm.hasBias();
 	}
 	
-	public String includingBias(){
+	private String includingBias(){
 		if(this.hasBias()){
+			return "yes";
+		}else{
+			return "no";
+		}
+	}
+	
+	private String useSeed(boolean hasSeed){
+		if(hasSeed){
 			return "yes";
 		}else{
 			return "no";
