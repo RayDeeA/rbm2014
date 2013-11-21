@@ -59,7 +59,11 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		Date date = new Date();
 		String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(date);
 		String headLine = "RBM,evaluationType,inputSize,outputSize,includingBias,learnRate,epochs,logisticFunction,error,mAP,imageSetSize,date";
-		String logLine = rbmName + "," + evaluationType + "," + inputSize + "," + outputSize + "," + includingBias + "," + learnRate + "," + epochs + "," + logisticFunctionName + "," + error + "," + mAP + "," + imageSetSize + "," + dateString;
+		String mApWithComma = (mAP+"").replace(".", ",");
+		String errorWithComma = (error+"").replace(".", ",");
+		
+		//System.out.println(mApWithComma);
+		String logLine = rbmName + ";" + evaluationType + ";" + inputSize + ";" + outputSize + ";" + includingBias + ";" + learnRate + ";" + epochs + ";" + logisticFunctionName + ";" + errorWithComma + ";" + mApWithComma + ";" + imageSetSize + ";" + dateString;
 		System.out.println(logLine);		
 		Path logPath = FileSystems.getDefault().getPath(logString);	
 		Path csvPath = FileSystems.getDefault().getPath(logString, csvString);
