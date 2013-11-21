@@ -10,6 +10,7 @@ import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.CBIREvaluationModel;
 import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
+import de.htw.iconn.rbm.IRBMLogger;
 import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 
 public class GeneticDCTRBMError {
@@ -24,6 +25,7 @@ public class GeneticDCTRBMError {
 	private ForkJoinPool pool;
 
 	private double bestMap = 0;
+	private double bestError = 0;
 	private double[][] bestWeights = null;
 
 	public GeneticDCTRBMError(DCTRBM rbm, ImageManager imageManager,
@@ -63,7 +65,10 @@ public class GeneticDCTRBMError {
 
 		// initial output to files
 		cma.writeToDefaultFilesHeaders(0); // 0 == overwrites old files
-
+		
+		CBIREvaluationModel evaluationModel = evaluation.getEvaluationModel();
+		evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.EVOLUTION);
+		IRBMLogger logger = evaluationModel.getLogger();
 		// iteration loop
 		int p = 0;
 		double error = 0.0;
@@ -102,6 +107,7 @@ public class GeneticDCTRBMError {
 				bestWeights = convert(cma.getBestX());
 			}
 			error = getRawError(cma.getBestX());
+			bestError = Math.max(error, bestError);
 
 			System.out.println("MAP: " + map);
 			System.out.println("Best MAP was:" + bestMap);
@@ -114,6 +120,14 @@ public class GeneticDCTRBMError {
 			System.out.println("");
 
 			save(cma.getBestX());
+			
+			if(p % evaluationModel.getLogStepFrequency() == 0){
+				evaluationModel.setMAP(bestMap);
+				evaluationModel.setResultWeights(bestWeights);
+				evaluationModel.setEpochs(p);
+				evaluationModel.setError(bestError);
+				logger.stepCsvLog(evaluationModel);
+			}
 		}
 		// evaluate mean value as it is the best estimator for the optimum
 		cma.setFitnessOfMeanX(valueOf(cma.getMeanX())); // updates the best ever
@@ -128,12 +142,10 @@ public class GeneticDCTRBMError {
 		cma.println("best function value " + cma.getBestFunctionValue()
 				+ " at evaluation " + cma.getBestEvaluationNumber());
 		
-		CBIREvaluationModel evaluationModel = evaluation.getEvaluationModel();
 		evaluationModel.setMAP(bestMap);
-		evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.EVOLUTION);
 		evaluationModel.setResultWeights(bestWeights);
 		evaluationModel.setEpochs(p);
-		evaluationModel.setError(error);
+		evaluationModel.setError(bestError);
 	}
 
 	private double MAP(double[] input) {

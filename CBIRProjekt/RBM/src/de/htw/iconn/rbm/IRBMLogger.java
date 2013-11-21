@@ -4,4 +4,5 @@ import de.htw.cbir.CBIREvaluationModel;
 
 public interface IRBMLogger {
 	public void finalCsvLog(CBIREvaluationModel evaluationModel);
+	public void stepCsvLog(CBIREvaluationModel evaluationModel);
 }

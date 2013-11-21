@@ -113,7 +113,11 @@ public class CBIRController {
 		
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 		GeneticDCTRBMError gh = new GeneticDCTRBMError(dctrbm, imageManager, evaluation, pool);
+		if(rbm != null && rbm instanceof IRBMLogger){
+			evaluationModel.setLogger((IRBMLogger)rbm);		
+		}
 		gh.run();
+		
 		rbmLog();
 	}
 	
@@ -207,14 +211,18 @@ public class CBIRController {
 		sorter.getFeatureVectors();
 		
 		// Store data for logger
-		evaluationModel.setUseSeed(useSeed);
-		evaluationModel.setSeed(seed);
+		if(rbm != null && rbm instanceof IRBMLogger){
+			evaluationModel.setLogger((IRBMLogger)rbm);
+			evaluationModel.setUseSeed(useSeed);
+			evaluationModel.setSeed(seed);
+		}
 		rbmLog();
 	}
 	
 	public void rbmLog(){
 		System.out.println("RBM Log:");
-		if(rbm != null && rbm instanceof IRBMLogger){
+		IRBMLogger logger = evaluationModel.getLogger();
+		if(logger != null){
 			if(evaluationModel.getEvaluationType() != CBIREvaluationModel.evaluationType.EVOLUTION){
 				if(dctRBM != null){
 					evaluationModel.setError(dctRBM.getError(imageManager.getImages()));
@@ -226,7 +234,6 @@ public class CBIRController {
 				evaluationModel.setEpochs(settings.getEpochs());
 				evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.TRAINING);
 			}
-			IRBMLogger logger = (IRBMLogger)(rbm);
 			logger.finalCsvLog(evaluationModel);
 		}
 	}
