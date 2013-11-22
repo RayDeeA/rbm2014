@@ -195,7 +195,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
 			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
-			rbm = new RBMLogger(new RBMJBlasSeparatedWeights(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction()));
+			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
 
 		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {

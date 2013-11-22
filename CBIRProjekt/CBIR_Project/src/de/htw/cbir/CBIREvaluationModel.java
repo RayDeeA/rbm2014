@@ -1,5 +1,7 @@
 package de.htw.cbir;
 
+import java.util.LinkedList;
+
 import de.htw.iconn.rbm.IRBMLogger;
 
 public class CBIREvaluationModel {
@@ -9,6 +11,7 @@ public class CBIREvaluationModel {
 	private evaluationType type;
 	private int imageSetSize;
 	private double[][][] weights;
+	private LinkedList<double[][][]> collectedWeights;
 	private double[][] weights2d;
 	private int seed;
 	private boolean useSeed;
@@ -38,10 +41,20 @@ public class CBIREvaluationModel {
 		this.logger = null;
 		this.useSeed = false;
 		this.seed = 0;
+		this.collectedWeights = new LinkedList<double[][][]>();
 	}
 	
 	public CBIREvaluationModel(){
 		this(0);
+	}	
+	public void resetCollectedWeights(){
+		collectedWeights = new LinkedList<double[][][]>();
+	}	
+	public void addToCollectedWeights(double[][][] weights){
+		collectedWeights.add(weights);
+	}
+	public LinkedList<double[][][]> getCollectedWeights(){
+		return this.collectedWeights;
 	}
 	public double getMAP() {
 		return mAP;
