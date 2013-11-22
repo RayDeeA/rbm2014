@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -90,7 +91,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		return logLine;
 	}
 	
-	public void finalCsvLog(CBIREvaluationModel evaluationModel){
+	public void finalCsvLog(CBIREvaluationModel evaluationModel) throws IOException{
 		this.evaluationModel = evaluationModel;
 		String logLine = evaluationDataToString();
 		System.out.println(logLine);
@@ -103,29 +104,25 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		File csvFile;
 		boolean csvExistent = true;
 		
-		try {
-			if(Files.notExists(csvLocationPath, LinkOption.NOFOLLOW_LINKS)){
-				csvFile = new File(this.baseFolder + "/" + csvLocation);
-				csvFile.createNewFile();
-				csvExistent = false;
-			}
-			
-			BufferedWriter output = new BufferedWriter(new FileWriter(this.baseFolder + "/" + csvLocation, true));
-			if(!csvExistent){
-				output.append(headLine);
-				output.newLine();
-			}
-			output.append(logLine);
-			output.newLine();
-			output.flush();
-			output.close();		
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(Files.notExists(csvLocationPath, LinkOption.NOFOLLOW_LINKS)){
+			csvFile = new File(this.baseFolder + "/" + csvLocation);
+			csvFile.createNewFile();
+			csvExistent = false;
 		}
+		
+		BufferedWriter output = new BufferedWriter(new FileWriter(this.baseFolder + "/" + csvLocation, true));
+		if(!csvExistent){
+			output.append(headLine);
+			output.newLine();
+		}
+		output.append(logLine);
+		output.newLine();
+		output.flush();
+		output.close();		
 	}
 	
 	@Override
-	public void stepCsvLog(CBIREvaluationModel evaluationModel) {
+	public void stepCsvLog(CBIREvaluationModel evaluationModel) throws IOException {
 		this.evaluationModel = evaluationModel;
 		String logLine = evaluationDataToString();
 		System.out.println(logLine);
@@ -139,94 +136,102 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		File csvFile;
 		boolean csvExistent = true;
 		
-		try {
-			if(Files.notExists(csvFolderPath, LinkOption.NOFOLLOW_LINKS)){
-				Files.createDirectory(csvFolderPath);
-			}
-			if(Files.notExists(csvLocationPath, LinkOption.NOFOLLOW_LINKS)){
-				csvFile = new File(csvFolder + "/" + csvLocation);
-				csvFile.createNewFile();
-				csvExistent = false;
-			}
-			
-			BufferedWriter output = new BufferedWriter(new FileWriter(csvFolder + "/" + csvLocation, true));
-			if(!csvExistent){
-				output.append(headLine);
-				output.newLine();
-			}
-			output.append(logLine);
-			output.newLine();
-			output.flush();
-			output.close();		
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(Files.notExists(csvFolderPath, LinkOption.NOFOLLOW_LINKS)){
+			Files.createDirectory(csvFolderPath);
 		}
+		if(Files.notExists(csvLocationPath, LinkOption.NOFOLLOW_LINKS)){
+			csvFile = new File(csvFolder + "/" + csvLocation);
+			csvFile.createNewFile();
+			csvExistent = false;
+		}
+		
+		BufferedWriter output = new BufferedWriter(new FileWriter(csvFolder + "/" + csvLocation, true));
+		if(!csvExistent){
+			output.append(headLine);
+			output.newLine();
+		}
+		output.append(logLine);
+		output.newLine();
+		output.flush();
+		output.close();		
 	}
 	
-//	private void serializeDataToXML(ArrayList<double[][]> data, Date actDate, String machine){
-//
-//		try {
-//
-//			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-//
-//			// root elements
-//			Document doc = docBuilder.newDocument();
-//			Element rootElement = doc.createElement("RBM_"+ machine);
-//			doc.appendChild(rootElement);
-//
-//			// sample elements
-//			Element sample = doc.createElement("sample");
-//			rootElement.appendChild(sample);
-//
-//			// set attribute to staff element
-//			Attr attr = doc.createAttribute("id");
-//			attr.setValue("1");
-//			sample.setAttributeNode(attr);
-//
-//			int count =0;
-//
-//			final Iterator<double[][]> it = data.iterator();
-//			while (it.hasNext()) {
-//
-//				double[][] array2d = it.next();
-//
-//				//Sample Name's ("Matrix_"+count)
-//				Element element = doc.createElement("Matrix_"+count);
-//				for (int i = 0; i < array2d.length; i++) {
-//					element.appendChild(doc.createElement("Row_"+ i));
-//					for(int j = 0; j< array2d[0].length; j++){
-//						double currentValue = array2d[i][j];
-//						element.appendChild(doc.createTextNode( Double.toString(Math.round(currentValue*1e5)/1e5) + ( j != array2d[0].length - 1 ? "," : "")));
-//					}	
-//				}
-//				count++;
-//				sample.appendChild(element);
-//
-//				data.iterator().next();
-//			}
-//			System.out.println("Finished");
-//
-//			// write the content into xml file
-//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//			Transformer transformer = transformerFactory.newTransformer();
-//			DOMSource source = new DOMSource(doc);
-//			//Name of File
-//			StreamResult result = new StreamResult(new File("test.xml"));
-//
-//			// Output to console for testing
-//			// StreamResult result = new StreamResult(System.out);
-//
-//			transformer.transform(source, result);
-//
-//			System.out.println("File saved!");
-//
-//		} catch (ParserConfigurationException pce) {
-//			pce.printStackTrace();
-//		} catch (TransformerException tfe) {
-//			tfe.printStackTrace();
-//		}
-//	}
+	@Override
+	public void stepXmlLogTraining(CBIREvaluationModel evaluationModel) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void stepXmlLogEvolution(CBIREvaluationModel evaluationModel) throws IOException, ParserConfigurationException, TransformerException {
+		this.evaluationModel = evaluationModel;
+		double[][] weights2d = this.evaluationModel.getWeights2d();
+		StringBuffer rowSB;
+		
+		String xmlFolder = this.baseFolder + "/XMLSteps";
+		String xmlLocation = this.dateString + ".xml";
+		
+		Path xmlFolderPath = FileSystems.getDefault().getPath(xmlFolder);
+		Path xmlLocationPath = FileSystems.getDefault().getPath(xmlFolder, xmlLocation);
+		
+		if(Files.notExists(xmlFolderPath, LinkOption.NOFOLLOW_LINKS)){
+			Files.createDirectory(xmlFolderPath);
+		}
+		File xmlFile = new File(xmlFolder + "/" + xmlLocation);
+		StreamResult result = new StreamResult(xmlFile);
+		
+		// Output to console for testing
+		//StreamResult result = new StreamResult(System.out);
+		
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+		Document doc = docBuilder.newDocument();
+		
+		//logdata
+		Element rootElement = doc.createElement("logdata");
+		doc.appendChild(rootElement);
+		
+		//step
+		Element step = doc.createElement("step");
+		rootElement.appendChild(step);
+ 
+		Attr count = doc.createAttribute("count");
+		count.setValue("0");
+		step.setAttributeNode(count);
+		
+		//rbm
+		Element rbm = doc.createElement("rbm");
+		step.appendChild(rbm);
+ 
+		Attr id = doc.createAttribute("id");
+		id.setValue("0");
+		rbm.setAttributeNode(id);
+		
+		for(int i = 0; i < weights2d.length; ++i){
+			rowSB = new StringBuffer();
+			for(int j = 0; j < weights2d[0].length; ++j){
+				rowSB.append(weights2d[i][j]);
+				if(j < weights2d[0].length - 1){
+					rowSB.append(",");
+				}
+			}
+			Element row = doc.createElement("row");
+			rbm.appendChild(row);
+			
+			Attr num = doc.createAttribute("num");
+			num.setValue(new Integer(i).toString());
+			row.setAttributeNode(num);
+			
+			row.appendChild(doc.createTextNode(rowSB.toString()));
+		}
+		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+ 
+		transformer.transform(source, result);
+		
+	}
 
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {

@@ -1,8 +1,12 @@
 package de.htw.cma;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.jblas.DoubleMatrix;
 
@@ -121,13 +125,27 @@ public class GeneticDCTRBMError {
 
 			save(cma.getBestX());
 			
-			if(p % evaluationModel.getLogStepFrequency() == 0){
+			if(p % evaluationModel.getCsvOutputFrequency() == 0){
 				evaluationModel.setMAP(bestMap);
-				evaluationModel.setResultWeights(bestWeights);
 				evaluationModel.setEpochs(p);
 				evaluationModel.setError(bestError);
-				logger.stepCsvLog(evaluationModel);
+				try {
+					logger.stepCsvLog(evaluationModel);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			if(p % evaluationModel.getXmlOutputFrequency() == 0){
+				evaluationModel.setWeights2d(bestWeights);
+				try {
+					logger.stepXmlLogEvolution(evaluationModel);
+				} catch (IOException | ParserConfigurationException | TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		// evaluate mean value as it is the best estimator for the optimum
 		cma.setFitnessOfMeanX(valueOf(cma.getMeanX())); // updates the best ever
@@ -143,7 +161,7 @@ public class GeneticDCTRBMError {
 				+ " at evaluation " + cma.getBestEvaluationNumber());
 		
 		evaluationModel.setMAP(bestMap);
-		evaluationModel.setResultWeights(bestWeights);
+		evaluationModel.setWeights2d(bestWeights);
 		evaluationModel.setEpochs(p);
 		evaluationModel.setError(bestError);
 	}

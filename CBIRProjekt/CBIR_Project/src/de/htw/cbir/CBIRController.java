@@ -2,7 +2,11 @@ package de.htw.cbir;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ForkJoinPool;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import de.htw.ait.rbm.RBMNico;
 import de.htw.cbir.gui.CBIRUI;
@@ -234,7 +238,12 @@ public class CBIRController {
 				evaluationModel.setEpochs(settings.getEpochs());
 				evaluationModel.setEvaluationType(CBIREvaluationModel.evaluationType.TRAINING);
 			}
-			logger.finalCsvLog(evaluationModel);
+			try {
+				logger.finalCsvLog(evaluationModel);			
+			} catch (IOException e) {		
+				e.printStackTrace();
+				System.err.println("File error on log");
+			}
 		}
 	}
 

@@ -8,12 +8,14 @@ public class CBIREvaluationModel {
 	private int epochs;
 	private evaluationType type;
 	private int imageSetSize;
-	private double[][] resultWeights;
-	private double[][] startWeights;
+	private double[][][] weights;
+	private double[][] weights2d;
 	private int seed;
 	private boolean useSeed;
 	private IRBMLogger logger;
-	private int logStepFrequency;
+	private int csvOutputFrequency;
+	private int xmlCollectFrequency;
+	private int xmlOutputFrequency;
 	
 	public static enum evaluationType{
 		EVOLUTION, TRAINING, UNDEFINED
@@ -21,7 +23,9 @@ public class CBIREvaluationModel {
 		
 	public CBIREvaluationModel(int imageSetSize){
 		this.reset();
-		this.setLogStepFrequency(100);
+		this.csvOutputFrequency = 100;
+		this.xmlCollectFrequency = 100;
+		this.xmlOutputFrequency = 1000;
 		this.imageSetSize = imageSetSize;
 	}
 	
@@ -30,8 +34,7 @@ public class CBIREvaluationModel {
 		this.mAP = 0.0;
 		this.error = 0.0;
 		this.type = evaluationType.UNDEFINED;
-		this.resultWeights = null;
-		this.startWeights = null;
+		this.weights = null;
 		this.logger = null;
 		this.useSeed = false;
 		this.seed = 0;
@@ -39,12 +42,6 @@ public class CBIREvaluationModel {
 	
 	public CBIREvaluationModel(){
 		this(0);
-	}
-	public double[][] getStartWeights() {
-		return startWeights;
-	}
-	public void setStartWeights(double[][] startWeights) {
-		this.startWeights = startWeights;
 	}
 	public double getMAP() {
 		return mAP;
@@ -76,11 +73,11 @@ public class CBIREvaluationModel {
 	public void setImageSetSize(int imageSetSize) {
 		this.imageSetSize = imageSetSize;
 	}
-	public double[][] getResultWeights() {
-		return resultWeights;
+	public double[][][] getWeights() {
+		return weights;
 	}
-	public void setResultWeights(double[][] resultWeights) {
-		this.resultWeights = resultWeights;
+	public void setWeights(double[][][] weights) {
+		this.weights = weights;
 	}	
 	public boolean getUseSeed() {
 		return useSeed;
@@ -100,10 +97,28 @@ public class CBIREvaluationModel {
 	public void setLogger(IRBMLogger logger) {
 		this.logger = logger;
 	}
-	public int getLogStepFrequency() {
-		return logStepFrequency;
+	public int getCsvOutputFrequency() {
+		return csvOutputFrequency;
 	}
-	public void setLogStepFrequency(int logStepFrequency) {
-		this.logStepFrequency = logStepFrequency;
+	public void setCsvOutputFrequency(int csvOutputFrequency) {
+		this.csvOutputFrequency = csvOutputFrequency;
+	}
+	public double[][] getWeights2d() {
+		return weights2d;
+	}
+	public void setWeights2d(double[][] weights2d) {
+		this.weights2d = weights2d;
+	}
+	public int getXmlCollectFrequency() {
+		return xmlCollectFrequency;
+	}
+	public void setXmlCollectFrequency(int xmlCollectFrequency) {
+		this.xmlCollectFrequency = xmlCollectFrequency;
+	}
+	public int getXmlOutputFrequency() {
+		return xmlOutputFrequency;
+	}
+	public void setXmlOutputFrequency(int xmlOutputFrequency) {
+		this.xmlOutputFrequency = xmlOutputFrequency;
 	}
 }
