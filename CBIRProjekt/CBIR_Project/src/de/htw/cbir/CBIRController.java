@@ -5,13 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ForkJoinPool;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import de.htw.ait.rbm.RBMNico;
 import de.htw.cbir.gui.CBIRUI;
 import de.htw.cbir.gui.RBMVisualizationFrame;
-import de.htw.cbir.gui.VisWrapper;
 import de.htw.cbir.histogram.IDWHistogramFactory;
 import de.htw.cbir.model.ImagePair;
 import de.htw.cbir.model.Pic;
@@ -32,8 +27,8 @@ import de.htw.color.ColorConverter.ColorSpace;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.IRBMLogger;
 import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.RBMJBlasSeparatedWeights;
 import de.htw.iconn.rbm.RBMLogger;
+import de.htw.iconn.rbm.RBMLoggerVisualizer;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
 import de.htw.iconn.rbm.functions.GeneralisedLogisticFunction;
@@ -50,9 +45,6 @@ public class CBIRController {
 
 	private Settings settings;
 	private ImageManager imageManager;
-
-	private double error;
-	private double rawError;
 
 	private CBIRUI ui;
 	private final RBMVisualizationFrame visualizationFrame;
@@ -144,8 +136,6 @@ public class CBIRController {
 		evaluationModel.reset();
 		rbm = null;
 		
-		int epochs = settings.getEpochs();
-		int updateFrequency = settings.getUpdateFrequency();
 		int inputSize = settings.getInputSize();
 		int outputSize = settings.getOutputSize();
 		double learnRate = settings.getLearnRate();
@@ -173,43 +163,14 @@ public class CBIRController {
 			sorter = new Sorter_IDWHistogram(allImages, settings, factory, pool);
 		} else if (cmd.equalsIgnoreCase("FV15DCT")) {
 			sorter = new Sorter_FV15DCT(allImages, settings, pool);
-		} else if (cmd.equalsIgnoreCase("DCTRBM")) {
-			DCTRBM dctRBM = new DCTRBM(inputSize, outputSize, learnRate);
-//			dctRBM.train(allImages, 0);
-
-			// made global for update RBMVisualizationFrame.update()
-			error = dctRBM.getError(allImages);
-			rawError = dctRBM.getRawError(allImages);
-
-			int rounds = epochs / updateFrequency;
-			for(int i = 0; i < rounds; i++) {	
-				dctRBM.train(allImages, updateFrequency);
-				visualizationFrame.update(dctRBM.getWeights(), error);
-				System.out.println("rounds: " + rounds + " updateFrequency: " + updateFrequency);
-			}
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
-		} else if (cmd.equalsIgnoreCase("RBMJBlas_Sigmoid")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));
-		} else if (cmd.equalsIgnoreCase("DCTRBM_RM")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction(), useSeed, seed));			
-		} else if (cmd.equalsIgnoreCase("DCTRBM_CJ")) {
-			
-		} else if (cmd.equalsIgnoreCase("DCTRBM_MU")) {
-
-		} else if (cmd.equalsIgnoreCase("DCTRBM_RC")) {
-
-		} else if (cmd.equalsIgnoreCase("DCTRBM_SR")) {
-			rbm = new RBMLogger(new VisWrapper(visualizationFrame , new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)));
-			
 		} else if (cmd.equalsIgnoreCase("DCTRBM_JBlas")) {
-			rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed));
-
+			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
 		}
 		if(rbm != null) {
 			dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			updateVisualization(epochs, updateFrequency, dctRBM);			
+			dctRBM.train(imageManager.getImages(), settings.getEpochs());			
 			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
 		}
 		sorter.getFeatureVectors();
@@ -250,10 +211,7 @@ public class CBIRController {
 	public String[] getSorterNames() {
 
 		return new String[] { 
-			"None", "ColorMean", "ColorMean2",
-			"IDW Histogram", "FV15DCT", "DCTRBM",
-			"DCTRCJ_RM", "DCTRBM_RM", "DCTRBM_CJ", "DCTRBM_MU", "DCTRBM_RC", "DCTRBM_SR",
-			"DCTRBM_JBlas"
+			"None", "ColorMean", "ColorMean2", "IDW Histogram", "FV15DCT", "DCT_CJ", "DCTRBM_JBlas"
 		};
 	}
 
@@ -383,14 +341,6 @@ public class CBIRController {
 			evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 			GeneticDCTRBMError gh = new GeneticDCTRBMError(rbm, imageManager, evaluation, pool);
 			gh.run();
-		}
-	}
-
-	private void updateVisualization(int epochs, int updateFrequency, DCTRBM dctrbm) {
-		int update = epochs / updateFrequency;
-		for (int i = 0; i < update; i++) {
-			dctrbm.train(imageManager.getImages(), updateFrequency);
-			visualizationFrame.update(dctrbm.getWeights(), error);
 		}
 	}
 }
