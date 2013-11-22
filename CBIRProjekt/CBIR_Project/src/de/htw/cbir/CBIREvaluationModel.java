@@ -17,7 +17,7 @@ public class CBIREvaluationModel {
 	private boolean useSeed;
 	private IRBMLogger logger;
 	private int csvOutputFrequency;
-	private int xmlCollectFrequency;
+	private int updateInterval;
 	private int xmlOutputFrequency;
 	
 	public static enum evaluationType{
@@ -27,7 +27,7 @@ public class CBIREvaluationModel {
 	public CBIREvaluationModel(int imageSetSize){
 		this.reset();
 		this.csvOutputFrequency = 100;
-		this.xmlCollectFrequency = 100;
+		this.updateInterval = 100;
 		this.xmlOutputFrequency = 1000;
 		this.imageSetSize = imageSetSize;
 	}
@@ -122,11 +122,11 @@ public class CBIREvaluationModel {
 	public void setWeights2d(double[][] weights2d) {
 		this.weights2d = weights2d;
 	}
-	public int getXmlCollectFrequency() {
-		return xmlCollectFrequency;
+	public int getUpdateInterval() {
+		return updateInterval;
 	}
-	public void setXmlCollectFrequency(int xmlCollectFrequency) {
-		this.xmlCollectFrequency = xmlCollectFrequency;
+	public void setUpdateInterval(int updateInterval) {
+		this.updateInterval = updateInterval;
 	}
 	public int getXmlOutputFrequency() {
 		return xmlOutputFrequency;

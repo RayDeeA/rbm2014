@@ -18,22 +18,35 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	private RBMVisualizationFrame frame;
 	private CBIREvaluationModel evaluationModel;
 	
-	private int updateInterval;
-	
 	public RBMLoggerVisualizer(RBMLogger logger, RBMVisualizationFrame frame, CBIREvaluationModel evaluationModel){
 		this.logger = logger;
 		this.frame = frame;
 		this.evaluationModel = evaluationModel;
-		this.updateInterval = 100;
 	}
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {
-		int steps = max_epochs / updateInterval;
+		int steps = max_epochs / evaluationModel.getUpdateInterval();
 		for(int i = 0; i < steps; ++i){		
-			logger.train(trainingData, updateInterval);
+			logger.train(trainingData, evaluationModel.getUpdateInterval());
 			frame.update(logger.getWeights()[0], logger.error(trainingData));
+			evaluationModel.addToCollectedWeights(logger.getWeightsWithBias());
+			if((i*evaluationModel.getUpdateInterval()) % evaluationModel.getXmlOutputFrequency() == 0){
+				try {
+					logger.stepXmlLogTraining(evaluationModel);
+				} catch (IOException | ParserConfigurationException
+						| SAXException | TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		//reserved for Logger
+		try {
+			logger.stepXmlLogTraining(evaluationModel);
+		} catch (IOException | ParserConfigurationException
+				| SAXException | TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

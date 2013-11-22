@@ -215,11 +215,11 @@ public class RBMLogger implements IRBM, IRBMLogger{
 				Attr id = doc.createAttribute("id");
 				id.setValue(new Integer(i).toString());
 				rbm.setAttributeNode(id);
-				for(int j = 0; j < weights[0].length; ++j){
+				for(int j = 0; j < weights[i].length; ++j){
 					rowSB = new StringBuffer();
-					for(int k = 0; k < weights[0][0].length; ++j){
+					for(int k = 0; k < weights[i][j].length; ++k){
 						rowSB.append(weights[i][j][k]);
-						if(k < weights[0][0].length - 1){
+						if(k < weights[i][j].length - 1){
 							rowSB.append(",");
 						}
 					}
