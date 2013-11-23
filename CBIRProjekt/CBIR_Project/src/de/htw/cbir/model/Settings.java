@@ -24,6 +24,7 @@ import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
 import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
 import de.htw.iconn.rbm.functions.TanHMatrixFunction;
 
 public class Settings implements ChangeListener {
@@ -233,6 +234,8 @@ public class Settings implements ChangeListener {
 				} else if (valueString.equalsIgnoreCase("Rectifier")) {
 					setLogisticFunction( new RectifierMatrixFunction());
 				} else if (valueString.equalsIgnoreCase("TanH")) {
+					setLogisticFunction(new TanHMatrixFunction());
+				} else if (valueString.equalsIgnoreCase("SqareRoot")) {
 					setLogisticFunction(new TanHMatrixFunction());
 				}
 				

@@ -38,6 +38,7 @@ import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
 import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
 import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
 import de.htw.iconn.rbm.functions.TanHMatrixFunction;
 import de.htw.iconn.sorter.Sorter_DCT_CJ;
 
@@ -97,6 +98,8 @@ public class CBIRController {
 			logisticFunction = new RectifierMatrixFunction();
 		} else if (cmd.equalsIgnoreCase("TanH")) {
 			logisticFunction = new TanHMatrixFunction();
+		} else if (cmd.equalsIgnoreCase("SqareRoot")) {
+			logisticFunction = new SquareRootLogistic();
 		}
 		
 		rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction));
@@ -127,7 +130,8 @@ public class CBIRController {
 			"Linear Interpolated", 
 			"Linear Unclipped (Absolute Value)", 
 			"Rectifier", 
-			"TanH" 
+			"TanH", 
+			"SqareRoot" 
 		};
 		
 	}

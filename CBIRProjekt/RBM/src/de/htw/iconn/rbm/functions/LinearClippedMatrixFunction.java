@@ -9,7 +9,7 @@ public class LinearClippedMatrixFunction extends MatrixFunctions implements
 	// min(max(0, x), 1)
 
 	public DoubleMatrix function(DoubleMatrix m) {
-		double[][] duplicateM = m.dup().mul(0.5).add(0.5).toArray2();
+		double[][] duplicateM = m.dup().mul(0.125).add(0.5).toArray2();
 		for (int y = 0; y < duplicateM.length; y++) {
 			for (int x = 0; x < duplicateM[y].length; x++) {
 				if (duplicateM[y][x] < 0)
