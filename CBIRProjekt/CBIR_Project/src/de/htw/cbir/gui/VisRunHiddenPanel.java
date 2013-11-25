@@ -18,6 +18,10 @@ public class VisRunHiddenPanel extends JPanel implements MouseListener {
 		this.setSize(frame.getSize());
 		this.addMouseListener(this);
 	}
+	
+	private void calcDims(Dimension dim) {
+		
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

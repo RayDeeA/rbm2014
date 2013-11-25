@@ -102,6 +102,8 @@ public class RBMVisualizationFrame extends JFrame{
 		visPanel.setVisible(true);
 		this.setVisible(true);
 	}
+	
+	
 
 	public void update(double[][] weights, double error){
 		errorText = Double.toString(error);
