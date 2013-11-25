@@ -9,7 +9,7 @@ import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
-public class DCTRBM {
+public class DCTRBM extends RBMWrapper {
 
 	
 	
@@ -22,12 +22,7 @@ public class DCTRBM {
 	private double learnRate;
 	
 	private IRBM rbm;
-	
-	/**
-	 * 
-	 * @param inputSize Gueltig sind 3,6,9,12 oder 15
-	 * @param outputSize
-	 */
+
 	public DCTRBM(int inputSize, int outputSize, double learnRate) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
@@ -41,7 +36,7 @@ public class DCTRBM {
 		this.rbm = rbm;
 	}
 	
-	public DCTRBM shallowCopy() {
+	public RBMWrapper shallowCopy() {
 		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
 		return new DCTRBM(inputSize, outputSize, newRBM);
 	}
@@ -72,7 +67,7 @@ public class DCTRBM {
 	 * @param images
 	 * @return
 	 */
-	private double[][] createTrainingsData(Pic[] images) {
+	protected double[][] createTrainingsData(Pic[] images) {
 		double[][] result = new double[images.length][inputSize];
 		
 		// die minimalen und maximalen Werte pro Dimension
@@ -82,6 +77,12 @@ public class DCTRBM {
 		// Berechne fuer alle Bilder die DCT Koeffi
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage bi = images[i].getDisplayImage();
+			
+			int[] array = new int[bi.getWidth() * bi.getHeight()];
+			
+			bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), array, 0, bi.getWidth());
+
+			
 			float[] fvFloat = FeatureVector2opt.getFeatureVectorDCT(bi);
 		
 			// es werden nicht immer alle DCT Koeffi benoetigt
@@ -99,7 +100,7 @@ public class DCTRBM {
 		// normalisiere die Daten
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[i].length; j++) {
-				double val = (result[i][j] + Math.abs(dimensionMin[j])) / (Math.abs(dimensionMin[j]) + Math.abs(dimensionMax[j]));
+				double val = (result[i][j] + Math.abs(dimensionMin[j])) / (0.0000000001 + Math.abs(dimensionMin[j]) + Math.abs(dimensionMax[j]));
 				result[i][j] = val;
 			}
 		}

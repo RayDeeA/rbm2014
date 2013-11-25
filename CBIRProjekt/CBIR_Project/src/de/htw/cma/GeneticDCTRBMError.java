@@ -14,6 +14,7 @@ import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.CBIREvaluationModel;
 import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
+import de.htw.cbir.RBMWrapper;
 import de.htw.iconn.rbm.IRBMLogger;
 import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 
@@ -25,14 +26,14 @@ public class GeneticDCTRBMError {
 	private CBIREvaluation evaluation;
 	private double[] initialValues;
 	private double stdDev = 0.05;
-	private DCTRBM rbm;
+	private RBMWrapper rbm;
 	private ForkJoinPool pool;
 
 	private double bestMap = 0;
 	private double bestError = 0;
 	private double[][] bestWeights = null;
 
-	public GeneticDCTRBMError(DCTRBM rbm, ImageManager imageManager,
+	public GeneticDCTRBMError(RBMWrapper rbm, ImageManager imageManager,
 			CBIREvaluation evalulation, ForkJoinPool pool) {
 		this.imageManager = imageManager;
 		this.rbm = rbm;
@@ -216,7 +217,7 @@ public class GeneticDCTRBMError {
 	}
 
 	public double valueOf(double[] input) {
-		DCTRBM testRBM = rbm.shallowCopy();
+		RBMWrapper testRBM = rbm.shallowCopy();
 		double[][] weights = convert(input);
 		testRBM.setWeights(weights);
 		double err = testRBM.getError(imageManager.getImages());
