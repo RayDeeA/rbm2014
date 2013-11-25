@@ -6,15 +6,16 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMWrapper;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
 
 
 public class Sorter_DCTRBM extends Sorter {
 
-	private DCTRBM dctRBM;
+	private RBMWrapper dctRBM;
 	
-	public Sorter_DCTRBM(Pic[] pics, Settings settings, DCTRBM dctRBM, ForkJoinPool pool) {
+	public Sorter_DCTRBM(Pic[] pics, Settings settings, RBMWrapper dctRBM, ForkJoinPool pool) {
 		super(pics, settings, pool);
 		this.dctRBM = dctRBM;
 	}

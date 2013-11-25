@@ -57,6 +57,8 @@ public class CBIRController {
 	private CBIREvaluation evaluation;
 	private CBIREvaluationModel evaluationModel;
 
+	private boolean useDCTRBM = false;
+	
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;		
 		this.imageManager = imageManager;
@@ -103,7 +105,12 @@ public class CBIRController {
 		}
 		
 		rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction));
-		DCTRBM dctrbm = new DCTRBM(inputSize, outputSize, rbm);
+		RBMWrapper dctrbm = null;
+		
+		if(useDCTRBM)
+			 dctrbm = new DCTRBM(inputSize, outputSize, rbm);
+		else
+			 dctrbm = new PixelRBM(28*28, 10, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
 		dctrbm.train(allImages, 0);
@@ -170,12 +177,16 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("DCTRBM_JBlas")) {
-			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
+			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(28*28, 4, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
 		}
 		if(rbm != null) {
-			dctRBM = new DCTRBM(inputSize, outputSize, rbm);
-			dctRBM.train(imageManager.getImages(), settings.getEpochs());			
-			sorter = new Sorter_DCTRBM(allImages, settings, dctRBM, pool);
+			RBMWrapper rbmWrapper = null;
+			if(useDCTRBM)
+				rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
+			else
+				rbmWrapper = new PixelRBM(rbm.getInputSize() - 1, rbm.getOutputSize() - 1, rbm);
+			rbmWrapper.train(imageManager.getImages(), settings.getEpochs());			
+			sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		}
 		sorter.getFeatureVectors();
 		

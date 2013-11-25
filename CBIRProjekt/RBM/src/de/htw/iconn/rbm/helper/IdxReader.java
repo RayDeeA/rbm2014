@@ -18,7 +18,7 @@ public class IdxReader {
 		String inputImagePath = "CBIR_Project/imagesRaw/MNIST/train-images-idx3-ubyte";
 		String inputLabelPath = "CBIR_Project/imagesRaw/MNIST/train-labels-idx1-ubyte";
 		
-		String outputPath = "CBIR_Project/images/MNIST_Database/";
+		String outputPath = "CBIR_Project/images/MNIST_Database_ARGB/";
 		
 		int[] hashMap = new int[10]; 
 
@@ -34,14 +34,17 @@ public class IdxReader {
             int magicNumberLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
             int numberOfLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
             
-            BufferedImage image = new BufferedImage(numberOfColumns, numberOfRows, BufferedImage.TYPE_BYTE_GRAY);
+            BufferedImage image = new BufferedImage(numberOfColumns, numberOfRows, BufferedImage.TYPE_INT_ARGB);
             int numberOfPixels = numberOfRows * numberOfColumns;
             int[] imgPixels = new int[numberOfPixels];
             
             for(int i = 0; i < numberOfImages; i++) {
             	
+            	if(i % 100 == 0) {System.out.println("Number of images extracted: " + i);}
+            	
             	for(int p = 0; p < numberOfPixels; p++) {
-            		imgPixels[p] = (byte) (255 - inImage.read()); 
+            		int gray = 255 - inImage.read();
+            		imgPixels[p] = 0xFF000000 | (gray<<16) | (gray<<8) | gray;
             	}
             	
                 image.setRGB(0, 0, numberOfColumns, numberOfRows, imgPixels, 0, numberOfColumns);
