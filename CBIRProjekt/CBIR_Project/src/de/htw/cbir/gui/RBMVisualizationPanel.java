@@ -22,8 +22,6 @@ public class RBMVisualizationPanel extends JPanel implements MouseListener {
 		this.dim = dim;
 		this.setSize(frame.getSize());
 		this.addMouseListener(this);
-		//		this.setToolTipText("tooltip");
-		ToolTipManager.sharedInstance().registerComponent(this);
 	}
 
 	public void paintComponent(Graphics g) {
