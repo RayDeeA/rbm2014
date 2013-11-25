@@ -39,20 +39,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	private String headLine;
 	private String dateString;
 	private String baseFolder;
-	
-	private String rbmName;
-	private int inputSize;
-	private int outputSize;
-	private double learnRate;
-	private String logisticFunctionName;
-	private double mAP;
-	private double error;		
-	private int epochs;
-	private int imageSetSize;
-	private String evaluationType;
-	private String includingBias;
-	private String useSeed;
-	private int seed;
+
 	
 	
 	public RBMLogger(IRBM rbm){
@@ -75,20 +62,21 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		if(dateString == null){
 			dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
 		}
-		rbmName = this.getRbmName();
-		inputSize = this.getInputSize();
-		outputSize = this.getOutputSize();
-		learnRate = this.getLearnRate();
-		logisticFunctionName = this.getLogisticFunctionName();
-		mAP = evaluationModel.getMAP();
-		error = evaluationModel.getError();		
-		epochs = evaluationModel.getEpochs();
-		imageSetSize = evaluationModel.getImageSetSize();
-		evaluationType = evaluationModel.getEvaluationType().toString();
-		includingBias = this.includingBias();
-		useSeed = this.useSeed(evaluationModel.getUseSeed());
-		seed = evaluationModel.getSeed();
-		String logLine = rbmName + ";" + evaluationType + ";" + inputSize + ";" + outputSize + ";" + includingBias + ";" + learnRate + ";" + epochs + ";" + logisticFunctionName + ";" + seed + ";" + useSeed + ";" + error + ";" + mAP + ";" + imageSetSize + ";" + dateString;
+		String logLine = 
+		this.getRbmName() + ";" + 
+		evaluationModel.getEvaluationType().toString() + ";" +
+		this.getInputSize() + ";" +  
+		this.getOutputSize() + ";" + 
+		this.includingBias() + ";" + 
+		this.getLearnRate() + ";" +
+		evaluationModel.getEpochs() + ";" +
+		this.getLogisticFunctionName() +";" +
+		evaluationModel.getSeed() + ";" + 
+		this.useSeed(evaluationModel.getUseSeed()) + ";" +
+		evaluationModel.getError() + ";" +
+		evaluationModel.getMAP() + ";" +
+		evaluationModel.getImageSetSize() + ";" +
+		dateString;
 		
 		return logLine;
 	}
