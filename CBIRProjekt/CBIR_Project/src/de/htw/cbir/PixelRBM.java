@@ -10,9 +10,6 @@ import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public class PixelRBM extends RBMWrapper {
-
-	// Datananalyse
-	private double dimensionMin[], dimensionMax[];
 	
 	// Anzahl der Eingangs und Ausgangsneuronen
 	private int inputSize;
@@ -73,10 +70,6 @@ public class PixelRBM extends RBMWrapper {
 	protected double[][] createTrainingsData(Pic[] images) {
 		double[][] result = new double[images.length][inputSize];
 		
-		// die minimalen und maximalen Werte pro Dimension
-		dimensionMin = new double[inputSize];
-		dimensionMax = new double[inputSize];
-		
 		// Berechne fuer alle Bilder die DCT Koeffi
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage bi = images[i].getDisplayImage();
@@ -124,7 +117,6 @@ public class PixelRBM extends RBMWrapper {
 			fvFloat[i] = pixel / 255.0f;
 		}
 		
-		// verwende nur die Wichtigen DCT Koeffi
 		double[][] useData = new double[1][inputSize];
 		for (int i = 0; i < inputSize; i++)
 			useData[0][i] = fvFloat[i];
