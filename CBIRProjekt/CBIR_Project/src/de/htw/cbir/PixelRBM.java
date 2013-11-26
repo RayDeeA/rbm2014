@@ -24,8 +24,7 @@ public class PixelRBM extends RBMWrapper {
 	}
 
 	public RBMWrapper shallowCopy() {
-		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate,
-				rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
+		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
 		return new PixelRBM(inputSize, outputSize, newRBM);
 	}
 
@@ -43,10 +42,7 @@ public class PixelRBM extends RBMWrapper {
 			BufferedImage bi = images[i].getDisplayImage();
 
 			int[] pixels = new int[bi.getWidth() * bi.getHeight()];
-			bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0,
-					bi.getWidth());
-
-			float[] fvFloat = new float[pixels.length];
+			bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0, bi.getWidth());
 
 			for (int j = 0; j < inputSize; j++) {
 				int argb = pixels[j];
@@ -56,14 +52,9 @@ public class PixelRBM extends RBMWrapper {
 				int b = (argb) & 0xFF;
 
 				int pixel = (r + g + b) / 3;
-				fvFloat[j] = pixel / 255.0f;
-			}
-
-			for (int j = 0; j < inputSize; j++) {
-				result[i][j] = fvFloat[j];
+				result[i][j] = pixel / 255.0f;
 			}
 		}
-
 		return result;
 	}
 
@@ -73,7 +64,7 @@ public class PixelRBM extends RBMWrapper {
 		int[] pixels = new int[bi.getWidth() * bi.getHeight()];
 		bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0, bi.getWidth());
 
-		float[] fvFloat = new float[pixels.length];
+		double[] fvFloat = new double[pixels.length];
 
 		for (int i = 0; i < inputSize; i++) {
 			int argb = pixels[i];
