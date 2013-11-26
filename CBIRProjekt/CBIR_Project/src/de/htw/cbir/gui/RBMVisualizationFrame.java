@@ -62,7 +62,7 @@ public class RBMVisualizationFrame extends JPanel{
 		
 		// slider history
 		slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
-		slider.setPreferredSize(new Dimension(width/3, menuHeight));
+		slider.setPreferredSize(new Dimension(width/2, menuHeight));
 		slider.setMinimum(0);
 		slider.setMaximum(100);
 		slider.setMajorTickSpacing(20);
@@ -87,24 +87,32 @@ public class RBMVisualizationFrame extends JPanel{
 		this.add(menuPanel, BorderLayout.NORTH);
 		
 		graphicsPanel = new JPanel(new BorderLayout(border, border));		
+		TitledBorder graphicsTitle = new TitledBorder(BorderFactory.createEtchedBorder(),
+				"Visualization", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
+				new Font("Sans", Font.PLAIN, 11));
+		graphicsPanel.setBorder(graphicsTitle);
 		visPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
+		visPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
 		trainingPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
+		trainingPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
 		hiddenPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
+		hiddenPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
 		graphicsPanel.add(visPanel, BorderLayout.WEST);
 		graphicsPanel.add(trainingPanel, BorderLayout.CENTER);
 		graphicsPanel.add(hiddenPanel, BorderLayout.EAST);
 		graphicsPanel.setPreferredSize(new Dimension(width, height+menuHeight));
 		this.add(graphicsPanel, BorderLayout.CENTER);
 		
-		
+		errorPanel = new JPanel(new GridBagLayout());
 		TitledBorder errorTitle = new TitledBorder(BorderFactory.createEtchedBorder(),
 				"Error", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font("Sans", Font.PLAIN, 11));
-//		.setBorder(menuTitle);
+		errorPanel.setBorder(errorTitle);
 		errorLabel = new JLabel("", JLabel.CENTER);
 		errorLabel.setPreferredSize(new Dimension(width, 23));
 		errorLabel.setVisible(true);
-		this.add(errorLabel, BorderLayout.SOUTH);
+		errorPanel.add(errorLabel, c);
+		this.add(errorPanel, BorderLayout.SOUTH);
 		
 		// display the window.
 //		this.pack();
