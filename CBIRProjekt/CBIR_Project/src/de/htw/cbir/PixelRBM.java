@@ -66,7 +66,7 @@ public class PixelRBM extends RBMWrapper {
 
 		double[] fvFloat = new double[pixels.length];
 
-		for (int i = 0; i < inputSize; i++) {
+		for (int i = 0; i < pixels.length; i++) {
 			int argb = pixels[i];
 
 			int r = (argb >> 16) & 0xFF;
@@ -77,8 +77,8 @@ public class PixelRBM extends RBMWrapper {
 			fvFloat[i] = pixel / 255.0f;
 		}
 
-		double[][] useData = new double[1][inputSize];
-		for (int i = 0; i < inputSize; i++)
+		double[][] useData = new double[1][pixels.length];
+		for (int i = 0; i < pixels.length; i++)
 			useData[0][i] = fvFloat[i];
 
 		// ermittle die hidden Neurons
