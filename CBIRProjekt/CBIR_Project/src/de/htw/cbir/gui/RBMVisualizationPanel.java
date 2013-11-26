@@ -102,7 +102,7 @@ public class RBMVisualizationPanel extends JPanel implements MouseListener {
 		int y = e.getY();
 		String mousePos = "mousePos x: " + x + " y: " + y;
 		String mouseWeight = "weight: " + this.getCellWeight(x, y);
-		frame.setTooltip(mouseWeight);
+//		frame.setTooltip(mouseWeight);
 		System.out.println(mouseWeight);
 	}
 
