@@ -214,9 +214,9 @@ public class CBIRUI {
 	
 			// Menupunkt "Einstellungen->RBM->Output Size"
 			JMenu m_rbmOutputSize = new JMenu("Output Size");
-			final JSlider rbmOutputSizeSlider = new JSlider(0, 30, settings.getOutputSize());
-			rbmOutputSizeSlider.setMajorTickSpacing(5);
-			rbmOutputSizeSlider.setMinorTickSpacing(1);
+			final JSlider rbmOutputSizeSlider = new JSlider(0, 150, settings.getOutputSize());
+			rbmOutputSizeSlider.setMajorTickSpacing(50);
+			rbmOutputSizeSlider.setMinorTickSpacing(10);
 			rbmOutputSizeSlider.setPaintTicks(true);
 			rbmOutputSizeSlider.setPaintLabels(true);
 			settings.bind(SettingOption.OUTPUT_SIZE, rbmOutputSizeSlider);

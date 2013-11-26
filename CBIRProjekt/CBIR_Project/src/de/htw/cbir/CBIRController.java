@@ -75,7 +75,7 @@ public class CBIRController {
 	public void changeLogisticTest(ActionEvent e) {
 		evaluationModel.reset();
 		
-		int inputSize = settings.getInputSize();
+		int inputSize = (useDCTRBM) ? settings.getInputSize() : 28*28;
 		int outputSize = settings.getOutputSize();
 		double learnRate = settings.getLearnRate();
 
@@ -105,20 +105,20 @@ public class CBIRController {
 		}
 		
 		rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction));
-		RBMWrapper dctrbm = null;
+		RBMWrapper rbmWrapper = null;
 		
 		if(useDCTRBM)
-			 dctrbm = new DCTRBM(inputSize, outputSize, rbm);
+			rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
 		else
-			 dctrbm = new PixelRBM(28*28, 10, rbm);
+			rbmWrapper = new PixelRBM(inputSize, outputSize, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
-		dctrbm.train(allImages, 0);
+		rbmWrapper.train(allImages, 0);
 		
-		this.sorter = new Sorter_DCTRBM(allImages, settings, dctrbm, pool);
+		this.sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
-		GeneticDCTRBMError gh = new GeneticDCTRBMError(dctrbm, imageManager, evaluation, pool);
+		GeneticDCTRBMError gh = new GeneticDCTRBMError(rbmWrapper, imageManager, evaluation, pool);
 		if(rbm != null && rbm instanceof IRBMLogger){
 			evaluationModel.setLogger((IRBMLogger)rbm);		
 		}
@@ -147,7 +147,7 @@ public class CBIRController {
 		evaluationModel.reset();
 		rbm = null;
 		
-		int inputSize = settings.getInputSize();
+		int inputSize = (this.useDCTRBM) ? settings.getInputSize() : 28*28;
 		int outputSize = settings.getOutputSize();
 		double learnRate = settings.getLearnRate();
 		boolean useSeed = settings.isUseSeed();
@@ -177,14 +177,14 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("DCT_CJ")) {
 			sorter = new Sorter_DCT_CJ(allImages, settings, pool);
 		} else if (cmd.equalsIgnoreCase("DCTRBM_JBlas")) {
-			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(28*28, 4, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
+			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
 		}
 		if(rbm != null) {
 			RBMWrapper rbmWrapper = null;
 			if(useDCTRBM)
 				rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
 			else
-				rbmWrapper = new PixelRBM(rbm.getInputSize() - 1, rbm.getOutputSize() - 1, rbm);
+				rbmWrapper = new PixelRBM(inputSize, outputSize, rbm);
 			rbmWrapper.train(imageManager.getImages(), settings.getEpochs());			
 			sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		}
