@@ -1,55 +1,69 @@
 package de.htw.cbir;
 
-import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
 import de.htw.cbir.model.Pic;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
-import de.htw.lcs.feature2opt.FeatureVector2opt;
 
 public abstract class RBMWrapper {
-	
+
 	// Anzahl der Eingangs und Ausgangsneuronen
-	private int inputSize;
-	private int outputSize;
-	private double learnRate;
-	
-	private IRBM rbm;
-	
+	protected int inputSize;
+	protected int outputSize;
+	protected double learnRate;
+
+	// Datananalyse
+	protected double dimensionMin[], dimensionMax[];
+
+	protected IRBM rbm;
+
+	protected RBMWrapper(int inputSize, int outputSize, double learnRate) {
+		this.inputSize = inputSize;
+		this.outputSize = outputSize;
+		this.learnRate = learnRate;
+		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate,
+				new DefaultLogisticMatrixFunction());
+	}
+
+	protected RBMWrapper(int inputSize, int outputSize, IRBM rbm) {
+		this.inputSize = inputSize;
+		this.outputSize = outputSize;
+		this.rbm = rbm;
+	}
+
 	/**
 	 * 
 	 * @param inputSize
 	 * @param outputSize
 	 */
 	public abstract RBMWrapper shallowCopy();
-	
+
 	public void train(Pic[] images, int maxEpoche) {
 		double[][] trainingsData = createTrainingsData(images);
-		if(maxEpoche > 0)
+		if (maxEpoche > 0)
 			rbm.train(trainingsData, maxEpoche);
 	}
-	
-	
+
 	public double getError(Pic[] images) {
 		double[][] trainingsData = createTrainingsData(images);
 		double error = rbm.error(trainingsData);
-		return Math.sqrt(error / trainingsData.length / (inputSize+1));
+		return Math.sqrt(error / trainingsData.length / (inputSize + 1));
 	}
-	
+
 	public double getRawError(Pic[] images) {
 		double[][] trainingsData = createTrainingsData(images);
 		return rbm.error(trainingsData);
 	}
-	
+
 	/**
 	 * 
 	 * @param images
 	 * @return
 	 */
 	protected abstract double[][] createTrainingsData(Pic[] images);
-	
+
 	public abstract double[] getHidden(Pic image);
 
 	public int getVisibleCount() {
@@ -59,7 +73,7 @@ public abstract class RBMWrapper {
 	public int getHiddenCount() {
 		return outputSize;
 	}
-	
+
 	public double[][] getWeights() {
 		return rbm.getWeights()[0];
 	}
@@ -69,7 +83,7 @@ public abstract class RBMWrapper {
 	}
 
 	public void save(Path path) {
-		
+
 	}
 
 	public void printWeightAnalyse() {
