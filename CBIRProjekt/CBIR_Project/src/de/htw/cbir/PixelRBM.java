@@ -81,13 +81,13 @@ public class PixelRBM extends RBMWrapper {
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage bi = images[i].getDisplayImage();
 			
-			int[] array = new int[bi.getWidth() * bi.getHeight()];
+			int[] pixels = new int[bi.getWidth() * bi.getHeight()];
+			bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0, bi.getWidth());
 			
-			bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), array, 0, bi.getWidth());
+			float[] fvFloat = new float[pixels.length];
 			
-			float[] fvFloat = new float[array.length];
 			for(int j = 0; j < inputSize; j++) {
-				int argb = array[j];
+				int argb = pixels[j];
 				
 				int r = (argb >> 16) & 0xFF;
 				int g = (argb >>  8) & 0xFF;
@@ -107,12 +107,27 @@ public class PixelRBM extends RBMWrapper {
 	
 	public double[] getHidden(Pic image) {
 		BufferedImage bi = image.getDisplayImage();
-		float[] fvFloat = FeatureVector2opt.getFeatureVectorDCT(bi);
+
+		int[] pixels = new int[bi.getWidth() * bi.getHeight()];
+		bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0, bi.getWidth());
+		
+		float[] fvFloat = new float[pixels.length];
+		
+		for(int i = 0; i < inputSize; i++) {
+			int argb = pixels[i];
+			
+			int r = (argb >> 16) & 0xFF;
+			int g = (argb >>  8) & 0xFF;
+			int b = (argb      ) & 0xFF;
+			
+			int pixel = (r + g + b) / 3;
+			fvFloat[i] = pixel / 255.0f;
+		}
 		
 		// verwende nur die Wichtigen DCT Koeffi
 		double[][] useData = new double[1][inputSize];
-		for (int j = 0; j < inputSize; j++)
-			useData[0][j] = (fvFloat[j] + Math.abs(dimensionMin[j])) / (Math.abs(dimensionMin[j]) + Math.abs(dimensionMax[j]));
+		for (int i = 0; i < inputSize; i++)
+			useData[0][i] = fvFloat[i];
 		
 		// ermittle die hidden Neurons		
 		double[][] hidden_data = rbm.run_visible(useData);
