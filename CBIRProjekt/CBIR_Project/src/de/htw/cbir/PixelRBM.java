@@ -106,7 +106,6 @@ public class PixelRBM extends RBMWrapper {
 	}	
 	
 	public double[] getHidden(Pic image) {
-		
 		BufferedImage bi = image.getDisplayImage();
 		float[] fvFloat = FeatureVector2opt.getFeatureVectorDCT(bi);
 		
