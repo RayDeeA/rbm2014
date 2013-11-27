@@ -47,8 +47,8 @@ public abstract class RBMWrapper {
 
 	public double getError(Pic[] images) {
 		double[][] trainingsData = createTrainingsData(images);
-		double error = rbm.error(trainingsData);
-		return Math.sqrt(error / trainingsData.length / (inputSize + 1));
+
+		return rbm.error(trainingsData);// Math.sqrt(error / trainingsData.length / (inputSize + 1));
 	}
 
 	public double getRawError(Pic[] images) {

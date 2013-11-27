@@ -6,7 +6,7 @@ import de.htw.cbir.CBIREvaluationModel;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.functions.ILogistic;
 
-public class RBMObserver implements IRBM {
+public class RBMEnhancer implements IRBM {
 	
 	private final IRBM rbm;
 	private final LinkedList<IRBMTrainingEnhancement> traningEnhancements;
@@ -14,7 +14,7 @@ public class RBMObserver implements IRBM {
 	private final CBIREvaluationModel evaluationModel;
 
 	
-	public RBMObserver(IRBM rbm, CBIREvaluationModel evaluationModel) {
+	public RBMEnhancer(IRBM rbm, CBIREvaluationModel evaluationModel) {
 		super();
 		this.rbm = rbm;
 		this.evaluationModel = evaluationModel;
@@ -38,11 +38,15 @@ public class RBMObserver implements IRBM {
 	
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {
+		this.evaluationModel.setEpochs(max_epochs);
 		
 		for (int i = 0; i < max_epochs; i++) {
 			rbm.train(trainingData, 1);
+			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
+
+					this.evaluationModel.setError(rbm.error(trainingData));
 					enhancement.action(evaluationModel);
 				}
 			}

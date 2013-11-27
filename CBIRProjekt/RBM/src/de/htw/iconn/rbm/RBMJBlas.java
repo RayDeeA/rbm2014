@@ -76,9 +76,7 @@ public class RBMJBlas implements IRBM {
 	    
 	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));	     
 		
-	    double currentError = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
-		
-		return currentError;
+		return Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum() / trainingData.length / getInputSize());
 	}
 	
 	@Override
@@ -113,7 +111,7 @@ public class RBMJBlas implements IRBM {
 		    
 		    // Update weights
 		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learnRate / data.getRows() ) );
-		    error = MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum();
+		    error = Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum() / trainingData.length / getInputSize());
 		    
 		    //System.out.println(error);
 	    }
