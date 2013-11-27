@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 import de.htw.cbir.CBIREvaluationModel;
 
-public class XMLWeightLogger implements IRBMTrainingEnhancement {
+public final class XMLWeightLogger implements IRBMTrainingEnhancement {
 
 	private final int updateInterval;
 	private String dateString;
