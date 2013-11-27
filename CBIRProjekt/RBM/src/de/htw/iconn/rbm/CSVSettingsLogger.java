@@ -1,4 +1,4 @@
-package de.htw.iconn.rbm.enhancements;
+package de.htw.iconn.rbm;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,16 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.htw.cbir.CBIREvaluationModel;
-import de.htw.iconn.rbm.IRBM;
 
 public class CSVSettingsLogger {
 
-	
 	private String headLine;
 	private String dateString;
-	private String baseFolder;
-
-	
+	private String baseFolder;	
 	
 	public CSVSettingsLogger(){
 
@@ -126,7 +122,6 @@ public class CSVSettingsLogger {
 		output.flush();
 		output.close();		
 	}
-
 	
 	public String getLogisticFunctionName(IRBM rbm){
 		if(rbm.getLogisticFunction() != null){
@@ -140,7 +135,6 @@ public class CSVSettingsLogger {
 		return rbm.getClass().getSimpleName();
 	}
 
-	
 	private String includingBias(IRBM rbm){
 		if(rbm.hasBias()){
 			return "yes";
