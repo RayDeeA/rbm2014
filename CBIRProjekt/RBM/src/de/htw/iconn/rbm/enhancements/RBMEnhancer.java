@@ -24,29 +24,38 @@ public class RBMEnhancer implements IRBM {
 
 	
 	public boolean addEnhancement(IRBMEnhancement enhancement) {
+		
 		boolean added = false;
+		
 		if(enhancement instanceof IRBMTrainingEnhancement) {
 			traningEnhancements.add((IRBMTrainingEnhancement) enhancement);
 			added = true;
 		}
+		
 		if(enhancement instanceof IRBMEndTrainingEnhancement) {
 			endEnhancements.add((IRBMEndTrainingEnhancement) enhancement);
 			added = true;
 		}
+		
 		return added;	
 	}
 	
 	@Override
 	public void train(double[][] trainingData, int max_epochs) {
+		boolean updateModel = true;
 		this.evaluationModel.setEpochs(max_epochs);
 		
 		for (int i = 0; i < max_epochs; i++) {
+			updateModel = true;
 			rbm.train(trainingData, 1);
 			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
-
-					this.evaluationModel.setError(rbm.error(trainingData));
+					if(updateModel) {
+						this.evaluationModel.setError(rbm.error(trainingData));
+						this.evaluationModel.setWeights(rbm.getWeightsWithBias());
+						updateModel = false;
+					}
 					enhancement.action(evaluationModel);
 				}
 			}
