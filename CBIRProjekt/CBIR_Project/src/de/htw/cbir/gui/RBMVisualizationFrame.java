@@ -42,9 +42,11 @@ public class RBMVisualizationFrame extends JPanel{
 	private final static int width = 900;
 	private final static int height = 600;
 	private final static int menuHeight = 60;
-	private static final int maxImageWidth = 300;
-	private static final int maxImageHeight = 500;
-	private static final int border = 13;
+	private final static int maxImageWidth = 300;
+	private final static int maxImageHeight = 500;
+	private final static int idealHeight = 784;
+	private final static int idealWidth = 150;
+	private final static int border = 13;
 	
 	public RBMVisualizationFrame(){		
 		super(new BorderLayout(border, border));
@@ -61,13 +63,14 @@ public class RBMVisualizationFrame extends JPanel{
 		loadButton.setVisible(true);
 		
 		// slider history
-		slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+		slider = new JSlider(JSlider.HORIZONTAL, 0, 150, 0);
 		slider.setPreferredSize(new Dimension(width/2, menuHeight));
 		slider.setMinimum(0);
-		slider.setMaximum(100);
-		slider.setMajorTickSpacing(20);
+		slider.setMaximum(150);
+		slider.setMajorTickSpacing(10);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
+		slider.setToolTipText("slide to see the training history");
 		
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {		
@@ -91,12 +94,12 @@ public class RBMVisualizationFrame extends JPanel{
 				"Visualization", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font("Sans", Font.PLAIN, 11));
 		graphicsPanel.setBorder(graphicsTitle);
-		visPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
-		visPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
-		trainingPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
-		trainingPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
-		hiddenPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, maxImageHeight));
-		hiddenPanel.setPreferredSize(new Dimension(maxImageWidth, maxImageHeight));
+		visPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		visPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
+		trainingPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		trainingPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
+		hiddenPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		hiddenPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
 		graphicsPanel.add(visPanel, BorderLayout.WEST);
 		graphicsPanel.add(trainingPanel, BorderLayout.CENTER);
 		graphicsPanel.add(hiddenPanel, BorderLayout.EAST);
@@ -105,7 +108,7 @@ public class RBMVisualizationFrame extends JPanel{
 		
 		errorPanel = new JPanel(new GridBagLayout());
 		TitledBorder errorTitle = new TitledBorder(BorderFactory.createEtchedBorder(),
-				"Error", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
+				"Data", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font("Sans", Font.PLAIN, 11));
 		errorPanel.setBorder(errorTitle);
 		errorLabel = new JLabel("", JLabel.CENTER);
@@ -161,11 +164,19 @@ public class RBMVisualizationFrame extends JPanel{
 	}
 	
 
-	public void update(double[][] weights, double error){
+	public void updateVis(double[][] weights, double error){
 		errorText = Double.toString(error);
 		visPanel.update(weights);
 		errorLabel.setText("Error: " + errorText); 
 		mainFrame.pack();
+	}
+	
+	public void updateTraining() {
+		
+	}
+	
+	public void updateHidden() {
+		
 	}
 
 	/**
