@@ -3,6 +3,7 @@ package de.htw.cbir;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.gui.CBIRUI;
@@ -49,6 +50,7 @@ public class CBIRController {
 
 	private CBIRUI ui;
 	private final RBMVisualizationFrame visualizationFrame;
+	private ArrayList<RBMVisualizationFrame> visframelist;
 
 	private Sorter sorter;
 	private ForkJoinPool pool;
@@ -57,14 +59,14 @@ public class CBIRController {
 	private CBIREvaluation evaluation;
 	private CBIREvaluationModel evaluationModel;
 
-	private boolean useDCTRBM = false;
+	private boolean useDCTRBM = true;
 	
 	public CBIRController(Settings settings, ImageManager imageManager) {
 		this.settings = settings;		
 		this.imageManager = imageManager;
 		this.pool = new ForkJoinPool();
 
-		this.visualizationFrame = new RBMVisualizationFrame();
+		this.visualizationFrame = new RBMVisualizationFrame(true);
 		this.visualizationFrame.setControllerRef(this);
 		// GUI Elemente
 		this.ui = new CBIRUI(this, this.visualizationFrame);

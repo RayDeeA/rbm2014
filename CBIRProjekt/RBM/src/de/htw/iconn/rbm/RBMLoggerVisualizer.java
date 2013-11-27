@@ -28,7 +28,7 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 		int steps = max_epochs / evaluationModel.getUpdateInterval();
 		for(int i = 0; i < steps; ++i){		
 			logger.train(trainingData, evaluationModel.getUpdateInterval());
-			frame.updateLeftPanel(logger.getWeights()[0], logger.error(trainingData), 47.11);
+			frame.updatePanel(logger.getWeights()[0], logger.error(trainingData), 47.11);
 			evaluationModel.addToCollectedWeights(logger.getWeightsWithBias());
 			if((i*evaluationModel.getUpdateInterval()) % evaluationModel.getXmlOutputFrequency() == 0){
 				try {

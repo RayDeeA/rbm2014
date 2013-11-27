@@ -86,7 +86,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 			
 			// error of 42 added because of signature of update method to write on label
 			if(frame != null)
-				frame.updateLeftPanel(convert(cma.getBestRecentX()), 47.11, 47.11);
+				frame.updatePanel(convert(cma.getBestRecentX()), 47.11, 47.11);
 			if (cma.getCountIter() % (10*outmod) == 1) {
 				cma.printlnAnnotation(); // might write file as well
 				save(cma.getBestX(), frame);
@@ -113,7 +113,7 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 		//rbm.setWeights(weights);
 		// error of 42 added because of signature of update method to write on label
 		if(frame != null)
-			frame.updateLeftPanel(weights, 47.11, 47.11);
+			frame.updatePanel(weights, 47.11, 47.11);
 		
 		int num_visible = rbm.getVisibleCount();
 		int num_hidden = rbm.getHiddenCount();
