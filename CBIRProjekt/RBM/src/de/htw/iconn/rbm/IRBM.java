@@ -8,7 +8,8 @@ public interface IRBM {
 	public double error(double[][] trainingData);
 	public double[][] run_visible(double[][] userData);
 	public double[][] run_hidden(double[][] hiddenData);
-
+	public double[][] daydream(int numberOfSamples);
+	
 	public void setWeightsWithBias(double[][] weights);
 	public double[][][] getWeights();
 	public double[][][] getWeightsWithBias();

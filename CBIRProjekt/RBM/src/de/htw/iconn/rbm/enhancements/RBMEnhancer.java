@@ -116,4 +116,11 @@ public class RBMEnhancer implements IRBM {
 		return rbm;
 	}
 
+
+	@Override
+	public double[][] daydream(int numberOfSamples) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

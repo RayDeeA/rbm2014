@@ -133,5 +133,9 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	public boolean hasBias() {
 		return logger.hasBias();
 	}
+	@Override
+	public double[][] daydream(int numberOfSamples) {
+		return logger.daydream(numberOfSamples);
+	}
 
 }

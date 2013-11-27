@@ -151,4 +151,10 @@ public class RBMCascade implements IRBM {
 		return false;
 	}
 
+	@Override
+	public double[][] daydream(int numberOfSamples) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

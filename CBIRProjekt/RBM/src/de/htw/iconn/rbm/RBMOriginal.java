@@ -446,4 +446,10 @@ public class RBMOriginal implements IRBM {
 		return true;
 	}
 
+	@Override
+	public double[][] daydream(int numberOfSamples) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
