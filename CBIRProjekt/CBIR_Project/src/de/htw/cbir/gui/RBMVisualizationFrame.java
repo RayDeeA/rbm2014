@@ -26,15 +26,16 @@ public class RBMVisualizationFrame extends JPanel{
 	
 	private static JPanel graphicsPanel;
 	// subs of graphics
-	private RBMVisualizationPanel visPanel;
-	private RBMVisualizationPanel trainingPanel;
-	private RBMVisualizationPanel hiddenPanel;
+	private RBMVisualizationPanel leftPanel;
+	private RBMVisualizationPanel centrePanel;
+	private RBMVisualizationPanel rightPanel;
 
-	private JPanel errorPanel;
+	private JPanel dataPanel;
 	// subs of error
 	private JLabel errorLabel;
+	private JLabel mapLabel;
 	private String errorText;
-	private String weightText;
+	private String mapText;
 	
 	// 
 	private CBIRController controller;
@@ -94,28 +95,34 @@ public class RBMVisualizationFrame extends JPanel{
 				"Visualization", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font("Sans", Font.PLAIN, 11));
 		graphicsPanel.setBorder(graphicsTitle);
-		visPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
-		visPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
-		trainingPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
-		trainingPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
-		hiddenPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
-		hiddenPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
-		graphicsPanel.add(visPanel, BorderLayout.WEST);
-		graphicsPanel.add(trainingPanel, BorderLayout.CENTER);
-		graphicsPanel.add(hiddenPanel, BorderLayout.EAST);
+		leftPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		leftPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
+		centrePanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		centrePanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
+		rightPanel = new RBMVisualizationPanel(this, new Dimension(maxImageWidth, idealHeight));
+		rightPanel.setPreferredSize(new Dimension(maxImageWidth, idealHeight));
+		graphicsPanel.add(leftPanel, BorderLayout.WEST);
+		graphicsPanel.add(centrePanel, BorderLayout.CENTER);
+		graphicsPanel.add(rightPanel, BorderLayout.EAST);
 		graphicsPanel.setPreferredSize(new Dimension(width, height+menuHeight));
 		this.add(graphicsPanel, BorderLayout.CENTER);
 		
-		errorPanel = new JPanel(new GridBagLayout());
+		dataPanel = new JPanel(new GridBagLayout());
 		TitledBorder errorTitle = new TitledBorder(BorderFactory.createEtchedBorder(),
 				"Data", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font("Sans", Font.PLAIN, 11));
-		errorPanel.setBorder(errorTitle);
+		dataPanel.setBorder(errorTitle);
 		errorLabel = new JLabel("", JLabel.CENTER);
-		errorLabel.setPreferredSize(new Dimension(width, 23));
+		errorLabel.setPreferredSize(new Dimension(width/2, 23));
+		errorLabel.setText("Error: " + errorText);
 		errorLabel.setVisible(true);
-		errorPanel.add(errorLabel, c);
-		this.add(errorPanel, BorderLayout.SOUTH);
+		mapLabel = new JLabel("", JLabel.CENTER);
+		mapLabel.setPreferredSize(new Dimension(width/2, 23));
+		mapLabel.setText("maP: " + mapText);
+		mapLabel.setVisible(true);
+		dataPanel.add(errorLabel, c);
+		dataPanel.add(mapLabel, c);
+		this.add(dataPanel, BorderLayout.SOUTH);
 		
 		// display the window.
 //		this.pack();
@@ -124,9 +131,9 @@ public class RBMVisualizationFrame extends JPanel{
 		this.setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2);
 		
 		menuPanel.setVisible(true);
-		visPanel.setVisible(true);
-		trainingPanel.setVisible(true);
-		hiddenPanel.setVisible(true);
+		leftPanel.setVisible(true);
+		centrePanel.setVisible(true);
+		rightPanel.setVisible(true);
 		this.setVisible(true);
 
 
@@ -164,19 +171,31 @@ public class RBMVisualizationFrame extends JPanel{
 	}
 	
 
-	public void updateVis(double[][] weights, double error){
+	public void updateLeftPanel(double[][] weights, double error, double map){
 		errorText = Double.toString(error);
-		visPanel.update(weights);
+		mapText = Double.toString(map);
+		leftPanel.update(weights);
 		errorLabel.setText("Error: " + errorText); 
+		mapLabel.setText("maP: " + mapText);
 		mainFrame.pack();
 	}
 	
-	public void updateTraining() {
-		
+	public void updateCentrePanel(double[][] weights, double error, double map){
+		errorText = Double.toString(error);
+		mapText = Double.toString(map);
+		leftPanel.update(weights);
+		errorLabel.setText("Error: " + errorText); 
+		mapLabel.setText("maP: " + mapText);
+		mainFrame.pack();
 	}
 	
-	public void updateHidden() {
-		
+	public void updateRightPanel(double[][] weights, double error, double map){
+		errorText = Double.toString(error);
+		mapText = Double.toString(map);
+		leftPanel.update(weights);
+		errorLabel.setText("Error: " + errorText); 
+		mapLabel.setText("maP: " + mapText);
+		mainFrame.pack();
 	}
 
 	/**
