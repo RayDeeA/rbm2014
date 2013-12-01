@@ -6,3 +6,7 @@ CBIRProjekt/*.dat
 CBIRProjekt/CBIR_Project/images/MNIST_Database_ARGB
 CBIRProjekt/CBIR_Project/images/MNIST_Database
 CBIRProjekt/CBIR_Project/images/MNIST_1000_Database
+/CBIR_Projekt/nbproject/private/
+/ICONN/nbproject/private/
+/CBIRProjekt/nbproject/private/
+/CBIRProjekt/build/
