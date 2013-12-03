@@ -217,11 +217,11 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.imageViewerStage = new Stage();
             this.imageViewerStage.setTitle("Image Viewer");
             this.imageViewerStage.setScene(scene);
-            this.imageViewerStage.show();            
-            
+                       
             this.imageViewerController = (ImageViewerController)loadController("ImageViewer.fxml");
             this.imageViewerController.draw(this.imageManager.getImages());
             
+            this.imageViewerStage.show();
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
         }

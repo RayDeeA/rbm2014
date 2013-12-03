@@ -9,9 +9,6 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" fx:id="view" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.ImageViewerController">
-  <children>
-    <ImageView fx:id="imgvImages" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-  </children>
   <stylesheets>
     <URL value="@imageviewer.css" />
   </stylesheets>

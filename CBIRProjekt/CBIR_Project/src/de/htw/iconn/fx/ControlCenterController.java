@@ -17,9 +17,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -55,6 +58,7 @@ public class ControlCenterController implements Initializable, IFXController {
     private void mnu_newRbmAction(ActionEvent event) {
         try {
             SimpleRBMController controller = (SimpleRBMController) loadController("SimpleRBM.fxml");
+            
             this.model.addChildController(controller);
             Node c = controller.getView();
             ObservableList<Node> children = vbox.getChildren();
