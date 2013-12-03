@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="view" minWidth="585.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.SimpleRBMController">
+  <children>
+    <VBox prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <TitledPane animated="false" prefHeight="-1.0" prefWidth="-1.0" text="RBM Controls" VBox.margin="$x1">
+          <content>
+            <GridPane disable="false" gridLinesVisible="false" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
+              <children>
+                <Button fx:id="btn_loadImageSet" mnemonicParsing="false" onAction="#btn_loadImageSetAction" prefWidth="144.0" text="Load Image Set" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets fx:id="x1" />
+                  </GridPane.margin>
+                </Button>
+                <CheckBox fx:id="cbx_randomOrder" mnemonicParsing="false" onAction="#cbx_randomOrderAction" text="Random Order" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <CheckBox fx:id="cbx_imageViewer" mnemonicParsing="false" onAction="#cbx_imageViewerAction" text="ImageViewer" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <Button fx:id="btn_startTraining" mnemonicParsing="false" onAction="#btn_startTrainingAction" prefWidth="142.0" text="Start Training" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Button fx:id="btn_startEvolution" mnemonicParsing="false" onAction="#btn_startEvolutionAction" prefWidth="142.0" text="Start Evolution" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <CheckBox fx:id="cbx_logger" mnemonicParsing="false" onAction="#cbx_loggerAction" text="Logger" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <CheckBox fx:id="cbx_visualization" mnemonicParsing="false" onAction="#cbx_visualizationAction" text="Visualization" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField fx:id="txt_updateFrequency" onAction="#txt_updateFrequencyAction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Button fx:id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_runVisibleAction" prefWidth="142.0" text="Run Visible" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Button fx:id="btn_runHidden" disable="false" mnemonicParsing="false" onAction="#btn_runHiddenAction" prefWidth="142.0" text="Run Hidden" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Button fx:id="btn_daydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_daydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Button fx:id="btn_saveRbmFile" disable="false" mnemonicParsing="false" onAction="#btn_saveRbmFileAction" prefWidth="142.0" text="Save RBM File" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <ComboBox id="btn_mapTests" fx:id="cmb_mapTests" onAction="#cmb_mapTestsAction" prefWidth="294.0" promptText="mAP Tests" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <Button fx:id="btn_startTest" mnemonicParsing="false" onAction="#btn_startTestAction" prefWidth="141.0" text="Start Test" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <Label fx:id="lbl_imageSet" text="no images selected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label text="Update Frequency" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
+              </padding>
+              <rowConstraints>
+                <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </content>
+        </TitledPane>
+        <TitledPane animated="false" prefHeight="-1.0" prefWidth="-1.0" text="Features">
+          <content>
+            <GridPane gridLinesVisible="false" hgap="10.0" padding="$x2" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
+              <children>
+                <ComboBox fx:id="cmb_rbmImplementation" onAction="#cmb_rbmImplementationAction" prefWidth="294.0" promptText="select RBM implementation" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="cmb_rbmFeature" onAction="#cmb_rbmFeatureAction" prefWidth="296.0" promptText="select RBM feature" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="cmb_logisticFunction" onAction="#cmb_logisticFunctionAction" prefWidth="294.0" promptText="select logistic function" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <TextField fx:id="txt_inputSize" onAction="#txt_inputSizeAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="txt_outputSize" onAction="#txt_outputSizeAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <RadioButton id="rad_epochs" fx:id="rdi_epochs" mnemonicParsing="false" onAction="#rdi_epochsAction" text="Epochs" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="stoppingConditionRadios" />
+                  </toggleGroup>
+                </RadioButton>
+                <TextField fx:id="txt_epochs" onAction="#txt_epochsAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <RadioButton fx:id="rdi_error" mnemonicParsing="false" onAction="#rdi_errorAction" text="Error" toggleGroup="$stoppingConditionRadios" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="txt_error" onAction="#txt_errorAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <TextField fx:id="txt_learningRate" onAction="#txt_learningRateAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                <CheckBox fx:id="cbx_momentum" mnemonicParsing="false" onAction="#cbx_momentumAction" text="Momentum" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <CheckBox id="cbx_Seed" fx:id="cbx_seed" mnemonicParsing="false" onAction="#cbx_seedAction" text="Seed" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                <TextField fx:id="txt_seed" onAction="#txt_seedAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                <CheckBox fx:id="cbx_bias" mnemonicParsing="false" onAction="#cbx_biasAction" text="Bias" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                <CheckBox fx:id="cbx_binarizeProbabilities" mnemonicParsing="false" onAction="#cbx_binarizeProbabilitiesAction" text="binarize probabilities with random matrix" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="11" />
+                <Label text="Input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Output" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="Stopping Condition" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Label text="RBM Size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label text="Learning" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <Label text="Rate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <Label text="Misc" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </content>
+        </TitledPane>
+      </children>
+    </VBox>
+  </children>
+  <stylesheets>
+    <URL value="@simplerbm.css" />
+  </stylesheets>
+</AnchorPane>
