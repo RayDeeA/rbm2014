@@ -31,7 +31,7 @@ public class RBMVector implements Serializable {
 		num_visible =   numVisible;
 		num_hidden =    numHidden;
 		
-		// initial zufällige Gewichte
+		// initial zufaellige Gewichte
 		//random = new Random((long) 7); 
 		Random random = new Random((long) (1000*Math.random())); 
 		

@@ -26,6 +26,11 @@ public class ImageManager {
 		this.images = new Pic[0];
 		this.imageGroups = new HashMap<String, List<Pic>>();
 	}
+        
+	public ImageManager(File imageDirectory) {
+                this.imageGroups = new HashMap<String, List<Pic>>();
+                this.loadImages(imageDirectory);
+	}
 	
 	public int getImageCount() {
 		return images.length;

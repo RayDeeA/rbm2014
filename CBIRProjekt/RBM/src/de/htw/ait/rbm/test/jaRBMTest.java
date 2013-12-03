@@ -59,7 +59,7 @@ public class jaRBMTest {
 	        rbm1.setMomentum(momentum);
 	        //System.out.print("---------------asdfasdf"); Matrix.printArray(data1);
 	        
-			// zufällige Gewichte
+			// zufaellige Gewichte
 			Random rnd = new Random();
 			double[][] weightUpdates = new double[visibleLayer.getNumUnits()][hiddenLayer.getNumUnits()];
 	        for (int i = 0; i < weightUpdates.length; i++) 

@@ -30,7 +30,7 @@ public class RBM_orig {
 		num_hidden =    numHidden;
 		learning_rate = learningRate;
 		
-		// initial zufällige Gewichte
+		// initial zufaellige Gewichte
 		random = new Random((long) (1000*Math.random())); // 7 // 
 		
 		weights = new double[num_visible+1][numHidden+1];
