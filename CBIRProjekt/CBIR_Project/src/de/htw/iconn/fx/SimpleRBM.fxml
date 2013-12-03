@@ -28,7 +28,6 @@
                 <Button fx:id="btn_startEvolution" mnemonicParsing="false" onAction="#btn_startEvolutionAction" prefWidth="142.0" text="Start Evolution" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <CheckBox fx:id="cbx_logger" mnemonicParsing="false" onAction="#cbx_loggerAction" text="Logger" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <CheckBox fx:id="cbx_visualization" mnemonicParsing="false" onAction="#cbx_visualizationAction" text="Visualization" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                <TextField fx:id="txt_updateFrequency" onAction="#txt_updateFrequencyAction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                 <Button fx:id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_runVisibleAction" prefWidth="142.0" text="Run Visible" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                 <Button fx:id="btn_runHidden" disable="false" mnemonicParsing="false" onAction="#btn_runHiddenAction" prefWidth="142.0" text="Run Hidden" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <Button fx:id="btn_daydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_daydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="2" GridPane.rowIndex="4" />
@@ -44,7 +43,9 @@
                 </ComboBox>
                 <Button fx:id="btn_startTest" mnemonicParsing="false" onAction="#btn_startTestAction" prefWidth="141.0" text="Start Test" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                 <Label fx:id="lbl_imageSet" text="no images selected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label text="Update Frequency" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label text="Update Frequency" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="txt_updateFrequency" onAction="#txt_updateFrequencyAction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <CheckBox fx:id="cbx_map" mnemonicParsing="false" onAction="#cbx_mapAction" text="mAP" GridPane.columnIndex="2" GridPane.rowIndex="2" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

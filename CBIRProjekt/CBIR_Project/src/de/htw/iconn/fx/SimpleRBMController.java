@@ -38,6 +38,7 @@ import javafx.stage.Stage;
  * @author christoph
  */
 public class SimpleRBMController implements Initializable, IFXController {
+
     @FXML
     private Insets x1;
     @FXML
@@ -107,12 +108,17 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private AnchorPane view;
-    
+
     private ImageViewerController imageViewerController;
+    private ChartViewerController chartViewerController;
     private ImageManager imageManager;
     private SimpleRBMModel model;
-    
+
     private Stage imageViewerStage;
+    private Stage chartViewerStage;
+    @FXML
+    private CheckBox cbx_map;
+
     /**
      * Initializes the controller class.
      */
@@ -122,38 +128,39 @@ public class SimpleRBMController implements Initializable, IFXController {
         initCmb();
         updateView();
     }
-    
-    private void initCmbImageManager(){
+
+    private void initCmbImageManager() {
         List<String> mapTest;
-        if(this.imageManager != null)
+        if (this.imageManager != null) {
             mapTest = new LinkedList<>(this.imageManager.getGroupNames());
-        else
+        } else {
             mapTest = new LinkedList<>();
+        }
         ObservableList mapTestObs = FXCollections.observableList(mapTest);
         this.cmb_mapTests.setItems(mapTestObs);
     }
-    
-    private void initCmb(){ 
-        
+
+    private void initCmb() {
+
         initCmbImageManager();
-            
+
         List<String> rbmImplementation = new LinkedList<>(Arrays.asList(this.model.getRbmImplementations()));
         ObservableList rbmImplementationObs = FXCollections.observableList(rbmImplementation);
         this.cmb_rbmImplementation.setItems(rbmImplementationObs);
-        
+
         List<String> rbmFeature = new LinkedList<>(Arrays.asList(this.model.getRbmFeatures()));
         ObservableList rbmFeatureObs = FXCollections.observableList(rbmFeature);
         this.cmb_rbmFeature.setItems(rbmFeatureObs);
-        
+
         List<String> logisticFunction = new LinkedList<>(Arrays.asList(this.model.getLogisticFunctions()));
         ObservableList logisticFunctionObs = FXCollections.observableList(logisticFunction);
         this.cmb_logisticFunction.setItems(logisticFunctionObs);
     }
-    
-    private void updateView(){
-        if(this.imageManager == null){
+
+    private void updateView() {
+        if (this.imageManager == null) {
             lbl_imageSet.setText("no image set selected");
-        }else{
+        } else {
             lbl_imageSet.setText(this.imageManager.getImageSetName());
         }
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
@@ -173,7 +180,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.txt_seed.setText(new Integer(this.model.getSeed()).toString());
         this.cbx_bias.setSelected(this.model.isUseBias());
         this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
-        
+
         this.btn_startTraining.setDisable(this.imageManager == null);
         this.btn_startEvolution.setDisable(this.imageManager == null);
         this.btn_runVisible.setDisable(!this.model.isRbmTrained());
@@ -182,7 +189,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
         this.btn_startTest.setDisable(!this.model.isRbmTrained());
         this.cmb_mapTests.setDisable(!this.model.isRbmTrained());
-        
+
         this.txt_epochs.setDisable(this.model.getStoppingCondition() != 0);
         this.txt_error.setDisable(this.model.getStoppingCondition() != 1);
         this.txt_seed.setDisable(!this.model.isUseSeed());
@@ -191,50 +198,75 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        
+
         Stage fileChooserStage = new Stage();
         File file = directoryChooser.showDialog(fileChooserStage);
-        if(file != null) {
+        if (file != null) {
             this.imageManager = new ImageManager(file);
-            if(cbx_imageViewer.isSelected()){
+            if (cbx_imageViewer.isSelected()) {
                 initializeImageView();
             }
         }
         this.updateView();
     }
-    
-    private Object loadController(String url) throws IOException
-    {
+
+    private Object loadController(String url) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
         loader.load();
         return loader.getController();
     }
-    
-    private void initializeImageView(){
+
+    private void initializeImageView() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ImageViewer.fxml"));
-            Scene scene = new Scene(root, 600, 400); 
+            Scene scene = new Scene(root, 600, 400);
             this.imageViewerStage = new Stage();
             this.imageViewerStage.setTitle("Image Viewer");
             this.imageViewerStage.setScene(scene);
-            this.imageViewerStage.show();            
-            
-            this.imageViewerController = (ImageViewerController)loadController("ImageViewer.fxml");
+            this.imageViewerStage.show();
+
+            this.imageViewerController = (ImageViewerController) loadController("ImageViewer.fxml");
             this.imageViewerController.draw(this.imageManager.getImages());
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+    }
+
+    private void initializeChartView() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
+            
+            
+            Scene scene = new Scene(root, 600, 400);
+            this.chartViewerStage = new Stage();
+            this.chartViewerStage.setTitle("Map Viewer");
+            this.chartViewerStage.setScene(scene);
+            
+            
+            
+            this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
+
+            this.chartViewerController.draw(chartViewerStage);
+            
+            this.chartViewerStage.show();
+
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
-        if(cbx_imageViewer.isSelected() && this.imageManager != null){
+        if (cbx_imageViewer.isSelected() && this.imageManager != null) {
             initializeImageView();
-        }else{  
-            if(this.imageViewerStage != null)
+        } else {
+            if (this.imageViewerStage != null) {
                 this.imageViewerStage.close();
+            }
         }
     }
 
@@ -345,10 +377,21 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void cbx_randomOrderAction(ActionEvent event) {
     }
-    
+
     @Override
-    public Node getView(){
+    public Node getView() {
         return this.view;
     }
-    
+
+    @FXML
+    private void cbx_mapAction(ActionEvent event) {
+        if (cbx_map.isSelected() && this.imageManager != null) {
+            initializeChartView();
+        } else {
+            if (this.chartViewerStage != null) {
+                this.chartViewerStage.close();
+            }
+        }
+    }
+
 }
