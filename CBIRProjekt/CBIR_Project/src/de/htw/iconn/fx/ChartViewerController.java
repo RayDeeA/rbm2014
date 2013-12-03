@@ -10,11 +10,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -22,8 +25,9 @@ import javafx.stage.Stage;
  *
  * @author GDur
  */
-public class ChartViewerController implements Initializable {
-    
+public class ChartViewerController implements Initializable, IFXController {
+    @FXML
+    private AnchorPane view;
     private final int width = 500, height = 400, margin_top = 60, margin_right = 300, margin_bottom = 20, margin_left = 20;
     private final int p = 2, r = 3;
     private final Vector<float[][]> graphs = new Vector<>();
@@ -79,6 +83,11 @@ public class ChartViewerController implements Initializable {
         
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public Node getView() {
+        return view;
     }
     
 }
