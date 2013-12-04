@@ -7,22 +7,19 @@ import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.model.ImagePair;
 import de.htw.cbir.model.Pic;
-import de.htw.cbir.model.PrecisionRecallTable;
 
-public class CBIREvaluation {
+public class Evaluation {
 
 	private Pic[] images;
 	private Sorter sorter;
 	private ForkJoinPool pool;
+        private SimpleRBMModel model;
 	
-	public CBIREvaluation(Sorter sorter, Pic[] images, ForkJoinPool pool) {
-		this.images = images;
-		this.sorter = sorter;
+	public Evaluation(SimpleRBMModel model, ForkJoinPool pool) {
+                this.model = model;
 		this.pool = pool;
-	}
-	
-	public Sorter getSorter() {
-		return sorter;
+                this.images = model.getImageManager().getImages();
+                this.sorter = model.getSorter();
 	}
 
 	/**
@@ -31,9 +28,9 @@ public class CBIREvaluation {
 	 * @param sorter
 	 * @return
 	 */
-	public double testAll(boolean displayResult, String description) {
-		final TIntDoubleHashMap lookup = createDistanceLookupTable(sorter);
-		final PrecisionRecallTable table = new PrecisionRecallTable(displayResult, sorter.getName(), description);
+	public void testAll() {
+		final TIntDoubleHashMap lookup = createDistanceLookupTable(model.getSorter());
+		final PrecisionRecallTable table = new PrecisionRecallTable(false, model.getSorter().getName(), "all");
 		
 		// starte die komplexe Analyse 
 		table.start(images.length);
@@ -43,22 +40,22 @@ public class CBIREvaluation {
 		
 		// Java 8: ohne Lambda Expression
 		// paralle Berechnungen
-		double[] MAPs = new double[images.length];
-		CBIRForkTest ft = new CBIRForkTest(this, lookup, table, images, 0, images.length, MAPs);
+		double[] averagePrecisions = new double[images.length];
+		ForkTest ft = new ForkTest(this, lookup, table, images, 0, images.length, averagePrecisions);
 		pool.invoke(ft);
 		
-		double MAP = 0;
-		for (int i = 0; i < MAPs.length; i++)
-			MAP += MAPs[i];
-		MAP /= images.length;
+		double mAP = 0;
+		for (int i = 0; i < averagePrecisions.length; i++)
+			mAP += averagePrecisions[i];
+		mAP /= images.length;
+                
+                this.model.setmAP(mAP);
 		
 //		long stop = System.currentTimeMillis();
 //		System.out.println("MAP: "+MAP+" took "+(stop-start)+"ms");
 		
 		// beende die Analyse und zeige eventuell Ergebnisse
 		table.finish();
-		
-		return MAP;
 	}
 	
 	/**
@@ -67,8 +64,9 @@ public class CBIREvaluation {
 	 * @param queryImages
 	 * @return
 	 */
-	public double test(Pic[] queryImages, boolean displayResult, String description) {
-		PrecisionRecallTable table = new PrecisionRecallTable(displayResult, sorter.getName(), description);
+	public double test(String imageGroup) {
+                Pic[] queryImages = this.model.getImageManager().getImageInGroup(imageGroup).toArray(new Pic[0]);
+		PrecisionRecallTable table = new PrecisionRecallTable(false, sorter.getName(), imageGroup);
 		
 		// starte die komplexe Analyse 
 		table.start(queryImages.length);

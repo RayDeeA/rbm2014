@@ -28,6 +28,7 @@ import java.util.concurrent.ForkJoinPool;
  * @author christoph
  */
 public class SimpleRBMModel {
+    //combobox select options
     private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
 
@@ -43,12 +44,12 @@ public class SimpleRBMModel {
         "SqareRoot"
     };
 
+    //rbm settings
     private boolean useRandomOrder;
     private boolean showImageViewer;
     private boolean useLogger;
     private boolean showVisualization;
     private int updateFrequency;
-    //private Set<String> imageGroups;
     private int rbmImplementation;
     private int rbmFeature;
     private int logisticFunction;
@@ -65,10 +66,16 @@ public class SimpleRBMModel {
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
     
+    //evaluated data
+    private double mAP;
+    private String mapTest;
+    
+    //class instances
     private ImageManager imageManager;
     private Sorter sorter;
     private RBMWrapper wrapper;
     private IRBM rbm;
+    private Evaluation evaluation;
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
@@ -168,7 +175,41 @@ public class SimpleRBMModel {
         this.rbmTrained = true;
         this.generateSorter();
     }
+    
+    public boolean validate() {
 
+        if (this.rbmImplementation != -1 && this.rbmFeature != -1
+                && this.logisticFunction != -1) {
+
+            if (rbmFeature == 0) {
+                this.inputSize = 28 * 28;
+            }
+            if (rbmFeature == 1) {
+                this.inputSize = 15;
+            }
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+    
+    public void test(){
+        if(this.evaluation == null){
+            this.evaluation = new Evaluation(this, new ForkJoinPool());
+        }
+        if(true){
+        //if(this.mapTest == "all"){
+            this.evaluation.testAll();
+        }else{
+            this.evaluation.test(this.mapTest);
+        }
+        
+    }
+
+    //getter and setter
     public void setUseRandomOrder(boolean useRandomOrder) {
         this.useRandomOrder = useRandomOrder;
     }
@@ -370,27 +411,21 @@ public class SimpleRBMModel {
 
     public IRBM getRbm() {
         return rbm;
-    }       
-    
-    public boolean validate() {
-
-        if (this.rbmImplementation != -1 && this.rbmFeature != -1
-                && this.logisticFunction != -1) {
-
-            if (rbmFeature == 0) {
-                this.inputSize = 28 * 28;
-            }
-            if (rbmFeature == 1) {
-                this.inputSize = 15;
-            }
-
-            return true;
-
-        } else {
-            return false;
-        }
-
     }
 
-  
+    public void setmAP(double mAP) {
+        this.mAP = mAP;
+    }
+
+    public double getmAP() {
+        return mAP;
+    }
+
+    public String getMapTest() {
+        return mapTest;
+    }
+
+    public void setMapTest(String mapTest) {
+        this.mapTest = mapTest;
+    }   
 }

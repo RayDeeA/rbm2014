@@ -382,11 +382,12 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cmb_mapTestsAction(ActionEvent event) {
+        this.model.setMapTest((String)cmb_mapTests.getValue());
     }
 
     @FXML
     private void btn_startTestAction(ActionEvent event) {
-
+        this.model.test();
     }
 
     @FXML
