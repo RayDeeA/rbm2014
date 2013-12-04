@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
@@ -13,22 +12,20 @@ import de.htw.cbir.ImageManager;
  * @author christoph
  */
 public class SimpleRBMModel {
-    
+
     private final String[] rbmImplementations = {"RBMJBlas", "RBMNico"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
-
-    private final String[] logisticFunctions = { 
-            "Standard", 
-            "Gaussian", 
-            "Hard Clip", 
-            "Linear Clipped", 
-            "Linear Interpolated", 
-            "Linear Unclipped (Absolute Value)", 
-            "Rectifier", 
-            "TanH", 
-            "SqareRoot" 
+    private final String[] logisticFunctions = {
+        "Standard",
+        "Gaussian",
+        "Hard Clip",
+        "Linear Clipped",
+        "Linear Interpolated",
+        "Linear Unclipped (Absolute Value)",
+        "Rectifier",
+        "TanH",
+        "SqareRoot"
     };
-    
     private boolean useRandomOrder;
     private boolean showImageViewer;
     private boolean useLogger;
@@ -50,14 +47,13 @@ public class SimpleRBMModel {
     private boolean useBias;
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
-    
-    
-    public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer, 
+
+    public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
             String rbmImplementation, String rbmFeature, String logisticFunction,
-            int inputSize, int outputSize, int stoppingCondition, int epochs, 
+            int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained){
+            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained) {
         this.useRandomOrder = useRandomOrder;
         this.showImageViewer = showImageViewer;
         this.useLogger = useLogger;
@@ -76,9 +72,9 @@ public class SimpleRBMModel {
         this.binarizeProbabilities = binarizeProbabilities;
         this.rbmTrained = rbmTrained;
     }
-    
-    public SimpleRBMModel() {       
-        this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15, 
+
+    public SimpleRBMModel() {
+        this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
     }
 
@@ -232,7 +228,7 @@ public class SimpleRBMModel {
 
     public void setBinarizeProbabilities(boolean binarizeProbabilities) {
         this.binarizeProbabilities = binarizeProbabilities;
-    }  
+    }
 
     public boolean isRbmTrained() {
         return rbmTrained;
@@ -241,7 +237,7 @@ public class SimpleRBMModel {
     public void setRbmTrained(boolean rbmTrained) {
         this.rbmTrained = rbmTrained;
     }
-    
+
     public String[] getRbmImplementations() {
         return rbmImplementations;
     }
@@ -252,5 +248,42 @@ public class SimpleRBMModel {
 
     public String[] getLogisticFunctions() {
         return logisticFunctions;
+    }
+
+    public boolean validateTraining() {
+
+        if (this.rbmImplementation != null && this.rbmFeature != null
+                && this.logisticFunction != null) {
+
+            if (rbmFeature.equals(this.rbmFeatures[0])) {
+                this.inputSize = 28 * 28;
+            }
+            if (rbmFeature.equals(this.rbmFeatures[1])) {
+                this.inputSize = 15;
+            }
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean validateEvolution() {
+
+        if (this.rbmImplementation != null && this.rbmFeature != null
+                && this.logisticFunction != null) {
+
+            if (rbmFeature.equals(this.rbmFeatures[0])) {
+                this.inputSize = 28 * 28;
+            }
+            if (rbmFeature.equals(this.rbmFeatures[1])) {
+                this.inputSize = 15;
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
