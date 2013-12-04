@@ -112,7 +112,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
 
-    private ImageViewerController imageViewerController;
+    private ImageViewer imageViewer;
     private ChartViewerController chartViewerController;
     private ImageManager imageManager;
     private SimpleRBMModel model;
@@ -232,18 +232,10 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeImageView() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ImageViewer.fxml"));
-            Scene scene = new Scene(root, 600, 400);
-            this.imageViewerStage = new Stage();
-            this.imageViewerStage.setScene(scene);
-            scene.setFill(Color.BLACK);
 
-            this.imageViewerStage.setTitle("Image Viewer");
+            this.imageViewer = new ImageViewer();
+            this.imageViewer.draw(this.imageManager.getImages());
 
-            this.imageViewerController = (ImageViewerController) loadController("ImageViewer.fxml");
-            this.imageViewerController.draw(this.imageManager.getImages());
-
-            this.imageViewerStage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
