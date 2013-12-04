@@ -43,9 +43,15 @@
                 </ComboBox>
                 <Button fx:id="btn_startTest" mnemonicParsing="false" onAction="#btn_startTestAction" prefWidth="141.0" text="Start Test" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                 <Label fx:id="lbl_imageSet" text="no images selected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label text="Update Frequency" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                <TextField fx:id="txt_updateFrequency" onAction="#txt_updateFrequencyAction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <Label fx:id="lbl_updateF" text="Update Frequency" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <labelFor>
+                    <TextField fx:id="txt_updateFrequency" onAction="#txt_updateFrequencyAction" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  </labelFor>
+                </Label>
+                <fx:reference source="txt_updateFrequency" />
                 <CheckBox fx:id="cbx_map" mnemonicParsing="false" onAction="#cbx_mapAction" text="mAP" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label fx:id="lbl_training_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running training..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="lbl_evolution_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running evolution..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -67,7 +73,7 @@
             </GridPane>
           </content>
         </TitledPane>
-        <TitledPane animated="false" prefHeight="-1.0" prefWidth="-1.0" text="Features">
+        <TitledPane fx:id="ttl_panel_features" animated="false" prefHeight="-1.0" prefWidth="-1.0" text="Features">
           <content>
             <GridPane gridLinesVisible="false" hgap="10.0" padding="$x2" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
               <children>
