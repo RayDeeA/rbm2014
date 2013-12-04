@@ -105,7 +105,6 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 	 * @param zoomFactor
 	 */
 	public void calculateDrawingPositions(int xMousePos, int yMousePos, int xMouseMove, int yMouseMove, double zoomFactor) {
-
 		Pic[] images = controller.getImageManager().getImages();
 		int nThumbs = images.length;
 
@@ -122,14 +121,13 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 		int mapPlacesX = wCanvas / thumbSize;
 		int mapPlacesY = hCanvas / thumbSize;
 
-		double thumbSizeX = (double) wCanvas / mapPlacesX;
-		double thumbSizeY = (double) hCanvas / mapPlacesY;
 
 		// avoid empty lines at the bottom
 		while (mapPlacesX * (mapPlacesY - 1) >= nThumbs) {
 			mapPlacesY--;
 		}
-		thumbSizeY = (double) hCanvas / mapPlacesY;
+		double thumbSizeX = (double) wCanvas / mapPlacesX;
+		double thumbSizeY = (double) hCanvas / mapPlacesY;
 
 		double scaledThumbSizeX = thumbSizeX * zoomFactor;
 		double scaledThumbSizeY = thumbSizeY * zoomFactor;
@@ -152,7 +150,7 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 		int xMaxPos = (int) (xMinPos + mapPlacesX * scaledThumbSizeX);
 		int yMinPos = (int) (h2 - ym * scaledThumbSizeY);
 		int yMaxPos = (int) (yMinPos + mapPlacesY * scaledThumbSizeY);
-
+                System.out.println(xMinPos + " " + yMinPos);
 		// disallow to move out of the map by dragging
 		if (xMinPos > 0 || xMaxPos < wCanvas - 1) {
 			xm = xmLast;

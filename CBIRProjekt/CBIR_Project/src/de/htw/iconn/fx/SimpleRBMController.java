@@ -139,7 +139,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
-        //loadImageSet("CBIR_Project/images/Test_10x5/");
+        loadImageSet("CBIR_Project/images/Test_10x5/");
     }
 
     private void initCmbImageManager() {
