@@ -1,26 +1,18 @@
-package de.htw.cbir.sorter;
+package de.htw.iconn.fx;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.beans.EventHandler;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.model.Pic;
-import de.htw.cbir.model.Settings;
 
-@Deprecated
 public abstract class Sorter {
 	
 	protected Pic[] images;
-	protected Settings settings;
 	private ForkJoinPool pool;
 	
-	public Sorter(Pic[] images, Settings settings, ForkJoinPool pool) {
+	public Sorter(Pic[] images, ForkJoinPool pool) {
 		this.images = images;
-		this.settings = settings;
 		this.pool = pool;
-		settings.addChangeListener((ActionListener)EventHandler.create(ActionListener.class, this, "settingsChanged", ""));
 	}
 	
 	
@@ -59,5 +51,4 @@ public abstract class Sorter {
 	protected abstract double[] getFeatureVector(Pic image);
 	public abstract double getDistance(double[] fv1, double[] fv2); 
 	public abstract String getName();
-	public abstract void settingsChanged(ActionEvent e);
 }

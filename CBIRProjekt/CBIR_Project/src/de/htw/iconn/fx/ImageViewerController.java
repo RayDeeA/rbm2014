@@ -75,11 +75,13 @@ public class ImageViewerController implements Initializable, IFXController {
         if(images != null) {
             if(images.length != 0) {              
                 if(images[0].getDisplayImage() != null) {
-                    
+                    /*
                     Image image = SwingFXUtils.toFXImage(ImageIO.read(new File("sonnenblumeblau_03.png")), null);
 
                     ImageView imgView = new ImageView(image);
                     imgView.setViewport(new Rectangle2D(0, 0, image.getWidth(), image.getHeight()));
+                    */
+                    
                 }
             }
         }//do like the awt version of the imageViewer, but ONLY for images, not for controls

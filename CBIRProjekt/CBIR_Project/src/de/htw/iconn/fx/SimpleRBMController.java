@@ -114,7 +114,6 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private ImageViewerController imageViewerController;
     private ChartViewerController chartViewerController;
-    private ImageManager imageManager;
     private SimpleRBMModel model;
 
     private Stage imageViewerStage;
@@ -134,8 +133,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initCmbImageManager() {
         List<String> mapTest;
-        if (this.imageManager != null) {
-            mapTest = new LinkedList<>(this.imageManager.getGroupNames());
+        if (this.model.getImageManager() != null) {
+            mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
         } else {
             mapTest = new LinkedList<>();
         }
@@ -161,10 +160,10 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
 
     private void updateView() {
-        if (this.imageManager == null) {
+        if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
         } else {
-            lbl_imageSet.setText(this.imageManager.getImageSetName());
+            lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
         }
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_randomOrder.setSelected(this.model.isUseRandomOrder());
@@ -184,8 +183,8 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.cbx_bias.setSelected(this.model.isUseBias());
         this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
 
-        this.btn_startTraining.setDisable(this.imageManager == null);
-        this.btn_startEvolution.setDisable(this.imageManager == null);
+        this.btn_startTraining.setDisable(this.model.getImageManager() == null);
+        this.btn_startEvolution.setDisable(this.model.getImageManager() == null);
         this.btn_runVisible.setDisable(!this.model.isRbmTrained());
         this.btn_runHidden.setDisable(!this.model.isRbmTrained());
         this.btn_daydream.setDisable(!this.model.isRbmTrained());
@@ -205,7 +204,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         Stage fileChooserStage = new Stage();
         File file = directoryChooser.showDialog(fileChooserStage);
         if (file != null) {
-            this.imageManager = new ImageManager(file);
+            this.model.setImageManager(new ImageManager(file));
             if (cbx_imageViewer.isSelected()) {
                 initializeImageView();
             }
@@ -230,7 +229,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.imageViewerStage.setTitle("Image Viewer");
 
             this.imageViewerController = (ImageViewerController) loadController("ImageViewer.fxml");
-            this.imageViewerController.draw(this.imageManager.getImages());
+            this.imageViewerController.draw(this.model.getImageManager().getImages());
 
             this.imageViewerStage.show();
 
@@ -271,7 +270,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
-        if (cbx_imageViewer.isSelected() && this.imageManager != null) {
+        if (cbx_imageViewer.isSelected() && this.model.getImageManager() != null) {
             initializeImageView();
         } else {
             if (this.imageViewerStage != null) {
@@ -282,6 +281,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
+        this.model.trainRBM();
     }
 
     @FXML
@@ -395,7 +395,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_mapAction(ActionEvent event) {
-        if (cbx_map.isSelected() && this.imageManager != null) {
+        if (cbx_map.isSelected() && this.model.getImageManager() != null) {
             initializeChartView();
         } else {
             if (this.chartViewerStage != null) {

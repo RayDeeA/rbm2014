@@ -3,32 +3,46 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx;
 
+import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
+import de.htw.cbir.PixelRBM;
+import de.htw.cbir.RBMWrapper;
+import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  *
  * @author christoph
  */
 public class SimpleRBMModel {
-    
-    private final String[] rbmImplementations = {"RBMJBlas", "RBMNico"};
+    private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
 
-    private final String[] logisticFunctions = { 
-            "Standard", 
-            "Gaussian", 
-            "Hard Clip", 
-            "Linear Clipped", 
-            "Linear Interpolated", 
-            "Linear Unclipped (Absolute Value)", 
-            "Rectifier", 
-            "TanH", 
-            "SqareRoot" 
+    private final String[] logisticFunctions = {
+        "Standard",
+        "Gaussian",
+        "Hard Clip",
+        "Linear Clipped",
+        "Linear Interpolated",
+        "Linear Unclipped (Absolute Value)",
+        "Rectifier",
+        "TanH",
+        "SqareRoot"
     };
-    
+
     private boolean useRandomOrder;
     private boolean showImageViewer;
     private boolean useLogger;
@@ -51,13 +65,17 @@ public class SimpleRBMModel {
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
     
-    
-    public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer, 
+    private ImageManager imageManager;
+    private Sorter sorter;
+    private RBMWrapper wrapper;
+    private IRBM rbm;
+
+    public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
             String rbmImplementation, String rbmFeature, String logisticFunction,
-            int inputSize, int outputSize, int stoppingCondition, int epochs, 
+            int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained){
+            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained) {
         this.useRandomOrder = useRandomOrder;
         this.showImageViewer = showImageViewer;
         this.useLogger = useLogger;
@@ -76,10 +94,57 @@ public class SimpleRBMModel {
         this.binarizeProbabilities = binarizeProbabilities;
         this.rbmTrained = rbmTrained;
     }
-    
-    public SimpleRBMModel() {       
-        this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15, 
+
+    public SimpleRBMModel() {
+        this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
+    }
+    
+    public void applySettings(){
+        if(true){//validate
+            ILogistic logistic;
+            if(this.logisticFunction.equals(this.logisticFunctions[0])){
+                logistic = new DefaultLogisticMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[1])){
+                logistic = new GaussMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[2])){
+                logistic = new HardClipMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[3])){
+                logistic = new LinearClippedMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[4])){
+                logistic = new LinearInterpolatedMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[5])){
+                logistic = new LinearUnclippedMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[6])){
+                logistic = new RectifierMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[7])){
+                logistic = new TanHMatrixFunction();
+            }else if(this.logisticFunction.equals(this.logisticFunctions[8])){
+                logistic = new SquareRootLogistic();
+            }else{
+                logistic = new DefaultLogisticMatrixFunction();
+            }
+            ForkJoinPool pool = new ForkJoinPool();
+            if(this.rbmImplementation.equals(this.rbmImplementations[0])){
+                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
+            }else{
+                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
+            }
+            
+            if(this.rbmFeature.equals(this.rbmFeatures[0])){
+                this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
+            }else if(this.rbmFeature.equals(this.rbmFeatures[1])){
+                this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+            }
+            
+            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+        }
+    }
+    
+    public void trainRBM(){
+        this.applySettings();
+        this.wrapper.train(this.imageManager.getImages(), this.epochs);
+        this.rbmTrained = true;
     }
 
     public void setUseRandomOrder(boolean useRandomOrder) {
@@ -232,7 +297,7 @@ public class SimpleRBMModel {
 
     public void setBinarizeProbabilities(boolean binarizeProbabilities) {
         this.binarizeProbabilities = binarizeProbabilities;
-    }  
+    }
 
     public boolean isRbmTrained() {
         return rbmTrained;
@@ -241,7 +306,7 @@ public class SimpleRBMModel {
     public void setRbmTrained(boolean rbmTrained) {
         this.rbmTrained = rbmTrained;
     }
-    
+
     public String[] getRbmImplementations() {
         return rbmImplementations;
     }
@@ -253,4 +318,35 @@ public class SimpleRBMModel {
     public String[] getLogisticFunctions() {
         return logisticFunctions;
     }
+    public void setImageManager(ImageManager imageManager) {
+        this.imageManager = imageManager;
+    }
+
+    public void setSorter(Sorter sorter) {
+        this.sorter = sorter;
+    }
+
+    public void setWrapper(RBMWrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public void setRbm(IRBM rbm) {
+        this.rbm = rbm;
+    }
+
+    public ImageManager getImageManager() {
+        return imageManager;
+    }
+
+    public Sorter getSorter() {
+        return sorter;
+    }
+
+    public RBMWrapper getWrapper() {
+        return wrapper;
+    }
+
+    public IRBM getRbm() {
+        return rbm;
+    }       
 }
