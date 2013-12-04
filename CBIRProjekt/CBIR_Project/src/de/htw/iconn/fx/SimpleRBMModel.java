@@ -100,9 +100,12 @@ public class SimpleRBMModel {
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
     }
     
-    public void applySettings(){
-        if(validate()){//validate
-            ILogistic logistic;
+    public boolean generateRBM(){
+        this.rbm = null;
+        this.wrapper = null;
+        
+        if(validate()){
+            ILogistic logistic = null;
             if(this.logisticFunction == 0){
                 logistic = new DefaultLogisticMatrixFunction();
             }else if(this.logisticFunction == 1){
@@ -121,30 +124,45 @@ public class SimpleRBMModel {
                 logistic = new TanHMatrixFunction();
             }else if(this.logisticFunction == 8){
                 logistic = new SquareRootLogistic();
-            }else{
-                logistic = new DefaultLogisticMatrixFunction();
-            }
-            ForkJoinPool pool = new ForkJoinPool();
-            if(this.rbmImplementation == 0){
-                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
-            }else{
-                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
             }
             
-            if(this.rbmFeature == 0){
-                this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
-            }else if(this.rbmFeature == 1){
-                this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+            if(logistic != null){
+                if(this.rbmImplementation == 0){
+                    this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
+                }
             }
             
-            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+            if(this.rbm != null){
+                if(this.rbmFeature == 0){
+                    this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
+                }else if(this.rbmFeature == 1){
+                    this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+                }
+            }
+            
+            if(this.wrapper != null){
+                return true;
+            }
         }
+        return false;
     }
     
-    public void trainRBM(){
-        this.applySettings();
-        this.wrapper.train(this.imageManager.getImages(), this.epochs);
+    public boolean generateSorter(){
+        if(this.wrapper != null && this.rbmTrained){
+            ForkJoinPool pool = new ForkJoinPool();
+            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+            return true;
+        }
+        return false;
+    }
+    
+    public void trainRBM(){      
+        if(this.generateRBM()){
+            System.out.println("start training");
+            this.wrapper.train(this.imageManager.getImages(), this.epochs);
+        }
         this.rbmTrained = true;
+        this.generateSorter();
     }
 
     public void setUseRandomOrder(boolean useRandomOrder) {
@@ -352,8 +370,8 @@ public class SimpleRBMModel {
     
     public boolean validate() {
 
-        if (this.rbmImplementation == -1 && this.rbmFeature == -1
-                && this.logisticFunction == -1) {
+        if (this.rbmImplementation != -1 && this.rbmFeature != -1
+                && this.logisticFunction != -1) {
 
             if (rbmFeature == 0) {
                 this.inputSize = 28 * 28;

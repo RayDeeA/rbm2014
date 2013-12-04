@@ -1,4 +1,4 @@
-package de.htw.cbir;
+package de.htw.iconn.fx;
 
 import gnu.trove.map.hash.TIntDoubleHashMap;
 
@@ -8,21 +8,17 @@ import java.util.concurrent.ForkJoinPool;
 import de.htw.cbir.model.ImagePair;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.PrecisionRecallTable;
-import de.htw.cbir.sorter.Sorter;
 
-@Deprecated
 public class CBIREvaluation {
 
 	private Pic[] images;
 	private Sorter sorter;
 	private ForkJoinPool pool;
-	private CBIREvaluationModel evaluationModel;
 	
-	public CBIREvaluation(Sorter sorter, Pic[] images, ForkJoinPool pool, CBIREvaluationModel evaluationModel) {
+	public CBIREvaluation(Sorter sorter, Pic[] images, ForkJoinPool pool) {
 		this.images = images;
 		this.sorter = sorter;
 		this.pool = pool;
-		this.evaluationModel = evaluationModel;
 	}
 	
 	public Sorter getSorter() {
@@ -204,9 +200,5 @@ public class CBIREvaluation {
 		}
 		
 		return map;
-	}
-	
-	public CBIREvaluationModel getEvaluationModel(){
-		return this.evaluationModel;
 	}
 }
