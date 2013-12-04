@@ -78,12 +78,14 @@ public class ImageViewer {
             if(images.length != 0) {              
                 if(images[0].getDisplayImage() != null) {
                     
+                    /*
                     Image image = SwingFXUtils.toFXImage(ImageIO.read(new File("sonnenblumeblau_03.png")), null);
                     
                     ImageView imgView = new ImageView(image);
                     imgView.setVisible(true);
                     imgView.setViewport(new Rectangle2D(0, 0, image.getWidth(), image.getHeight()));
                     root.getChildren().add(imgView);
+                    */
                 }
             }
         }
