@@ -46,7 +46,7 @@ public class ControlCenterController implements Initializable, IFXController {
         this.model = new ControlCenterModel();
         
         // will load the default rbm #hack
-        //mnu_newRbmAction(new ActionEvent());
+        mnu_newRbmAction(new ActionEvent());
     }
     
     private Object loadController(String url) throws IOException

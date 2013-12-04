@@ -64,7 +64,7 @@ public class CBIRUI {
 	 */
 	public void repaint() {
 		// zeichne die Bilder
-		grid.doDrawing();
+		//grid.doDrawing();
 	}
 
 	/**
