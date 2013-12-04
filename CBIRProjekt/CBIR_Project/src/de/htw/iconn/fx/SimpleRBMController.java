@@ -116,7 +116,6 @@ public class SimpleRBMController implements Initializable, IFXController {
     private ChartViewerController chartViewerController;
     private SimpleRBMModel model;
 
-    private Stage imageViewerStage;
     private Stage chartViewerStage;
     @FXML
     private CheckBox cbx_map;
@@ -131,6 +130,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -138,6 +140,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         initCmb();
         updateView();
         loadImageSet("CBIR_Project/images/WebImages_71x6/");
+
     }
 
     private void initCmbImageManager() {
@@ -166,46 +169,46 @@ public class SimpleRBMController implements Initializable, IFXController {
         List<String> logisticFunction = new LinkedList<>(Arrays.asList(this.model.getLogisticFunctions()));
         ObservableList logisticFunctionObs = FXCollections.observableList(logisticFunction);
         this.cmb_logisticFunction.setItems(logisticFunctionObs);
-        
+
     }
 
     private void updateView() {
-        
-       
+
         if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
-            
+
         } else {
+
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
             cbx_map.setDisable(false);
             btn_startTest.setDisable(false);
         }
-        
-        if(this.model.getRbmFeature() == 0){
+
+        if (this.model.getRbmFeature() == 0) {
             txt_inputSize.setDisable(true);
-        }else{
+        } else {
             txt_inputSize.setDisable(false);
         }
-        
-        if(this.model.isUseSeed()){
+
+        if (this.model.isUseSeed()) {
             txt_seed.setDisable(true);
-        }else{
+        } else {
             txt_seed.setDisable(false);
         }
-        
+
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
         this.btn_runHidden.setDisable(this.model.isRbmTrained());
         this.btn_runVisible.setDisable(this.model.isRbmTrained());
         this.btn_daydream.setDisable(this.model.isRbmTrained());
         this.btn_saveRbmFile.setDisable(this.model.isRbmTrained());
-        
+
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_visualization.setSelected(this.model.isShowVisualization());
-        
+
         this.cbx_randomOrder.setSelected(this.model.isUseRandomOrder());
         this.cbx_logger.setSelected(this.model.isUseLogger());
-        
+
         this.txt_updateFrequency.setText(new Integer(this.model.getUpdateFrequency()).toString());
         this.txt_inputSize.setText(new Integer(this.model.getInputSize()).toString());
         this.txt_outputSize.setText(new Integer(this.model.getOutputSize()).toString());
@@ -236,22 +239,27 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void btn_loadImageSetAction(ActionEvent event) {
         loadImageSet(null);
     }
-    
-        private void loadImageSet(String path) {
+
+    private void loadImageSet(String path) {
         File file;
-        if(path == null){
+        if (path == null) {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
             Stage fileChooserStage = new Stage();
             file = directoryChooser.showDialog(fileChooserStage);
-        }else{
+        } else {
             file = new File(path);
         }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
-            if (cbx_imageViewer.isSelected()) {
+            this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
+
+            if (cbx_imageViewer.isSelected() && this.model.isShowImageViewer()) {
                 initializeImageView();
+            } else {
+
             }
+
         }
         this.updateView();
     }
@@ -264,9 +272,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeImageView() {
 
-            this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
-            this.imageViewer.draw();
-
+        //this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
+        this.imageViewer.draw();
 
     }
 
@@ -281,8 +288,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
             this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
 
-           // this.chartViewerController.draw(lineChart);
-
+            // this.chartViewerController.draw(lineChart);
             this.chartViewerStage.show();
 
         } catch (IOException ex) {
@@ -290,47 +296,49 @@ public class SimpleRBMController implements Initializable, IFXController {
         }
 
     }
-    
-    
-    private static boolean isInteger(String s){
-        try{
+
+    private static boolean isInteger(String s) {
+        try {
             Integer.parseInt(s);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
-        return true;    
-    
+        return true;
+
     }
-    
-     private static boolean isDouble(String s){
-        try{
+
+    private static boolean isDouble(String s) {
+        try {
             Double.parseDouble(s);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
-        return true;    
-    
+        return true;
+
     }
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
-        
+
         this.model.setShowImageViewer(cbx_imageViewer.isSelected());
-       
+
         if (cbx_imageViewer.isSelected() && this.model.getImageManager() != null) {
-            
+
             initializeImageView();
         } else {
-            if (this.imageViewerStage != null) {
-                this.imageViewerStage.close();
+            if (this.imageViewer != null) {
+                this.imageViewer.close();
+                this.model.setShowImageViewer(false);
+
             }
         }
+        this.updateView();
     }
 
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
         this.model.trainRBM();
-       
+
     }
 
     @FXML
@@ -347,23 +355,22 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void cbx_visualizationAction(ActionEvent event) {
         this.model.setShowVisualization(cbx_visualization.isSelected());
-        
+
         this.updateView();
     }
 
     @FXML
     private void txt_updateFrequencyAction(ActionEvent event) {
-         if(isInteger(txt_updateFrequency.getText())){
+        if (isInteger(txt_updateFrequency.getText())) {
             this.model.setUpdateFrequency(Integer.parseInt(txt_updateFrequency.getText()));
-        }else{
+        } else {
             txt_updateFrequency.setText("not valid");
         }
     }
 
     @FXML
     private void btn_runVisibleAction(ActionEvent event) {
-        
-        
+
         //EVENT? isValid?
     }
 
@@ -389,15 +396,15 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cmb_rbmImplementationAction(ActionEvent event) {
-        this.model.setRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex()); 
+        this.model.setRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex());
         this.updateView();
-        
+
     }
-   
+
     @FXML
     private void cmb_rbmFeatureAction(ActionEvent event) {
 
-        this.model.setRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex()); 
+        this.model.setRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex());
         this.updateView();
     }
 
@@ -409,20 +416,21 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void txt_inputSizeAction(ActionEvent event) {
-        
-        if(isInteger(txt_inputSize.getText())){
+
+        if (isInteger(txt_inputSize.getText())) {
             this.model.setInputSize(Integer.parseInt(txt_inputSize.getText()));
-        }else{
+        } else {
             txt_inputSize.setText("not valid");
         }
-            
+
     }
+
     @FXML
     private void txt_outputSizeAction(ActionEvent event) {
-        
-        if(isInteger(txt_outputSize.getText())){
+
+        if (isInteger(txt_outputSize.getText())) {
             this.model.setOutputSize(Integer.parseInt(txt_outputSize.getText()));
-        }else{
+        } else {
             txt_outputSize.setText("not valid");
         }
     }
@@ -435,9 +443,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void txt_epochsAction(ActionEvent event) {
-         if(isInteger(txt_epochs.getText())){
+        if (isInteger(txt_epochs.getText())) {
             this.model.setEpochs(Integer.parseInt(txt_epochs.getText()));
-        }else{
+        } else {
             txt_epochs.setText("not valid");
         }
         this.updateView();
@@ -451,10 +459,10 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void txt_errorAction(ActionEvent event) {
-        
-        if(isDouble(txt_error.getText())){
+
+        if (isDouble(txt_error.getText())) {
             this.model.setError(Double.parseDouble(txt_error.getText()));
-        }else{
+        } else {
             txt_error.setText("not valid");
         }
         this.updateView();
@@ -462,10 +470,10 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void txt_learningRateAction(ActionEvent event) {
-        
-        if(isDouble(txt_learningRate.getText())){
+
+        if (isDouble(txt_learningRate.getText())) {
             this.model.setLearningRate(Double.parseDouble(txt_learningRate.getText()));
-        }else{
+        } else {
             txt_learningRate.setText("not valid");
         }
         this.updateView();
@@ -479,38 +487,38 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_seedAction(ActionEvent event) {
-       this.model.setUseSeed(cbx_seed.isSelected());
-       this.updateView();
+        this.model.setUseSeed(cbx_seed.isSelected());
+        this.updateView();
     }
-    
+
     @FXML
     private void txt_seedAction(ActionEvent event) {
-        
-        if(isInteger(txt_seed.getText())){
+
+        if (isInteger(txt_seed.getText())) {
             this.model.setSeed(Integer.parseInt(txt_seed.getText()));
-        }else{
+        } else {
             txt_seed.setText("not valid");
         }
         this.updateView();
-        
+
     }
 
     @FXML
     private void cbx_binarizeProbabilitiesAction(ActionEvent event) {
-       this.model.setBinarizeProbabilities(cbx_binarizeProbabilities.isSelected());
-       this.updateView();
+        this.model.setBinarizeProbabilities(cbx_binarizeProbabilities.isSelected());
+        this.updateView();
     }
 
     @FXML
     private void cbx_biasAction(ActionEvent event) {
-      this.model.setUseBias(cbx_bias.isSelected());
-      this.updateView();
+        this.model.setUseBias(cbx_bias.isSelected());
+        this.updateView();
     }
 
     @FXML
     private void cbx_randomOrderAction(ActionEvent event) {
-      this.model.setUseRandomOrder(cbx_randomOrder.isSelected());
-      this.updateView();
+        this.model.setUseRandomOrder(cbx_randomOrder.isSelected());
+        this.updateView();
     }
 
     @Override
