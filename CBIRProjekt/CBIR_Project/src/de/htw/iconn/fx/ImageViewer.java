@@ -68,6 +68,8 @@ public class ImageViewer {
         this.scene.setFill(Color.LIGHTSLATEGREY);
         this.stage.setScene(this.scene);
         this.stage.setResizable(true);
+        this.stage.setMinHeight(50);
+        this.stage.setMinWidth(50);
         ChangeListener<Number> onResize = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
