@@ -72,10 +72,14 @@ public class SimpleRBMModel {
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
-            String rbmImplementation, String rbmFeature, String logisticFunction,
+            int rbmImplementation, int rbmFeature, int logisticFunction,
             int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained) {
+            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained)
+    {   
+        this.rbmImplementation = rbmImplementation;
+        this.rbmFeature = rbmFeature;
+        this.logisticFunction = logisticFunction;
         this.useRandomOrder = useRandomOrder;
         this.showImageViewer = showImageViewer;
         this.useLogger = useLogger;
@@ -96,7 +100,7 @@ public class SimpleRBMModel {
     }
 
     public SimpleRBMModel() {
-        this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15,
+        this(false, true, true, true, 100, -1, -1, -1, 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
     }
     
