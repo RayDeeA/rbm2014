@@ -26,6 +26,7 @@ import javafx.stage.Stage;
  * @author GDur
  */
 public class ChartViewerController implements Initializable, IFXController {
+
     @FXML
     private AnchorPane view;
     private final int width = 500, height = 400, margin_top = 60, margin_right = 300, margin_bottom = 20, margin_left = 20;
@@ -40,54 +41,34 @@ public class ChartViewerController implements Initializable, IFXController {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+
     public void addGraph(float[][] pUeberR, String title) {
         graphs.add(pUeberR);
         titles.add(title);
         // redraw();
     }
-    
-    public void draw(Stage stage) {
-        // prepare data
 
-        stage.setTitle("Line Chart Sample");
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Recall");
-        yAxis.setLabel("Precision");
-        //creating the chart
-        final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        
-        lineChart.setTitle("MAP");
-        //defining a series
-        Scene scene = new Scene(lineChart, 800, 600);
-        
+    public void draw(LineChart<Number, Number> lineChart) {
         // show data
         for (int i = 0; i < graphs.size(); i++) {
-            
+
             XYChart.Series series = new XYChart.Series();
             series.setName(titles.elementAt(i));
-            
-                      float[][] tmpGraph = graphs.elementAt(i);
-  
-            ObservableList<XYChart.Data<Float,Float>> tmp = series.getData();
+
+            float[][] tmpGraph = graphs.elementAt(i);
+
+            ObservableList<XYChart.Data<Float, Float>> tmp = series.getData();
             for (float[] fs : tmpGraph) {
                 tmp.add(new XYChart.Data(fs[0], fs[1]));
             }
             series.setData(tmp);
             lineChart.getData().add(series);
-            
         }
-        
-        
-        stage.setScene(scene);
-        stage.show();
     }
 
     @Override
     public Node getView() {
         return view;
     }
-    
+
 }
