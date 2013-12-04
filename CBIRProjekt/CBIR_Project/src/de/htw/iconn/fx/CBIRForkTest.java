@@ -1,4 +1,4 @@
-package de.htw.cbir;
+package de.htw.iconn.fx;
 
 import gnu.trove.map.hash.TIntDoubleHashMap;
 
@@ -7,7 +7,6 @@ import java.util.concurrent.RecursiveAction;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.PrecisionRecallTable;
 
-@Deprecated
 public class CBIRForkTest extends RecursiveAction {
 
 	private static final long serialVersionUID = 7409860587315610289L;

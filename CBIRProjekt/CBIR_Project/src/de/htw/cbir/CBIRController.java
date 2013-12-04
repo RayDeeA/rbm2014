@@ -43,6 +43,7 @@ import de.htw.iconn.rbm.functions.SquareRootLogistic;
 import de.htw.iconn.rbm.functions.TanHMatrixFunction;
 import de.htw.iconn.sorter.Sorter_DCT_CJ;
 
+@Deprecated
 public class CBIRController {
 
 	private Settings settings;
