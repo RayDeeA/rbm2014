@@ -10,20 +10,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.InflaterInputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -31,15 +30,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.imageio.ImageIO;
-import javax.swing.GroupLayout;
 
 /**
  * FXML Controller class
@@ -232,12 +226,12 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.imageViewerStage = new Stage();
             this.imageViewerStage.setScene(scene);
             scene.setFill(Color.BLACK);
-            
+
             this.imageViewerStage.setTitle("Image Viewer");
 
             this.imageViewerController = (ImageViewerController) loadController("ImageViewer.fxml");
             this.imageViewerController.draw(this.imageManager.getImages());
-            
+
             this.imageViewerStage.show();
 
         } catch (IOException ex) {
@@ -249,20 +243,25 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeChartView() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
-                       
-            Scene scene = new Scene(root, 600, 400);
+
+            final NumberAxis xAxis = new NumberAxis();
+            final NumberAxis yAxis = new NumberAxis();
+            xAxis.setLabel("Recall");
+            yAxis.setLabel("Precision");
+            //creating the chart
+            final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+
+            lineChart.setTitle("MAP");
+            Scene scene = new Scene(lineChart, 600, 400);
             this.chartViewerStage = new Stage();
             this.chartViewerStage.setTitle("Map Viewer");
             this.chartViewerStage.setScene(scene);
-            
-            
-            
+
             this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
 
-            this.chartViewerController.draw(chartViewerStage);
-            
-            this.chartViewerStage.show();
+            this.chartViewerController.draw(lineChart);
 
+            this.chartViewerStage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
