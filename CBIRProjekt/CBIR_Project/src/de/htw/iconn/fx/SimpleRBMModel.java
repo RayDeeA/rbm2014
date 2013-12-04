@@ -5,16 +5,32 @@
  */
 package de.htw.iconn.fx;
 
+import de.htw.cbir.DCTRBM;
 import de.htw.cbir.ImageManager;
+import de.htw.cbir.PixelRBM;
+import de.htw.cbir.RBMWrapper;
+import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.RBMJBlas;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  *
  * @author christoph
  */
 public class SimpleRBMModel {
-
-    private final String[] rbmImplementations = {"RBMJBlas", "RBMNico"};
+    private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
+
     private final String[] logisticFunctions = {
         "Standard",
         "Gaussian",
@@ -26,15 +42,16 @@ public class SimpleRBMModel {
         "TanH",
         "SqareRoot"
     };
+
     private boolean useRandomOrder;
     private boolean showImageViewer;
     private boolean useLogger;
     private boolean showVisualization;
     private int updateFrequency;
     //private Set<String> imageGroups;
-    private String rbmImplementation;
-    private String rbmFeature;
-    private String logisticFunction;
+    private int rbmImplementation;
+    private int rbmFeature;
+    private int logisticFunction;
     private int inputSize;
     private int outputSize;
     private int stoppingCondition;
@@ -47,6 +64,11 @@ public class SimpleRBMModel {
     private boolean useBias;
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
+    
+    private ImageManager imageManager;
+    private Sorter sorter;
+    private RBMWrapper wrapper;
+    private IRBM rbm;
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
@@ -77,6 +99,53 @@ public class SimpleRBMModel {
         this(false, true, true, true, 100, "RBMJBlas", "PixelRBM", "Standard", 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
     }
+    
+    public void applySettings(){
+        if(validate()){//validate
+            ILogistic logistic;
+            if(this.logisticFunction == 0){
+                logistic = new DefaultLogisticMatrixFunction();
+            }else if(this.logisticFunction == 1){
+                logistic = new GaussMatrixFunction();
+            }else if(this.logisticFunction == 2){
+                logistic = new HardClipMatrixFunction();
+            }else if(this.logisticFunction == 3){
+                logistic = new LinearClippedMatrixFunction();
+            }else if(this.logisticFunction == 4){
+                logistic = new LinearInterpolatedMatrixFunction();
+            }else if(this.logisticFunction == 5){
+                logistic = new LinearUnclippedMatrixFunction();
+            }else if(this.logisticFunction == 6){
+                logistic = new RectifierMatrixFunction();
+            }else if(this.logisticFunction == 7){
+                logistic = new TanHMatrixFunction();
+            }else if(this.logisticFunction == 8){
+                logistic = new SquareRootLogistic();
+            }else{
+                logistic = new DefaultLogisticMatrixFunction();
+            }
+            ForkJoinPool pool = new ForkJoinPool();
+            if(this.rbmImplementation == 0){
+                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
+            }else{
+                this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
+            }
+            
+            if(this.rbmFeature == 0){
+                this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
+            }else if(this.rbmFeature == 1){
+                this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+            }
+            
+            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+        }
+    }
+    
+    public void trainRBM(){
+        this.applySettings();
+        this.wrapper.train(this.imageManager.getImages(), this.epochs);
+        this.rbmTrained = true;
+    }
 
     public void setUseRandomOrder(boolean useRandomOrder) {
         this.useRandomOrder = useRandomOrder;
@@ -102,15 +171,15 @@ public class SimpleRBMModel {
         return updateFrequency;
     }
 
-    public String getRbmImplementation() {
+    public int getRbmImplementation() {
         return rbmImplementation;
     }
 
-    public String getRbmFeature() {
+    public int getRbmFeature() {
         return rbmFeature;
     }
 
-    public String getLogisticFunction() {
+    public int getLogisticFunction() {
         return logisticFunction;
     }
 
@@ -174,15 +243,15 @@ public class SimpleRBMModel {
         this.updateFrequency = updateFrequency;
     }
 
-    public void setRbmImplementation(String rbmImplementation) {
+    public void setRbmImplementation(int rbmImplementation) {
         this.rbmImplementation = rbmImplementation;
     }
 
-    public void setRbmFeature(String rbmFeature) {
+    public void setRbmFeature(int rbmFeature) {
         this.rbmFeature = rbmFeature;
     }
 
-    public void setLogisticFunction(String logisticFunction) {
+    public void setLogisticFunction(int logisticFunction) {
         this.logisticFunction = logisticFunction;
     }
 
@@ -249,16 +318,47 @@ public class SimpleRBMModel {
     public String[] getLogisticFunctions() {
         return logisticFunctions;
     }
+    public void setImageManager(ImageManager imageManager) {
+        this.imageManager = imageManager;
+    }
 
-    public boolean validateTraining() {
+    public void setSorter(Sorter sorter) {
+        this.sorter = sorter;
+    }
 
-        if (this.rbmImplementation != null && this.rbmFeature != null
-                && this.logisticFunction != null) {
+    public void setWrapper(RBMWrapper wrapper) {
+        this.wrapper = wrapper;
+    }
 
-            if (rbmFeature.equals(this.rbmFeatures[0])) {
+    public void setRbm(IRBM rbm) {
+        this.rbm = rbm;
+    }
+
+    public ImageManager getImageManager() {
+        return imageManager;
+    }
+
+    public Sorter getSorter() {
+        return sorter;
+    }
+
+    public RBMWrapper getWrapper() {
+        return wrapper;
+    }
+
+    public IRBM getRbm() {
+        return rbm;
+    }       
+    
+    public boolean validate() {
+
+        if (this.rbmImplementation == -1 && this.rbmFeature == -1
+                && this.logisticFunction == -1) {
+
+            if (rbmFeature == 0) {
                 this.inputSize = 28 * 28;
             }
-            if (rbmFeature.equals(this.rbmFeatures[1])) {
+            if (rbmFeature == 1) {
                 this.inputSize = 15;
             }
 
@@ -270,20 +370,5 @@ public class SimpleRBMModel {
 
     }
 
-    public boolean validateEvolution() {
-
-        if (this.rbmImplementation != null && this.rbmFeature != null
-                && this.logisticFunction != null) {
-
-            if (rbmFeature.equals(this.rbmFeatures[0])) {
-                this.inputSize = 28 * 28;
-            }
-            if (rbmFeature.equals(this.rbmFeatures[1])) {
-                this.inputSize = 15;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
+  
 }

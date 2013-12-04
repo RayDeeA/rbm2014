@@ -115,7 +115,6 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private ImageViewer imageViewer;
     private ChartViewerController chartViewerController;
-    private ImageManager imageManager;
     private SimpleRBMModel model;
 
     private Stage imageViewerStage;
@@ -144,8 +143,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initCmbImageManager() {
         List<String> mapTest;
-        if (this.imageManager != null) {
-            mapTest = new LinkedList<>(this.imageManager.getGroupNames());
+        if (this.model.getImageManager() != null) {
+            mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
         } else {
             mapTest = new LinkedList<>();
         }
@@ -171,11 +170,11 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
 
     private void updateView() {
-         
-        /*if (this.imageManager == null) {
+        
+        if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
 
-            cbx_randomOrder.setDisable(true);
+            /*cbx_randomOrder.setDisable(true);
             cbx_imageViewer.setDisable(true);
             cbx_logger.setDisable(true);
             cbx_visualization.setDisable(true);
@@ -183,20 +182,11 @@ public class SimpleRBMController implements Initializable, IFXController {
             txt_updateFrequency.setDisable(true);
             lbl_updateF.setDisable(true);
             ttl_panel_features.setExpanded(false);
-
+            */
+            
         } else {
-            lbl_imageSet.setText(this.imageManager.getImageSetName());
-
-            cbx_randomOrder.setDisable(false);
-            cbx_imageViewer.setDisable(false);
-            cbx_logger.setDisable(false);
-            cbx_visualization.setDisable(false);
-            cbx_map.setDisable(false);
-            txt_updateFrequency.setDisable(false);
-            lbl_updateF.setDisable(false);
-            ttl_panel_features.setExpanded(true);
-        }*/
-
+            lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
+        }
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_randomOrder.setSelected(this.model.isUseRandomOrder());
         this.cbx_logger.setSelected(this.model.isUseLogger());
@@ -215,8 +205,8 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.cbx_bias.setSelected(this.model.isUseBias());
         this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
 
-        this.btn_startTraining.setDisable(this.imageManager == null);
-        this.btn_startEvolution.setDisable(this.imageManager == null);
+        this.btn_startTraining.setDisable(this.model.getImageManager() == null);
+        this.btn_startEvolution.setDisable(this.model.getImageManager() == null);
         this.btn_runVisible.setDisable(!this.model.isRbmTrained());
         this.btn_runHidden.setDisable(!this.model.isRbmTrained());
         this.btn_daydream.setDisable(!this.model.isRbmTrained());
@@ -245,7 +235,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             file = new File(path);
         }
         if (file != null) {
-            this.imageManager = new ImageManager(file);
+            this.model.setImageManager(new ImageManager(file));
             if (cbx_imageViewer.isSelected()) {
                 initializeImageView();
             }
@@ -263,7 +253,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         try {
 
             this.imageViewer = new ImageViewer();
-            this.imageViewer.draw(this.imageManager.getImages());
+            this.imageViewer.draw(this.model.getImageManager().getImages());
 
 
         } catch (IOException ex) {
@@ -306,7 +296,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
-        if (cbx_imageViewer.isSelected() && this.imageManager != null) {
+        if (cbx_imageViewer.isSelected() && this.model.getImageManager() != null) {
             initializeImageView();
         } else {
             if (this.imageViewerStage != null) {
@@ -317,14 +307,13 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
-
-        lbl_training_started.setVisible(this.model.validateTraining());
+        this.model.trainRBM();
     }
 
     @FXML
     private void btn_startEvolutionAction(ActionEvent event) {
 
-        lbl_evolution_started.setVisible(this.model.validateEvolution());
+   
     }
 
     @FXML
@@ -365,8 +354,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cmb_rbmImplementationAction(ActionEvent event) {
+        this.model.setRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex()); 
     }
-
+   
     @FXML
     private void cmb_rbmFeatureAction(ActionEvent event) {
 
@@ -383,6 +373,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cmb_logisticFunctionAction(ActionEvent event) {
+        this.model.setLogisticFunction(cmb_logisticFunction.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
@@ -474,7 +465,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_mapAction(ActionEvent event) {
-        if (cbx_map.isSelected() && this.imageManager != null) {
+        if (cbx_map.isSelected() && this.model.getImageManager() != null) {
             initializeChartView();
         } else {
             if (this.chartViewerStage != null) {
