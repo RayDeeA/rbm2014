@@ -44,7 +44,9 @@ public class ControlCenterController implements Initializable, IFXController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new ControlCenterModel();
-        //vbox = new VBox();
+        
+        // will load the default rbm #hack
+        mnu_newRbmAction(new ActionEvent());
     }
     
     private Object loadController(String url) throws IOException
