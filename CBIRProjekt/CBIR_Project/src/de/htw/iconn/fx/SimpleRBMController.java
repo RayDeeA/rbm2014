@@ -112,7 +112,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
 
-    private ImageViewerController imageViewerController;
+    private ImageViewer imageViewer;
     private ChartViewerController chartViewerController;
     private SimpleRBMModel model;
 
@@ -129,6 +129,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
+        loadImageSet("CBIR_Project/images/WebImages_71x6/");
     }
 
     private void initCmbImageManager() {
@@ -199,10 +200,20 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
-        Stage fileChooserStage = new Stage();
-        File file = directoryChooser.showDialog(fileChooserStage);
+        loadImageSet(null);
+    }
+    
+    @FXML
+    private void loadImageSet(String path) {
+        File file;
+        if(path == null){
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
+            Stage fileChooserStage = new Stage();
+            file = directoryChooser.showDialog(fileChooserStage);
+        }else{
+            file = new File(path);
+        }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
             if (cbx_imageViewer.isSelected()) {
@@ -220,18 +231,10 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeImageView() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ImageViewer.fxml"));
-            Scene scene = new Scene(root, 600, 400);
-            this.imageViewerStage = new Stage();
-            this.imageViewerStage.setScene(scene);
-            scene.setFill(Color.BLACK);
 
-            this.imageViewerStage.setTitle("Image Viewer");
+            this.imageViewer = new ImageViewer();
+            this.imageViewer.draw(this.model.getImageManager().getImages());
 
-            this.imageViewerController = (ImageViewerController) loadController("ImageViewer.fxml");
-            this.imageViewerController.draw(this.model.getImageManager().getImages());
-
-            this.imageViewerStage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
@@ -243,22 +246,14 @@ public class SimpleRBMController implements Initializable, IFXController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
 
-            final NumberAxis xAxis = new NumberAxis();
-            final NumberAxis yAxis = new NumberAxis();
-            xAxis.setLabel("Recall");
-            yAxis.setLabel("Precision");
-            //creating the chart
-            final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-
-            lineChart.setTitle("MAP");
-            Scene scene = new Scene(lineChart, 600, 400);
+            Scene scene = new Scene(root, 600, 400);
             this.chartViewerStage = new Stage();
             this.chartViewerStage.setTitle("Map Viewer");
             this.chartViewerStage.setScene(scene);
 
             this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
 
-            this.chartViewerController.draw(lineChart);
+           // this.chartViewerController.draw(lineChart);
 
             this.chartViewerStage.show();
 
