@@ -130,6 +130,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
+        loadImageSet("CBIR_Project/images/WebImages_71x6/");
     }
 
     private void initCmbImageManager() {
@@ -200,10 +201,20 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
-        Stage fileChooserStage = new Stage();
-        File file = directoryChooser.showDialog(fileChooserStage);
+        loadImageSet(null);
+    }
+    
+    @FXML
+    private void loadImageSet(String path) {
+        File file;
+        if(path == null){
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
+            Stage fileChooserStage = new Stage();
+            file = directoryChooser.showDialog(fileChooserStage);
+        }else{
+            file = new File(path);
+        }
         if (file != null) {
             this.imageManager = new ImageManager(file);
             if (cbx_imageViewer.isSelected()) {
@@ -244,22 +255,14 @@ public class SimpleRBMController implements Initializable, IFXController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
 
-            final NumberAxis xAxis = new NumberAxis();
-            final NumberAxis yAxis = new NumberAxis();
-            xAxis.setLabel("Recall");
-            yAxis.setLabel("Precision");
-            //creating the chart
-            final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-
-            lineChart.setTitle("MAP");
-            Scene scene = new Scene(lineChart, 600, 400);
+            Scene scene = new Scene(root, 600, 400);
             this.chartViewerStage = new Stage();
             this.chartViewerStage.setTitle("Map Viewer");
             this.chartViewerStage.setScene(scene);
 
             this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
 
-            this.chartViewerController.draw(lineChart);
+           // this.chartViewerController.draw(lineChart);
 
             this.chartViewerStage.show();
 
