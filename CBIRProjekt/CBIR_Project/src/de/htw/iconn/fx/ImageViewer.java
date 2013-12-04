@@ -5,6 +5,7 @@
  */
 package de.htw.iconn.fx;
 
+import de.htw.cbir.ImageManager;
 import de.htw.cbir.model.Pic;
 import java.awt.image.BufferedImage;
 import javafx.beans.value.ChangeListener;
@@ -16,9 +17,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -51,18 +57,20 @@ public class ImageViewer {
     private final Group root;
     private final Stage stage;
     private final Pic[] images;
+    private final ImageManager imageManager;
 
-    public ImageViewer(Pic[] images) {
-        this.images = images;
+    public ImageViewer(ImageManager imageManager) {
+        this.imageManager = imageManager;
+        this.images = imageManager.getImages();
         this.root = new Group();
         this.stage = new Stage();
         this.scene = new Scene(root, width, height);
         this.scene.setFill(Color.LIGHTSLATEGREY);
         this.stage.setScene(this.scene);
         this.stage.setResizable(true);
-        ChangeListener<Number> onResize =  new ChangeListener<Number>() {
+        ChangeListener<Number> onResize = new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {            
+            public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
                 xMouseMove = 0;
                 yMouseMove = 0;
                 ImageViewer.this.draw();
@@ -70,33 +78,179 @@ public class ImageViewer {
         };
         this.scene.widthProperty().addListener(onResize);
         this.scene.heightProperty().addListener(onResize);
-        
+
+        this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent we) {
+                stage.close();
+            }
+        });
+
+        this.scene.setOnMousePressed(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                MouseEvent mouse = ((MouseEvent) t);
+                xMousePos = xMouseStartPos = (int) mouse.getX();
+                yMousePos = yMouseStartPos = (int) mouse.getY();
+            }
+        });
+
+        this.scene.setOnMouseReleased(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                xMouseMove = 0;
+                yMouseMove = 0;
+            }
+        });
+
+        this.scene.setOnMouseDragged(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                MouseEvent mouse = ((MouseEvent) t);
+                xMouseMove = (int) mouse.getX();
+                yMouseMove = (int) mouse.getY();
+                xMouseMove = xMousePos - xMouseStartPos;
+                yMouseMove = yMousePos - yMouseStartPos;
+                xMouseStartPos = xMousePos;
+                yMouseStartPos = yMousePos;
+                draw();
+            }
+        });
+
+        this.scene.setOnMouseDragged(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                MouseEvent mouse = ((MouseEvent) t);
+                xMouseMove = (int) mouse.getX();
+                yMouseMove = (int) mouse.getY();
+                xMouseMove = xMousePos - xMouseStartPos;
+                yMouseMove = yMousePos - yMouseStartPos;
+                xMouseStartPos = xMousePos;
+                yMouseStartPos = yMousePos;
+                draw();
+            }
+        });
+        this.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent t) {
+                System.out.println("keypress: " + t.getCode());
+
+                if (t.getCode() == KeyCode.ADD) {
+                    zoomFactor *= 1.1;
+                }
+
+                if (t.getCode() == KeyCode.SUBTRACT) {
+                    zoomFactor /= 1.1;
+                }
+
+                // Features anzeigen
+                if (t.getCode() == KeyCode.F) {
+                    drawFeatures = true;
+                }
+
+                // Bilder anzeigen
+                if (t.getCode() == KeyCode.B) {
+                    drawFeatures = false;
+                }
+
+                if (t.getCode() == KeyCode.R) {
+                    for (Pic image : ImageViewer.this.images) {
+                        image.setRank(image.getId());
+                    }
+                }
+                draw();
+            }
+        });
+
+        this.scene.setOnMouseMoved(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                MouseEvent mouse = ((MouseEvent) t);
+                xMousePos = (int) mouse.getX();
+                yMousePos = (int) mouse.getY();
+                draw();
+            }
+        });
+
+        this.scene.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                MouseEvent mouse = ((MouseEvent) t);
+                xMousePos = (int) mouse.getX();
+                yMousePos = (int) mouse.getY();
+                Pic image = getImage(xMousePos, yMousePos);
+                if (image != null) {
+
+                    if (mouse.getButton() == MouseButton.PRIMARY) { //linke Maustaste
+                        if (mouse.getClickCount() == 2) { //Doppelklick
+                            if (!image.getCategory().equals("x")) {
+                                System.out.println("Testen Bild " + image.getId());
+
+                                System.out.println("NotImplemented Yet: ImageViewer -> sortByImage()");
+// controller.sortByImage(image);
+                                draw();
+                            }
+                        }
+                    }
+                }
+
+                xMouseMove = 0;
+                yMouseMove = 0;
+
+            }
+        });
+
         this.scene.setOnScroll(new EventHandler() {
             @Override
             public void handle(Event t) {
-                double delta = ((ScrollEvent)t).getDeltaY();
+                double delta = ((ScrollEvent) t).getDeltaY();
                 if (delta < 0) {
-			zoomFactor = zoomFactor*1.1;
-			if (zoomFactor > 50) 
-				zoomFactor = 50;
-		}
-		else {
-			zoomFactor = zoomFactor/1.1;	
-			if (zoomFactor < 1) zoomFactor = 1;
-		}
+                    zoomFactor = zoomFactor * 1.1;
+                    if (zoomFactor > 50) {
+                        zoomFactor = 50;
+                    }
+                } else {
+                    zoomFactor = zoomFactor / 1.1;
+                    if (zoomFactor < 1) {
+                        zoomFactor = 1;
+                    }
+                }
                 ImageViewer.this.draw();
             }
-    });
+        });
 
+    }
+
+    /**
+     * Liefert das Bild zurück dass sich an einer bestimmten // Mausposition
+     * befindet. Null bedeutet dass unter der Maus kein Bild ist
+     *
+     * @param xMouse
+     * @param yMouse
+     * @return
+     */
+    public Pic getImage(int xMouse, int yMouse) {
+        for (Pic image : images) {
+            int xs = image.getxStart();
+            int ys = image.getyStart();
+            int xLen = image.getxLen();
+            int yLen = image.getyLen();
+
+            if (xMouse > xs && xMouse < xs + xLen && yMouse > ys && yMouse < ys + yLen) {
+                return image;
+            }
+        }
+        return null; // kein Bild gefunden
     }
 
     public void draw() {
 
         if (images != null) {
             root.getChildren().clear();
-            calculateDrawingPositions(0, 0, 0, 0, zoomFactor);
+            calculateDrawingPositions(xMousePos, yMousePos, xMouseMove, yMouseMove, zoomFactor);
             for (Pic image : images) {
-                BufferedImage bi = image.getDisplayImage();
+                BufferedImage bi = (drawFeatures) ? image.getFeatureImage() : image.getDisplayImage();
 
                 Image img = SwingFXUtils.toFXImage(bi, null);
                 ImageView imgView = new ImageView(img);
@@ -111,6 +265,10 @@ public class ImageViewer {
             }
         }
         stage.show();
+    }
+
+    public void close() {
+        stage.close();
     }
 
     private void calculateDrawingPositions(int xMousePos, int yMousePos, int xMouseMove, int yMouseMove, double zoomFactor) {
@@ -168,7 +326,7 @@ public class ImageViewer {
             xMinPos = (int) (w2 - xm * scaledThumbSizeX);
             xMaxPos = (int) (xMinPos + mapPlacesX * scaledThumbSizeX);
         }
-		// when zooming out (centered at the mouseposition) it might be
+        // when zooming out (centered at the mouseposition) it might be
         // necessary to shift the map back to the canvas
         if (xMaxPos < wCanvas - 1) {
             int xMoveCorrection = wCanvas - 1 - xMaxPos;

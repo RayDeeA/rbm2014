@@ -251,7 +251,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeImageView() {
 
-            this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
+            this.imageViewer = new ImageViewer(this.model.getImageManager());
             this.imageViewer.draw();
 
 
