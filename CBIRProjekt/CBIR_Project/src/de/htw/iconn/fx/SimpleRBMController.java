@@ -29,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -120,6 +121,14 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Stage chartViewerStage;
     @FXML
     private CheckBox cbx_map;
+    @FXML
+    private Label lbl_updateF;
+    @FXML
+    private Label lbl_training_started;
+    @FXML
+    private Label lbl_evolution_started;
+    @FXML
+    private TitledPane ttl_panel_features;
 
     /**
      * Initializes the controller class.
@@ -161,8 +170,20 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
 
     private void updateView() {
+        
         if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
+
+            /*cbx_randomOrder.setDisable(true);
+            cbx_imageViewer.setDisable(true);
+            cbx_logger.setDisable(true);
+            cbx_visualization.setDisable(true);
+            cbx_map.setDisable(true);
+            txt_updateFrequency.setDisable(true);
+            lbl_updateF.setDisable(true);
+            ttl_panel_features.setExpanded(false);
+            */
+            
         } else {
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
         }
@@ -203,8 +224,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         loadImageSet(null);
     }
     
-    @FXML
-    private void loadImageSet(String path) {
+        private void loadImageSet(String path) {
         File file;
         if(path == null){
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -262,6 +282,17 @@ public class SimpleRBMController implements Initializable, IFXController {
         }
 
     }
+    
+    
+    private static boolean isInteger(String s){
+        try{
+            Integer.parseInt(s);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;    
+    
+    }
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
@@ -281,6 +312,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_startEvolutionAction(ActionEvent event) {
+
+   
     }
 
     @FXML
@@ -321,26 +354,52 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cmb_rbmImplementationAction(ActionEvent event) {
+        this.model.setRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex()); 
     }
-
+   
     @FXML
     private void cmb_rbmFeatureAction(ActionEvent event) {
+
+        if (cmb_rbmFeature.getValue() == "PixelRBM") {
+            txt_inputSize.setDisable(true);
+            txt_outputSize.setDisable(true);
+            
+        } else {
+            txt_inputSize.setDisable(false);
+            txt_outputSize.setDisable(false);
+            
+        }
     }
 
     @FXML
     private void cmb_logisticFunctionAction(ActionEvent event) {
+        this.model.setLogisticFunction(cmb_logisticFunction.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void txt_inputSizeAction(ActionEvent event) {
+        
+        if(isInteger(txt_inputSize.getText())){
+            this.model.setInputSize(Integer.parseInt(txt_inputSize.getText()));
+        }else{
+            txt_inputSize.setText("not valid");
+        }
+            
     }
-
     @FXML
     private void txt_outputSizeAction(ActionEvent event) {
+        
+        if(isInteger(txt_outputSize.getText())){
+            this.model.setOutputSize(Integer.parseInt(txt_outputSize.getText()));
+        }else{
+            txt_outputSize.setText("not valid");
+        }
     }
 
     @FXML
     private void rdi_epochsAction(ActionEvent event) {
+        this.model.setStoppingCondition(0);
+        this.updateView();
     }
 
     @FXML
@@ -349,6 +408,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void rdi_errorAction(ActionEvent event) {
+        this.model.setStoppingCondition(1);
+        this.updateView();
     }
 
     @FXML
@@ -365,10 +426,24 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_seedAction(ActionEvent event) {
-    }
 
+        if (cbx_seed.isSelected()) {
+            
+            txt_seed.setDisable(false);
+        } else {
+            txt_seed.setDisable(true);
+        }
+    }
+    
     @FXML
     private void txt_seedAction(ActionEvent event) {
+        
+        if(isInteger(txt_seed.getText())){
+            this.model.setSeed(Integer.parseInt(txt_seed.getText()));
+        }else{
+            txt_seed.setText("not valid");
+        }
+        
     }
 
     @FXML
