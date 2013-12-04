@@ -139,7 +139,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
-        loadImageSet("CBIR_Project/images/Test_10x5/");
+        //loadImageSet("CBIR_Project/images/Test_10x5/");
     }
 
     private void initCmbImageManager() {
@@ -238,7 +238,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void btn_loadImageSetAction(ActionEvent event) {
         loadImageSet(null);
     }
-    
+
     private void loadImageSet(String path) {
         File file;
         if (path == null) {
@@ -251,16 +251,13 @@ public class SimpleRBMController implements Initializable, IFXController {
         }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
-            this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
 
-            if (cbx_imageViewer.isSelected() && this.model.isShowImageViewer()) {
+            if (this.model.isShowImageViewer()) {
                 initializeImageView();
-            } else {
-
             }
-
-        }
-        this.updateView();
+            this.initCmbImageManager();
+            this.updateView();
+        }     
     }
 
     private Object loadController(String url) throws IOException {
@@ -271,7 +268,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeImageView() {
 
-        //this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
+        this.imageViewer = new ImageViewer(this.model.getImageManager().getImages());
         this.imageViewer.draw();
 
     }
@@ -321,14 +318,13 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         this.model.setShowImageViewer(cbx_imageViewer.isSelected());
 
-        if (cbx_imageViewer.isSelected() && this.model.getImageManager() != null) {
-
-            initializeImageView();
+        if (this.model.isShowImageViewer()) {
+            if(this.model.getImageManager() != null){
+                initializeImageView();
+            }
         } else {
             if (this.imageViewer != null) {
                 this.imageViewer.close();
-                this.model.setShowImageViewer(false);
-
             }
         }
         this.updateView();
@@ -391,7 +387,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_startTestAction(ActionEvent event) {
-        
+
     }
 
     @FXML

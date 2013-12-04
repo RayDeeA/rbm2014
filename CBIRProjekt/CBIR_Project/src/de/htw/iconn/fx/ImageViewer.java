@@ -122,6 +122,8 @@ public class ImageViewer {
 
         int hCanvas = (int) scene.getHeight();
         int wCanvas = (int) scene.getWidth();
+        if(wCanvas <= 1)
+            wCanvas = this.width;
         int h2 = hCanvas / 2;
         int w2 = wCanvas / 2;
 
