@@ -1,10 +1,9 @@
-package de.htw.cbir.sorter;
+package de.htw.iconn.fx;
 
 import java.util.concurrent.RecursiveAction;
 
 import de.htw.cbir.model.Pic;
 
-@Deprecated
 public class ForkSorterCalculations extends RecursiveAction {
 
 	private static final long serialVersionUID = 428974300938969664L;

@@ -1,6 +1,5 @@
 package de.htw.iconn.fx;
 
-import de.htw.cbir.sorter.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
@@ -14,8 +13,8 @@ public class SorterRBMWrapper extends Sorter {
 
 	private RBMWrapper rbmWrapper;
 	
-	public SorterRBMWrapper(Pic[] pics, Settings settings, RBMWrapper rbmWrapper, ForkJoinPool pool) {
-		super(pics, settings, pool);
+	public SorterRBMWrapper(Pic[] pics, ForkJoinPool pool, RBMWrapper rbmWrapper) {
+		super(pics, pool);
 		this.rbmWrapper = rbmWrapper;
 	}
 
@@ -55,9 +54,5 @@ public class SorterRBMWrapper extends Sorter {
 	@Override
 	public String getName() {
 		return "SorterRBMWrapper";
-	}
-
-	@Override
-	public void settingsChanged(ActionEvent e) {
 	}
 }
