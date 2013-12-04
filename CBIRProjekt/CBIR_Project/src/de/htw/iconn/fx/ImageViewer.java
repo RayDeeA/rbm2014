@@ -270,10 +270,6 @@ public class ImageViewer {
         stage.close();
     }
 
-    public void close() {
-        stage.close();
-    }
-
     private void calculateDrawingPositions(int xMousePos, int yMousePos, int xMouseMove, int yMouseMove, double zoomFactor) {
 
         int nThumbs = images.length;
