@@ -7,8 +7,8 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.PixelRBM;
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.model.Pic;
 
 import java.awt.image.BufferedImage;
@@ -33,14 +33,14 @@ import javax.imageio.ImageIO;
  */
 public class RunHiddenModel {
     
-    RBMWrapper rbmWrapper;
+    ARBMFeature rbmWrapper;
     Pic pic;
     
     public RunHiddenModel() {
         
     }
 
-    public void setRbmWrapper(RBMWrapper rbmWrapper) {
+    public void setRbmWrapper(ARBMFeature rbmWrapper) {
         this.rbmWrapper = rbmWrapper;
     }
     

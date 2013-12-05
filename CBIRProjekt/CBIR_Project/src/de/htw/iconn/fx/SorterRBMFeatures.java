@@ -4,16 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
 
 
-public class SorterRBMWrapper extends Sorter {
+public class SorterRBMFeatures extends ASorter {
 
-	private RBMWrapper rbmWrapper;
+	private ARBMFeature rbmWrapper;
 	
-	public SorterRBMWrapper(Pic[] pics, ForkJoinPool pool, RBMWrapper rbmWrapper) {
+	public SorterRBMFeatures(Pic[] pics, ForkJoinPool pool, ARBMFeature rbmWrapper) {
 		super(pics, pool);
 		this.rbmWrapper = rbmWrapper;
 	}

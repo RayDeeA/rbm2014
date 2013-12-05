@@ -5,7 +5,7 @@ import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.CBIREvaluationModel;
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
@@ -49,12 +49,12 @@ public class DCTRBMErrorTest {
 		Pic[] allImages = imageManager.getImages(true);
 
 		ForkJoinPool pool = new ForkJoinPool();
-		DCTRBM rbm = null;
+		RBMFeatureDCT rbm = null;
 		
 		if(load == false) {
 			// ------------------- neu erstellen ----------------------
 			System.out.println("Create new RBM");
-			rbm = new DCTRBM(inputSize, outputSize, learnRate);
+			rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und 
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0);	

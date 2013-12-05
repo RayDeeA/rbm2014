@@ -7,7 +7,7 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 
-public abstract class RBMWrapper {
+public abstract class ARBMFeature {
 
 	// Anzahl der Eingangs und Ausgangsneuronen
 	protected int inputSize;
@@ -19,14 +19,14 @@ public abstract class RBMWrapper {
 
 	protected IRBM rbm;
 
-	protected RBMWrapper(int inputSize, int outputSize, double learnRate) {
+	protected ARBMFeature(int inputSize, int outputSize, double learnRate) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
 		this.learnRate = learnRate;
 		this.rbm = new RBMJBlas(inputSize, outputSize, learnRate, new DefaultLogisticMatrixFunction());
 	}
 
-	protected RBMWrapper(int inputSize, int outputSize, IRBM rbm) {
+	protected ARBMFeature(int inputSize, int outputSize, IRBM rbm) {
 		this.inputSize = inputSize;
 		this.outputSize = outputSize;
 		this.rbm = rbm;
@@ -37,7 +37,7 @@ public abstract class RBMWrapper {
 	 * @param inputSize
 	 * @param outputSize
 	 */
-	public abstract RBMWrapper shallowCopy();
+	public abstract ARBMFeature shallowCopy();
 
 	public void train(Pic[] images, int maxEpoche) {
 		double[][] trainingsData = createTrainingsData(images);

@@ -7,7 +7,7 @@ import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 
-public class PixelRBM extends RBMWrapper {
+public class RBMFeaturePixel extends ARBMFeature {
 
 	/**
 	 * 
@@ -15,17 +15,17 @@ public class PixelRBM extends RBMWrapper {
 	 *            Amount of pixels in scaline order
 	 * @param outputSize
 	 */
-	public PixelRBM(int inputSize, int outputSize, double learnRate) {
+	public RBMFeaturePixel(int inputSize, int outputSize, double learnRate) {
 		super(inputSize, outputSize, learnRate);
 	}
 
-	public PixelRBM(int inputSize, int outputSize, IRBM rbm) {
+	public RBMFeaturePixel(int inputSize, int outputSize, IRBM rbm) {
 		super(inputSize, outputSize, rbm);
 	}
 
-	public RBMWrapper shallowCopy() {
+	public ARBMFeature shallowCopy() {
 		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
-		return new PixelRBM(inputSize, outputSize, newRBM);
+		return new RBMFeaturePixel(inputSize, outputSize, newRBM);
 	}
 
 	/**

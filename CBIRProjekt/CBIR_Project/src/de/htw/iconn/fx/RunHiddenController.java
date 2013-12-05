@@ -9,7 +9,7 @@ package de.htw.iconn.fx;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.ARBMFeature;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,7 +46,7 @@ public class RunHiddenController implements Initializable, IFXController {
         this.model = new RunHiddenModel();
     }
     
-    public void setRBMWrapper(RBMWrapper rbmWrapper) {
+    public void setRBMWrapper(ARBMFeature rbmWrapper) {
     	this.model.setRbmWrapper(rbmWrapper);
     }
 
@@ -70,6 +70,4 @@ public class RunHiddenController implements Initializable, IFXController {
 	public Node getView() {
 		return this.view;
 	}
-    
-    
 }

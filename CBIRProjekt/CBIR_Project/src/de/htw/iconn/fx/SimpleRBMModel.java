@@ -5,10 +5,10 @@
  */
 package de.htw.iconn.fx;
 
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.PixelRBM;
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.cbir.ARBMFeature;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
@@ -66,6 +66,7 @@ public class SimpleRBMModel {
     private boolean useBias;
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
+    private boolean rbmTraining;
     
     //evaluated data
     private double mAP;
@@ -74,17 +75,18 @@ public class SimpleRBMModel {
     
     //class instances
     private ImageManager imageManager;
-    private Sorter sorter;
-    private RBMWrapper wrapper;
+    private ASorter sorter;
+    private ARBMFeature wrapper;
     private IRBM rbm;
     private Evaluation evaluation;
+    
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
             int rbmImplementation, int rbmFeature, int logisticFunction,
             int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained)
+            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained, boolean rbmTraining)
     {   
         this.rbmImplementation = rbmImplementation;
         this.rbmFeature = rbmFeature;
@@ -106,11 +108,12 @@ public class SimpleRBMModel {
         this.useBias = useBias;
         this.binarizeProbabilities = binarizeProbabilities;
         this.rbmTrained = rbmTrained;
+        this.rbmTraining = rbmTraining;
     }
 
     public SimpleRBMModel() {
         this(false, true, true, true, 100, -1, -1, -1, 15,
-                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
+                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false);
     }
     
     public boolean generateRBM(){
@@ -147,9 +150,9 @@ public class SimpleRBMModel {
             
             if(this.rbm != null){
                 if(this.rbmFeature == 0){
-                    this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
+                    this.wrapper = new RBMFeaturePixel(this.inputSize, this.outputSize, rbm);
                 }else if(this.rbmFeature == 1){
-                    this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+                    this.wrapper = new RBMFeatureDCT(this.inputSize, this.outputSize, rbm);
                 }
             }
             
@@ -163,7 +166,7 @@ public class SimpleRBMModel {
     public boolean generateSorter(){
         if(this.wrapper != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
-            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(true), pool, wrapper);
+            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, wrapper);
             this.sorter.getFeatureVectors();
             return true;
         }
@@ -175,9 +178,12 @@ public class SimpleRBMModel {
             System.out.println("start training");
             this.wrapper.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs);
         }
+        this.rbmTraining = false;
         this.rbmTrained = true;
         this.generateSorter();
     }
+    
+    
     
     public boolean validate() {
 
@@ -205,7 +211,7 @@ public class SimpleRBMModel {
         }
         if(true){
         //if(this.mapTest == "all"){
-            this.setMapTest("all");
+           //this.setMapTest("all");
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
@@ -369,6 +375,10 @@ public class SimpleRBMModel {
     public boolean isRbmTrained() {
         return rbmTrained;
     }
+    
+    public boolean isRbmTraining() {
+        return rbmTraining;
+    }
 
     public void setRbmTrained(boolean rbmTrained) {
         this.rbmTrained = rbmTrained;
@@ -389,11 +399,11 @@ public class SimpleRBMModel {
         this.imageManager = imageManager;
     }
 
-    public void setSorter(Sorter sorter) {
+    public void setSorter(ASorter sorter) {
         this.sorter = sorter;
     }
 
-    public void setWrapper(RBMWrapper wrapper) {
+    public void setWrapper(ARBMFeature wrapper) {
         this.wrapper = wrapper;
     }
 
@@ -405,11 +415,11 @@ public class SimpleRBMModel {
         return imageManager;
     }
 
-    public Sorter getSorter() {
+    public ASorter getSorter() {
         return sorter;
     }
 
-    public RBMWrapper getWrapper() {
+    public ARBMFeature getWrapper() {
         return wrapper;
     }
 

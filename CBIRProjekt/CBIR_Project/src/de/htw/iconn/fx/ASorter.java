@@ -5,12 +5,12 @@ import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.model.Pic;
 
-public abstract class Sorter {
+public abstract class ASorter {
 	
 	protected Pic[] images;
 	private ForkJoinPool pool;
 	
-	public Sorter(Pic[] images, ForkJoinPool pool) {
+	public ASorter(Pic[] images, ForkJoinPool pool) {
 		this.images = images;
 		this.pool = pool;
 	}
