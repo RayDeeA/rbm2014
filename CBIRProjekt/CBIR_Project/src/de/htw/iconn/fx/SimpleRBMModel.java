@@ -69,6 +69,7 @@ public class SimpleRBMModel {
     //evaluated data
     private double mAP;
     private String mapTest;
+    private float[][] prTable;
     
     //class instances
     private ImageManager imageManager;
@@ -162,6 +163,7 @@ public class SimpleRBMModel {
         if(this.wrapper != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
             this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+            this.sorter.getFeatureVectors();
             return true;
         }
         return false;
@@ -202,6 +204,7 @@ public class SimpleRBMModel {
         }
         if(true){
         //if(this.mapTest == "all"){
+            this.setMapTest("all");
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
@@ -427,5 +430,13 @@ public class SimpleRBMModel {
 
     public void setMapTest(String mapTest) {
         this.mapTest = mapTest;
-    }   
+    }
+
+    public float[][] getPrTable() {
+        return prTable;
+    }
+
+    public void setPrTable(float[][] prTable) {
+        this.prTable = prTable;
+    }
 }
