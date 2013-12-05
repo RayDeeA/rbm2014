@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  */
 public class ChartViewerController implements Initializable, IFXController {
 
-        private AnchorPane view;
+    private AnchorPane view;
     private final int width = 500, height = 400, margin_top = 60, margin_right = 300, margin_bottom = 20, margin_left = 20;
     private final int p = 2, r = 3;
     private final Vector<float[][]> graphs = new Vector<>();

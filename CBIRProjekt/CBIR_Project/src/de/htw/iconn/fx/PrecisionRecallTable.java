@@ -32,6 +32,26 @@ public class PrecisionRecallTable {
         this.recalls = new double[0][];
         this.precisions = new double[0][];
     }
+    
+    public float[][] generatePRTable(){
+        int numTestRun = precisions.length;
+        int numPics = precisions[0].length;
+
+        float[][] prTable = new float[4][numPics];
+        for (int pic = 0; pic < numPics; pic++) {
+
+            // zähle alle Testergebnisse zusammen
+            double avgPrecision = 0, avgRecall = 0;
+            for (int runs = 0; runs < numTestRun; runs++) {
+                avgPrecision += precisions[runs][pic];
+                avgRecall += recalls[runs][pic];
+            }
+
+            prTable[2][pic] = (float) avgPrecision / numTestRun;
+            prTable[3][pic] = (float) avgRecall / numTestRun;
+        }
+        return prTable;
+    }
 
     /**
      * Analysiert und liefert die Average Precision zurück

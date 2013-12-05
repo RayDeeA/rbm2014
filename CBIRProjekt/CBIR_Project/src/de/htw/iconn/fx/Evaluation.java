@@ -29,7 +29,7 @@ public class Evaluation {
 	 * @return
 	 */
 	public void testAll() {
-		final TIntDoubleHashMap lookup = createDistanceLookupTable(model.getSorter());
+		final TIntDoubleHashMap lookup = createDistanceLookupTable();
 		final PrecisionRecallTable table = new PrecisionRecallTable(false, model.getSorter().getName(), "all");
 		
 		// starte die komplexe Analyse 
@@ -55,7 +55,7 @@ public class Evaluation {
 //		System.out.println("MAP: "+MAP+" took "+(stop-start)+"ms");
 		
 		// beende die Analyse und zeige eventuell Ergebnisse
-		table.finish();
+		this.model.setPrTable(table.generatePRTable());
 	}
 	
 	/**
@@ -182,8 +182,8 @@ public class Evaluation {
 	 * 
 	 * @return
 	 */
-	private TIntDoubleHashMap createDistanceLookupTable(Sorter sorter) {
-		Pic[] allImages = images;
+	private TIntDoubleHashMap createDistanceLookupTable() {
+		Pic[] allImages = this.model.getImageManager().getImages();
 		int initialCapacity = (allImages.length-1)*allImages.length/2;
 		TIntDoubleHashMap map = new TIntDoubleHashMap(initialCapacity);
 		
@@ -192,7 +192,7 @@ public class Evaluation {
 			for (int j = i+1; j < allImages.length; j++) {
 				Pic p2 = allImages[j];
 				int key =  (p1.getId() << 16) | p2.getId();
-				double dist = sorter.getDistance(p1.getFeatureVector(), p2.getFeatureVector());
+				double dist = this.model.getSorter().getDistance(p1.getFeatureVector(), p2.getFeatureVector());
 				map.put(key, dist);
 			}
 		}

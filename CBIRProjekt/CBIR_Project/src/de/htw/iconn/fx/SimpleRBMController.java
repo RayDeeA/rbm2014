@@ -331,7 +331,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
         this.model.trainRBM();
-
+        this.updateView();
     }
 
     @FXML
@@ -404,6 +404,9 @@ System.out.println("Test");
     @FXML
     private void btn_startTestAction(ActionEvent event) {
         this.model.test();
+        if(this.model.getPrTable() != null){
+            this.chartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());
+        }
     }
 
     @FXML
