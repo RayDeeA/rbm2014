@@ -5,7 +5,7 @@ import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.CBIREvaluation;
 import de.htw.cbir.CBIREvaluationModel;
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
@@ -49,12 +49,12 @@ public class DCTRBMTest {
 		Pic[] allImages = imageManager.getImages(true);
 
 		ForkJoinPool pool = new ForkJoinPool();
-		DCTRBM rbm = null;
+		RBMFeatureDCT rbm = null;
 		
 		if(load == false) {
 			// ------------------- neu erstellen -----------------------
 			System.out.println("Create new RBM("+inputSize+"x"+outputSize+") with learn rate "+learnRate);
-			rbm = new DCTRBM(inputSize, outputSize, learnRate);
+			rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und 
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0); 
@@ -62,7 +62,7 @@ public class DCTRBMTest {
 			//--------------------- laden -----------------------
 			System.out.println("Load RBM");
 			String name = inputSize+"x"+outputSize+"RBM.rbm";
-			//rbm = DCTRBM.load(Paths.get("solutions/"+imageSetName+"/"+name));
+			//rbm = RBMFeatureDCT.load(Paths.get("solutions/"+imageSetName+"/"+name));
 		}
 		
 		// verwende die RBM in den Sorter und der ES. Teste die Ergebnisse der ES.

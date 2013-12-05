@@ -433,7 +433,7 @@ System.out.println("Test");
             this.daydreamStage.setScene(scene);
 
             this.daydreamController = (DaydreamController) loadController("DaydreamView.fxml");
-            this.daydreamController.setRBMWrapper(this.model.getWrapper());
+            this.daydreamController.setRBMFeature(this.model.getWrapper());
 
             // this.chartViewerController.draw(lineChart);
             this.daydreamStage.show();

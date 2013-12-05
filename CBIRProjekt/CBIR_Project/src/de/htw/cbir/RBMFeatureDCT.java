@@ -8,20 +8,20 @@ import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.lcs.feature2opt.FeatureVector2opt;
 
-public class DCTRBM extends RBMWrapper {
+public class RBMFeatureDCT extends ARBMFeature {
 
-	public DCTRBM(int inputSize, int outputSize, double learnRate) {
+	public RBMFeatureDCT(int inputSize, int outputSize, double learnRate) {
 		super(inputSize, outputSize, learnRate);
 	}
 
-	public DCTRBM(int inputSize, int outputSize, IRBM rbm) {
+	public RBMFeatureDCT(int inputSize, int outputSize, IRBM rbm) {
 		super(inputSize, outputSize, rbm);
 	}
 
-	public RBMWrapper shallowCopy() {
+	public ARBMFeature shallowCopy() {
 		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate,
 				rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
-		return new DCTRBM(inputSize, outputSize, newRBM);
+		return new RBMFeatureDCT(inputSize, outputSize, newRBM);
 	}
 
 	/**

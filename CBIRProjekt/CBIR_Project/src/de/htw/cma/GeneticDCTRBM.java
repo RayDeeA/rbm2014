@@ -4,7 +4,7 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 import de.htw.cbir.CBIREvaluation;
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.gui.RBMVisualizationFrame;
 import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
@@ -17,9 +17,9 @@ public class GeneticDCTRBM implements IObjectiveFunction{
 	private CBIREvaluation eval;
 	private double[] initialValues;
 	private double stdDev = 5;
-	private DCTRBM rbm;
+	private RBMFeatureDCT rbm;
 	
-	public GeneticDCTRBM(DCTRBM rbm, String imageSetName, CBIREvaluation evalulation) {
+	public GeneticDCTRBM(RBMFeatureDCT rbm, String imageSetName, CBIREvaluation evalulation) {
 		this.imageSetName	= imageSetName;
 		this.rbm 			= rbm;
 		this.eval			= evalulation;
