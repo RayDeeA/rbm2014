@@ -181,18 +181,16 @@ public class SimpleRBMController implements Initializable, IFXController {
         } else {
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
         }
-        
-        this.cbx_map.setDisable(!this.model.isShowPRChart());
 
         this.txt_inputSize.setDisable(this.model.getRbmFeature() == 0 || this.model.getRbmFeature() == 1);
         this.txt_seed.setDisable(!this.model.isUseSeed());
 
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
-        this.btn_runHidden.setDisable(this.model.isRbmTrained());
-        this.btn_runVisible.setDisable(this.model.isRbmTrained());
-        this.btn_daydream.setDisable(this.model.isRbmTrained());
-        this.btn_saveRbmFile.setDisable(this.model.isRbmTrained());
+        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
+        this.btn_runVisible.setDisable(!this.model.isRbmTrained());
+        this.btn_daydream.setDisable(!this.model.isRbmTrained());
+        this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_visualization.setSelected(this.model.isShowVisualization());

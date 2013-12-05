@@ -49,6 +49,7 @@ public class SimpleRBMModel {
     private boolean showImageViewer;
     private boolean useLogger;
     private boolean showVisualization;
+    private boolean showPRChart;
     private int updateFrequency;
     private int rbmImplementation;
     private int rbmFeature;
@@ -438,5 +439,13 @@ public class SimpleRBMModel {
 
     public void setPrTable(float[][] prTable) {
         this.prTable = prTable;
+    }
+
+    public boolean isShowPRChart() {
+        return showPRChart;
+    }
+
+    public void setShowPRChart(boolean showPRChart) {
+        this.showPRChart = showPRChart;
     }
 }
