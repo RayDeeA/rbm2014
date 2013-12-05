@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import de.htw.cbir.gui.Graph;
 
+@Deprecated
 public class PrecisionRecallTable {
 
     private static Graph graph = null;
