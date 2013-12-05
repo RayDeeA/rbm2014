@@ -183,7 +183,7 @@ public class Evaluation {
 	 * @return
 	 */
 	private TIntDoubleHashMap createDistanceLookupTable() {
-		Pic[] allImages = this.model.getImageManager().getImages();
+		Pic[] allImages = this.model.getImageManager().getImages(true);
 		int initialCapacity = (allImages.length-1)*allImages.length/2;
 		TIntDoubleHashMap map = new TIntDoubleHashMap(initialCapacity);
 		
