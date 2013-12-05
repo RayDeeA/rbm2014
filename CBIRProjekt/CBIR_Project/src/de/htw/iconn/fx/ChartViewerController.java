@@ -27,12 +27,8 @@ public class ChartViewerController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
     
-    private final int width = 500, height = 400, margin_top = 60, margin_right = 300, margin_bottom = 20, margin_left = 20;
-    private final int p = 2, r = 3;
-    private final Vector<float[][]> graphs = new Vector<>();
-    private Vector<String> titles = new Vector<String>();
     @FXML
-        private LineChart<Number, Number> cha_MAP;
+    private LineChart<Number, Number> cha_PRTable;
 
     /**
      * Initializes the controller class.
@@ -43,33 +39,23 @@ public class ChartViewerController implements Initializable, IFXController {
     }
 
     public void addGraph(float[][] pUeberR, String title) {
-        graphs.add(pUeberR);
-        titles.add(title);
-        // redraw();
-    }
-
-    public void draw() {
-        // show data
+        XYChart.Series tmpGraph = new XYChart.Series();
+            
+        // set title of graph
+        tmpGraph.setName(title);
         
-        for (int i = 0; i < graphs.size(); i++) {
-
-            XYChart.Series series = new XYChart.Series();
-            series.setName(titles.elementAt(i));
-
-            float[][] tmpGraph = graphs.elementAt(i);
-
-            ObservableList<XYChart.Data<Float, Float>> tmp = series.getData();
-            for (float[] fs : tmpGraph) {
-                tmp.add(new XYChart.Data(fs[0], fs[1]));
-            }
-            series.setData(tmp);
-            cha_MAP.getData().add(series);
+        // transfer the float array data to the tmpGraph
+        for (float[] fs : pUeberR) {
+            System.out.println(fs);
+            tmpGraph.getData().add(new XYChart.Data(fs[0], fs[1]));
         }
+        
+        // finally add and draw the tmpGraph to the PRChart
+        cha_PRTable.getData().add(tmpGraph);
     }
 
     @Override
     public Node getView() {
         return view;
     }
-
 }
