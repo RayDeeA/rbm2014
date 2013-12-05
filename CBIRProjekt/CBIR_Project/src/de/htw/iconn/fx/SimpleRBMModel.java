@@ -5,10 +5,10 @@
  */
 package de.htw.iconn.fx;
 
-import de.htw.cbir.DCTRBM;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.PixelRBM;
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.cbir.ARBMFeature;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
@@ -74,8 +74,8 @@ public class SimpleRBMModel {
     
     //class instances
     private ImageManager imageManager;
-    private Sorter sorter;
-    private RBMWrapper wrapper;
+    private ASorter sorter;
+    private ARBMFeature wrapper;
     private IRBM rbm;
     private Evaluation evaluation;
 
@@ -147,9 +147,9 @@ public class SimpleRBMModel {
             
             if(this.rbm != null){
                 if(this.rbmFeature == 0){
-                    this.wrapper = new PixelRBM(this.inputSize, this.outputSize, rbm);
+                    this.wrapper = new RBMFeaturePixel(this.inputSize, this.outputSize, rbm);
                 }else if(this.rbmFeature == 1){
-                    this.wrapper = new DCTRBM(this.inputSize, this.outputSize, rbm);
+                    this.wrapper = new RBMFeatureDCT(this.inputSize, this.outputSize, rbm);
                 }
             }
             
@@ -163,7 +163,7 @@ public class SimpleRBMModel {
     public boolean generateSorter(){
         if(this.wrapper != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
-            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(true), pool, wrapper);
+            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, wrapper);
             this.sorter.getFeatureVectors();
             return true;
         }
@@ -205,7 +205,7 @@ public class SimpleRBMModel {
         }
         if(true){
         //if(this.mapTest == "all"){
-            this.setMapTest("all");
+           //this.setMapTest("all");
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
@@ -389,11 +389,11 @@ public class SimpleRBMModel {
         this.imageManager = imageManager;
     }
 
-    public void setSorter(Sorter sorter) {
+    public void setSorter(ASorter sorter) {
         this.sorter = sorter;
     }
 
-    public void setWrapper(RBMWrapper wrapper) {
+    public void setWrapper(ARBMFeature wrapper) {
         this.wrapper = wrapper;
     }
 
@@ -405,11 +405,11 @@ public class SimpleRBMModel {
         return imageManager;
     }
 
-    public Sorter getSorter() {
+    public ASorter getSorter() {
         return sorter;
     }
 
-    public RBMWrapper getWrapper() {
+    public ARBMFeature getWrapper() {
         return wrapper;
     }
 
