@@ -163,6 +163,7 @@ public class SimpleRBMModel {
         if(this.wrapper != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
             this.sorter = new SorterRBMWrapper(this.imageManager.getImages(true), pool, wrapper);
+            this.sorter.getFeatureVectors();
             return true;
         }
         return false;
@@ -203,6 +204,7 @@ public class SimpleRBMModel {
         }
         if(true){
         //if(this.mapTest == "all"){
+            this.setMapTest("all");
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
