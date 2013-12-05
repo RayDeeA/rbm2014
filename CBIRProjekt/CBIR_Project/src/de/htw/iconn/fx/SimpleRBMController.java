@@ -189,9 +189,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
-        this.btn_runHidden.setDisable(this.model.isRbmTrained());
+        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
         this.btn_runVisible.setDisable(!this.model.isRbmTrained());
-        this.btn_daydream.setDisable(this.model.isRbmTrained());
+        this.btn_daydream.setDisable(!this.model.isRbmTrained());
         this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
