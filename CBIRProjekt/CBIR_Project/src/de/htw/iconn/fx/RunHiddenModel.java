@@ -45,7 +45,6 @@ public class RunHiddenModel {
     }
     
     public Image openFile() {
-        
         int width = 100;
         int height = 100;
 

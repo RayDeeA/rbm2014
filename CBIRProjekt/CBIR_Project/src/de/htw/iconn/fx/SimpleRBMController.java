@@ -127,6 +127,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private ImageViewer imageViewer;
     private Stage runHiddenStage;
     private RunHiddenController runHiddenController;
+    private Stage daydreamStage;
+    private DaydreamController daydreamController;
     private Stage chartViewerStage;
     private ChartViewerController chartViewerController;
     private SimpleRBMModel model;
@@ -187,9 +189,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
-        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
+        this.btn_runHidden.setDisable(this.model.isRbmTrained());
         this.btn_runVisible.setDisable(!this.model.isRbmTrained());
-        this.btn_daydream.setDisable(!this.model.isRbmTrained());
+        this.btn_daydream.setDisable(this.model.isRbmTrained());
         this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
@@ -365,7 +367,7 @@ System.out.println("Test");
             this.runHiddenStage.setScene(scene);
 
             this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
-            runHiddenController.setRBMWrapper(this.model.getWrapper());
+            this.runHiddenController.setRBMWrapper(this.model.getWrapper());
 
             // this.chartViewerController.draw(lineChart);
             this.runHiddenStage.show();
@@ -377,6 +379,23 @@ System.out.println("Test");
 
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("DaydreamView.fxml"));
+
+            Scene scene = new Scene(root, 600, 400);
+            this.daydreamStage = new Stage();
+            this.daydreamStage.setTitle("Daydream");
+            this.daydreamStage.setScene(scene);
+
+            this.daydreamController = (DaydreamController) loadController("DaydreamView.fxml");
+            this.daydreamController.setRBMWrapper(this.model.getWrapper());
+
+            // this.chartViewerController.draw(lineChart);
+            this.daydreamStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
