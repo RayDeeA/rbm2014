@@ -266,15 +266,17 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
     
     private void initializeChartView() {
+        
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
+            this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
+            Parent root = (Parent) this.chartViewerController.getView();
 
             Scene scene = new Scene(root, 600, 400);
             this.chartViewerStage = new Stage();
             this.chartViewerStage.setTitle("Map Viewer");
             this.chartViewerStage.setScene(scene);
 
-            this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
+            
 
             // this.chartViewerController.draw(lineChart);
             this.chartViewerStage.show();
@@ -289,16 +291,18 @@ public class SimpleRBMController implements Initializable, IFXController {
     
      private void initializeVizView() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Visualization_Viewer.fxml"));
+            
+            this.visualization_ViewerController = (Visualization_ViewerController) loadController("Visualization_Viewer.fxml");
+            Parent root = (Parent) this.visualization_ViewerController.getView();
 
             Scene scene = new Scene(root, 600, 400);
             
             this.vz_viewer = new Stage();
             this.vz_viewer.setTitle("Visualization Viewer");
             this.vz_viewer.setScene(scene);
-            this.visualization_ViewerController = (Visualization_ViewerController) loadController("Visualization_Viewer.fxml");
-            this.vz_viewer.show();
             this.visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+            this.vz_viewer.show();
+            
             
             
            
@@ -404,8 +408,9 @@ System.out.println("Test");
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("RunHidden.fxml"));
-
+            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            Parent root = (Parent) this.runHiddenController.getView();
+            
             Scene scene = new Scene(root, 600, 400);
             this.runHiddenStage = new Stage();
             this.runHiddenStage.setTitle("Run Hidden");

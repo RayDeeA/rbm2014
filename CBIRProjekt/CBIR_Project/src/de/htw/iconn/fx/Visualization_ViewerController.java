@@ -31,6 +31,7 @@ public class Visualization_ViewerController implements Initializable {
     private int dimX = 0;
     private int dimY = 0;
     private double[][] weights;
+    private Node view;
     
 
     /**
@@ -67,6 +68,9 @@ public class Visualization_ViewerController implements Initializable {
      }*/
     }
  
+    public Node getView() {
+        return view;
+    }
        
     
     
