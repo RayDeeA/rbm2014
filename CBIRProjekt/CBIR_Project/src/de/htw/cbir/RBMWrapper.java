@@ -64,6 +64,7 @@ public abstract class RBMWrapper {
 	protected abstract double[][] createTrainingsData(Pic[] images);
 
 	public abstract double[] getHidden(Pic image);
+    public abstract double[] getVisible(double[] hiddenData);
 
 	public int getVisibleCount() {
 		return inputSize;

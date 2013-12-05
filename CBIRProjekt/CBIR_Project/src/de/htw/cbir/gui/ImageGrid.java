@@ -76,7 +76,7 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 		//System.out.println("paint: "+getWidth()+" - "+getHeight());
 
 		// zeichnen: Schleife ueber alle Bilder
-		for (Pic image : controller.getImageManager().getImages()) {
+		for (Pic image : controller.getImageManager().getImages(true)) {
 			BufferedImage bi = (drawFeatures) ? image.getFeatureImage() : image.getDisplayImage();
 
 			int xs = image.getxStart();
@@ -105,7 +105,7 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 	 * @param zoomFactor
 	 */
 	public void calculateDrawingPositions(int xMousePos, int yMousePos, int xMouseMove, int yMouseMove, double zoomFactor) {
-		Pic[] images = controller.getImageManager().getImages();
+		Pic[] images = controller.getImageManager().getImages(true);
 		int nThumbs = images.length;
 
 		int hCanvas = getHeight();
@@ -216,14 +216,14 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 	}
 	
 	/**
-	 * Liefert das Bild zurück dass sich an einer bestimmten
+	 * Liefert das Bild zur��ck dass sich an einer bestimmten
 	// Mausposition befindet. Null bedeutet dass unter der Maus kein Bild ist
 	 * @param xMouse
 	 * @param yMouse
 	 * @return
 	 */
 	public Pic getImage(int xMouse, int yMouse) {
-		for (Pic image : controller.getImageManager().getImages()) {
+		for (Pic image : controller.getImageManager().getImages(true)) {
 			int xs = image.getxStart();
 			int ys = image.getyStart();
 			int xLen = image.getxLen();
@@ -354,7 +354,7 @@ public class ImageGrid extends JPanel implements ComponentListener, MouseInputLi
 			drawFeatures = false;
 	
 		if (e.getKeyChar() == 'r' ) {
-			for (Pic image : controller.getImageManager().getImages())
+			for (Pic image : controller.getImageManager().getImages(true))
 				image.setRank(image.getId());
 		}
 

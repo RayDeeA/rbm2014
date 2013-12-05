@@ -46,7 +46,7 @@ public class DCTRBMTest {
 		Settings settings = new Settings();
 		
 		// erstelle die Sortierart und das Histogram ein
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 
 		ForkJoinPool pool = new ForkJoinPool();
 		DCTRBM rbm = null;

@@ -213,14 +213,14 @@ public class GeneticDCTRBMError {
 	public double getRawError(double[] input) {
 		double[][] weights = convert(input);
 		rbm.setWeights(weights);
-		return rbm.getRawError(imageManager.getImages());
+		return rbm.getRawError(imageManager.getImages(true));
 	}
 
 	public double valueOf(double[] input) {
 		RBMWrapper testRBM = rbm.shallowCopy();
 		double[][] weights = convert(input);
 		testRBM.setWeights(weights);
-		double err = testRBM.getError(imageManager.getImages());
+		double err = testRBM.getError(imageManager.getImages(true));
 		// System.out.println("error"+err);
 		return err;
 	}

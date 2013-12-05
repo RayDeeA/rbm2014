@@ -91,4 +91,8 @@ public class DCTRBM extends RBMWrapper {
 		double[][] hidden_data = rbm.run_visible(useData);
 		return hidden_data[0];
 	}
+	
+	public double[] getVisible(double[] hiddenData) {
+		throw new UnsupportedOperationException();
+	}
 }
