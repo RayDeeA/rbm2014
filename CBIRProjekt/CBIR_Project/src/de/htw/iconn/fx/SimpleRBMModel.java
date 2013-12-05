@@ -51,9 +51,9 @@ public class SimpleRBMModel {
     private boolean showVisualization;
     private boolean showPRChart;
     private int updateFrequency;
-    private int rbmImplementation;
-    private int rbmFeature;
-    private int logisticFunction;
+    private int selectedRbmImplementation;
+    private int selectedRbmFeature;
+    private int selectedLogisticFunction;
     private int inputSize;
     private int outputSize;
     private int stoppingCondition;
@@ -76,7 +76,7 @@ public class SimpleRBMModel {
     //class instances
     private ImageManager imageManager;
     private ASorter sorter;
-    private ARBMFeature wrapper;
+    private ARBMFeature rbmFeature;
     private IRBM rbm;
     private Evaluation evaluation;
     
@@ -88,9 +88,9 @@ public class SimpleRBMModel {
             double error, double learningRate, boolean useMomentum, boolean useSeed,
             int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained, boolean rbmTraining)
     {   
-        this.rbmImplementation = rbmImplementation;
-        this.rbmFeature = rbmFeature;
-        this.logisticFunction = logisticFunction;
+        this.selectedRbmImplementation = rbmImplementation;
+        this.selectedRbmFeature = rbmFeature;
+        this.selectedLogisticFunction = logisticFunction;
         this.useRandomOrder = useRandomOrder;
         this.showImageViewer = showImageViewer;
         this.useLogger = useLogger;
@@ -118,45 +118,45 @@ public class SimpleRBMModel {
     
     public boolean generateRBM(){
         this.rbm = null;
-        this.wrapper = null;
+        this.rbmFeature = null;
         
         if(validate()){
             ILogistic logistic = null;
-            if(this.logisticFunction == 0){
+            if(this.selectedLogisticFunction == 0){
                 logistic = new DefaultLogisticMatrixFunction();
-            }else if(this.logisticFunction == 1){
+            }else if(this.selectedLogisticFunction == 1){
                 logistic = new GaussMatrixFunction();
-            }else if(this.logisticFunction == 2){
+            }else if(this.selectedLogisticFunction == 2){
                 logistic = new HardClipMatrixFunction();
-            }else if(this.logisticFunction == 3){
+            }else if(this.selectedLogisticFunction == 3){
                 logistic = new LinearClippedMatrixFunction();
-            }else if(this.logisticFunction == 4){
+            }else if(this.selectedLogisticFunction == 4){
                 logistic = new LinearInterpolatedMatrixFunction();
-            }else if(this.logisticFunction == 5){
+            }else if(this.selectedLogisticFunction == 5){
                 logistic = new LinearUnclippedMatrixFunction();
-            }else if(this.logisticFunction == 6){
+            }else if(this.selectedLogisticFunction == 6){
                 logistic = new RectifierMatrixFunction();
-            }else if(this.logisticFunction == 7){
+            }else if(this.selectedLogisticFunction == 7){
                 logistic = new TanHMatrixFunction();
-            }else if(this.logisticFunction == 8){
+            }else if(this.selectedLogisticFunction == 8){
                 logistic = new SquareRootLogistic();
             }
             
             if(logistic != null){
-                if(this.rbmImplementation == 0){
+                if(this.selectedRbmImplementation == 0){
                     this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
                 }
             }
             
             if(this.rbm != null){
-                if(this.rbmFeature == 0){
-                    this.wrapper = new RBMFeaturePixel(this.inputSize, this.outputSize, rbm);
-                }else if(this.rbmFeature == 1){
-                    this.wrapper = new RBMFeatureDCT(this.inputSize, this.outputSize, rbm);
+                if(this.selectedRbmFeature == 0){
+                    this.rbmFeature = new RBMFeaturePixel(this.inputSize, this.outputSize, rbm);
+                }else if(this.selectedRbmFeature == 1){
+                    this.rbmFeature = new RBMFeatureDCT(this.inputSize, this.outputSize, rbm);
                 }
             }
             
-            if(this.wrapper != null){
+            if(this.rbmFeature != null){
                 return true;
             }
         }
@@ -164,9 +164,9 @@ public class SimpleRBMModel {
     }
     
     public boolean generateSorter(){
-        if(this.wrapper != null && this.rbmTrained){
+        if(this.rbmFeature != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
-            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, wrapper);
+            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, rbmFeature);
             this.sorter.getFeatureVectors();
             return true;
         }
@@ -176,7 +176,7 @@ public class SimpleRBMModel {
     public void trainRBM(){      
         if(this.generateRBM()){
             System.out.println("start training");
-            this.wrapper.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs);
+            this.rbmFeature.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs);
         }
         this.rbmTraining = false;
         this.rbmTrained = true;
@@ -187,13 +187,13 @@ public class SimpleRBMModel {
     
     public boolean validate() {
 
-        if (this.rbmImplementation != -1 && this.rbmFeature != -1
-                && this.logisticFunction != -1) {
+        if (this.selectedRbmImplementation != -1 && this.selectedRbmFeature != -1
+                && this.selectedLogisticFunction != -1) {
 
-            if (rbmFeature == 0) {
+            if (selectedRbmFeature == 0) {
                 this.inputSize = 28 * 28;
             }
-            if (rbmFeature == 1) {
+            if (selectedRbmFeature == 1) {
                 this.inputSize = 15;
             }
 
@@ -244,16 +244,16 @@ public class SimpleRBMModel {
         return updateFrequency;
     }
 
-    public int getRbmImplementation() {
-        return rbmImplementation;
+    public int getSelectedRbmImplementation() {
+        return selectedRbmImplementation;
     }
 
-    public int getRbmFeature() {
-        return rbmFeature;
+    public int getSelectedRbmFeature() {
+        return selectedRbmFeature;
     }
 
-    public int getLogisticFunction() {
-        return logisticFunction;
+    public int getSelectedLogisticFunction() {
+        return selectedLogisticFunction;
     }
 
     public int getInputSize() {
@@ -316,16 +316,16 @@ public class SimpleRBMModel {
         this.updateFrequency = updateFrequency;
     }
 
-    public void setRbmImplementation(int rbmImplementation) {
-        this.rbmImplementation = rbmImplementation;
+    public void setSelectedRbmImplementation(int selectedRbmImplementation) {
+        this.selectedRbmImplementation = selectedRbmImplementation;
     }
 
-    public void setRbmFeature(int rbmFeature) {
-        this.rbmFeature = rbmFeature;
+    public void setSelectedRbmFeature(int selectedRbmFeature) {
+        this.selectedRbmFeature = selectedRbmFeature;
     }
 
-    public void setLogisticFunction(int logisticFunction) {
-        this.logisticFunction = logisticFunction;
+    public void setSelectedLogisticFunction(int selectedLogisticFunction) {
+        this.selectedLogisticFunction = selectedLogisticFunction;
     }
 
     public void setInputSize(int inputSize) {
@@ -403,8 +403,8 @@ public class SimpleRBMModel {
         this.sorter = sorter;
     }
 
-    public void setWrapper(ARBMFeature wrapper) {
-        this.wrapper = wrapper;
+    public void setRbmFeature(ARBMFeature rbmFeature) {
+        this.rbmFeature = rbmFeature;
     }
 
     public void setRbm(IRBM rbm) {
@@ -419,8 +419,8 @@ public class SimpleRBMModel {
         return sorter;
     }
 
-    public ARBMFeature getWrapper() {
-        return wrapper;
+    public ARBMFeature getRbmFeature() {
+        return rbmFeature;
     }
 
     public IRBM getRbm() {

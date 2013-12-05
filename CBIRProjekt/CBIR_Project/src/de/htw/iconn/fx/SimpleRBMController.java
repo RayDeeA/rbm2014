@@ -189,7 +189,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             updateTraining();
         }
 
-        this.txt_inputSize.setDisable(this.model.getRbmFeature() == 0 || this.model.getRbmFeature() == 1);
+        this.txt_inputSize.setDisable(this.model.getSelectedRbmFeature() == 0 || this.model.getSelectedRbmFeature() == 1);
         this.txt_seed.setDisable(!this.model.isUseSeed());
 
         this.btn_startTraining.setDisable(!this.model.validate());
@@ -417,7 +417,7 @@ System.out.println("Test");
             this.runHiddenStage.setScene(scene);
 
             
-            this.runHiddenController.setRBMWrapper(this.model.getWrapper());
+            this.runHiddenController.setRBMFeature(this.model.getRbmFeature());
 
             // this.chartViewerController.draw(lineChart);
             this.runHiddenStage.show();
@@ -437,7 +437,7 @@ System.out.println("Test");
             this.daydreamStage = new Stage();
             this.daydreamStage.setTitle("Daydream");
             this.daydreamStage.setScene(scene);
-            this.daydreamController.setRBMFeature(this.model.getWrapper());
+            this.daydreamController.setRBMFeature(this.model.getRbmFeature());
 
             // this.chartViewerController.draw(lineChart);
             this.daydreamStage.show();
@@ -468,7 +468,7 @@ System.out.println("Test");
 
     @FXML
     private void cmb_rbmImplementationAction(ActionEvent event) {
-        this.model.setRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex());
+        this.model.setSelectedRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex());
         this.updateView();
 
     }
@@ -476,13 +476,13 @@ System.out.println("Test");
     @FXML
     private void cmb_rbmFeatureAction(ActionEvent event) {
 
-        this.model.setRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex());
+        this.model.setSelectedRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex());
         this.updateView();
     }
 
     @FXML
     private void cmb_logisticFunctionAction(ActionEvent event) {
-        this.model.setLogisticFunction(cmb_logisticFunction.getSelectionModel().getSelectedIndex());
+        this.model.setSelectedLogisticFunction(cmb_logisticFunction.getSelectionModel().getSelectedIndex());
         this.updateView();
     }
 

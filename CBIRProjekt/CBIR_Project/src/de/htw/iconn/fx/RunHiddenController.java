@@ -46,8 +46,8 @@ public class RunHiddenController implements Initializable, IFXController {
         this.model = new RunHiddenModel();
     }
     
-    public void setRBMWrapper(ARBMFeature rbmWrapper) {
-    	this.model.setRbmWrapper(rbmWrapper);
+    public void setRBMFeature(ARBMFeature rbmFeature) {
+    	this.model.setRbmFeature(rbmFeature);
     }
 
     @FXML
