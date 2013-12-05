@@ -5,6 +5,7 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ARBMFeature;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -66,22 +67,7 @@ public class DaydreamController implements Initializable, IFXController {
 
     @FXML
 	private void btn_daydreamAction(ActionEvent event) {
-		class Daydream extends TimerTask {
-			public void run() {
-				if (currentDream == maxDreams) {
-					timer.cancel();
-					timer.purge();
-					return;
-				}
-
-				imgv_Result.setImage(model.daydream());
-				currentDream++;
-			}
-		}
-
-		// And From your main() method or any other method
-		timer = new Timer();
-		timer.schedule(new Daydream(), 0, 1000);
+		this.imgv_Result.setImage(model.daydream());
 	}
 
 	@Override

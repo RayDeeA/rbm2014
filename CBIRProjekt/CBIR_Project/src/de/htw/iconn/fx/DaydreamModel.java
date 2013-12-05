@@ -26,7 +26,7 @@ public class DaydreamModel {
 	}
 	
     public void setRbmFeature(ARBMFeature rbmFeature) {
-        this.rbmFeature = this.rbmFeature;
+        this.rbmFeature = rbmFeature;
     }
     
     public Image generateImage() {
@@ -45,8 +45,7 @@ public class DaydreamModel {
             }
         }
         
-        BufferedImage bufferedImage = null;
-        SwingFXUtils.fromFXImage(image, bufferedImage);
+         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         
         this.pic = new Pic();
         this.pic.setDisplayImage(bufferedImage);
