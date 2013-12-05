@@ -30,7 +30,7 @@ public class Evaluation {
 	 */
 	public void testAll() {
 		final TIntDoubleHashMap lookup = createDistanceLookupTable();
-		final PrecisionRecallTable table = new PrecisionRecallTable(false, model.getSorter().getName(), "all");
+		final PrecisionRecallTable table = new PrecisionRecallTable(true, model.getSorter().getName(), "all");
 		
 		// starte die komplexe Analyse 
 		table.start(images.length);

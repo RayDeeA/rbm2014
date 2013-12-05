@@ -388,7 +388,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_startTestAction(ActionEvent event) {
         this.model.test();
-        if(this.model.getPrTable() != null){
+        if(this.model.getPrTable() != null && this.chartViewerController != null){
+            System.out.println("chart viewer controller != null");
             this.chartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());
         }
     }
