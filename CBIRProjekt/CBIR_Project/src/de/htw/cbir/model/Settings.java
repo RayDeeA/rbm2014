@@ -27,6 +27,7 @@ import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
 import de.htw.iconn.rbm.functions.SquareRootLogistic;
 import de.htw.iconn.rbm.functions.TanHMatrixFunction;
 
+@Deprecated
 public class Settings implements ChangeListener {
 
 	public static enum SettingOption {

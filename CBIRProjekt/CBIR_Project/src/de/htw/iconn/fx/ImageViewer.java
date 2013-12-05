@@ -40,8 +40,8 @@ public class ImageViewer {
     private boolean drawFeatures = false;
 
     // diese Variablen steuern die Verschiebung der Ansicht (ueber Mouse-Drag)
-    private double xm = 0;
-    private double ym = 0;
+    private int xm = 0;
+    private int ym = 0;
     private int xMouseMove;
     private int yMouseMove;
     private int xMouseStartPos;
@@ -88,12 +88,19 @@ public class ImageViewer {
             }
         });
 
-        this.scene.setOnMousePressed(new EventHandler() {
+        this.scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(Event t) {
-                MouseEvent mouse = ((MouseEvent) t);
-                xMousePos = xMouseStartPos = (int) mouse.getX();
-                yMousePos = yMouseStartPos = (int) mouse.getY();
+            public void handle(MouseEvent mouse) {
+                xMousePos = xMouseStartPos = (int) Math.ceil(mouse.getX());
+                yMousePos = yMouseStartPos = (int) Math.ceil(mouse.getY());
+            }
+        });
+
+        this.scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouse) {
+                xMousePos = (int) Math.ceil(mouse.getX());
+                yMousePos = (int) Math.ceil(mouse.getY());
             }
         });
 
@@ -105,26 +112,11 @@ public class ImageViewer {
             }
         });
 
-        this.scene.setOnMouseDragged(new EventHandler() {
+        this.scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(Event t) {
-                MouseEvent mouse = ((MouseEvent) t);
-                xMouseMove = (int) mouse.getX();
-                yMouseMove = (int) mouse.getY();
-                xMouseMove = xMousePos - xMouseStartPos;
-                yMouseMove = yMousePos - yMouseStartPos;
-                xMouseStartPos = xMousePos;
-                yMouseStartPos = yMousePos;
-                draw();
-            }
-        });
-
-        this.scene.setOnMouseDragged(new EventHandler() {
-            @Override
-            public void handle(Event t) {
-                MouseEvent mouse = ((MouseEvent) t);
-                xMouseMove = (int) mouse.getX();
-                yMouseMove = (int) mouse.getY();
+            public void handle(MouseEvent mouse) {
+                xMousePos = (int) Math.ceil(mouse.getX());
+                yMousePos = (int) Math.ceil(mouse.getY());
                 xMouseMove = xMousePos - xMouseStartPos;
                 yMouseMove = yMousePos - yMouseStartPos;
                 xMouseStartPos = xMousePos;
@@ -165,22 +157,11 @@ public class ImageViewer {
             }
         });
 
-        this.scene.setOnMouseMoved(new EventHandler() {
+        this.scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(Event t) {
-                MouseEvent mouse = ((MouseEvent) t);
-                xMousePos = (int) mouse.getX();
-                yMousePos = (int) mouse.getY();
-                draw();
-            }
-        });
-
-        this.scene.setOnMouseClicked(new EventHandler() {
-            @Override
-            public void handle(Event t) {
-                MouseEvent mouse = ((MouseEvent) t);
-                xMousePos = (int) mouse.getX();
-                yMousePos = (int) mouse.getY();
+            public void handle(MouseEvent mouse) {
+                xMousePos = (int) Math.ceil(mouse.getX());
+                yMousePos = (int) Math.ceil(mouse.getY());
                 Pic image = getImage(xMousePos, yMousePos);
                 if (image != null) {
 
@@ -190,7 +171,7 @@ public class ImageViewer {
                                 System.out.println("Testen Bild " + image.getId());
 
                                 System.out.println("NotImplemented Yet: ImageViewer -> sortByImage()");
-// controller.sortByImage(image);
+                                // controller.sortByImage(image);
                                 draw();
                             }
                         }
@@ -203,17 +184,17 @@ public class ImageViewer {
             }
         });
 
-        this.scene.setOnScroll(new EventHandler() {
+        this.scene.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
-            public void handle(Event t) {
-                double delta = ((ScrollEvent) t).getDeltaY();
+            public void handle(ScrollEvent scroll) {
+                double delta = scroll.getDeltaY();
                 if (delta < 0) {
-                    zoomFactor = zoomFactor * 1.1;
+                    zoomFactor *= 1.1;
                     if (zoomFactor > 50) {
                         zoomFactor = 50;
                     }
                 } else {
-                    zoomFactor = zoomFactor / 1.1;
+                    zoomFactor /= 1.1;
                     if (zoomFactor < 1) {
                         zoomFactor = 1;
                     }
@@ -250,6 +231,7 @@ public class ImageViewer {
 
         if (images != null) {
             root.getChildren().clear();
+//             System.out.println(xMousePos + " " + yMousePos + "    " + xMouseMove + " " + yMouseMove);
             calculateDrawingPositions(xMousePos, yMousePos, xMouseMove, yMouseMove, zoomFactor);
             for (Pic image : images) {
                 BufferedImage bi = (drawFeatures) ? image.getFeatureImage() : image.getDisplayImage();
@@ -268,18 +250,19 @@ public class ImageViewer {
         }
         stage.show();
     }
+
     public void close() {
         stage.close();
     }
 
     private void calculateDrawingPositions(int xMousePos, int yMousePos, int xMouseMove, int yMouseMove, double zoomFactor) {
-
         int nThumbs = images.length;
 
         int hCanvas = (int) scene.getHeight();
         int wCanvas = (int) scene.getWidth();
-        if(wCanvas <= 1)
+        if (wCanvas <= 1) {
             wCanvas = this.width;
+        }
         int h2 = hCanvas / 2;
         int w2 = wCanvas / 2;
 
@@ -292,14 +275,13 @@ public class ImageViewer {
         int mapPlacesX = wCanvas / thumbSize;
         int mapPlacesY = hCanvas / thumbSize;
 
-        double thumbSizeX = (double) wCanvas / mapPlacesX;
-        double thumbSizeY =  (double) hCanvas / mapPlacesY;
-
         // avoid empty lines at the bottom
         while (mapPlacesX * (mapPlacesY - 1) >= nThumbs) {
             mapPlacesY--;
         }
-        thumbSizeY = (double) hCanvas / mapPlacesY;
+        
+        double thumbSizeX = (double) wCanvas / mapPlacesX;
+        double thumbSizeY = (double) hCanvas / mapPlacesY;
 
         double scaledThumbSizeX = thumbSizeX * zoomFactor;
         double scaledThumbSizeY = thumbSizeY * zoomFactor;
@@ -322,10 +304,12 @@ public class ImageViewer {
         int xMaxPos = (int) (xMinPos + mapPlacesX * scaledThumbSizeX);
         int yMinPos = (int) (h2 - ym * scaledThumbSizeY);
         int yMaxPos = (int) (yMinPos + mapPlacesY * scaledThumbSizeY);
+        System.out.println(xMinPos + " " + yMinPos);
+
 
         // disallow to move out of the map by dragging
         if (xMinPos > 0 || xMaxPos < wCanvas - 1) {
-            xm = xmLast;
+            xm = (int) xmLast;
             xMinPos = (int) (w2 - xm * scaledThumbSizeX);
             xMaxPos = (int) (xMinPos + mapPlacesX * scaledThumbSizeX);
         }
@@ -342,7 +326,7 @@ public class ImageViewer {
 
         // same for y
         if (yMinPos > 0 || yMaxPos < hCanvas - 1) {
-            ym = ymLast;
+            ym = (int) ymLast;
             yMinPos = (int) (h2 - ym * scaledThumbSizeY);
             yMaxPos = (int) (yMinPos + mapPlacesY * scaledThumbSizeY);
         }
