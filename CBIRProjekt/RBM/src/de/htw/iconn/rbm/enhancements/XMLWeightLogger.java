@@ -27,26 +27,19 @@ import org.xml.sax.SAXException;
 
 import de.htw.cbir.CBIREvaluationModel;
 
-public final class XMLWeightLogger implements IRBMTrainingEnhancement {
+public final class XMLWeightLogger {
 
-	private final int updateInterval;
 	private String dateString;
 	private String baseFolder;
 	
-	public XMLWeightLogger(int updateInterval) {
-		this.updateInterval = updateInterval;
+	public XMLWeightLogger() {
 		this.dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());		
 		
 		this.baseFolder = "RBMLogs";
 	}
 
-	@Override
-	public int getUpdateInterval() {
-		return updateInterval;
-	}
-
 	
-	private void stepXmlLogTraining(CBIREvaluationModel evaluationModel) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+	public void stepXmlLogTraining(CBIREvaluationModel evaluationModel) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
 		LinkedList<double[][][]> collectedWeights = evaluationModel.getCollectedWeights();
 		evaluationModel.resetCollectedWeights();
@@ -127,7 +120,7 @@ public final class XMLWeightLogger implements IRBMTrainingEnhancement {
 		transformer.transform(source, result);
 	}
 	
-	private void stepXmlLogEvolution(CBIREvaluationModel evaluationModel) throws IOException, ParserConfigurationException, TransformerException {
+	public void stepXmlLogEvolution(CBIREvaluationModel evaluationModel) throws IOException, ParserConfigurationException, TransformerException {
 		
 		double[][] weights2d = evaluationModel.getWeights2d();
 		StringBuffer rowSB;
@@ -195,27 +188,6 @@ public final class XMLWeightLogger implements IRBMTrainingEnhancement {
  
 		transformer.transform(source, result);
 		
-	}
-	@Override
-	public void action(CBIREvaluationModel evaluationModel) {
-		
-		if(CBIREvaluationModel.evaluationType.EVOLUTION == evaluationModel.getEvaluationType()) {
-			try {
-				stepXmlLogEvolution(evaluationModel);
-			} catch (IOException | ParserConfigurationException
-					| TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if(CBIREvaluationModel.evaluationType.TRAINING == evaluationModel.getEvaluationType()) {
-			try {
-				stepXmlLogTraining(evaluationModel);
-			} catch (ParserConfigurationException | IOException | SAXException
-					| TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+        }
 
 }
