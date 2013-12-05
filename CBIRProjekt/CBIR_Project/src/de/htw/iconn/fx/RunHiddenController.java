@@ -13,6 +13,7 @@ import de.htw.cbir.ARBMFeature;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +34,7 @@ public class RunHiddenController implements Initializable {
     private ImageView imgv_Input;
     
     private RunHiddenModel model;
+    private Node view;
 
     /**
      * Initializes the controller class.
@@ -62,5 +64,7 @@ public class RunHiddenController implements Initializable {
         this.model.runHidden();
     }
     
-    
+      public Node getView() {
+        return view;
+    }
 }

@@ -132,7 +132,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Stage chartViewerStage;
     private ChartViewerController chartViewerController;
     private SimpleRBMModel model;
-
+    private Stage vz_viewer;
+    private Visualization_ViewerController visualization_ViewerController;
     /**
      * Initializes the controller class.
      *
@@ -182,6 +183,10 @@ public class SimpleRBMController implements Initializable, IFXController {
             lbl_imageSet.setText("no image set selected");
         } else {
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
+        }
+        
+        while(this.model.isRbmTraining()){
+            updateTraining();
         }
 
         this.txt_inputSize.setDisable(this.model.getRbmFeature() == 0 || this.model.getRbmFeature() == 1);
@@ -259,20 +264,48 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.imageViewer = new ImageViewer(this.model.getImageManager());
             this.imageViewer.draw();
     }
-
+    
     private void initializeChartView() {
+        
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ChartViewer.fxml"));
+            this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
+            Parent root = (Parent) this.chartViewerController.getView();
 
             Scene scene = new Scene(root, 600, 400);
             this.chartViewerStage = new Stage();
             this.chartViewerStage.setTitle("Map Viewer");
             this.chartViewerStage.setScene(scene);
 
-            this.chartViewerController = (ChartViewerController) loadController("ChartViewer.fxml");
+            
 
             // this.chartViewerController.draw(lineChart);
             this.chartViewerStage.show();
+            
+           
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+     private void initializeVizView() {
+        try {
+            
+            this.visualization_ViewerController = (Visualization_ViewerController) loadController("Visualization_Viewer.fxml");
+            Parent root = (Parent) this.visualization_ViewerController.getView();
+
+            Scene scene = new Scene(root, 600, 400);
+            
+            this.vz_viewer = new Stage();
+            this.vz_viewer.setTitle("Visualization Viewer");
+            this.vz_viewer.setScene(scene);
+            this.visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+            this.vz_viewer.show();
+            
+            
+            
+           
 
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,8 +369,24 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_visualizationAction(ActionEvent event) {
+        
         this.model.setShowVisualization(cbx_visualization.isSelected());
+           
 
+        if (this.model.isShowVisualization()) {
+            /*if(this.model.getImageManager() != null){
+                initializeImageView();
+            
+            }*/
+            
+            initializeVizView();
+            
+            updateTraining();
+        } else {
+            if (this.vz_viewer != null) {
+                this.vz_viewer.close();
+            }
+        }
         this.updateView();
     }
 
@@ -359,8 +408,9 @@ System.out.println("Test");
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("RunHidden.fxml"));
-
+            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            Parent root = (Parent) this.runHiddenController.getView();
+            
             Scene scene = new Scene(root, 600, 400);
             this.runHiddenStage = new Stage();
             this.runHiddenStage.setTitle("Run Hidden");
@@ -413,6 +463,7 @@ System.out.println("Test");
         if(this.model.getPrTable() != null && this.chartViewerController != null){
             System.out.println("chart viewer controller != null");
             this.chartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());
+            
         }
     }
 
@@ -558,6 +609,13 @@ System.out.println("Test");
                 this.chartViewerStage.close();
             }
         }
+    }
+
+    private void updateTraining() {
+        
+       //System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
+       visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+       
     }
 
 }
