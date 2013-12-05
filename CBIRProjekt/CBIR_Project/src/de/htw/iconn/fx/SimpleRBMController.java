@@ -178,25 +178,14 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
-
         } else {
-
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
-            cbx_map.setDisable(false);
-            btn_startTest.setDisable(false);
         }
+        
+        this.cbx_map.setDisable(!this.model.isShowPRChart());
 
-        if (this.model.getRbmFeature() == 0) {
-            txt_inputSize.setDisable(true);
-        } else {
-            txt_inputSize.setDisable(false);
-        }
-
-        if (this.model.isUseSeed()) {
-            txt_seed.setDisable(true);
-        } else {
-            txt_seed.setDisable(false);
-        }
+        this.txt_inputSize.setDisable(this.model.getRbmFeature() == 0 || this.model.getRbmFeature() == 1);
+        this.txt_seed.setDisable(!this.model.isUseSeed());
 
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
@@ -544,7 +533,8 @@ System.out.println("Test");
 
     @FXML
     private void cbx_mapAction(ActionEvent event) {
-        if (cbx_map.isSelected() && this.model.getImageManager() != null) {
+        this.model.setShowPRChart(cbx_map.isSelected());
+        if (this.model.isShowPRChart() && this.model.isRbmTrained()) {
             initializeChartView();
         } else {
             if (this.chartViewerStage != null) {
