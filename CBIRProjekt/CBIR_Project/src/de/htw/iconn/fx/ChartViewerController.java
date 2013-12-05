@@ -24,9 +24,10 @@ import javafx.scene.layout.GridPane;
  */
 public class ChartViewerController implements Initializable, IFXController {
 
+    private final int precisionIndex = 2, recallIndex = 3;
     @FXML
     private AnchorPane view;
-    
+
     @FXML
     private LineChart<Number, Number> cha_PRTable;
 
@@ -40,16 +41,24 @@ public class ChartViewerController implements Initializable, IFXController {
 
     public void addGraph(float[][] pUeberR, String title) {
         XYChart.Series tmpGraph = new XYChart.Series();
-            
+
+        
+        // title hack
+        if(title == null)
+            title = "All";
+        
         // set title of graph
         tmpGraph.setName(title);
-        
+
         // transfer the float array data to the tmpGraph
-        for (float[] fs : pUeberR) {
-            System.out.println(fs);
-            tmpGraph.getData().add(new XYChart.Data(fs[0], fs[1]));
+	for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
+            
+            double x = pUeberR[recallIndex][i] * view.getWidth() + 0.5;
+            double y = (pUeberR[precisionIndex][i] * view.getHeight() + 0.5);
+            
+            tmpGraph.getData().add(new XYChart.Data(x, y));
         }
-        
+
         // finally add and draw the tmpGraph to the PRChart
         cha_PRTable.getData().add(tmpGraph);
     }
