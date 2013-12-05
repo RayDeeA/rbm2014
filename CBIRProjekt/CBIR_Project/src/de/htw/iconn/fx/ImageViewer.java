@@ -293,7 +293,7 @@ public class ImageViewer {
         int mapPlacesY = hCanvas / thumbSize;
 
         double thumbSizeX = (double) wCanvas / mapPlacesX;
-        double thumbSizeY = hCanvas / (double) mapPlacesY;
+        double thumbSizeY =  (double) hCanvas / mapPlacesY;
 
         // avoid empty lines at the bottom
         while (mapPlacesX * (mapPlacesY - 1) >= nThumbs) {
