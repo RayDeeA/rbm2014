@@ -49,6 +49,7 @@ public class SimpleRBMModel {
     private boolean showImageViewer;
     private boolean useLogger;
     private boolean showVisualization;
+    private boolean showPRChart;
     private int updateFrequency;
     private int rbmImplementation;
     private int rbmFeature;
@@ -162,7 +163,7 @@ public class SimpleRBMModel {
     public boolean generateSorter(){
         if(this.wrapper != null && this.rbmTrained){
             ForkJoinPool pool = new ForkJoinPool();
-            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(), pool, wrapper);
+            this.sorter = new SorterRBMWrapper(this.imageManager.getImages(true), pool, wrapper);
             this.sorter.getFeatureVectors();
             return true;
         }
@@ -172,7 +173,7 @@ public class SimpleRBMModel {
     public void trainRBM(){      
         if(this.generateRBM()){
             System.out.println("start training");
-            this.wrapper.train(this.imageManager.getImages(), this.epochs);
+            this.wrapper.train(this.imageManager.getImages(true), this.epochs);
         }
         this.rbmTrained = true;
         this.generateSorter();
@@ -438,5 +439,13 @@ public class SimpleRBMModel {
 
     public void setPrTable(float[][] prTable) {
         this.prTable = prTable;
+    }
+
+    public boolean isShowPRChart() {
+        return showPRChart;
+    }
+
+    public void setShowPRChart(boolean showPRChart) {
+        this.showPRChart = showPRChart;
     }
 }

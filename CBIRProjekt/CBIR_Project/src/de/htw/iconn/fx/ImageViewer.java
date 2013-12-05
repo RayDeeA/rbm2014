@@ -61,7 +61,7 @@ public class ImageViewer {
 
     public ImageViewer(ImageManager imageManager) {
         this.imageManager = imageManager;
-        this.images = imageManager.getImages();
+        this.images = imageManager.getImages(true);
         this.root = new Group();
         this.stage = new Stage();
         this.scene = new Scene(root, width, height);
@@ -206,7 +206,7 @@ public class ImageViewer {
     }
 
     /**
-     * Liefert das Bild zurück dass sich an einer bestimmten // Mausposition
+     * Liefert das Bild zur��ck dass sich an einer bestimmten // Mausposition
      * befindet. Null bedeutet dass unter der Maus kein Bild ist
      *
      * @param xMouse

@@ -82,7 +82,7 @@ public class CBIRController {
 		int outputSize = settings.getOutputSize();
 		double learnRate = settings.getLearnRate();
 
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 
 		ILogistic logisticFunction = null;
 		
@@ -158,7 +158,7 @@ public class CBIRController {
 		ILogistic logisticFunction = settings.getLogisticFunction();
 		
 		String cmd = e.getActionCommand();
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 		
 		if (cmd.equalsIgnoreCase("ColorMean"))
 			sorter = new Sorter_ColorMean(allImages, settings, pool);
@@ -188,7 +188,7 @@ public class CBIRController {
 				rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
 			else
 				rbmWrapper = new PixelRBM(inputSize, outputSize, rbm);
-			rbmWrapper.train(imageManager.getImages(), settings.getEpochs());			
+			rbmWrapper.train(imageManager.getImages(true), settings.getEpochs());			
 			sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		}
 		sorter.getFeatureVectors();
@@ -208,10 +208,10 @@ public class CBIRController {
 		if(logger != null){
 			if(evaluationModel.getEvaluationType() != CBIREvaluationModel.evaluationType.EVOLUTION){
 				if(dctRBM != null){
-					evaluationModel.setError(dctRBM.getError(imageManager.getImages()));
+					evaluationModel.setError(dctRBM.getError(imageManager.getImages(true)));
 				}
 				if(sorter != null){
-					evaluation = new CBIREvaluation(sorter, imageManager.getImages(), pool, evaluationModel);
+					evaluation = new CBIREvaluation(sorter, imageManager.getImages(true), pool, evaluationModel);
 					evaluationModel.setMAP(evaluation.testAll(true, "Alle"));
 				}
 				evaluationModel.setEpochs(settings.getEpochs());
@@ -253,7 +253,7 @@ public class CBIRController {
 			return;
 		}
 
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 		long milliSec = System.currentTimeMillis();
 
@@ -282,7 +282,7 @@ public class CBIRController {
 
 		// evaluiere (durch MAP Wert) den Sortieralgorithmus
 		String cmd = e.getActionCommand();
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 		evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
 
 		// welche Teste sollen durchgeführt werden
@@ -306,7 +306,7 @@ public class CBIRController {
 		double learnRate = settings.getLearnRate();
 		
 		String cmd = e.getActionCommand();
-		Pic[] allImages = imageManager.getImages();
+		Pic[] allImages = imageManager.getImages(true);
 
 		if (cmd.equalsIgnoreCase("Finde besten Lum-Wert")) {
 			Settings sett = new Settings();

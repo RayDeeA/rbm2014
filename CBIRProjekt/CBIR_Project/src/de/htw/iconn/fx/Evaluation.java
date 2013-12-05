@@ -18,24 +18,24 @@ public class Evaluation {
 	public Evaluation(SimpleRBMModel model, ForkJoinPool pool) {
                 this.model = model;
 		this.pool = pool;
-                this.images = model.getImageManager().getImages();
+                this.images = model.getImageManager().getImages(true);
                 this.sorter = model.getSorter();
 	}
 
 	/**
-	 * Berechnet die Mean Average Precision über alle Bilder
+	 * Berechnet die Mean Average Precision ��ber alle Bilder
 	 * 
 	 * @param sorter
 	 * @return
 	 */
 	public void testAll() {
 		final TIntDoubleHashMap lookup = createDistanceLookupTable();
-		final PrecisionRecallTable table = new PrecisionRecallTable(false, model.getSorter().getName(), "all");
+		final PrecisionRecallTable table = new PrecisionRecallTable(true, model.getSorter().getName(), "all");
 		
 		// starte die komplexe Analyse 
 		table.start(images.length);
 		
-		// berechne die Average Precision für jedes Bild aus
+		// berechne die Average Precision f��r jedes Bild aus
 //		long start = System.currentTimeMillis();
 		
 		// Java 8: ohne Lambda Expression
@@ -59,7 +59,7 @@ public class Evaluation {
 	}
 	
 	/**
-	 * Ermittle die Mean Average Precision für alle angegebenen Bilder 
+	 * Ermittle die Mean Average Precision f��r alle angegebenen Bilder 
 	 * 
 	 * @param queryImages
 	 * @return
@@ -71,7 +71,7 @@ public class Evaluation {
 		// starte die komplexe Analyse 
 		table.start(queryImages.length);
 				
-		// berechne die Average Precision für jedes Bild aus
+		// berechne die Average Precision f��r jedes Bild aus
 		double MAP = 0;
 		for (int i = 0; i < queryImages.length; i++)
 			MAP += test(queryImages[i], i, table);
@@ -95,7 +95,7 @@ public class Evaluation {
 	}
 
 	/**
-	 * Liefert eine Liste aller Bilder sorter nach deren Ähnlichkeit zum Querybild
+	 * Liefert eine Liste aller Bilder sorter nach deren ��hnlichkeit zum Querybild
 	 * 
 	 * @param queryImage
 	 * @return
@@ -126,7 +126,7 @@ public class Evaluation {
 	 */
 	private double test(Pic queryImage, int num, PrecisionRecallTable table) {
 		
-		// sortiere alle Bilder nach der ��hnlichkeit zum Querybild 
+		// sortiere alle Bilder nach der ������hnlichkeit zum Querybild 
 		ImagePair[] result = sortBySimilarity(queryImage);
 		
 		// berechne die eigentliche Average Precision
@@ -136,7 +136,7 @@ public class Evaluation {
 	/**
 	 * Vergleiche das Query Bild mit allen Bildern im 
 	 * ImageManager und ermittle die jeweilige Distanz
-	 * der Bilder über die Lookup Tabelle.
+	 * der Bilder ��ber die Lookup Tabelle.
 	 * 
 	 * Berechne die Average Precision mithilfe der Distanz.
 	 * 
@@ -163,7 +163,7 @@ public class Evaluation {
 	}    
 	
 	/**
-	 * besorgt aus der Lookup Tabelle die Distanz für die beiden Ids
+	 * besorgt aus der Lookup Tabelle die Distanz f��r die beiden Ids
 	 * 
 	 * @param id1
 	 * @param id2
@@ -177,13 +177,13 @@ public class Evaluation {
 	}
 	
 	/**
-	 * Erzeuge eine Lookup Tabelle für alle Distanzen.
-	 * So das diese nur einmal berechnet werden müssen.
+	 * Erzeuge eine Lookup Tabelle f��r alle Distanzen.
+	 * So das diese nur einmal berechnet werden m��ssen.
 	 * 
 	 * @return
 	 */
 	private TIntDoubleHashMap createDistanceLookupTable() {
-		Pic[] allImages = this.model.getImageManager().getImages();
+		Pic[] allImages = this.model.getImageManager().getImages(true);
 		int initialCapacity = (allImages.length-1)*allImages.length/2;
 		TIntDoubleHashMap map = new TIntDoubleHashMap(initialCapacity);
 		

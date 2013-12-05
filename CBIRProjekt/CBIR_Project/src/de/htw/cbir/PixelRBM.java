@@ -85,4 +85,17 @@ public class PixelRBM extends RBMWrapper {
 		double[][] hidden_data = rbm.run_visible(useData);
 		return hidden_data[0];
 	}
+	
+    public double[] getVisible(double[] hiddenData) {
+
+        double[][] useData = new double[1][hiddenData.length];
+        for (int i = 0; i < hiddenData.length; i++) {
+            useData[0][i] = hiddenData[i];
+        }
+
+        // ermittle die visible Neurons
+        double[][] visible_data = rbm.run_hidden(useData);
+
+        return visible_data[0];
+    }
 }

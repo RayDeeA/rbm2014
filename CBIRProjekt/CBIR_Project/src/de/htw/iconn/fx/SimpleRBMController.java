@@ -112,11 +112,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
 
-    private ImageViewer imageViewer;
-    private ChartViewerController chartViewerController;
-    private SimpleRBMModel model;
-
-    private Stage chartViewerStage;
+    
     @FXML
     private CheckBox cbx_map;
     @FXML
@@ -127,6 +123,15 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Label lbl_evolution_started;
     @FXML
     private TitledPane ttl_panel_features;
+    
+    private ImageViewer imageViewer;
+    private Stage runHiddenStage;
+    private RunHiddenController runHiddenController;
+    private Stage daydreamStage;
+    private DaydreamController daydreamController;
+    private Stage chartViewerStage;
+    private ChartViewerController chartViewerController;
+    private SimpleRBMModel model;
 
     /**
      * Initializes the controller class.
@@ -175,32 +180,19 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         if (this.model.getImageManager() == null) {
             lbl_imageSet.setText("no image set selected");
-
         } else {
-
             lbl_imageSet.setText(this.model.getImageManager().getImageSetName());
-            cbx_map.setDisable(false);
-            btn_startTest.setDisable(false);
         }
 
-        if (this.model.getRbmFeature() == 0) {
-            txt_inputSize.setDisable(true);
-        } else {
-            txt_inputSize.setDisable(false);
-        }
-
-        if (this.model.isUseSeed()) {
-            txt_seed.setDisable(true);
-        } else {
-            txt_seed.setDisable(false);
-        }
+        this.txt_inputSize.setDisable(this.model.getRbmFeature() == 0 || this.model.getRbmFeature() == 1);
+        this.txt_seed.setDisable(!this.model.isUseSeed());
 
         this.btn_startTraining.setDisable(!this.model.validate());
         this.btn_startEvolution.setDisable(!this.model.validate());
-        this.btn_runHidden.setDisable(this.model.isRbmTrained());
-        this.btn_runVisible.setDisable(this.model.isRbmTrained());
-        this.btn_daydream.setDisable(this.model.isRbmTrained());
-        this.btn_saveRbmFile.setDisable(this.model.isRbmTrained());
+        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
+        this.btn_runVisible.setDisable(!this.model.isRbmTrained());
+        this.btn_daydream.setDisable(!this.model.isRbmTrained());
+        this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_visualization.setSelected(this.model.isShowVisualization());
@@ -222,10 +214,6 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.cbx_bias.setSelected(this.model.isUseBias());
         this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
 
-        this.btn_runVisible.setDisable(!this.model.isRbmTrained());
-        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
-        this.btn_daydream.setDisable(!this.model.isRbmTrained());
-        this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
         this.btn_startTest.setDisable(!this.model.isRbmTrained());
         this.cmb_mapTests.setDisable(!this.model.isRbmTrained());
 
@@ -364,16 +352,50 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_runVisibleAction(ActionEvent event) {
-
+System.out.println("Test");
         //EVENT? isValid?
     }
 
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("RunHidden.fxml"));
+
+            Scene scene = new Scene(root, 600, 400);
+            this.runHiddenStage = new Stage();
+            this.runHiddenStage.setTitle("Run Hidden");
+            this.runHiddenStage.setScene(scene);
+
+            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            this.runHiddenController.setRBMWrapper(this.model.getWrapper());
+
+            // this.chartViewerController.draw(lineChart);
+            this.runHiddenStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("DaydreamView.fxml"));
+
+            Scene scene = new Scene(root, 600, 400);
+            this.daydreamStage = new Stage();
+            this.daydreamStage.setTitle("Daydream");
+            this.daydreamStage.setScene(scene);
+
+            this.daydreamController = (DaydreamController) loadController("DaydreamView.fxml");
+            this.daydreamController.setRBMWrapper(this.model.getWrapper());
+
+            // this.chartViewerController.draw(lineChart);
+            this.daydreamStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -388,7 +410,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_startTestAction(ActionEvent event) {
         this.model.test();
-        if(this.model.getPrTable() != null){
+        if(this.model.getPrTable() != null && this.chartViewerController != null){
+            System.out.println("chart viewer controller != null");
             this.chartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());
         }
     }
@@ -527,7 +550,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void cbx_mapAction(ActionEvent event) {
-        if (cbx_map.isSelected() && this.model.getImageManager() != null) {
+        this.model.setShowPRChart(cbx_map.isSelected());
+        if (this.model.isShowPRChart() && this.model.isRbmTrained()) {
             initializeChartView();
         } else {
             if (this.chartViewerStage != null) {
