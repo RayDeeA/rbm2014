@@ -16,16 +16,18 @@ import de.htw.cbir.RBMWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
  * @author dvarul
  */
-public class DaydreamController implements Initializable {
+public class DaydreamController implements Initializable, IFXController {
 
     @FXML
     private Button btn_generateImage;
@@ -35,7 +37,8 @@ public class DaydreamController implements Initializable {
     private ImageView imgv_Result;
     @FXML
     private ImageView imgv_Input;
-
+    @FXML
+    private AnchorPane view;
 	
 	DaydreamModel model;
 	
@@ -81,6 +84,9 @@ public class DaydreamController implements Initializable {
 		timer.schedule(new Daydream(), 0, 1000);
 	}
 
-
+	@Override
+	public Node getView() {
+		return this.view;
+	}
     
 }

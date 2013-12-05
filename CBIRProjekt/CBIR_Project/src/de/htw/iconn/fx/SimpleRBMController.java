@@ -359,14 +359,15 @@ System.out.println("Test");
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("RunHidden.fxml"));
-
+            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            Parent root = (Parent)this.runHiddenController.getView();
+            
             Scene scene = new Scene(root, 600, 400);
             this.runHiddenStage = new Stage();
             this.runHiddenStage.setTitle("Run Hidden");
             this.runHiddenStage.setScene(scene);
 
-            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            
             this.runHiddenController.setRBMWrapper(this.model.getWrapper());
 
             // this.chartViewerController.draw(lineChart);
@@ -380,14 +381,15 @@ System.out.println("Test");
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("DaydreamView.fxml"));
+        	this.daydreamController = (DaydreamController) loadController("DaydreamView.fxml");
+            Parent root = (Parent)this.daydreamController.getView();
 
             Scene scene = new Scene(root, 600, 400);
             this.daydreamStage = new Stage();
             this.daydreamStage.setTitle("Daydream");
             this.daydreamStage.setScene(scene);
 
-            this.daydreamController = (DaydreamController) loadController("DaydreamView.fxml");
+            
             this.daydreamController.setRBMWrapper(this.model.getWrapper());
 
             // this.chartViewerController.draw(lineChart);
