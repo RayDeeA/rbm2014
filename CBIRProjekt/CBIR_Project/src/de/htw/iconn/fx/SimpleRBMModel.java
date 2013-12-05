@@ -173,7 +173,7 @@ public class SimpleRBMModel {
     public void trainRBM(){      
         if(this.generateRBM()){
             System.out.println("start training");
-            this.wrapper.train(this.imageManager.getImages(true), this.epochs);
+            this.wrapper.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs);
         }
         this.rbmTrained = true;
         this.generateSorter();
