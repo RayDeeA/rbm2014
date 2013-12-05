@@ -5,7 +5,6 @@
  */
 package de.htw.iconn.fx;
 
-import java.awt.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -13,12 +12,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
@@ -32,8 +29,9 @@ public class ChartViewerController implements Initializable, IFXController {
     private final int p = 2, r = 3;
     private final Vector<float[][]> graphs = new Vector<>();
     private Vector<String> titles = new Vector<String>();
+        private LineChart<Number, Number> cha_MAP;
     @FXML
-    private LineChart<Number, Number> cha_MAP;
+    private GridPane viz_viewer;
 
     /**
      * Initializes the controller class.

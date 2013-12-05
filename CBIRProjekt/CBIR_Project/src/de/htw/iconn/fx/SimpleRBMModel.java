@@ -66,6 +66,7 @@ public class SimpleRBMModel {
     private boolean useBias;
     private boolean binarizeProbabilities;
     private boolean rbmTrained;
+    private boolean rbmTraining;
     
     //evaluated data
     private double mAP;
@@ -78,13 +79,14 @@ public class SimpleRBMModel {
     private RBMWrapper wrapper;
     private IRBM rbm;
     private Evaluation evaluation;
+    
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
             int rbmImplementation, int rbmFeature, int logisticFunction,
             int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained)
+            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained, boolean rbmTraining)
     {   
         this.rbmImplementation = rbmImplementation;
         this.rbmFeature = rbmFeature;
@@ -106,11 +108,12 @@ public class SimpleRBMModel {
         this.useBias = useBias;
         this.binarizeProbabilities = binarizeProbabilities;
         this.rbmTrained = rbmTrained;
+        this.rbmTraining = rbmTraining;
     }
 
     public SimpleRBMModel() {
         this(false, true, true, true, 100, -1, -1, -1, 15,
-                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false);
+                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false);
     }
     
     public boolean generateRBM(){
@@ -173,11 +176,15 @@ public class SimpleRBMModel {
     public void trainRBM(){      
         if(this.generateRBM()){
             System.out.println("start training");
+            this.rbmTraining = true;
             this.wrapper.train(this.imageManager.getImages(true), this.epochs);
         }
+        this.rbmTraining = false;
         this.rbmTrained = true;
         this.generateSorter();
     }
+    
+    
     
     public boolean validate() {
 
@@ -368,6 +375,10 @@ public class SimpleRBMModel {
 
     public boolean isRbmTrained() {
         return rbmTrained;
+    }
+    
+    public boolean isRbmTraining() {
+        return rbmTraining;
     }
 
     public void setRbmTrained(boolean rbmTrained) {
