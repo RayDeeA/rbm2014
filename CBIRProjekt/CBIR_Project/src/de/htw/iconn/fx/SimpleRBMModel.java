@@ -69,6 +69,7 @@ public class SimpleRBMModel {
     //evaluated data
     private double mAP;
     private String mapTest;
+    private float[][] prTable;
     
     //class instances
     private ImageManager imageManager;
@@ -427,5 +428,13 @@ public class SimpleRBMModel {
 
     public void setMapTest(String mapTest) {
         this.mapTest = mapTest;
-    }   
+    }
+
+    public float[][] getPrTable() {
+        return prTable;
+    }
+
+    public void setPrTable(float[][] prTable) {
+        this.prTable = prTable;
+    }
 }
