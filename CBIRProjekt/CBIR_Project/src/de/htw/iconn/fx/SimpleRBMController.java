@@ -112,11 +112,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
 
-    private ImageViewer imageViewer;
-    private ChartViewerController chartViewerController;
-    private SimpleRBMModel model;
-
-    private Stage chartViewerStage;
+    
     @FXML
     private CheckBox cbx_map;
     @FXML
@@ -127,6 +123,13 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Label lbl_evolution_started;
     @FXML
     private TitledPane ttl_panel_features;
+    
+    private ImageViewer imageViewer;
+    private Stage runHiddenStage;
+    private RunHiddenController runHiddenController;
+    private Stage chartViewerStage;
+    private ChartViewerController chartViewerController;
+    private SimpleRBMModel model;
 
     /**
      * Initializes the controller class.
@@ -222,10 +225,6 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.cbx_bias.setSelected(this.model.isUseBias());
         this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
 
-        this.btn_runVisible.setDisable(!this.model.isRbmTrained());
-        this.btn_runHidden.setDisable(!this.model.isRbmTrained());
-        this.btn_daydream.setDisable(!this.model.isRbmTrained());
-        this.btn_saveRbmFile.setDisable(!this.model.isRbmTrained());
         this.btn_startTest.setDisable(!this.model.isRbmTrained());
         this.cmb_mapTests.setDisable(!this.model.isRbmTrained());
 
@@ -364,12 +363,29 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_runVisibleAction(ActionEvent event) {
-
+System.out.println("Test");
         //EVENT? isValid?
     }
 
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("RunHidden.fxml"));
+
+            Scene scene = new Scene(root, 600, 400);
+            this.runHiddenStage = new Stage();
+            this.runHiddenStage.setTitle("Run Hidden");
+            this.runHiddenStage.setScene(scene);
+
+            this.runHiddenController = (RunHiddenController) loadController("RunHidden.fxml");
+            runHiddenController.setRBMWrapper(this.model.getWrapper());
+
+            // this.chartViewerController.draw(lineChart);
+            this.runHiddenStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

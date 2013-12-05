@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 import de.htw.cbir.model.Pic;
+import de.htw.iconn.helper.ShuffleArrayHelper;
 
 public class ImageManager {
 
@@ -36,8 +37,16 @@ public class ImageManager {
 		return images.length;
 	}
 	
-	public Pic[] getImages() {
-		return images;
+	public Pic[] getImages(boolean sorted) {
+            if(sorted) {
+                return this.images;
+            } else {
+                Pic[] picsCopied = new Pic[this.images.length];
+                System.arraycopy(this.images, 0, picsCopied, 0, this.images.length);
+                ShuffleArrayHelper<Pic> picsShuffler = new ShuffleArrayHelper<>();
+                picsShuffler.shuffleArray(picsCopied);
+                return picsCopied;
+            }
 	}
 	
 	public Set<String> getGroupNames() {
@@ -122,7 +131,7 @@ public class ImageManager {
 	 * @param imageFile
 	 * @return
 	 */
-	private Pic loadImage(File imageFile) {
+	public Pic loadImage(File imageFile) {
 		BufferedImage image = null;
 		try {
 		
@@ -193,4 +202,7 @@ public class ImageManager {
 	public String getImageSetName() {
 		return imageDirectory.toPath().getFileName().toString();
 	}
+        
+
+ 
 }
