@@ -145,7 +145,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
-        //loadImageSet("CBIR_Project/images/Test_10x5/");
+        loadImageSet("CBIR_Project/images/Test_10x5/");
     }
 
     private void initCmbImageManager() {
@@ -166,14 +166,17 @@ public class SimpleRBMController implements Initializable, IFXController {
         List<String> rbmImplementation = new LinkedList<>(Arrays.asList(this.model.getRbmImplementations()));
         ObservableList rbmImplementationObs = FXCollections.observableList(rbmImplementation);
         this.cmb_rbmImplementation.setItems(rbmImplementationObs);
-
+        this.cmb_rbmImplementation.getSelectionModel().selectFirst();
+        
         List<String> rbmFeature = new LinkedList<>(Arrays.asList(this.model.getRbmFeatures()));
         ObservableList rbmFeatureObs = FXCollections.observableList(rbmFeature);
         this.cmb_rbmFeature.setItems(rbmFeatureObs);
+        this.cmb_rbmFeature.getSelectionModel().select(1);
 
         List<String> logisticFunction = new LinkedList<>(Arrays.asList(this.model.getLogisticFunctions()));
         ObservableList logisticFunctionObs = FXCollections.observableList(logisticFunction);
         this.cmb_logisticFunction.setItems(logisticFunctionObs);
+        this.cmb_logisticFunction.getSelectionModel().selectFirst();
 
     }
 
