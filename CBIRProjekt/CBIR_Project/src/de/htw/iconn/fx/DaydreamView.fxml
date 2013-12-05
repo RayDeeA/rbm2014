@@ -8,18 +8,18 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" cache="true" cacheHint="QUALITY" depthTest="ENABLE" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.DaydreamController">
+<AnchorPane id="AnchorPane" fx:id="view" cache="true" cacheHint="QUALITY" depthTest="ENABLE" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.DaydreamController">
   <children>
-    <ImageView id="imgv_Input" fx:id="imgv_Input" cache="false" fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="imgv_Input" cache="false" fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
     <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="41.0" text="Input" />
     <ToolBar layoutY="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <items>
-        <Button id="btn_generateImage" fx:id="btn_generateImage" mnemonicParsing="false" onAction="#btn_generateImageAction" text="Generate Image" />
-        <Button id="btn_daydream" fx:id="btn_daydream" disable="true" mnemonicParsing="false" onAction="#btn_daydreamAction" text="Daydream" />
+        <Button fx:id="btn_generateImage" mnemonicParsing="false" onAction="#btn_generateImageAction" text="Generate Image" />
+        <Button fx:id="btn_daydream" disable="true" mnemonicParsing="false" onAction="#btn_daydreamAction" text="Daydream" />
       </items>
     </ToolBar>
     <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Daydream" />
-    <ImageView id="imgv_Result" fx:id="imgv_Result" cache="false" fitHeight="250.0" fitWidth="250.0" layoutX="270.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="imgv_Result" cache="false" fitHeight="250.0" fitWidth="250.0" layoutX="270.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
   </children>
   <stylesheets>
     <URL value="@daydream.css" />

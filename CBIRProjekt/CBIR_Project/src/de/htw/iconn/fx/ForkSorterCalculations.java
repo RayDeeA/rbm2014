@@ -9,12 +9,12 @@ public class ForkSorterCalculations extends RecursiveAction {
 	private static final long serialVersionUID = 428974300938969664L;
 	protected static int sThreshold = 10;
 	
-	private Sorter sorter;
+	private ASorter sorter;
 	private Pic[] images;
 	private int start;
 	private int length;
 	
-	public ForkSorterCalculations(Sorter sorter, Pic[] images, int start, int length) {
+	public ForkSorterCalculations(ASorter sorter, Pic[] images, int start, int length) {
 		this.sorter = sorter;
 		this.images = images;
 		this.start = start;

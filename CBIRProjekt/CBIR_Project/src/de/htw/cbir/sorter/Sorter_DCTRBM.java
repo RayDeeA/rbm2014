@@ -5,17 +5,17 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
-import de.htw.cbir.DCTRBM;
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.RBMFeatureDCT;
+import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.model.Pic;
 import de.htw.cbir.model.Settings;
 
 
 public class Sorter_DCTRBM extends Sorter {
 
-	private RBMWrapper dctRBM;
+	private ARBMFeature dctRBM;
 	
-	public Sorter_DCTRBM(Pic[] pics, Settings settings, RBMWrapper dctRBM, ForkJoinPool pool) {
+	public Sorter_DCTRBM(Pic[] pics, Settings settings, ARBMFeature dctRBM, ForkJoinPool pool) {
 		super(pics, settings, pool);
 		this.dctRBM = dctRBM;
 	}

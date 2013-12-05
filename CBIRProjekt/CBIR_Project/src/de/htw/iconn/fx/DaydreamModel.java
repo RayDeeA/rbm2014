@@ -1,5 +1,6 @@
 package de.htw.iconn.fx;
 
+import de.htw.cbir.ARBMFeature;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.TimerTask;
@@ -10,14 +11,13 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.RBMWrapper;
 import de.htw.cbir.model.Pic;
 
 public class DaydreamModel {
 	
 	Random random = new Random();
 	
-    RBMWrapper rbmWrapper;
+    ARBMFeature rbmFeature;
     Pic pic;
     Image daydreamImage;
 
@@ -25,8 +25,8 @@ public class DaydreamModel {
 		
 	}
 	
-    public void setRbmWrapper(RBMWrapper rbmWrapper) {
-        this.rbmWrapper = rbmWrapper;
+    public void setRbmFeature(ARBMFeature rbmFeature) {
+        this.rbmFeature = rbmFeature;
     }
     
     public Image generateImage() {
@@ -45,8 +45,7 @@ public class DaydreamModel {
             }
         }
         
-        BufferedImage bufferedImage = null;
-        SwingFXUtils.fromFXImage(image, bufferedImage);
+         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         
         this.pic = new Pic();
         this.pic.setDisplayImage(bufferedImage);
@@ -58,8 +57,8 @@ public class DaydreamModel {
     }
     
     public Image daydream() {
-    	double[] hiddenData = rbmWrapper.getHidden(this.pic);
-    	double[] visibleData = rbmWrapper.getVisible(hiddenData);
+    	double[] hiddenData = rbmFeature.getHidden(this.pic);
+    	double[] visibleData = rbmFeature.getVisible(hiddenData);
     	
     	int width = this.pic.getDisplayImage().getWidth();
     	int height = this.pic.getDisplayImage().getHeight();

@@ -1,9 +1,7 @@
 eclipse.preferences.version=1
 encoding//CBIR_Project/src/de/htw/cbir/CBIRController.java=UTF-8
 encoding//CBIR_Project/src/de/htw/cbir/CBIREvaluation.java=UTF-8
-encoding//CBIR_Project/src/de/htw/cbir/DCTRBM.java=UTF-8
 encoding//CBIR_Project/src/de/htw/cbir/ImageManager.java=UTF-8
-encoding//CBIR_Project/src/de/htw/cbir/PixelRBM.java=UTF-8
 encoding//CBIR_Project/src/de/htw/cbir/cli/DCTRBMErrorTest.java=UTF-8
 encoding//CBIR_Project/src/de/htw/cbir/cli/DCTRBMTest.java=UTF-8
 encoding//CBIR_Project/src/de/htw/cbir/cli/IDWHistogramTest.java=UTF-8

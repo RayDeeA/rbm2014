@@ -4,6 +4,8 @@
  */
 package de.htw.iconn.fx;
 
+import de.htw.cbir.ARBMFeature;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -12,20 +14,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import de.htw.cbir.RBMWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
  * @author dvarul
  */
-public class DaydreamController implements Initializable {
+public class DaydreamController implements Initializable, IFXController {
 
     @FXML
     private Button btn_generateImage;
@@ -35,7 +38,8 @@ public class DaydreamController implements Initializable {
     private ImageView imgv_Result;
     @FXML
     private ImageView imgv_Input;
-
+    @FXML
+    private AnchorPane view;
 	
 	DaydreamModel model;
 	
@@ -51,8 +55,8 @@ public class DaydreamController implements Initializable {
         model = new DaydreamModel();
     }
     
-    public void setRBMWrapper(RBMWrapper rbmWrapper) {
-    	this.model.setRbmWrapper(rbmWrapper);
+    public void setRBMFeature(ARBMFeature rbmFeature) {
+    	this.model.setRbmFeature(rbmFeature);
     }
     
     @FXML
@@ -63,24 +67,12 @@ public class DaydreamController implements Initializable {
 
     @FXML
 	private void btn_daydreamAction(ActionEvent event) {
-		class Daydream extends TimerTask {
-			public void run() {
-				if (currentDream == maxDreams) {
-					timer.cancel();
-					timer.purge();
-					return;
-				}
-
-				imgv_Result.setImage(model.daydream());
-				currentDream++;
-			}
-		}
-
-		// And From your main() method or any other method
-		timer = new Timer();
-		timer.schedule(new Daydream(), 0, 1000);
+		this.imgv_Result.setImage(model.daydream());
 	}
 
-
+	@Override
+	public Node getView() {
+		return this.view;
+	}
     
 }

@@ -7,8 +7,8 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.PixelRBM;
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.model.Pic;
 
 import java.awt.image.BufferedImage;
@@ -33,15 +33,15 @@ import javax.imageio.ImageIO;
  */
 public class RunHiddenModel {
     
-    RBMWrapper rbmWrapper;
+    ARBMFeature rbmFeature;
     Pic pic;
     
     public RunHiddenModel() {
         
     }
 
-    public void setRbmWrapper(RBMWrapper rbmWrapper) {
-        this.rbmWrapper = rbmWrapper;
+    public void setRbmFeature(ARBMFeature rbmFeature) {
+        this.rbmFeature = rbmFeature;
     }
     
     public Image openFile() {
@@ -110,8 +110,8 @@ public class RunHiddenModel {
     }
 
     public Image runHidden() {
-        double[] hiddenData = rbmWrapper.getHidden(this.pic);
-        double[] visibleData = rbmWrapper.getVisible(hiddenData);
+        double[] hiddenData = rbmFeature.getHidden(this.pic);
+        double[] visibleData = rbmFeature.getVisible(hiddenData);
         
         int width = this.pic.getDisplayImage().getWidth();
         int height = this.pic.getDisplayImage().getHeight();

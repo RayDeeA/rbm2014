@@ -56,7 +56,7 @@ public class CBIRController {
 	private Sorter sorter;
 	private ForkJoinPool pool;
 	private IRBM rbm;
-	private DCTRBM dctRBM;
+	private RBMFeatureDCT dctRBM;
 	private CBIREvaluation evaluation;
 	private CBIREvaluationModel evaluationModel;
 
@@ -108,12 +108,12 @@ public class CBIRController {
 		}
 		
 		rbm = new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction));
-		RBMWrapper rbmWrapper = null;
+		ARBMFeature rbmWrapper = null;
 		
 		if(useDCTRBM)
-			rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
+			rbmWrapper = new RBMFeatureDCT(inputSize, outputSize, rbm);
 		else
-			rbmWrapper = new PixelRBM(inputSize, outputSize, rbm);
+			rbmWrapper = new RBMFeaturePixel(inputSize, outputSize, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
 		rbmWrapper.train(allImages, 0);
@@ -183,11 +183,11 @@ public class CBIRController {
 			rbm = new RBMLoggerVisualizer(new RBMLogger(new RBMJBlas(inputSize, outputSize, learnRate, logisticFunction, useSeed, seed)), this.visualizationFrame, this.evaluationModel);
 		}
 		if(rbm != null) {
-			RBMWrapper rbmWrapper = null;
+			ARBMFeature rbmWrapper = null;
 			if(useDCTRBM)
-				rbmWrapper = new DCTRBM(inputSize, outputSize, rbm);
+				rbmWrapper = new RBMFeatureDCT(inputSize, outputSize, rbm);
 			else
-				rbmWrapper = new PixelRBM(inputSize, outputSize, rbm);
+				rbmWrapper = new RBMFeaturePixel(inputSize, outputSize, rbm);
 			rbmWrapper.train(imageManager.getImages(true), settings.getEpochs());			
 			sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		}
@@ -339,7 +339,7 @@ public class CBIRController {
 		} else if (cmd.equalsIgnoreCase("Finde RBM Weights")) {
 
 
-			DCTRBM rbm = new DCTRBM(inputSize, outputSize, learnRate);
+			RBMFeatureDCT rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0);
@@ -350,7 +350,7 @@ public class CBIRController {
 			gh.run(visualizationFrame);
 		} else if (cmd.equalsIgnoreCase("reduziere den RBM Fehler")) {
 
-			DCTRBM rbm = new DCTRBM(inputSize, outputSize, learnRate);
+			RBMFeatureDCT rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
 			rbm.train(allImages, 0);

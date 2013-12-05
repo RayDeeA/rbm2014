@@ -11,7 +11,7 @@ import de.htw.cbir.model.Pic;
 public class Evaluation {
 
 	private Pic[] images;
-	private Sorter sorter;
+	private ASorter sorter;
 	private ForkJoinPool pool;
         private SimpleRBMModel model;
 	

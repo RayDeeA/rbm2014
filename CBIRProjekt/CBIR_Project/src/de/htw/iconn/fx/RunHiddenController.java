@@ -9,20 +9,22 @@ package de.htw.iconn.fx;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.htw.cbir.RBMWrapper;
+import de.htw.cbir.ARBMFeature;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
  * @author Radek
  */
-public class RunHiddenController implements Initializable {
+public class RunHiddenController implements Initializable, IFXController {
     @FXML
     private Button btn_loadNewTestImage;
     @FXML
@@ -31,6 +33,8 @@ public class RunHiddenController implements Initializable {
     private ImageView imgv_Result;
     @FXML
     private ImageView imgv_Input;
+    @FXML
+    private AnchorPane view;
     
     private RunHiddenModel model;
 
@@ -39,11 +43,11 @@ public class RunHiddenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new RunHiddenModel();
+        this.model = new RunHiddenModel();
     }
     
-    public void setRBMWrapper(RBMWrapper rbmWrapper) {
-    	this.model.setRbmWrapper(rbmWrapper);
+    public void setRBMFeature(ARBMFeature rbmFeature) {
+    	this.model.setRbmFeature(rbmFeature);
     }
 
     @FXML
@@ -59,8 +63,11 @@ public class RunHiddenController implements Initializable {
 
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
-        this.model.runHidden();
+        this.imgv_Result.setImage(this.model.runHidden());
     }
-    
-    
+
+	@Override
+	public Node getView() {
+		return this.view;
+	}
 }
