@@ -4,6 +4,7 @@
  */
 package de.htw.iconn.fx;
 
+import de.htw.cbir.ARBMFeature;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -12,7 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import de.htw.cbir.RBMWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,8 +51,8 @@ public class DaydreamController implements Initializable {
         model = new DaydreamModel();
     }
     
-    public void setRBMWrapper(RBMWrapper rbmWrapper) {
-    	this.model.setRbmWrapper(rbmWrapper);
+    public void setRBMFeature(ARBMFeature rbmFeature) {
+    	this.model.setRbmFeature(rbmFeature);
     }
     
     @FXML
