@@ -148,7 +148,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
-        loadImageSet("CBIR_Project/images/Test_10x5/");
+        loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
     }
 
     private void initCmbImageManager() {
@@ -240,15 +240,12 @@ public class SimpleRBMController implements Initializable, IFXController {
         loadImageSet(null);
     }
 
-    private void loadImageSet(String path) {
-        File file;
-        if (path == null) {
+    private void loadImageSet(File file) {
+        if (file == null) {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
             Stage fileChooserStage = new Stage();
             file = directoryChooser.showDialog(fileChooserStage);
-        } else {
-            file = new File(path);
         }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
