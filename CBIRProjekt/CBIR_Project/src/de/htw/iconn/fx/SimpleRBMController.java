@@ -475,7 +475,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             System.out.println("adding data to chart viewer");
             this.prChartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest(), this.model.getmAP());
         } else {
-            System.out.println("open chart viewer first");
+            System.out.println("open chart viewer first and check if this.model.getPrTable() is not null");
         }
     }
 

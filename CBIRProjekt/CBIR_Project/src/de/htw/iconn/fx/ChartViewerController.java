@@ -6,6 +6,7 @@
 package de.htw.iconn.fx;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.collections.ObservableList;
@@ -42,13 +43,9 @@ public class ChartViewerController implements Initializable, IFXController {
     public void addGraph(float[][] pUeberR, String title, double map) {
         XYChart.Series tmpGraph = new XYChart.Series();
 
-        // title hack
-        if (title == null) {
-            title = "All";
-        }
-
+        
         // set title of graph
-        tmpGraph.setName(title + " mAP = " + (map + "").substring(0, 5));
+        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", title,  map));        
 
         // transfer the float array data to the tmpGraph
         for (int i = 0; i < pUeberR[precisionIndex].length; i++) {

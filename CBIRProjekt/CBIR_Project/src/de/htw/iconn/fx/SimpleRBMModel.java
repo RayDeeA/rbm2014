@@ -211,13 +211,11 @@ public class SimpleRBMModel {
         if(this.evaluation == null){
             this.evaluation = new Evaluation(this, new ForkJoinPool());
         }
-        System.out.println(this.mapTest );
         if(this.mapTest.equalsIgnoreCase("All")) {
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
         }
-        
     }
 
     //getter and setter
