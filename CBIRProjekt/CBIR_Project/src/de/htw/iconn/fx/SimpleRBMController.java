@@ -135,8 +135,10 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Stage prChartViewerStage;
     private ChartViewerController prChartViewerController;
     private SimpleRBMModel model;
+    private boolean trainingProgress = false ;
+    
     private Stage vz_viewer;
-    private Visualization_ViewerController visualization_ViewerController;
+    private Visualitation_ViewerController visualization_ViewerController;
     /**
      * Initializes the controller class.
      *
@@ -310,13 +312,13 @@ public class SimpleRBMController implements Initializable, IFXController {
      private void initializeVizView() {
         try {
             
-            this.visualization_ViewerController = (Visualization_ViewerController) loadController("Visualization_Viewer.fxml");
+            this.visualization_ViewerController = (Visualitation_ViewerController) loadController("Visualization_Viewer.fxml");
             Parent root = (Parent) this.visualization_ViewerController.getView();
             Scene scene = new Scene(root, 600, 400);          
             this.vz_viewer = new Stage();
             this.vz_viewer.setTitle("Visualization Viewer");
             this.vz_viewer.setScene(scene);
-            this.visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+            this.visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());   
             this.vz_viewer.show();      
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
@@ -363,7 +365,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
+        
         this.model.trainRBM();
+        trainingProgress = true;
         this.updateView();
     }
 
@@ -622,9 +626,8 @@ System.out.println("Test");
 
     private void updateTraining() {
         
-       //System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
-       visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
-       
+       System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
+       this.visualization_ViewerController.setRBMFeature(this.model.getRbmFeature());
     }
 
 }

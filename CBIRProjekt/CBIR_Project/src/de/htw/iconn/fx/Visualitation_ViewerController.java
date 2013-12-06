@@ -28,48 +28,36 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author dvarul
  */
-public class DaydreamController implements Initializable, IFXController {
+public class Visualitation_ViewerController implements Initializable, IFXController {
 
     @FXML
     private Button btn_generateImage;
     @FXML
-    private Button btn_daydream;
-    @FXML
-    private ImageView imgv_Result;
-    @FXML
-    private ImageView imgv_Input;
-    @FXML
     private AnchorPane view;
 	
-	DaydreamModel model;
+	VisualizationModel model;
         
 	Timer timer;
-	int maxDreams = 60;
-	int currentDream = 0;
+	int visCounter = 60;
+	int current = 0;
 	
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new DaydreamModel();
+        model = new VisualizationModel();
+    }
+    
+    public void setDimensions(int x, int y){
+    
+        
     }
     
     public void setRBMFeature(ARBMFeature rbmFeature) {
     	this.model.setRbmFeature(rbmFeature);
     }
     
-    @FXML
-    private void btn_generateImageAction(ActionEvent event) {
-    	this.imgv_Input.setImage(this.model.generateImage());
-    	this.btn_daydream.setDisable(false);
-    }
-
-    @FXML
-	private void btn_daydreamAction(ActionEvent event) {
-		this.imgv_Result.setImage(model.daydream());
-	}
-
 	@Override
 	public Node getView() {
 		return this.view;
