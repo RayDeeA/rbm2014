@@ -12,10 +12,10 @@
   <children>
     <LineChart fx:id="cha_PRTable" alternativeColumnFillVisible="false" animated="true" disable="false" focusTraversable="false" horizontalGridLinesVisible="true" horizontalZeroLineVisible="true" legendSide="RIGHT" title="Precision Recall Table" verticalGridLinesVisible="true" verticalZeroLineVisible="true" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <xAxis>
-        <NumberAxis label="Recall" side="BOTTOM" />
+        <NumberAxis autoRanging="false" label="Recall" side="BOTTOM" tickUnit="0.1" upperBound="1.1" />
       </xAxis>
       <yAxis>
-        <NumberAxis label="Precision" side="LEFT" />
+        <NumberAxis autoRanging="false" label="Precision" side="LEFT" tickUnit="0.1" upperBound="1.1" />
       </yAxis>
     </LineChart>
   </children>

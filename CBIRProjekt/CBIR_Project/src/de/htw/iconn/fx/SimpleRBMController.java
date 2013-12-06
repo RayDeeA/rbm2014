@@ -290,6 +290,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             });
             prChartViewerStage.setY(imageViewer.getY() + imageViewer.getHeight());
             prChartViewerStage.setX(imageViewer.getX());
+            prChartViewerStage.setWidth(imageViewer.getWidth());
             this.prChartViewerStage.show();
             this.model.setShowPRChart(true);
             this.updateView();
