@@ -206,6 +206,8 @@ public class SimpleRBMModel {
     }
     
     public void test(){
+        this.prTable = null;
+        this.mAP = 0;
         if(this.evaluation == null){
             this.evaluation = new Evaluation(this, new ForkJoinPool());
         }
