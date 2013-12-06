@@ -56,7 +56,6 @@ public class Evaluation {
 		
 		// beende die Analyse und zeige eventuell Ergebnisse
 		this.model.setPrTable(table.generatePRTable());
-                System.out.println( "");
 	}
 	
 	/**
@@ -66,28 +65,22 @@ public class Evaluation {
 	 * @return
 	 */
 	public double test(String imageGroup) {
-		final TIntDoubleHashMap lookup = createDistanceLookupTable();
+                Pic[] queryImages = this.model.getImageManager().getImageInGroup(imageGroup).toArray(new Pic[0]);
 		PrecisionRecallTable table = new PrecisionRecallTable(false, sorter.getName(), imageGroup);
 		
-                Pic[] queryImages = this.model.getImageManager().getImageInGroup(imageGroup).toArray(new Pic[0]);
 		// starte die komplexe Analyse 
 		table.start(queryImages.length);
 				
-		double[] averagePrecisions = new double[queryImages.length];
-		ForkTest ft = new ForkTest(this, lookup, table, queryImages, 0, queryImages.length, averagePrecisions);
-		pool.invoke(ft);
 		// berechne die Average Precision f��r jedes Bild aus
 		double MAP = 0;
 		for (int i = 0; i < queryImages.length; i++)
 			MAP += test(queryImages[i], i, table);
 		MAP /= images.length;
 		
-		table.finish();
                 this.model.setmAP(MAP);
-		this.model.setPrTable(table.generatePRTable());
 		// analyse
+		table.finish();
 		
-                System.out.println("s");
 		return MAP;
 	}
 	
