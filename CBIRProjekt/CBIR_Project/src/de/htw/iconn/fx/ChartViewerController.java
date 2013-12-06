@@ -53,8 +53,8 @@ public class ChartViewerController implements Initializable, IFXController {
         // transfer the float array data to the tmpGraph
 	for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
             
-            double x = pUeberR[recallIndex][i] * view.getWidth() + 0.5;
-            double y = (pUeberR[precisionIndex][i] * view.getHeight() + 0.5);
+            double x = pUeberR[recallIndex][i];
+            double y = pUeberR[precisionIndex][i];
             
             tmpGraph.getData().add(new XYChart.Data(x, y));
         }
