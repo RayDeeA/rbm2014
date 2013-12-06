@@ -155,11 +155,13 @@ public class SimpleRBMController implements Initializable, IFXController {
         List<String> mapTest;
         if (this.model.getImageManager() != null) {
             mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
+            mapTest.add(0, "All");
         } else {
             mapTest = new LinkedList<>();
         }
         ObservableList mapTestObs = FXCollections.observableList(mapTest);
         this.cmb_mapTests.setItems(mapTestObs);
+        this.cmb_mapTests.getSelectionModel().selectFirst();
     }
 
     private void initCmb() {
@@ -472,7 +474,7 @@ System.out.println("Test");
         this.model.test();
         if(this.model.getPrTable() != null && this.prChartViewerController != null){
             System.out.println("adding data to chart viewer");
-            this.prChartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());           
+            this.prChartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest(), this.model.getmAP());           
         }else{
             System.out.println("open chart viewer first");
         }
