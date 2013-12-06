@@ -39,23 +39,23 @@ public class ChartViewerController implements Initializable, IFXController {
         // TODO
     }
 
-    public void addGraph(float[][] pUeberR, String title) {
+    public void addGraph(float[][] pUeberR, String title, double map) {
         XYChart.Series tmpGraph = new XYChart.Series();
 
-        
         // title hack
-        if(title == null)
+        if (title == null) {
             title = "All";
-        
+        }
+
         // set title of graph
-        tmpGraph.setName(title);
+        tmpGraph.setName(title + " mAP = " + (map + "").substring(0, 5));
 
         // transfer the float array data to the tmpGraph
-	for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
-            
-            double x = pUeberR[recallIndex][i] * view.getWidth() + 0.5;
-            double y = (pUeberR[precisionIndex][i] * view.getHeight() + 0.5);
-            
+        for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
+
+            double x = pUeberR[recallIndex][i];
+            double y = pUeberR[precisionIndex][i];
+
             tmpGraph.getData().add(new XYChart.Data(x, y));
         }
 

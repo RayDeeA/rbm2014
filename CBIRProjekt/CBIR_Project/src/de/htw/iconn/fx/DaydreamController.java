@@ -35,6 +35,8 @@ public class DaydreamController implements Initializable, IFXController {
     @FXML
     private Button btn_daydream;
     @FXML
+    private Button btn_stopDaydream;
+    @FXML
     private ImageView imgv_Result;
     @FXML
     private ImageView imgv_Input;
@@ -62,12 +64,37 @@ public class DaydreamController implements Initializable, IFXController {
     @FXML
     private void btn_generateImageAction(ActionEvent event) {
     	this.imgv_Input.setImage(this.model.generateImage());
+    	this.btn_generateImage.setDisable(true);
     	this.btn_daydream.setDisable(false);
+    	this.btn_stopDaydream.setDisable(true);
     }
 
     @FXML
 	private void btn_daydreamAction(ActionEvent event) {
-		this.imgv_Result.setImage(model.daydream());
+    	
+    	int delay = 0; // delay for 3 sec. 
+        int period = 50; // repeat every 5 sec. 
+        Timer timer = new Timer();
+        this.timer = timer;
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+            	System.out.println("test");
+            	imgv_Result.setImage(model.daydream());
+            }
+        }, delay, period);
+    	this.btn_generateImage.setDisable(true);
+    	this.btn_daydream.setDisable(true);
+    	this.btn_stopDaydream.setDisable(false);
+	}
+    
+    @FXML
+	private void btn_stopDaydreamAction(ActionEvent event) {
+    	timer.cancel();
+    	timer.purge();
+    	this.btn_generateImage.setDisable(false);
+    	this.btn_daydream.setDisable(true);
+    	this.btn_stopDaydream.setDisable(true);
 	}
 
 	@Override

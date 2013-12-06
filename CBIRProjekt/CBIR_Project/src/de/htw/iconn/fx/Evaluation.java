@@ -77,6 +77,7 @@ public class Evaluation {
 			MAP += test(queryImages[i], i, table);
 		MAP /= images.length;
 		
+                this.model.setmAP(MAP);
 		// analyse
 		table.finish();
 		

@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="view" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.ChartViewerController">
   <children>
-    <LineChart id="LineChartNxN" fx:id="cha_PRTable" title="Precision Recall Table" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <LineChart fx:id="cha_PRTable" alternativeColumnFillVisible="false" animated="true" disable="false" focusTraversable="false" horizontalGridLinesVisible="true" horizontalZeroLineVisible="true" legendSide="RIGHT" title="Precision Recall Table" verticalGridLinesVisible="true" verticalZeroLineVisible="true" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <xAxis>
         <NumberAxis label="Recall" side="BOTTOM" />
       </xAxis>

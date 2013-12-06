@@ -211,9 +211,8 @@ public class SimpleRBMModel {
         if(this.evaluation == null){
             this.evaluation = new Evaluation(this, new ForkJoinPool());
         }
-        if(true){
-        //if(this.mapTest == "all"){
-           //this.setMapTest("all");
+        System.out.println(this.mapTest );
+        if(this.mapTest.equalsIgnoreCase("All")) {
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);

@@ -150,18 +150,20 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model = new SimpleRBMModel();
         initCmb();
         updateView();
-        loadImageSet("CBIR_Project/images/Test_10x5/");
+        loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
     }
 
     private void initCmbImageManager() {
         List<String> mapTest;
         if (this.model.getImageManager() != null) {
             mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
+            mapTest.add(0, "All");
         } else {
             mapTest = new LinkedList<>();
         }
         ObservableList mapTestObs = FXCollections.observableList(mapTest);
         this.cmb_mapTests.setItems(mapTestObs);
+        this.cmb_mapTests.getSelectionModel().selectFirst();
     }
 
     private void initCmb() {
@@ -240,15 +242,12 @@ public class SimpleRBMController implements Initializable, IFXController {
         loadImageSet(null);
     }
 
-    private void loadImageSet(String path) {
-        File file;
-        if (path == null) {
+    private void loadImageSet(File file) {
+        if (file == null) {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
             Stage fileChooserStage = new Stage();
             file = directoryChooser.showDialog(fileChooserStage);
-        } else {
-            file = new File(path);
         }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
@@ -476,7 +475,7 @@ System.out.println("Test");
         this.model.test();
         if(this.model.getPrTable() != null && this.prChartViewerController != null){
             System.out.println("adding data to chart viewer");
-            this.prChartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest());           
+            this.prChartViewerController.addGraph(this.model.getPrTable(), this.model.getMapTest(), this.model.getmAP());           
         }else{
             System.out.println("open chart viewer first");
         }
