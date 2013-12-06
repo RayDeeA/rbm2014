@@ -48,10 +48,10 @@ public class ImageViewer {
     private int yMouseStartPos;
     protected int xMousePos;
     protected int yMousePos;
-    private double borderFactor = 0.9;
+    private final double borderFactor = 0.9;
 
-    private int width = 600;
-    private int height = 400;
+    private final int width = 600;
+    private final int height = 400;
 
     private final Scene scene;
     private final Group root;
@@ -59,26 +59,41 @@ public class ImageViewer {
     private final Pic[] images;
     private final ImageManager imageManager;
 
+    public double getHeight() {
+        return stage.getHeight();
+    }
+
+    public double getY() {
+        return stage.getY();
+    }
+    
+    public double getWidth() {
+        return stage.getWidth();
+    }
+
+    public double getX() {
+        return stage.getX();
+    }
+
     public ImageViewer(ImageManager imageManager) {
         this.imageManager = imageManager;
         this.images = imageManager.getImages(true);
         this.root = new Group();
         this.stage = new Stage();
-        
-        this.scene = new Scene(root,width,height);
+
+        this.scene = new Scene(root, width, height);
         this.scene.setFill(Color.LIGHTSLATEGREY);
         this.stage.setScene(this.scene);
         this.stage.setResizable(true);
         this.stage.setMinHeight(50);
         this.stage.setMinWidth(50);
-        
+
         this.stage.setWidth(width);
         this.stage.setHeight(height);
-        
+
         this.stage.setX(0);
         this.stage.setY(0);
-        
-        
+
         ChangeListener<Number> onResize = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
@@ -288,7 +303,7 @@ public class ImageViewer {
         while (mapPlacesX * (mapPlacesY - 1) >= nThumbs) {
             mapPlacesY--;
         }
-        
+
         double thumbSizeX = (double) wCanvas / mapPlacesX;
         double thumbSizeY = (double) hCanvas / mapPlacesY;
 
@@ -314,7 +329,6 @@ public class ImageViewer {
         int yMinPos = (int) (h2 - ym * scaledThumbSizeY);
         int yMaxPos = (int) (yMinPos + mapPlacesY * scaledThumbSizeY);
         System.out.println(xMinPos + " " + yMinPos);
-
 
         // disallow to move out of the map by dragging
         if (xMinPos > 0 || xMaxPos < wCanvas - 1) {
