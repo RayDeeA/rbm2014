@@ -6,11 +6,11 @@
 	<classpathentry kind="src" path="RBM/src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/fv15dct.jar"/>
-	<classpathentry kind="lib" path="lib/jaRBM_v1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jblas-1.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
-	<classpathentry kind="lib" path="lib/trove4j-3.0.3.jar"/>
+	<classpathentry kind="lib" path="libs/domain/fv15dct.jar"/>
+	<classpathentry kind="lib" path="libs/performance/trove4j-3.0.3.jar"/>
+	<classpathentry kind="lib" path="libs/jaRBM_v1.1.jar"/>
+	<classpathentry kind="lib" path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfxrt.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="libs/jblas-1.2.3.jar"/>
 	<classpathentry kind="output" path="cma/bin"/>
 </classpath>

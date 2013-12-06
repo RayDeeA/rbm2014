@@ -73,8 +73,7 @@ public class DaydreamModel {
             }
         }
         
-        BufferedImage bufferedImage = null;
-        SwingFXUtils.fromFXImage(image, bufferedImage);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         
         this.pic.setDisplayImage(bufferedImage);
         
