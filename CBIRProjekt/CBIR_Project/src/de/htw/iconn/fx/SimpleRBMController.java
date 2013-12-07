@@ -135,7 +135,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private ChartViewerController prChartViewerController;
     private SimpleRBMModel model;
     private Stage vz_viewer;
-    private Visualization_ViewerController visualization_ViewerController;
+    private VisualizationController visualController;
 
     /**
      * Initializes the controller class.
@@ -313,13 +313,13 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeVizView() {
         try {
 
-            this.visualization_ViewerController = (Visualization_ViewerController) loadController("Visualization_Viewer.fxml");
-            Parent root = (Parent) this.visualization_ViewerController.getView();
+            this.visualController = (VisualizationController) loadController("Visualization_Viewer.fxml");
+            Parent root = (Parent) this.visualController.getView();
             Scene scene = new Scene(root, 600, 400);
             this.vz_viewer = new Stage();
             this.vz_viewer.setTitle("Visualization Viewer");
             this.vz_viewer.setScene(scene);
-            this.visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+            this.visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
             this.vz_viewer.show();
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
@@ -387,10 +387,9 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model.setShowVisualization(cbx_visualization.isSelected());
 
         if (this.model.isShowVisualization()) {
-            /*if(this.model.getImageManager() != null){
-             initializeImageView();
-            
-             }*/
+            if (this.model.getImageManager() != null) {
+                initializeImageView();
+            }
 
             initializeVizView();
 
@@ -624,7 +623,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void updateTraining() {
 
         //System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
-        visualization_ViewerController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
 
     }
 
