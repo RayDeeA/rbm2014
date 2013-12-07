@@ -7,10 +7,8 @@ import de.htw.cbir.gui.Graph;
 
 public class PrecisionRecallTable {
 
-    private static Graph graph = null;
 
     public static void initializeGraph() {
-        graph = new Graph();
     }
 
     private boolean isStarted;
@@ -117,31 +115,6 @@ public class PrecisionRecallTable {
         }
 
         return precisionSum / currRelevantRetrieved;
-    }
-
-    public void finish() {
-        if (graph != null && visualize) {
-
-            int numTestRun = precisions.length;
-            int numPics = precisions[0].length;
-
-            float[][] avgPOverR = new float[4][numPics];
-            for (int pic = 0; pic < numPics; pic++) {
-
-                // zähle alle Testergebnisse zusammen
-                double avgPrecision = 0, avgRecall = 0;
-                for (int runs = 0; runs < numTestRun; runs++) {
-                    avgPrecision += precisions[runs][pic];
-                    avgRecall += recalls[runs][pic];
-                }
-
-                avgPOverR[2][pic] = (float) avgPrecision / numTestRun;
-                avgPOverR[3][pic] = (float) avgRecall / numTestRun;
-            }
-
-            String title = String.format(Locale.ENGLISH, "%s %s mAP=%6.3f", sortMethod, description, meanAveragePrecision / numTestRun);
-            graph.addGraph(avgPOverR, title);
-        }
     }
 
     public void start(int numTestRuns) {

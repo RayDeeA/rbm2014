@@ -112,7 +112,7 @@ public class SimpleRBMModel {
     }
 
     public SimpleRBMModel() {
-        this(false, true, true, true, 100, -1, -1, -1, 15,
+        this(false, true, true, false, 100, -1, -1, -1, 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false);
     }
     
@@ -211,13 +211,11 @@ public class SimpleRBMModel {
         if(this.evaluation == null){
             this.evaluation = new Evaluation(this, new ForkJoinPool());
         }
-        System.out.println(this.mapTest );
         if(this.mapTest.equalsIgnoreCase("All")) {
             this.evaluation.testAll();
         }else{
             this.evaluation.test(this.mapTest);
         }
-        
     }
 
     //getter and setter

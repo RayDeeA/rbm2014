@@ -3,14 +3,13 @@ package de.htw.iconn.fx;
 import de.htw.cbir.ARBMFeature;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-import java.util.TimerTask;
+
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import de.htw.cbir.ImageManager;
 import de.htw.cbir.model.Pic;
 
 public class VisualizationModel {
@@ -20,33 +19,49 @@ public class VisualizationModel {
     ARBMFeature rbmFeature;
     Pic pic;
     Image vizImage;
+    
+    int input;
+    int output;
+    int height;
+    int width;
+    
+    double[][] weights;
 
 	public VisualizationModel() {
 		
 	}
-	
-	
+      
     public void setRbmFeature(ARBMFeature rbmFeature) {
         this.rbmFeature = rbmFeature;
+    } 
+    
+    public void setDCT(int i, int o) {
+        this.input = i;
+        this.output = o;
+    }
+    
+    public void setDisplayDimensions(int w, int h) {
+        this.width = w;
+        this.height = h;
     }
     
     public Image generateImage() {
-        int width = 28;
-        int height = 28;
 
         WritableImage image = new WritableImage(width, height);
         PixelWriter writer = image.getPixelWriter();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-            	int value = random.nextInt(256);
+            	
+                
+                int value = random.nextInt(256);
             	Color color = Color.rgb(value, value, value);
             	
                 writer.setColor(x, y, color);
             }
         }
         
-         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         
         this.pic = new Pic();
         this.pic.setDisplayImage(bufferedImage);
@@ -57,14 +72,11 @@ public class VisualizationModel {
         return image;
     }
     
-    public Image visualImage() {
+    public Image visualImage(double[][] visWeights) {
     	
-        double[] hiddenData = rbmFeature.getHidden(this.pic);
-    	double[] visibleData = rbmFeature.getVisible(hiddenData);
-        double[][] weights = rbmFeature.getWeights();
-        
-    	
-    	int width = this.pic.getDisplayImage().getWidth();
+       weights = rbmFeature.getWeights();
+
+       int width = this.pic.getDisplayImage().getWidth();
     	int height = this.pic.getDisplayImage().getHeight();
     	
         WritableImage image = new WritableImage(width, height);
@@ -72,7 +84,7 @@ public class VisualizationModel {
 
         for (int y = 0, pos = 0; y < height; y++) {
             for (int x = 0; x < width; x++, pos++) {
-                int value = (int) (Math.max(Math.min(visibleData[pos] * 255, 255), 0));
+                int value = (int) (Math.max(Math.min(weights[0][pos] * 255, 255), 0));
                 writer.setColor(x, y, Color.rgb(value, value, value));
             }
         }

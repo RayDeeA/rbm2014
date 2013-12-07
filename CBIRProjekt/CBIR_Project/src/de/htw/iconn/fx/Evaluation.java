@@ -35,9 +35,6 @@ public class Evaluation {
 		// starte die komplexe Analyse 
 		table.start(images.length);
 		
-		// berechne die Average Precision f��r jedes Bild aus
-//		long start = System.currentTimeMillis();
-		
 		// Java 8: ohne Lambda Expression
 		// paralle Berechnungen
 		double[] averagePrecisions = new double[images.length];
@@ -51,10 +48,6 @@ public class Evaluation {
                 
                 this.model.setmAP(mAP);
 		
-//		long stop = System.currentTimeMillis();
-//		System.out.println("MAP: "+MAP+" took "+(stop-start)+"ms");
-		
-		// beende die Analyse und zeige eventuell Ergebnisse
 		this.model.setPrTable(table.generatePRTable());
 	}
 	
@@ -62,26 +55,23 @@ public class Evaluation {
 	 * Ermittle die Mean Average Precision f��r alle angegebenen Bilder 
 	 * 
 	 * @param queryImages
-	 * @return
 	 */
-	public double test(String imageGroup) {
+	public void test(String imageGroup) {
                 Pic[] queryImages = this.model.getImageManager().getImageInGroup(imageGroup).toArray(new Pic[0]);
-		PrecisionRecallTable table = new PrecisionRecallTable(false, sorter.getName(), imageGroup);
+		PrecisionRecallTable table = new PrecisionRecallTable(true, sorter.getName(), imageGroup);
 		
 		// starte die komplexe Analyse 
 		table.start(queryImages.length);
 				
 		// berechne die Average Precision f��r jedes Bild aus
-		double MAP = 0;
+		double mAP = 0;
 		for (int i = 0; i < queryImages.length; i++)
-			MAP += test(queryImages[i], i, table);
-		MAP /= images.length;
+			mAP += test(queryImages[i], i, table);
+		mAP /= images.length;
 		
-                this.model.setmAP(MAP);
-		// analyse
-		table.finish();
-		
-		return MAP;
+                this.model.setmAP(mAP);
+                
+		this.model.setPrTable(table.generatePRTable());
 	}
 	
 	/**
