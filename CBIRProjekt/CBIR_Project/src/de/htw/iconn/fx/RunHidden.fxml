@@ -16,6 +16,8 @@
       <items>
         <Button fx:id="btn_loadNewTestImage" mnemonicParsing="false" onAction="#btn_loadNewTestImageAction" text="Load Image" />
         <Button id="btn_loadNewTestImage" fx:id="btn_runHidden" disable="true" mnemonicParsing="false" onAction="#btn_runHiddenAction" text="Run Hidden" />
+        <ToggleButton fx:id="btn_hiddenStates" mnemonicParsing="false" onAction="#btn_hiddenStatesAction" text="HiddenStates" />
+        <ToggleButton fx:id="btn_visibleStates" mnemonicParsing="false" onAction="#btn_visibleStatesAction" text="VisibleStates" />
       </items>
     </ToolBar>
     <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Result" />

@@ -74,7 +74,7 @@ public class RBMPerformanceTest1 {
 	{
 		RBMVector rbm = new RBMVector(num_visible, num_hidden, 0.1);
 		
-		// training �ber epochen mit gegebenen daten
+		// training ���ber epochen mit gegebenen daten
 		for (int e = 0; e < max_epochs; e++) {
 			double error = 0;
 			for (double[] td : trainingData) {
@@ -128,7 +128,7 @@ public class RBMPerformanceTest1 {
 	{
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
 		
-		// training �ber epochen mit gegebenen daten
+		// training ���ber epochen mit gegebenen daten
 		for (int e = 0; e < max_epochs; e++) {
 			double error = 0;
 			for (double[] td : trainingData) {
@@ -147,12 +147,12 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visible(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD, false);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");
 		Matrix.mprint(hidden_data_cold);
-		double[][] reconstructed_data_cold = rbm.run_hidden(hidden_data_cold);
+		double[][] reconstructed_data_cold = rbm.run_hidden(hidden_data_cold, false);
 		
 		Matrix.mprint(reconstructed_data_cold);
 		System.out.println("Folge werte verwenden:");
@@ -173,12 +173,12 @@ public class RBMPerformanceTest1 {
 		
 		System.out.println("\n\n");
 		System.out.println("Finde die passende Gruppe zu Kalt");
-		double[][] hidden_data_cold = rbm.run_visible(COLD);
+		double[][] hidden_data_cold = rbm.run_visible(COLD, false);
 		extractMaximum(hidden_data_cold);
 		
 		System.out.println("Gruppe:");
 		Matrix.mprint(hidden_data_cold);
-		double[][] reconstructed_data_cold = rbm.run_hidden(hidden_data_cold);
+		double[][] reconstructed_data_cold = rbm.run_hidden(hidden_data_cold, false);
 		
 		Matrix.mprint(reconstructed_data_cold);
 		System.out.println("Folge werte verwenden:");

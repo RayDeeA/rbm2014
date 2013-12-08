@@ -266,8 +266,10 @@ public class RBMNico implements IRBM {
     	units in the data matrix passed in.
 	*/
 	
+	
+	// useHiddenStates not implemented
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 		
 		 int num_examples = userData.length;
 		 
@@ -315,8 +317,10 @@ public class RBMNico implements IRBM {
 	units in the data matrix passed in.
 	*/
 	
+	
+	// boolean useHiddenStates not implemented
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisbibleStates) {
 		
 		int num_examples = hiddenData.length;
 		

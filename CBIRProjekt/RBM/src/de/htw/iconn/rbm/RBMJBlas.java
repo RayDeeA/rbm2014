@@ -134,7 +134,7 @@ public class RBMJBlas implements IRBM {
 	}
 	
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 
 		DoubleMatrix data = new DoubleMatrix(userData);
 		
@@ -146,34 +146,35 @@ public class RBMJBlas implements IRBM {
 	    final DoubleMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 		
 	    // Calculate the probabilities of turning the hidden units on.
-	    final DoubleMatrix hiddenProbs = logisticFunction.function(hiddenActivations);
+	    DoubleMatrix hiddenNodes = logisticFunction.function(hiddenActivations);
 	    //final DoubleMatrix hiddenProbs = hiddenActivations;
 	    
-    	double[][] randomMatrix = DoubleMatrix.rand(hiddenProbs.getRows(), hiddenProbs.getColumns()).toArray2();
-    	
-		double[][] tmpHiddenStates = hiddenProbs.dup().toArray2();
-		for (int y = 0; y < tmpHiddenStates.length; y++) {
-			for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
-				// (p + r) / 2
-				// ez eg.: .6, .9 => .75
-				if(tmpHiddenStates[y][x] > randomMatrix[y][x])
-					tmpHiddenStates[y][x] = 1;
-				else
-					tmpHiddenStates[y][x] = 0;			
+	    if(useHiddenStates) {
+	    	double[][] randomMatrix = DoubleMatrix.rand(hiddenNodes.getRows(), hiddenNodes.getColumns()).toArray2();
+	    	
+			double[][] tmpHiddenStates = hiddenNodes.dup().toArray2();
+			for (int y = 0; y < tmpHiddenStates.length; y++) {
+				for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
+					// (p + r) / 2
+					// ez eg.: .6, .9 => .75
+					if(tmpHiddenStates[y][x] > randomMatrix[y][x])
+						tmpHiddenStates[y][x] = 1;
+					else
+						tmpHiddenStates[y][x] = 0;			
+				}
 			}
-		}
-		
-		DoubleMatrix hiddenStates = new DoubleMatrix(tmpHiddenStates);
+			
+			hiddenNodes = new DoubleMatrix(tmpHiddenStates);
+	    }
 	    
-	    final DoubleMatrix hiddenStatesWithoutBias = hiddenStates.getRange(0,hiddenStates.getRows(), 1, hiddenStates.getColumns());
-	    final DoubleMatrix hiddenProbsWithoutBias = hiddenProbs.getRange(0,hiddenProbs.getRows(), 1, hiddenProbs.getColumns());
+	    final DoubleMatrix hiddenNodesWithoutBias = hiddenNodes.getRange(0,hiddenNodes.getRows(), 1, hiddenNodes.getColumns());
 	    
 	    // Ignore the bias units.
-	    return hiddenProbsWithoutBias.toArray2();
+	    return hiddenNodesWithoutBias.toArray2();
 	}
 	
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
 		
 		DoubleMatrix data = new DoubleMatrix(hiddenData);
 	    
@@ -182,32 +183,34 @@ public class RBMJBlas implements IRBM {
 		final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
 
 	    // Calculate the activations of the visible units.
-		DoubleMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
+		final DoubleMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
 	  
 	    // Calculate the probabilities of turning the visible units on.
-		DoubleMatrix visibleProbs = logisticFunction.function(visibleActivations);
+		DoubleMatrix visibleNodes = logisticFunction.function(visibleActivations);
 		
-    	double[][] randomMatrix = DoubleMatrix.rand(visibleProbs.getRows(), visibleProbs.getColumns()).toArray2();
-    	
-		double[][] tmpvisibleStates = visibleProbs.dup().toArray2();
-		for (int y = 0; y < tmpvisibleStates.length; y++) {
-			for (int x = 0; x < tmpvisibleStates[y].length; x++) {				
-				// (p + r) / 2
-				// ez eg.: .6, .9 => .75
-				if(tmpvisibleStates[y][x] > randomMatrix[y][x])
-					tmpvisibleStates[y][x] = 1;
-				else
-					tmpvisibleStates[y][x] = 0;			
+		
+		if(useVisibleStates) {
+	    	double[][] randomMatrix = DoubleMatrix.rand(visibleNodes.getRows(), visibleNodes.getColumns()).toArray2();
+	    	
+			double[][] tmpVisibleStates = visibleNodes.dup().toArray2();
+			for (int y = 0; y < tmpVisibleStates.length; y++) {
+				for (int x = 0; x < tmpVisibleStates[0].length; x++) {				
+					// (p + r) / 2
+					// ez eg.: .6, .9 => .75
+					if(tmpVisibleStates[y][x] > randomMatrix[y][x])
+						tmpVisibleStates[y][x] = 1;
+					else
+						tmpVisibleStates[y][x] = 0;			
+				}
 			}
+			
+			visibleNodes = new DoubleMatrix(tmpVisibleStates);
 		}
-		
-		DoubleMatrix visibleStates = new DoubleMatrix(tmpvisibleStates);
 	     
 	    // Ignore bias
-		final DoubleMatrix visibleStatesWithoutBias = visibleStates.getRange(0,visibleStates.getRows(), 1, visibleStates.getColumns());
-		final DoubleMatrix visibleProbsWithoutBias = visibleProbs.getRange(0,visibleProbs.getRows(), 1, visibleProbs.getColumns());
+		final DoubleMatrix visibleNodesWithoutBias = visibleNodes.getRange(0,visibleNodes.getRows(), 1, visibleNodes.getColumns());
 		
-	    return visibleProbsWithoutBias.toArray2();
+	    return visibleNodesWithoutBias.toArray2();
 	    
 	}
 	

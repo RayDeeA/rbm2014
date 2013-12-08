@@ -6,8 +6,8 @@ public interface IRBM {
 
 	public void train(double[][] trainingData, int max_epochs );
 	public double error(double[][] trainingData);
-	public double[][] run_visible(double[][] userData);
-	public double[][] run_hidden(double[][] hiddenData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates);
 	public double[][] daydream(int numberOfSamples);
 	
 	public void setWeightsWithBias(double[][] weights);

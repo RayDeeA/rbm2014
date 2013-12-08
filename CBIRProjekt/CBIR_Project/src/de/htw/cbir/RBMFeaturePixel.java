@@ -29,7 +29,7 @@ public class RBMFeaturePixel extends ARBMFeature {
 	}
 
 	/**
-	 * Erstelle ein Trainingsarray mit den Daten aller Bilder. Für jedes Bild
+	 * Erstelle ein Trainingsarray mit den Daten aller Bilder. F��r jedes Bild
 	 * besorge die 15 Byte DCT Daten. Normalisiere das Gesamtergebnis.
 	 * 
 	 * @param images
@@ -58,7 +58,7 @@ public class RBMFeaturePixel extends ARBMFeature {
 		return result;
 	}
 
-	public double[] getHidden(Pic image) {
+	public double[] getHidden(Pic image, boolean useHiddenStates) {
 		BufferedImage bi = image.getDisplayImage();
 
 		int[] pixels = new int[bi.getWidth() * bi.getHeight()];
@@ -82,11 +82,11 @@ public class RBMFeaturePixel extends ARBMFeature {
 			useData[0][i] = fvFloat[i];
 
 		// ermittle die hidden Neurons
-		double[][] hidden_data = rbm.run_visible(useData);
+		double[][] hidden_data = rbm.run_visible(useData, useHiddenStates);
 		return hidden_data[0];
 	}
 	
-    public double[] getVisible(double[] hiddenData) {
+    public double[] getVisible(double[] hiddenData, boolean useVisibleStates) {
 
         double[][] useData = new double[1][hiddenData.length];
         for (int i = 0; i < hiddenData.length; i++) {
@@ -94,7 +94,7 @@ public class RBMFeaturePixel extends ARBMFeature {
         }
 
         // ermittle die visible Neurons
-        double[][] visible_data = rbm.run_hidden(useData);
+        double[][] visible_data = rbm.run_hidden(useData, useVisibleStates);
 
         return visible_data[0];
     }

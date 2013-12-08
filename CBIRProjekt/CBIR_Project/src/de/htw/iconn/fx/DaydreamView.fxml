@@ -17,6 +17,8 @@
         <Button fx:id="btn_generateImage" mnemonicParsing="false" onAction="#btn_generateImageAction" text="Generate Image" />
         <Button fx:id="btn_daydream" disable="true" mnemonicParsing="false" onAction="#btn_daydreamAction" text="Daydream" />
         <Button fx:id="btn_stopDaydream" disable="true" mnemonicParsing="false" onAction="#btn_stopDaydreamAction" text="Wake Up" />
+        <ToggleButton fx:id="btn_hiddenStates" mnemonicParsing="false" onAction="#btn_hiddenStatesAction" text="HiddenStates" />
+        <ToggleButton fx:id="btn_visibleStates" mnemonicParsing="false" onAction="#btn_visibleStatesAction" text="VisibleStates" />
       </items>
     </ToolBar>
     <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Daydream" />

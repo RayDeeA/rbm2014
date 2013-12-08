@@ -43,10 +43,10 @@ public class RBMTestMain {
 		Matrix.mprint(useData);
 		
 		System.out.println("Hidden Data:");
-		double[][] hidden_data = rbm.run_visible(useData);
+		double[][] hidden_data = rbm.run_visible(useData, false);
 		
 		System.out.println("Visual activities:");
-		double[][] visual_data = rbm.run_hidden(hidden_data);
+		double[][] visual_data = rbm.run_hidden(hidden_data, false);
 		Matrix.mprint(visual_data);		
 	}
 

@@ -21,8 +21,12 @@ public class DaydreamModel {
     Pic pic;
     Image daydreamImage;
 
+    private boolean useHiddenStates;
+	private boolean useVisibleStates;
+    
 	public DaydreamModel() {
-		
+    	this.useHiddenStates = false;
+    	this.useVisibleStates = false;
 	}
 	
     public void setRbmFeature(ARBMFeature rbmFeature) {
@@ -57,8 +61,8 @@ public class DaydreamModel {
     }
     
     public Image daydream() {
-    	double[] hiddenData = rbmFeature.getHidden(this.pic);
-    	double[] visibleData = rbmFeature.getVisible(hiddenData);
+    	double[] hiddenData = rbmFeature.getHidden(this.pic, this.useHiddenStates);
+    	double[] visibleData = rbmFeature.getVisible(hiddenData, this.useVisibleStates);
     	
     	int width = this.pic.getDisplayImage().getWidth();
     	int height = this.pic.getDisplayImage().getHeight();
@@ -80,4 +84,12 @@ public class DaydreamModel {
         return image; 
     	
     }
+    
+    public void setUseHiddenStates(boolean useHiddenStates) {
+		this.useHiddenStates = useHiddenStates;
+	}
+
+	public void setUseVisibleStates(boolean useVisibleStates) {
+		this.useVisibleStates = useVisibleStates;
+	}
 }

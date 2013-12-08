@@ -312,13 +312,13 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
-		return rbm.run_visible(userData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
+		return rbm.run_visible(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return rbm.run_visible(hiddenData);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
+		return rbm.run_hidden(hiddenData, useVisibleStates);
 	}
 
 	@Override

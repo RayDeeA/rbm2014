@@ -41,7 +41,7 @@ public class RBMCascade implements IRBM {
 		
 		for (int i = 0; i < rbms.length; i++) {
 			rbms[i].train(data, max_epochs);
-			data = rbms[i].run_visible(data);
+			data = rbms[i].run_visible(data, false);
 		}
 	}
 
@@ -52,30 +52,30 @@ public class RBMCascade implements IRBM {
 		double[][] data = trainingData;
 		for (int i = 0; i < rbms.length; i++) {
 			sumError += rbms[i].error(data);
-			data = rbms[i].run_visible(data);
+			data = rbms[i].run_visible(data, false);
 		}
 		
 		return sumError;
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 		
 		double[][] data = userData;
 		for (int i = 0; i < rbms.length; i++) {
 
-			data = rbms[i].run_visible(data);
+			data = rbms[i].run_visible(data, useHiddenStates);
 		}
 		return data;
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
 		
 		double[][] data = hiddenData;
 		for (int i = 0; i < rbms.length; i++) {
 
-			data = rbms[i].run_hidden(data);
+			data = rbms[i].run_hidden(data, useVisibleStates);
 		}
 		return data;
 	}

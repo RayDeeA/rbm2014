@@ -85,13 +85,13 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
-		return logger.run_visible(userData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
+		return logger.run_visible(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return logger.run_hidden(hiddenData);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
+		return logger.run_hidden(hiddenData, useVisibleStates);
 	}
 
 	@Override
