@@ -24,10 +24,10 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 		this.evaluationModel = evaluationModel;
 	}
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		int steps = max_epochs / evaluationModel.getUpdateInterval();
 		for(int i = 0; i < steps; ++i){		
-			logger.train(trainingData, evaluationModel.getUpdateInterval());
+			logger.train(trainingData, evaluationModel.getUpdateInterval(), useHiddenStates, useVisibleStates);
 			frame.updatePanel(logger.getWeights()[0], logger.error(trainingData), 47.11);
 			evaluationModel.addToCollectedWeights(logger.getWeightsWithBias());
 			if((i*evaluationModel.getUpdateInterval()) % evaluationModel.getXmlOutputFrequency() == 0){

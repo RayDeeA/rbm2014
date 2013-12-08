@@ -39,10 +39,10 @@ public abstract class ARBMFeature {
 	 */
 	public abstract ARBMFeature shallowCopy();
 
-	public void train(Pic[] images, int maxEpoche) {
+	public void train(Pic[] images, int maxEpoche, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
 		if (maxEpoche > 0)
-			rbm.train(trainingsData, maxEpoche);
+			rbm.train(trainingsData, maxEpoche, useHiddenStates, useHiddenStates);
 	}
 
 	public double getError(Pic[] images) {

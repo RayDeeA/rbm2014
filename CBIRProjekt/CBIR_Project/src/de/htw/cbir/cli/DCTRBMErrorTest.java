@@ -57,7 +57,7 @@ public class DCTRBMErrorTest {
 			rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und 
 			// eine Normalisierung später stattfinden kann
-			rbm.train(allImages, 0);	
+			rbm.train(allImages, 0, false, false);	
 		} else {
 			//--------------------- laden -----------------------		
 			System.out.println("Load RBM");

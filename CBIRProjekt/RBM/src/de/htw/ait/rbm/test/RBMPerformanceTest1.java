@@ -165,7 +165,7 @@ public class RBMPerformanceTest1 {
 	private static void old(double[][] trainingData, String[] names, long nanosec) 
 	{
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
-		rbm.train(trainingData, max_epochs);
+		rbm.train(trainingData, max_epochs, false, false);
 		double error = rbm.error(trainingData);
 		System.out.println("calc Error "+error);
 		

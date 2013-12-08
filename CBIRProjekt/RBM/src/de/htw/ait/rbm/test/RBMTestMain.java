@@ -35,7 +35,7 @@ public class RBMTestMain {
 		
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
 		
-		rbm.train(trainingData, max_epochs);
+		rbm.train(trainingData, max_epochs, false, false);
 	
 		double[][] useData = {{1,1,1,0,0,0}}; // trainingData;
 		

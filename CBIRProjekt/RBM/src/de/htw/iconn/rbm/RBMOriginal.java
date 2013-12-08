@@ -137,7 +137,7 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		Printer.printMatrix("weights", weights);
 		/*
@@ -401,7 +401,7 @@ public class RBMOriginal implements IRBM {
 						{ 0, 0, 1, 1, 1, 0 },
 	    			   };
 
-		rbm.train(data, 1000);
+		rbm.train(data, 1000, false, false);
 		rbm.printMatrix("Weights", rbm.weights);
 		
 		double user[][] = {

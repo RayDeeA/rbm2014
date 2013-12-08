@@ -64,7 +64,8 @@ public class SimpleRBMModel {
     private boolean useSeed;
     private int seed;
     private boolean useBias;
-    private boolean binarizeProbabilities;
+    private boolean binarizeVisibleProbabilities;
+    private boolean binarizeHiddenProbabilities;
     private boolean rbmTrained;
     private boolean rbmTraining;
     
@@ -86,7 +87,7 @@ public class SimpleRBMModel {
             int rbmImplementation, int rbmFeature, int logisticFunction,
             int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeProbabilities, boolean rbmTrained, boolean rbmTraining)
+            int seed, boolean useBias, boolean binarizeVisibleProbabilities, boolean binarizeHiddenProbabilities, boolean rbmTrained, boolean rbmTraining)
     {   
         this.selectedRbmImplementation = rbmImplementation;
         this.selectedRbmFeature = rbmFeature;
@@ -106,14 +107,15 @@ public class SimpleRBMModel {
         this.useSeed = useSeed;
         this.seed = seed;
         this.useBias = useBias;
-        this.binarizeProbabilities = binarizeProbabilities;
+        this.binarizeVisibleProbabilities = binarizeVisibleProbabilities;
+        this.binarizeHiddenProbabilities = binarizeHiddenProbabilities;
         this.rbmTrained = rbmTrained;
         this.rbmTraining = rbmTraining;
     }
 
     public SimpleRBMModel() {
         this(false, true, true, false, 100, -1, -1, -1, 15,
-                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false);
+                10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false, false);
     }
     
     public boolean generateRBM(){
@@ -176,7 +178,7 @@ public class SimpleRBMModel {
     public void trainRBM(){      
         if(this.generateRBM()){
             System.out.println("start training");
-            this.rbmFeature.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs);
+            this.rbmFeature.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs, this.binarizeHiddenProbabilities, this.binarizeVisibleProbabilities);
         }
         this.rbmTraining = false;
         this.rbmTrained = true;
@@ -295,8 +297,12 @@ public class SimpleRBMModel {
         return useBias;
     }
 
-    public boolean isBinarizeProbabilities() {
-        return binarizeProbabilities;
+    public boolean isBinarizeVisibleProbabilities() {
+        return binarizeVisibleProbabilities;
+    }
+    
+    public boolean isBinarizeHiddenProbabilities() {
+        return binarizeHiddenProbabilities;
     }
 
     public void setShowImageViewer(boolean showImageViewer) {
@@ -367,8 +373,12 @@ public class SimpleRBMModel {
         this.useBias = useBias;
     }
 
-    public void setBinarizeProbabilities(boolean binarizeProbabilities) {
-        this.binarizeProbabilities = binarizeProbabilities;
+    public void setBinarizeVisibleProbabilities(boolean binarizeVisibleProbabilities) {
+        this.binarizeVisibleProbabilities = binarizeVisibleProbabilities;
+    }
+    
+    public void setBinarizeHiddenProbabilities(boolean binarizeHiddenProbabilities) {
+        this.binarizeHiddenProbabilities = binarizeHiddenProbabilities;
     }
 
     public boolean isRbmTrained() {

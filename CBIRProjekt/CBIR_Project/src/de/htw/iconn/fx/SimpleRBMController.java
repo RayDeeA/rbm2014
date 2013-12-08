@@ -104,7 +104,9 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private TextField txt_seed;
     @FXML
-    private CheckBox cbx_binarizeProbabilities;
+    private CheckBox cbx_binarizeHiddenProbabilities;
+    @FXML
+    private CheckBox cbx_binarizeVisibleProbabilities;
     @FXML
     private CheckBox cbx_seed;
     @FXML
@@ -225,7 +227,8 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.cbx_seed.setSelected(this.model.isUseSeed());
         this.txt_seed.setText(new Integer(this.model.getSeed()).toString());
         this.cbx_bias.setSelected(this.model.isUseBias());
-        this.cbx_binarizeProbabilities.setSelected((this.model.isBinarizeProbabilities()));
+        this.cbx_binarizeHiddenProbabilities.setSelected((this.model.isBinarizeHiddenProbabilities()));
+        this.cbx_binarizeVisibleProbabilities.setSelected((this.model.isBinarizeVisibleProbabilities()));
 
         this.btn_startTest.setDisable(!this.model.isRbmTrained());
         this.cmb_mapTests.setDisable(!this.model.isRbmTrained());
@@ -588,8 +591,14 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
 
     @FXML
-    private void cbx_binarizeProbabilitiesAction(ActionEvent event) {
-        this.model.setBinarizeProbabilities(cbx_binarizeProbabilities.isSelected());
+    private void cbx_binarizeHiddenProbabilitiesAction(ActionEvent event) {
+        this.model.setBinarizeHiddenProbabilities(cbx_binarizeHiddenProbabilities.isSelected());
+        this.updateView();
+    }
+    
+    @FXML
+    private void cbx_binarizeVisibleProbabilitiesAction(ActionEvent event) {
+        this.model.setBinarizeVisibleProbabilities(cbx_binarizeVisibleProbabilities.isSelected());
         this.updateView();
     }
 

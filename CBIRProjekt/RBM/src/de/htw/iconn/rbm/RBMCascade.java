@@ -35,12 +35,12 @@ public class RBMCascade implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		double[][] data = trainingData;
 		
 		for (int i = 0; i < rbms.length; i++) {
-			rbms[i].train(data, max_epochs);
+			rbms[i].train(data, max_epochs, useHiddenStates, useVisibleStates);
 			data = rbms[i].run_visible(data, false);
 		}
 	}

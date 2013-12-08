@@ -116,7 +116,7 @@ public class CBIRController {
 			rbmWrapper = new RBMFeaturePixel(inputSize, outputSize, rbm);
 		// nur damit die Datenanalysiert werden und
 		// eine Normalisierung später stattfinden kann
-		rbmWrapper.train(allImages, 0);
+		rbmWrapper.train(allImages, 0, false, false);
 		
 		this.sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		
@@ -188,7 +188,7 @@ public class CBIRController {
 				rbmWrapper = new RBMFeatureDCT(inputSize, outputSize, rbm);
 			else
 				rbmWrapper = new RBMFeaturePixel(inputSize, outputSize, rbm);
-			rbmWrapper.train(imageManager.getImages(true), settings.getEpochs());			
+			rbmWrapper.train(imageManager.getImages(true), settings.getEpochs(), false, false);			
 			sorter = new Sorter_DCTRBM(allImages, settings, rbmWrapper, pool);
 		}
 		sorter.getFeatureVectors();
@@ -342,7 +342,7 @@ public class CBIRController {
 			RBMFeatureDCT rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
-			rbm.train(allImages, 0);
+			rbm.train(allImages, 0, false, false);
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 
 			evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);
@@ -353,7 +353,7 @@ public class CBIRController {
 			RBMFeatureDCT rbm = new RBMFeatureDCT(inputSize, outputSize, learnRate);
 			// nur damit die Datenanalysiert werden und
 			// eine Normalisierung später stattfinden kann
-			rbm.train(allImages, 0);
+			rbm.train(allImages, 0, false, false);
 			sorter = new Sorter_DCTRBM(allImages, settings, rbm, pool);
 
 			evaluation = new CBIREvaluation(sorter, allImages, pool, evaluationModel);

@@ -119,7 +119,7 @@
                 <CheckBox id="cbx_Seed" fx:id="cbx_seed" mnemonicParsing="false" onAction="#cbx_seedAction" text="Seed" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                 <TextField fx:id="txt_seed" onAction="#txt_seedAction" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                 <CheckBox fx:id="cbx_bias" mnemonicParsing="false" onAction="#cbx_biasAction" text="Bias" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                <CheckBox fx:id="cbx_binarizeProbabilities" mnemonicParsing="false" onAction="#cbx_binarizeProbabilitiesAction" text="binarize probabilities with random matrix" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="11" />
+                <CheckBox id="cbx_binarizeProbabilities" fx:id="cbx_binarizeVisibleProbabilities" mnemonicParsing="false" onAction="#cbx_binarizeVisibleProbabilitiesAction" text="binarize visible probabilities" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="11" />
                 <Label text="Input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label text="Output" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <Label text="Stopping Condition" GridPane.columnIndex="0" GridPane.rowIndex="5" />
@@ -127,6 +127,7 @@
                 <Label text="Learning" GridPane.columnIndex="0" GridPane.rowIndex="7" />
                 <Label text="Rate" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                 <Label text="Misc" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                <CheckBox id="cbx_binarizeProbabilities" fx:id="cbx_binarizeHiddenProbabilities" mnemonicParsing="false" onAction="#cbx_binarizeHiddenProbabilitiesAction" prefWidth="280.0" text="binarize hidden probabilities" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="12" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -137,6 +138,7 @@
               <rowConstraints>
                 <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />

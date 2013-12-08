@@ -41,13 +41,13 @@ public class RBMEnhancer implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel = true;
 		this.evaluationModel.setEpochs(max_epochs);
 		
 		for (int i = 0; i < max_epochs; i++) {
 			updateModel = true;
-			rbm.train(trainingData, 1);
+			rbm.train(trainingData, 1, useHiddenStates, useVisibleStates);
 			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {

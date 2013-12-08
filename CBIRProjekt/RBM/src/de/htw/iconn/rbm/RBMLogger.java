@@ -302,8 +302,8 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
-		rbm.train(trainingData, max_epochs);
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
+		rbm.train(trainingData, max_epochs, useHiddenStates, useVisibleStates);
 	}
 
 	@Override

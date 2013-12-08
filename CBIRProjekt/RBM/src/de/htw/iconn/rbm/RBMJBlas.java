@@ -80,7 +80,7 @@ public class RBMJBlas implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
@@ -91,42 +91,63 @@ public class RBMJBlas implements IRBM {
 	    	
 	    	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 	    	
-	    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
+	    	DoubleMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
 	    	
-	    	posHiddenProbs.putColumn(0, DoubleMatrix.ones(posHiddenProbs.getRows(), 1));
+	    	posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1));
 	    	
-	    	double[][] randomMatrix = DoubleMatrix.rand(posHiddenProbs.getRows(), posHiddenProbs.getColumns()).toArray2();
-			double[][] tmpPosHiddenStates = posHiddenProbs.dup().toArray2();
-			for (int y = 0; y < tmpPosHiddenStates.length; y++) {
-				for (int x = 0; x < tmpPosHiddenStates[y].length; x++) {				
-					// (p + r) / 2
-					// ez eg.: .6, .9 => .75
-					if(tmpPosHiddenStates[y][x] > randomMatrix[y][x])
-						tmpPosHiddenStates[y][x] = 1;
-					else
-						tmpPosHiddenStates[y][x] = 0;			
+		    if(useHiddenStates) {
+		    	double[][] randomMatrix = DoubleMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
+		    	
+				double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
+				for (int y = 0; y < tmpHiddenStates.length; y++) {
+					for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
+						// (p + r) / 2
+						// ez eg.: .6, .9 => .75
+						if(tmpHiddenStates[y][x] > randomMatrix[y][x])
+							tmpHiddenStates[y][x] = 1;
+						else
+							tmpHiddenStates[y][x] = 0;			
+					}
 				}
-			}
-			
-			DoubleMatrix posHiddenStates = new DoubleMatrix(tmpPosHiddenStates);
+				
+				posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
+		    }
 	    	
-	    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
+	    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenNodes);
 		    
-		    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
+		    final DoubleMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
 		    
-		    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
+		    DoubleMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
 		    		    
-		    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
+		    negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
 		    
-		    final DoubleMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);		    
+		    if(useVisibleStates) {
+		    	double[][] randomMatrix = DoubleMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
+		    	
+				double[][] tmpHiddenStates = negVisibleNodes.dup().toArray2();
+				for (int y = 0; y < tmpHiddenStates.length; y++) {
+					for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
+						// (p + r) / 2
+						// ez eg.: .6, .9 => .75
+						if(tmpHiddenStates[y][x] > randomMatrix[y][x])
+							tmpHiddenStates[y][x] = 1;
+						else
+							tmpHiddenStates[y][x] = 0;			
+					}
+				}
+				
+				negVisibleNodes = new DoubleMatrix(tmpHiddenStates);
+		    }
+		    
+		    final DoubleMatrix negHiddenActivations = negVisibleNodes.mmul(this.weights);		    
 		   
 		    final DoubleMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
 		    
-		    final DoubleMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);	 
+		    final DoubleMatrix negAssociations = negVisibleNodes.transpose().mmul(negHiddenProbs);	 
 		    
 		    // Update weights
 		    this.weights.addi( ( posAssociations.sub(negAssociations) ).mul(this.learnRate / data.getRows() ) );
-		    error = Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum() / trainingData.length / getInputSize());
+		    error = Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0).sum() / trainingData.length / getInputSize());
 		    
 		    //System.out.println(error);
 	    }

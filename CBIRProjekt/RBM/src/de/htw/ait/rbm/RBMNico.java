@@ -40,7 +40,7 @@ public class RBMNico implements IRBM {
 	}
 
 	@Override
-	public void train(double[][] trainingData, int max_epochs ) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		int num_examples = trainingData.length; 
 		

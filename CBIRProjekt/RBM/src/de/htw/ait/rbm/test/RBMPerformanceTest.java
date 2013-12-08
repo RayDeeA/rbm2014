@@ -23,7 +23,7 @@ public class RBMPerformanceTest {
 		
 		
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
-		rbm.train(trainingData, max_epochs);
+		rbm.train(trainingData, max_epochs, false, false);
 	
 		double[][] hidden_data = rbm.run_visible(trainingData, false);
 		double[][] reconstructed_data = rbm.run_hidden(hidden_data, false);
