@@ -179,10 +179,12 @@ public class SimpleRBMModel {
         if(this.generateRBM()){
             System.out.println("start training");
             this.rbmFeature.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs, this.binarizeHiddenProbabilities, this.binarizeVisibleProbabilities);
+            System.out.println("end training");
         }
         this.rbmTraining = false;
         this.rbmTrained = true;
         this.generateSorter();
+        
     }
     
     
