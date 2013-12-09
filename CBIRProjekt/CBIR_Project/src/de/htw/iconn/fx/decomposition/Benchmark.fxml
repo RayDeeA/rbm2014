@@ -20,13 +20,8 @@
               </GridPane.margin>
             </Button>
             <CheckBox id="cbx_imageViewer" mnemonicParsing="false" onAction="#cbx_imageViewerAction" text="ImageViewer" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <Button id="btn_startTraining" mnemonicParsing="false" onAction="#btn_startTrainingAction" prefWidth="142.0" text="Start Training" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button id="btn_startEvolution" mnemonicParsing="false" onAction="#btn_startEvolutionAction" prefWidth="142.0" text="Start Evolution" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_runVisibleAction" prefWidth="142.0" text="Run Visible" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Button id="btn_runHidden" disable="false" mnemonicParsing="false" onAction="#btn_runHiddenAction" prefWidth="142.0" text="Run Hidden" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button id="btn_daydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_daydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Button id="btn_saveRbmFile" disable="false" mnemonicParsing="false" onAction="#btn_saveRbmFileAction" prefWidth="142.0" text="Save RBM File" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <ComboBox id="btn_mapTests" onAction="#cmb_mapTestsAction" prefWidth="294.0" promptText="mAP Tests" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+            <Button id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_runVisibleAction" prefWidth="142.0" text="Test Features" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <ComboBox id="btn_mapTests" onAction="#cmb_mapTestsAction" prefWidth="294.0" promptText="Select mAP Test" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -35,10 +30,9 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <Button id="btn_startTest" mnemonicParsing="false" onAction="#btn_startTestAction" prefWidth="141.0" text="Start Test" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Label id="lbl_imageSet" text="no images selected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Label id="lbl_training_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running training..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Label id="lbl_evolution_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running evolution..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button id="btn_startTest" mnemonicParsing="false" onAction="#btn_startTestAction" prefWidth="141.0" text="Start mAP test" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label id="lbl_imageSet" prefWidth="280.0" text="no images selected" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+            <Button id="btn_daydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_daydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="1" GridPane.rowIndex="2" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -51,8 +45,6 @@
           </padding>
           <rowConstraints>
             <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
