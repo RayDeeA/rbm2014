@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" minWidth="585.0" prefHeight="507.0" prefWidth="585.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane id="AnchorPane" fx:id="view" minWidth="585.0" prefHeight="507.0" prefWidth="585.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
   <children>
     <TitledPane id="ttl_panel_features" animated="false" layoutX="0.0" layoutY="0.0" prefHeight="507.0" prefWidth="585.0" text="RBM Settings">
       <content>
@@ -20,7 +20,7 @@
                 <TreeView fx:id="trv_rbmSettingsMenue" prefHeight="-1.0" prefWidth="-1.0" />
                 <ScrollPane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
                   <content>
-                    <VBox prefHeight="-1.0" prefWidth="-1.0" />
+                    <VBox id="vbox_" fx:id="vbox_rbmSettingsTemplatePane" prefHeight="-1.0" prefWidth="-1.0" />
                   </content>
                 </ScrollPane>
               </children>

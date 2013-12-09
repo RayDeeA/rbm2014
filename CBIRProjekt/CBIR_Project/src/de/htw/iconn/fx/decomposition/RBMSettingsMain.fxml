@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="" fx:id="view" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsMainController">
+  <children>
+    <GridPane hgap="10.0" layoutX="0.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <ComboBox id="cmb_rbmImplementation" onAction="#cmb_rbmImplementationAction" prefHeight="21.0" prefWidth="281.0" promptText="select RBM implementation" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <ComboBox id="cmb_rbmFeature" onAction="#cmb_rbmFeatureAction" prefHeight="21.0" prefWidth="281.0" promptText="select RBM feature" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <ComboBox id="cmb_logisticFunction" onAction="#cmb_logisticFunctionAction" prefHeight="21.0" prefWidth="281.0" promptText="select logistic function" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="RBM Size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="Input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField id="txt_inputSize" onAction="#txt_inputSizeAction" onKeyTyped="#txt_inputSizeKeyTyped" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Label text="Output" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField id="txt_outputSize" onAction="#txt_outputSizeAction" onKeyTyped="#txt_outputSizeKeyTyped" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+          <GridPane.margin>
+            <Insets />
+          </GridPane.margin>
+        </TextField>
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+  </children>
+</AnchorPane>

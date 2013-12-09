@@ -296,37 +296,37 @@ public class RBMJBlas implements IRBM {
 		return true;
 	}
 
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-
-		// sampleSize * inputSize
-		double[][] samples = new double[numberOfSamples][this.getInputSize()-1];
-		
-		// Randomly initialize the visible units once
-		DoubleMatrix work = DoubleMatrix.rand(1, this.getInputSize());
-		work.putColumn(0, DoubleMatrix.ones(work.getRows(), 1));
-		samples[0] = work.getRow(0).toArray();
-				
-		for (int i = 1; i < numberOfSamples; i++) {
-
-			final DoubleMatrix posHiddenActivations = work.mmul(this.weights);
-	    	
-	    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
-	    	
-	    	posHiddenProbs.putColumn(0, DoubleMatrix.ones(posHiddenProbs.getRows(), 1));
-		    
-		    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
-		    
-		    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
-		    		    
-		    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
-		    
-		    work = new DoubleMatrix(negVisibleProbs.toArray2());
-		    
-		    samples[i] = work.getRow(0).toArray();
-		}
-
-		return samples;
-	}
+//	@Override
+//	public double[][] daydream(int numberOfSamples) {
+//
+//		// sampleSize * inputSize
+//		double[][] samples = new double[numberOfSamples][this.getInputSize()-1];
+//		
+//		// Randomly initialize the visible units once
+//		DoubleMatrix work = DoubleMatrix.rand(1, this.getInputSize());
+//		work.putColumn(0, DoubleMatrix.ones(work.getRows(), 1));
+//		samples[0] = work.getRow(0).toArray();
+//				
+//		for (int i = 1; i < numberOfSamples; i++) {
+//
+//			final DoubleMatrix posHiddenActivations = work.mmul(this.weights);
+//	    	
+//	    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
+//	    	
+//	    	posHiddenProbs.putColumn(0, DoubleMatrix.ones(posHiddenProbs.getRows(), 1));
+//		    
+//		    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
+//		    
+//		    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
+//		    		    
+//		    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));
+//		    
+//		    work = new DoubleMatrix(negVisibleProbs.toArray2());
+//		    
+//		    samples[i] = work.getRow(0).toArray();
+//		}
+//
+//		return samples;
+//	}
 
 }

@@ -298,10 +298,4 @@ public class RBMJBlasRandomed implements IRBM {
 	public boolean hasBias() {
 		return true;
 	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

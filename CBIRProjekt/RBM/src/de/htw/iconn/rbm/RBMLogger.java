@@ -388,9 +388,4 @@ public class RBMLogger implements IRBM, IRBMLogger{
 			return "no";
 		}
 	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		return rbm.daydream(numberOfSamples);
-	}
 }

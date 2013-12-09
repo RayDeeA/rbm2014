@@ -6,13 +6,17 @@ import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.ILogistic;
 
 
-public class RBMCascade implements IRBM {
+public class RBMStack implements IRBM {
 
-	private final IRBM[] rbms;
+	private final LinkedList<IRBM> rbms;
 	
-	public RBMCascade(IRBM ...rbms) {
+        public RBMStack() {
+            this.rbms = new LinkedList<IRBM>();
+        }
+        
+	public RBMStack(LinkedList<IRBM> rbms) {
 		
-		int lastRBMSize = rbms[0].getInputSize();
+		int lastRBMSize = rbms.getFirst().getInputSize();
 		for (IRBM rbm : rbms) {
 			if(rbm.getInputSize() == lastRBMSize) {
 				lastRBMSize = rbm.getOutputSize();
@@ -21,17 +25,8 @@ public class RBMCascade implements IRBM {
 		}
 		
 		this.rbms = rbms;
+                
 		
-	}
-	
-	public RBMCascade(double learningRate, DefaultLogisticMatrixFunction logistic, int ...inputsizes) {
-		
-		rbms = new IRBM[inputsizes.length];
-		
-		int lastRBMSize = inputsizes[0];
-		for (int i = 1; i < inputsizes.length; i++) {
-			rbms[i] = new RBMJBlas(lastRBMSize, inputsizes[i], learningRate, logistic);
-		}
 	}
 	
 	@Override
@@ -39,9 +34,9 @@ public class RBMCascade implements IRBM {
 		
 		double[][] data = trainingData;
 		
-		for (int i = 0; i < rbms.length; i++) {
-			rbms[i].train(data, max_epochs, useHiddenStates, useVisibleStates);
-			data = rbms[i].run_visible(data, false);
+		for (IRBM rbm : rbms) {
+			rbm.train(data, max_epochs, useHiddenStates, useVisibleStates);
+			data = rbm.run_visible(data, false);
 		}
 	}
 
@@ -50,9 +45,9 @@ public class RBMCascade implements IRBM {
 		double sumError = 0;
 		
 		double[][] data = trainingData;
-		for (int i = 0; i < rbms.length; i++) {
-			sumError += rbms[i].error(data, false, false);
-			data = rbms[i].run_visible(data, false);
+		for (IRBM rbm : rbms) {
+			sumError += rbm.error(data, false, false);
+			data = rbm.run_visible(data, false);
 		}
 		
 		return sumError;
@@ -62,9 +57,9 @@ public class RBMCascade implements IRBM {
 	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 		
 		double[][] data = userData;
-		for (int i = 0; i < rbms.length; i++) {
+		for (IRBM rbm : rbms)  {
 
-			data = rbms[i].run_visible(data, useHiddenStates);
+			data = rbm.run_visible(data, useHiddenStates);
 		}
 		return data;
 	}
@@ -73,9 +68,8 @@ public class RBMCascade implements IRBM {
 	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
 		
 		double[][] data = hiddenData;
-		for (int i = 0; i < rbms.length; i++) {
-
-			data = rbms[i].run_hidden(data, useVisibleStates);
+		for (IRBM rbm : rbms)  {
+			data = rbm.run_hidden(data, useVisibleStates);
 		}
 		return data;
 	}
@@ -90,8 +84,8 @@ public class RBMCascade implements IRBM {
 		LinkedList<double[][]> weights = new LinkedList<>();
 		
 		for (IRBM rbm : rbms) {
-			if(rbm instanceof RBMCascade) {
-				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeights();
+			if(rbm instanceof RBMStack) {
+				double [][][] cascadeWeights = ((RBMStack)rbm).getWeights();
 				for (double[][] ds : cascadeWeights) {
 					weights.add(ds);
 				}
@@ -109,8 +103,8 @@ public class RBMCascade implements IRBM {
 		LinkedList<double[][]> weights = new LinkedList<>();
 		
 		for (IRBM rbm : rbms) {
-			if(rbm instanceof RBMCascade) {
-				double [][][] cascadeWeights = ((RBMCascade)rbm).getWeightsWithBias();
+			if(rbm instanceof RBMStack) {
+				double [][][] cascadeWeights = ((RBMStack)rbm).getWeightsWithBias();
 				for (double[][] ds : cascadeWeights) {
 					weights.add(ds);
 				}
@@ -125,12 +119,12 @@ public class RBMCascade implements IRBM {
 
 	@Override
 	public int getInputSize() {
-		return rbms[0].getInputSize();
+		return rbms.getFirst().getInputSize();
 	}
 
 	@Override
 	public int getOutputSize() {
-		return rbms[rbms.length - 1].getOutputSize();
+		return rbms.getLast().getOutputSize();
 	}
 
 	@Override
@@ -150,11 +144,9 @@ public class RBMCascade implements IRBM {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        
+        public boolean add(IRBM rbm) {
+           return this.rbms.add(rbm);
+        }
 
 }
