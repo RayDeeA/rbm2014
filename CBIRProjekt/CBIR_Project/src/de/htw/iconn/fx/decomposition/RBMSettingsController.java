@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -53,7 +54,7 @@ public class RBMSettingsController extends AController {
         //dummy rbm only temporary for testing
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         this.model = new RBMSettingsModel(rbm);
-        trv_rbmSettingsMenue.setRoot(new );
+        //trv_rbmSettingsMenue.setRoot(new TreeItem<String>(RBM));
     }    
 
     @FXML
