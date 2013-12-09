@@ -45,15 +45,15 @@ public abstract class ARBMFeature {
 			rbm.train(trainingsData, maxEpoche, useHiddenStates, useHiddenStates);
 	}
 
-	public double getError(Pic[] images) {
+	public double getError(Pic[] images, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
 
-		return rbm.error(trainingsData);// Math.sqrt(error / trainingsData.length / (inputSize + 1));
+		return rbm.error(trainingsData, useHiddenStates, useVisibleStates);// Math.sqrt(error / trainingsData.length / (inputSize + 1));
 	}
 
-	public double getRawError(Pic[] images) {
+	public double getRawError(Pic[] images, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
-		return rbm.error(trainingsData);
+		return rbm.error(trainingsData, useHiddenStates, useHiddenStates);
 	}
 
 	/**

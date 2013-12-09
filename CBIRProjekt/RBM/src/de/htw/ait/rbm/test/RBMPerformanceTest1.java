@@ -136,7 +136,7 @@ public class RBMPerformanceTest1 {
 				rbm.train(data);
 		
 				if(e % 10 == 0)
-					error += rbm.error(data);
+					error += rbm.error(data, false, false);
 			}
 			
 			if(e % 10 == 0)
@@ -166,7 +166,7 @@ public class RBMPerformanceTest1 {
 	{
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
 		rbm.train(trainingData, max_epochs, false, false);
-		double error = rbm.error(trainingData);
+		double error = rbm.error(trainingData, false, false);
 		System.out.println("calc Error "+error);
 		
 		System.out.println("Time:" + (System.nanoTime() - nanosec) / 1000000 +"ms");

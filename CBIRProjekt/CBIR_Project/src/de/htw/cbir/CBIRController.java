@@ -208,7 +208,7 @@ public class CBIRController {
 		if(logger != null){
 			if(evaluationModel.getEvaluationType() != CBIREvaluationModel.evaluationType.EVOLUTION){
 				if(dctRBM != null){
-					evaluationModel.setError(dctRBM.getError(imageManager.getImages(true)));
+					evaluationModel.setError(dctRBM.getError(imageManager.getImages(true), false, false));
 				}
 				if(sorter != null){
 					evaluation = new CBIREvaluation(sorter, imageManager.getImages(true), pool, evaluationModel);

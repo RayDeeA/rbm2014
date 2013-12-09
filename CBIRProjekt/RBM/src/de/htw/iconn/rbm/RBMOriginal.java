@@ -129,10 +129,7 @@ public class RBMOriginal implements IRBM {
     }
 	
 	@Override
-	public double error(double[][] trainingData) {
-		
-		
-		
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		return error;
 	}
 	

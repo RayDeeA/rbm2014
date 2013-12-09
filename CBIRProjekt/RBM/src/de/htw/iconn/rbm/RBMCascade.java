@@ -46,12 +46,12 @@ public class RBMCascade implements IRBM {
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		double sumError = 0;
 		
 		double[][] data = trainingData;
 		for (int i = 0; i < rbms.length; i++) {
-			sumError += rbms[i].error(data);
+			sumError += rbms[i].error(data, false, false);
 			data = rbms[i].run_visible(data, false);
 		}
 		

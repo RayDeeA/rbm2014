@@ -52,7 +52,7 @@ public class RBMEnhancer implements IRBM {
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
-						this.evaluationModel.setError(rbm.error(trainingData));
+						this.evaluationModel.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
 						this.evaluationModel.setWeights(rbm.getWeightsWithBias());
 						updateModel = false;
 					}
@@ -67,8 +67,8 @@ public class RBMEnhancer implements IRBM {
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
-		return rbm.error(trainingData);
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override

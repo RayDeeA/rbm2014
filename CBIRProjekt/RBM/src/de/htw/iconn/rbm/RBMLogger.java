@@ -307,8 +307,8 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
-		return rbm.error(trainingData);
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override

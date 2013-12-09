@@ -49,7 +49,7 @@ public class RBMJBlasRandomed implements IRBM {
 
 	
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);

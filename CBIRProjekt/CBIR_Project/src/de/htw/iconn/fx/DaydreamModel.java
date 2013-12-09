@@ -3,14 +3,12 @@ package de.htw.iconn.fx;
 import de.htw.cbir.ARBMFeature;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-import java.util.TimerTask;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import de.htw.cbir.ImageManager;
 import de.htw.cbir.model.Pic;
 
 public class DaydreamModel {

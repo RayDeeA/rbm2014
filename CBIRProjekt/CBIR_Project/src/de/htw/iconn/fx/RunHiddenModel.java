@@ -7,7 +7,6 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
-import de.htw.cbir.RBMFeaturePixel;
 import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.model.Pic;
 
@@ -65,9 +64,6 @@ public class RunHiddenModel {
     }
     
     public Image openFile2() {
-        
-        int width = 100;
-        int height = 100;
         
         Image img = new Image("file:" + "/Volumes/Data/Dropbox/Development/Netbeans/ICONN/CBIRProjekt/CBIR_Project/images/MNIST_1000_Database/" + "0_01.png");
         

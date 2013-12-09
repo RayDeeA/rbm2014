@@ -58,7 +58,7 @@ public class RBMJBlas implements IRBM {
     }
 	
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
@@ -66,22 +66,51 @@ public class RBMJBlas implements IRBM {
 		
     	final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
     	
-    	final DoubleMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);  	
+    	DoubleMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
     	
-    	posHiddenProbs.putColumn(0, DoubleMatrix.ones(posHiddenProbs.getRows(), 1)); 	
+	    if(useHiddenStates) {
+	    	double[][] randomMatrix = DoubleMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
+	    	
+			double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
+			for (int y = 0; y < tmpHiddenStates.length; y++) {
+				for (int x = 0; x < tmpHiddenStates[y].length; x++) {
+					if(tmpHiddenStates[y][x] > randomMatrix[y][x])
+						tmpHiddenStates[y][x] = 1;
+					else
+						tmpHiddenStates[y][x] = 0;			
+				}
+			}
+			posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
+	    } 	
+    	
+	    posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1)); 	
 	    
-	    final DoubleMatrix negVisibleActivations = posHiddenProbs.mmul(this.weights.transpose());
+	    final DoubleMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
 	    
-	    final DoubleMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
+	    DoubleMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
 	    
-	    negVisibleProbs.putColumn(0, DoubleMatrix.ones(negVisibleProbs.getRows(), 1));	     
+	    if(useVisibleStates) {
+	    	double[][] randomMatrix = DoubleMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
+	    	
+			double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
+			for (int y = 0; y < tmpVisibleStates.length; y++) {
+				for (int x = 0; x < tmpVisibleStates[y].length; x++) {				
+					if(tmpVisibleStates[y][x] > randomMatrix[y][x])
+						tmpVisibleStates[y][x] = 1;
+					else
+						tmpVisibleStates[y][x] = 0;			
+				}
+			}
+			negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
+	    } 
+	    
+	    negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
 		
-		return Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleProbs), 2.0).sum() / trainingData.length / getInputSize());
+		return Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0).sum() / trainingData.length / getInputSize());
 	}
 	
 	@Override
 	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
-
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
@@ -93,51 +122,45 @@ public class RBMJBlas implements IRBM {
 	    	
 	    	DoubleMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
 	    	
-	    	posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1));
-	    	
 		    if(useHiddenStates) {
 		    	double[][] randomMatrix = DoubleMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
 		    	
 				double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
 				for (int y = 0; y < tmpHiddenStates.length; y++) {
 					for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
-						// (p + r) / 2
-						// ez eg.: .6, .9 => .75
 						if(tmpHiddenStates[y][x] > randomMatrix[y][x])
 							tmpHiddenStates[y][x] = 1;
 						else
 							tmpHiddenStates[y][x] = 0;			
 					}
 				}
-				
 				posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
 		    }
+		    
+		    posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1));
 	    	
 	    	final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenNodes);
 		    
 		    final DoubleMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
 		    
 		    DoubleMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
-		    		    
-		    negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
 		    
 		    if(useVisibleStates) {
 		    	double[][] randomMatrix = DoubleMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
 		    	
-				double[][] tmpHiddenStates = negVisibleNodes.dup().toArray2();
-				for (int y = 0; y < tmpHiddenStates.length; y++) {
-					for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
-						// (p + r) / 2
-						// ez eg.: .6, .9 => .75
-						if(tmpHiddenStates[y][x] > randomMatrix[y][x])
-							tmpHiddenStates[y][x] = 1;
+				double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
+				for (int y = 0; y < tmpVisibleStates.length; y++) {
+					for (int x = 0; x < tmpVisibleStates[y].length; x++) {				
+						if(tmpVisibleStates[y][x] > randomMatrix[y][x])
+							tmpVisibleStates[y][x] = 1;
 						else
-							tmpHiddenStates[y][x] = 0;			
+							tmpVisibleStates[y][x] = 0;			
 					}
 				}
-				
-				negVisibleNodes = new DoubleMatrix(tmpHiddenStates);
+				negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
 		    }
+		    
+		    negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
 		    
 		    final DoubleMatrix negHiddenActivations = negVisibleNodes.mmul(this.weights);		    
 		   
@@ -184,7 +207,6 @@ public class RBMJBlas implements IRBM {
 						tmpHiddenStates[y][x] = 0;			
 				}
 			}
-			
 			hiddenNodes = new DoubleMatrix(tmpHiddenStates);
 	    }
 	    
@@ -208,7 +230,6 @@ public class RBMJBlas implements IRBM {
 	  
 	    // Calculate the probabilities of turning the visible units on.
 		DoubleMatrix visibleNodes = logisticFunction.function(visibleActivations);
-		
 		
 		if(useVisibleStates) {
 	    	double[][] randomMatrix = DoubleMatrix.rand(visibleNodes.getRows(), visibleNodes.getColumns()).toArray2();

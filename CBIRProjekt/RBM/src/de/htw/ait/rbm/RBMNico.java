@@ -177,7 +177,7 @@ public class RBMNico implements IRBM {
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		int num_examples = trainingData.length; 
 		
