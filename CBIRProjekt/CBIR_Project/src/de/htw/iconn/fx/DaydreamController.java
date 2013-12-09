@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -63,9 +64,21 @@ public class DaydreamController implements Initializable, IFXController {
     }
     
     @FXML
+    private void btn_loadImageAction(ActionEvent event) {
+        Image image = this.model.loadImage();
+        if(!image.isError()) {
+            this.imgv_Input.setImage(image);
+        } else {
+            System.out.println("error");
+        }
+    	
+    	this.btn_daydream.setDisable(false);
+    	this.btn_stopDaydream.setDisable(true);
+    }
+    
+    @FXML
     private void btn_generateImageAction(ActionEvent event) {
     	this.imgv_Input.setImage(this.model.generateImage());
-    	this.btn_generateImage.setDisable(true);
     	this.btn_daydream.setDisable(false);
     	this.btn_stopDaydream.setDisable(true);
     }
@@ -84,7 +97,6 @@ public class DaydreamController implements Initializable, IFXController {
             	imgv_Result.setImage(model.daydream());
             }
         }, delay, period);
-    	this.btn_generateImage.setDisable(true);
     	this.btn_daydream.setDisable(true);
     	this.btn_stopDaydream.setDisable(false);
 	}
@@ -93,7 +105,6 @@ public class DaydreamController implements Initializable, IFXController {
 	private void btn_stopDaydreamAction(ActionEvent event) {
     	timer.cancel();
     	timer.purge();
-    	this.btn_generateImage.setDisable(false);
     	this.btn_daydream.setDisable(true);
     	this.btn_stopDaydream.setDisable(true);
 	}
