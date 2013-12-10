@@ -8,18 +8,9 @@ import de.htw.cbir.ARBMFeature;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -55,6 +46,14 @@ public class VisualizationController implements Initializable, IFXController {
     
     public void setRBMFeature(ARBMFeature rbmFeature) {
     	this.model.setRbmFeature(rbmFeature);
+    }
+    public void setWeights(double[][] w) {
+    	this.model.setWeights(w);
+    }
+    
+   public void update(){
+       this.img.setImage(this.model.generateImage());
+       this.img.setSmooth(false);
     }
     
 	@Override

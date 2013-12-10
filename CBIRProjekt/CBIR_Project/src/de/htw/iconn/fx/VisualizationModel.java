@@ -45,29 +45,25 @@ public class VisualizationModel {
         this.height = h;
     }
     
+     public void setWeights(double[][] w) {
+    	this.weights = w;
+    }
+    
     public Image generateImage() {
 
         WritableImage image = new WritableImage(width, height);
         PixelWriter writer = image.getPixelWriter();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < output; y++) {
+            for (int x = 0; x < input; x++) {
             	
                 
-                int value = random.nextInt(256);
-            	Color color = Color.rgb(value, value, value);
+                //int value = weights[y][x] ;
+            	//Color color = Color.rgb(value, value, value);
             	
-                writer.setColor(x, y, color);
+               // writer.setColor(x, y, color);
             }
         }
-        
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-        
-        this.pic = new Pic();
-        this.pic.setDisplayImage(bufferedImage);
-        this.pic.setName("Visualizer Image");
-        this.pic.setOrigWidth(width);
-        this.pic.setOrigHeight(height);
 
         return image;
     }
@@ -77,7 +73,7 @@ public class VisualizationModel {
        weights = rbmFeature.getWeights();
 
        int width = this.pic.getDisplayImage().getWidth();
-    	int height = this.pic.getDisplayImage().getHeight();
+       int height = this.pic.getDisplayImage().getHeight();
     	
         WritableImage image = new WritableImage(width, height);
         PixelWriter writer = image.getPixelWriter();
