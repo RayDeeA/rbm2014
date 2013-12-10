@@ -34,10 +34,16 @@ public class RBMSettingsLearningRateController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel();
+        this.txt_learningRate.setText("" + this.model.getConstantLearningRate());
     }    
 
     @FXML
     private void txt_learningRateKeyTyped(KeyEvent event) {
+        try {
+            this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
+        } catch(NumberFormatException e) {
+
+        }       
     }
 
     @Override
