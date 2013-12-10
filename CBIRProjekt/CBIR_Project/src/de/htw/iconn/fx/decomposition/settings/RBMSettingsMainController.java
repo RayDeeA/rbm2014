@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -25,6 +27,16 @@ public class RBMSettingsMainController extends AController {
     private AnchorPane view;
     
     private RBMSettingsMainModel model;
+    @FXML
+    private ComboBox<?> cmb_rbmImplementation;
+    @FXML
+    private ComboBox<?> cmb_rbmFeature;
+    @FXML
+    private ComboBox<?> cmb_logisticFunction;
+    @FXML
+    private TextField txt_inputSize;
+    @FXML
+    private TextField txt_outputSize;
 
     /**
      * Initializes the controller class.
