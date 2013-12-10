@@ -107,16 +107,15 @@ public class RBMSettingsController extends AController {
             
         AController controller = null;
         try {
-            controller = (AController) loadController(controllerURL);
+            controller = (AController)loadController(controllerURL);
            
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if(controller == null) throw new IllegalArgumentException("Controller not found on specified url");
+
                
         root.getChildren().add(child);
-        return controller;
+        return (AController) controller;
     }
     @FXML
     private void btn_intiializeRBMAction(ActionEvent event) {
