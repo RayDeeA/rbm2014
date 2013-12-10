@@ -8,11 +8,17 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -34,44 +40,58 @@ public class RBMSettingsMainController extends AController {
     @FXML
     private ComboBox<?> cmb_logisticFunction;
     @FXML
-    private TextField txt_inputSize;
-    @FXML
     private TextField txt_outputSize;
+    @FXML
+    private Label lbl_inputSize;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        this.model = new RBMSettingsMainModel();
+        initCmb();
+    }
+    
+    private void initCmb() {
+        List<String> rbmImplementation = new LinkedList<>(Arrays.asList(this.model.getRbmImplementations()));
+        ObservableList rbmImplementationObs = FXCollections.observableList(rbmImplementation);
+        this.cmb_rbmImplementation.setItems(rbmImplementationObs);
+        this.cmb_rbmImplementation.getSelectionModel().selectFirst();
+
+        List<String> rbmFeature = new LinkedList<>(Arrays.asList(this.model.getRbmFeatures()));
+        ObservableList rbmFeatureObs = FXCollections.observableList(rbmFeature);
+        this.cmb_rbmFeature.setItems(rbmFeatureObs);
+        this.cmb_rbmFeature.getSelectionModel().select(1);
+
+        List<String> logisticFunction = new LinkedList<>(Arrays.asList(this.model.getLogisticFunctions()));
+        ObservableList logisticFunctionObs = FXCollections.observableList(logisticFunction);
+        this.cmb_logisticFunction.setItems(logisticFunctionObs);
+        this.cmb_logisticFunction.getSelectionModel().selectFirst();
+    }
 
     @FXML
     private void cmb_rbmImplementationAction(ActionEvent event) {
+        this.model.setSelectedRbmImplementation(cmb_rbmImplementation.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void cmb_rbmFeatureAction(ActionEvent event) {
+        this.model.setSelectedRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void cmb_logisticFunctionAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void txt_inputSizeAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void txt_inputSizeKeyTyped(KeyEvent event) {
-    }
-
-    @FXML
-    private void txt_outputSizeAction(ActionEvent event) {
+        this.model.setSelectedLogisticFunction(cmb_logisticFunction.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void txt_outputSizeKeyTyped(KeyEvent event) {
+        try{
+            this.model.setOutputSize(Integer.parseInt(this.txt_outputSize.getText()));
+        }catch(NumberFormatException e){
+            
+        }
     }
 
     @Override

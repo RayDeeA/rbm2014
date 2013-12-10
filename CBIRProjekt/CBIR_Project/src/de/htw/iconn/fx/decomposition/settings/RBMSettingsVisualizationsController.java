@@ -27,20 +27,25 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showWeights;
     @FXML
     private CheckBox cbx_showErrorGraph;
+    
+    private RBMSettingsVisualizationsModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.model = new RBMSettingsVisualizationsModel();
     }    
 
     @FXML
     private void cbx_showWeightsAction(ActionEvent event) {
+        this.model.setShowWeights(cbx_showWeights.isSelected());
     }
 
     @FXML
     private void cbx_showErrorGraphAction(ActionEvent event) {
+        this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
     }
 
     @Override
@@ -48,4 +53,7 @@ public class RBMSettingsVisualizationsController extends AController {
         return view;
     }
     
+    public RBMSettingsVisualizationsModel getModel(){
+        return this.model;
+    }
 }

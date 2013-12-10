@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -26,40 +27,42 @@ import javafx.scene.layout.AnchorPane;
  */
 public class RBMSettingsStoppingConditionController extends AController{
     @FXML
-    private RadioButton rdi_epochs;
-    @FXML
-    private ToggleGroup grp_stoppingCondition;
-    @FXML
-    private RadioButton rdi_error;
-    @FXML
     private TextField txt_epochs;
     @FXML
     private TextField txt_error;
     @FXML
-    private AnchorPane view;
+    private AnchorPane view;   
+    @FXML
+    private CheckBox cbx_epochs;
+    @FXML
+    private CheckBox cbx_error;
+    
+    private RBMSettingsStoppingConditionModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.model = new RBMSettingsStoppingConditionModel();
     }    
 
     @FXML
-    private void rdi_epochsAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void rdi_errorAction(ActionEvent event) {
-    }
-
-    @FXML
     private void txt_epochsKeyTyped(KeyEvent event) {
+        try{
+            this.model.setEpochs(Integer.parseInt(this.txt_epochs.getText()));
+        }catch(NumberFormatException e){
+            
+        }
     }
 
     @FXML
     private void txt_errorKeyTyped(KeyEvent event) {
+        try{
+            this.model.setError(Double.parseDouble(this.txt_error.getText()));
+        }catch(NumberFormatException e){
+            
+        }
     }
 
     @Override
@@ -67,4 +70,17 @@ public class RBMSettingsStoppingConditionController extends AController{
         return this.view;
     }
     
+    public RBMSettingsStoppingConditionModel getModel(){
+        return this.model;
+    }
+
+    @FXML
+    private void cbx_epochsAction(ActionEvent event) {
+        this.model.setEpochsOn(cbx_epochs.isSelected());
+    }
+
+    @FXML
+    private void cbx_errorAction(ActionEvent event) {
+        this.model.setErrorOn(cbx_error.isSelected());
+    }
 }
