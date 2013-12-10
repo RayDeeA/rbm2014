@@ -6,7 +6,6 @@
 
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
@@ -82,6 +81,7 @@ public class RBMSettingsController extends AController {
         this.model = new RBMSettingsModel(rbm, items, controllers);
         
         trv_rbmSettingsMenue.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);   
+        
         trv_rbmSettingsMenue.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>(){
 
             @Override
