@@ -5,14 +5,18 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ARBMFeature;
+import java.awt.image.BufferedImage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javax.imageio.ImageIO;
 
 /**
  * FXML Controller class
@@ -25,23 +29,27 @@ public class VisualizationController implements Initializable, IFXController {
     private AnchorPane view;
     
     @FXML
-    private ImageView img;
+    private ImageView imgView;
+
     
     VisualizationModel model;
+    private Timer timer;
        
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new VisualizationModel();
+        this.model = new VisualizationModel();   
     }
     
     public void setDimensions(int x, int y){     
         this.model.setDCT(x, y);   
     }
-    public void setDisplayDimensions(int w, int h){
-       this.model.setDisplayDimensions(w, h);
+    public void setDisplayDimensions(){
+        
+        //(int)imgView.getFitWidth()
+       this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
     }
     
     public void setRBMFeature(ARBMFeature rbmFeature) {
@@ -49,11 +57,11 @@ public class VisualizationController implements Initializable, IFXController {
     }
     public void setWeights(double[][] w) {
     	this.model.setWeights(w);
+        update();
     }
     
    public void update(){
-       this.img.setImage(this.model.generateImage());
-       this.img.setSmooth(false);
+       imgView.setImage(this.model.generateImage());
     }
     
 	@Override

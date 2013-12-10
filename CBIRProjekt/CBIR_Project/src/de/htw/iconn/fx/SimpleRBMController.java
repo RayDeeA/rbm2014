@@ -369,6 +369,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
         this.model.trainRBM();
+        
         this.updateView();
     }
 
@@ -389,11 +390,12 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model.setShowVisualization(cbx_visualization.isSelected());
 
         if (this.model.isShowVisualization()) {
-            
-               
-            
             initializeVizView();
-
+            //Set DCT
+        this.visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        this.visualController.setDisplayDimensions();
+        this.visualController.update();
+        
             //updateTraining();
         } else {
             if (this.vz_viewer != null) {
@@ -632,6 +634,7 @@ public class SimpleRBMController implements Initializable, IFXController {
         //System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
         
        this.visualController.setWeights(this.model.getRbmFeature().getWeights());
+       
     }
 
 }
