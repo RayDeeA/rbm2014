@@ -7,16 +7,24 @@
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.iconn.rbm.IRBM;
+import javafx.scene.control.TreeItem;
 
 /**
  *
  * @author Moritz
  */
 public class RBMSettingsModel {
+    
+
+    private final AController[] controllers;
+    private final TreeItem[] items;
+
     private IRBM rbm;
 
-    public RBMSettingsModel(IRBM rbm) {
+    public RBMSettingsModel(IRBM rbm, TreeItem[] items, AController[] controllers) {
         this.rbm = rbm;
+        this.controllers = controllers;
+        this.items = items;
     }
     
     
@@ -28,6 +36,21 @@ public class RBMSettingsModel {
         return rbm;
     }
     
+    public TreeItem[] getTreeItems() {
+        return this.items;
+    }
     
+    public AController[] getControllers() {
+        return this.controllers;
+    }
+    
+    public <T extends AController> T getController(Class<T> type) {
+        for (AController aController : controllers) {
+            if(aController.getClass().equals(type)) {
+                return type.cast(aController);
+            }
+        }
+        return null;
+    } 
     
 }
