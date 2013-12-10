@@ -1,4 +1,4 @@
-package de.htw.iconn.fx.decomposition;
+package de.htw.iconn.fx.decomposition.settings;
 
 /**
  *

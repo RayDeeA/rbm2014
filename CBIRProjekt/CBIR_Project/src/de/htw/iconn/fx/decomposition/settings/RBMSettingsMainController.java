@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package de.htw.iconn.fx.decomposition;
+package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;

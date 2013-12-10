@@ -6,24 +6,19 @@
 
 package de.htw.iconn.fx.decomposition;
 
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -59,10 +54,6 @@ public class RBMSettingsController extends AController {
     private AController[] controllers;
     private TreeItem[] items;
 
-    
-    
-    
-
     /**
      * Initializes the controller class.
      */
@@ -72,12 +63,12 @@ public class RBMSettingsController extends AController {
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         this.model = new RBMSettingsModel(rbm);
         
-        TreeItem settingsRBM = new TreeItem<String>("RBM");
+        TreeItem<String> settingsRBM = new TreeItem<>("RBM");
         settingsRBM.setExpanded(true);
-        TreeItem settingsMain = new TreeItem<String>("Main");
+        TreeItem<String> settingsMain = new TreeItem<>("Main");
         RBMSettingsMainController controller = null;
         try {
-            controller = (RBMSettingsMainController) loadController("RBMSettingsMain.fxml");
+            controller = (RBMSettingsMainController) loadController("settings/RBMSettingsMain.fxml");
            
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -133,4 +124,12 @@ public class RBMSettingsController extends AController {
        return this.model;
     }
     
+    public <T extends AController> T getController(Class<T> type) {
+        for (AController aController : controllers) {
+            if(aController.getClass().equals(type)) {
+                return type.cast(aController);
+            }
+        }
+        return null;
+    }   
 }
