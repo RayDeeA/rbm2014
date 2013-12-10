@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,10 @@ public class RunHiddenController implements Initializable, IFXController {
     private Button btn_loadNewTestImage;
     @FXML
     private Button btn_runHidden;
+    @FXML
+    private ToggleButton btn_hiddenStates;
+    @FXML
+    private ToggleButton btn_visibleStates;
     @FXML
     private ImageView imgv_Result;
     @FXML
@@ -59,6 +64,16 @@ public class RunHiddenController implements Initializable, IFXController {
         } else {
             System.out.println("error");
         }
+    }
+    
+    @FXML
+    private void btn_hiddenStatesAction(ActionEvent event) {
+    	this.model.setUseHiddenStates(this.btn_hiddenStates.isSelected());
+    }
+    
+    @FXML
+    private void btn_visibleStatesAction(ActionEvent event) {
+    	this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
     }
 
     @FXML

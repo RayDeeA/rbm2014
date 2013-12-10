@@ -302,23 +302,23 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
-		rbm.train(trainingData, max_epochs);
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
+		rbm.train(trainingData, max_epochs, useHiddenStates, useVisibleStates);
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
-		return rbm.error(trainingData);
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
-		return rbm.run_visible(userData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
+		return rbm.run_visible(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return rbm.run_visible(hiddenData);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
+		return rbm.run_hidden(hiddenData, useVisibleStates);
 	}
 
 	@Override
@@ -387,10 +387,5 @@ public class RBMLogger implements IRBM, IRBMLogger{
 		}else{
 			return "no";
 		}
-	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		return rbm.daydream(numberOfSamples);
 	}
 }

@@ -24,11 +24,11 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 		this.evaluationModel = evaluationModel;
 	}
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		int steps = max_epochs / evaluationModel.getUpdateInterval();
 		for(int i = 0; i < steps; ++i){		
-			logger.train(trainingData, evaluationModel.getUpdateInterval());
-			frame.updatePanel(logger.getWeights()[0], logger.error(trainingData), 47.11);
+			logger.train(trainingData, evaluationModel.getUpdateInterval(), useHiddenStates, useVisibleStates);
+			frame.updatePanel(logger.getWeights()[0], logger.error(trainingData, useHiddenStates, useVisibleStates), 47.11);
 			evaluationModel.addToCollectedWeights(logger.getWeightsWithBias());
 			if((i*evaluationModel.getUpdateInterval()) % evaluationModel.getXmlOutputFrequency() == 0){
 				try {
@@ -80,18 +80,18 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
-		return logger.error(trainingData);
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+		return logger.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
-		return logger.run_visible(userData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
+		return logger.run_visible(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return logger.run_hidden(hiddenData);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
+		return logger.run_hidden(hiddenData, useVisibleStates);
 	}
 
 	@Override
@@ -132,10 +132,6 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	@Override
 	public boolean hasBias() {
 		return logger.hasBias();
-	}
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		return logger.daydream(numberOfSamples);
 	}
 
 }

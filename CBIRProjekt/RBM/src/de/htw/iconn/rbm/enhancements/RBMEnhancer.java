@@ -41,18 +41,18 @@ public class RBMEnhancer implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel = true;
 		this.evaluationModel.setEpochs(max_epochs);
 		
 		for (int i = 0; i < max_epochs; i++) {
 			updateModel = true;
-			rbm.train(trainingData, 1);
+			rbm.train(trainingData, 1, useHiddenStates, useVisibleStates);
 			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
-						this.evaluationModel.setError(rbm.error(trainingData));
+						this.evaluationModel.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
 						this.evaluationModel.setWeights(rbm.getWeightsWithBias());
 						updateModel = false;
 					}
@@ -67,18 +67,18 @@ public class RBMEnhancer implements IRBM {
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
-		return rbm.error(trainingData);
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData) {
-		return rbm.run_visible(userData);
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
+		return rbm.run_visible(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
-		return rbm.run_hidden(hiddenData);
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
+		return rbm.run_hidden(hiddenData, useVisibleStates);
 	}
 
 	@Override
@@ -123,13 +123,6 @@ public class RBMEnhancer implements IRBM {
 	
 	public IRBM getRBM() {
 		return rbm;
-	}
-
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

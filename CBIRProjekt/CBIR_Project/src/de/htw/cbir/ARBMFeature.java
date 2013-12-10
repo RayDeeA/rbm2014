@@ -39,21 +39,21 @@ public abstract class ARBMFeature {
 	 */
 	public abstract ARBMFeature shallowCopy();
 
-	public void train(Pic[] images, int maxEpoche) {
+	public void train(Pic[] images, int maxEpoche, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
 		if (maxEpoche > 0)
-			rbm.train(trainingsData, maxEpoche);
+			rbm.train(trainingsData, maxEpoche, useHiddenStates, useHiddenStates);
 	}
 
-	public double getError(Pic[] images) {
+	public double getError(Pic[] images, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
 
-		return rbm.error(trainingsData);// Math.sqrt(error / trainingsData.length / (inputSize + 1));
+		return rbm.error(trainingsData, useHiddenStates, useVisibleStates);// Math.sqrt(error / trainingsData.length / (inputSize + 1));
 	}
 
-	public double getRawError(Pic[] images) {
+	public double getRawError(Pic[] images, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
-		return rbm.error(trainingsData);
+		return rbm.error(trainingsData, useHiddenStates, useHiddenStates);
 	}
 
 	/**
@@ -63,8 +63,8 @@ public abstract class ARBMFeature {
 	 */
 	protected abstract double[][] createTrainingsData(Pic[] images);
 
-	public abstract double[] getHidden(Pic image);
-    public abstract double[] getVisible(double[] hiddenData);
+	public abstract double[] getHidden(Pic image, boolean useHiddenStates);
+    public abstract double[] getVisible(double[] hiddenData, boolean useVisibleStates);
 
 	public int getVisibleCount() {
 		return inputSize;

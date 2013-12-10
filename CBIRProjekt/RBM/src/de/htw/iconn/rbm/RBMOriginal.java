@@ -129,15 +129,12 @@ public class RBMOriginal implements IRBM {
     }
 	
 	@Override
-	public double error(double[][] trainingData) {
-		
-		
-		
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		return error;
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		Printer.printMatrix("weights", weights);
 		/*
@@ -236,8 +233,9 @@ public class RBMOriginal implements IRBM {
 
 	}
 	
+	// boolean useHiddenStates not implemented
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 		/*
 	    Assuming the RBM has been trained (so that weights for the network have been learned),
 	    run the network on a set of visible units, to get a sample of the hidden units.
@@ -308,8 +306,9 @@ public class RBMOriginal implements IRBM {
 	    return hiddenStatesWithoutBias;
 	}
 	
+	// boolean useVisibleStates not implemented
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
 
 		int numberOfExamples = hiddenData.length;
 		int numberOfChoicesPerExample = hiddenData[0].length;
@@ -399,7 +398,7 @@ public class RBMOriginal implements IRBM {
 						{ 0, 0, 1, 1, 1, 0 },
 	    			   };
 
-		rbm.train(data, 1000);
+		rbm.train(data, 1000, false, false);
 		rbm.printMatrix("Weights", rbm.weights);
 		
 		double user[][] = {
@@ -410,9 +409,9 @@ public class RBMOriginal implements IRBM {
 		
 		for(int i = 0; i < 1; i++) {
 			rbm.printMatrix("User", user);
-			double[][] result1 = rbm.run_visible(user);
+			double[][] result1 = rbm.run_visible(user, true);
 			rbm.printMatrix("Result", result1);
-			double[][] result2 = rbm.run_hidden(result1);
+			double[][] result2 = rbm.run_hidden(result1, true);
 			rbm.printMatrix("Check", result2);
 			System.out.println("");
 		}
@@ -444,12 +443,6 @@ public class RBMOriginal implements IRBM {
 	@Override
 	public boolean hasBias() {
 		return true;
-	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

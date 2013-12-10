@@ -40,7 +40,7 @@ public class RBMNico implements IRBM {
 	}
 
 	@Override
-	public void train(double[][] trainingData, int max_epochs ) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		int num_examples = trainingData.length; 
 		
@@ -177,7 +177,7 @@ public class RBMNico implements IRBM {
 	}
 
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		int num_examples = trainingData.length; 
 		
@@ -266,8 +266,10 @@ public class RBMNico implements IRBM {
     	units in the data matrix passed in.
 	*/
 	
+	
+	// useHiddenStates not implemented
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 		
 		 int num_examples = userData.length;
 		 
@@ -315,8 +317,10 @@ public class RBMNico implements IRBM {
 	units in the data matrix passed in.
 	*/
 	
+	
+	// boolean useHiddenStates not implemented
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisbibleStates) {
 		
 		int num_examples = hiddenData.length;
 		
@@ -388,12 +392,6 @@ public class RBMNico implements IRBM {
 	@Override
 	public boolean hasBias() {
 		return true;
-	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

@@ -23,10 +23,10 @@ public class RBMPerformanceTest {
 		
 		
 		RBMNico rbm = new RBMNico(trainingData[0].length, num_hidden, 0.1);
-		rbm.train(trainingData, max_epochs);
+		rbm.train(trainingData, max_epochs, false, false);
 	
-		double[][] hidden_data = rbm.run_visible(trainingData);
-		double[][] reconstructed_data = rbm.run_hidden(hidden_data);
+		double[][] hidden_data = rbm.run_visible(trainingData, false);
+		double[][] reconstructed_data = rbm.run_hidden(hidden_data, false);
 		
 		double diff = 0;
 		for (int i = 0; i < trainingData.length; i++) {
@@ -39,7 +39,7 @@ public class RBMPerformanceTest {
 		System.out.println("Time:" + (System.nanoTime() - nanosec) / 1000000 +"ms");
 		
 		long nanosec1 = System.nanoTime();
-		double[][] reconstructed_data1 = rbm.run_hidden(hidden_data);
+		double[][] reconstructed_data1 = rbm.run_hidden(hidden_data, false);
 		System.out.println("Reconstruction Time:" + (System.nanoTime() - nanosec1)+"ns");
 	}
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="585.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.BenchmarkController">
+  <children>
+    <TitledPane animated="false" layoutX="0.0" layoutY="1.0" prefHeight="-1.0" prefWidth="585.0" text="Benchmark">
+      <content>
+        <GridPane disable="false" gridLinesVisible="false" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
+          <children>
+            <Button id="btn_loadImageSet" mnemonicParsing="false" onAction="#btn_loadImageSetAction" prefWidth="144.0" text="Load Image Set" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets />
+              </GridPane.margin>
+            </Button>
+            <CheckBox id="cbx_imageViewer" mnemonicParsing="false" onAction="#cbx_imageViewerAction" text="ImageViewer" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <Button id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_testFeaturesAction" prefWidth="142.0" text="Test Features" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <ComboBox id="btn_mapTests" onAction="#cmb_mAPTestsAction" prefWidth="294.0" promptText="Select mAP Test" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Button id="btn_startTest" mnemonicParsing="false" onAction="#btn_startmAPTestAction" prefWidth="141.0" text="Start mAP test" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label id="lbl_imageSet" fx:id="txt_imageSetSelected" prefWidth="280.0" text="no images selected" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+            <Button id="btn_daydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_daydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+          </padding>
+          <rowConstraints>
+            <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </content>
+    </TitledPane>
+  </children>
+</AnchorPane>

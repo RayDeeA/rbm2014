@@ -45,7 +45,7 @@ public class Sorter_DCTRBM extends Sorter {
 
 	@Override
 	protected double[] getFeatureVector(Pic image) {
-		return dctRBM.getHidden(image);
+		return dctRBM.getHidden(image, false);
 	}
 
 	@Override

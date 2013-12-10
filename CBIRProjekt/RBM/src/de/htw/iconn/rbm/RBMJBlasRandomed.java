@@ -49,7 +49,7 @@ public class RBMJBlasRandomed implements IRBM {
 
 	
 	@Override
-	public double error(double[][] trainingData) {
+	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		DoubleMatrix data = new DoubleMatrix(trainingData);
 		
 		final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
@@ -96,7 +96,7 @@ public class RBMJBlasRandomed implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs) {
+	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
 //		Printer.printMatrix("JBLAS Weights", weights);
 		
@@ -181,8 +181,9 @@ public class RBMJBlasRandomed implements IRBM {
 
 	}
 	
+	// boolean useHiddenStates not implemented
 	@Override
-	public double[][] run_visible(double[][] userData) {
+	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
 
 		DoubleMatrix data = new DoubleMatrix(userData);
 		
@@ -218,8 +219,9 @@ public class RBMJBlasRandomed implements IRBM {
 	    return hiddenProbsWithoutBias.toArray2();
 	}
 	
+	// boolean useVisibleStates not implemented
 	@Override
-	public double[][] run_hidden(double[][] hiddenData) {
+	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
 		
 		DoubleMatrix data = new DoubleMatrix(hiddenData);
 	    
@@ -295,11 +297,5 @@ public class RBMJBlasRandomed implements IRBM {
 	@Override
 	public boolean hasBias() {
 		return true;
-	}
-
-	@Override
-	public double[][] daydream(int numberOfSamples) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -43,7 +43,7 @@ public class SorterRBMFeatures extends ASorter {
 
 	@Override
 	protected double[] getFeatureVector(Pic image) {
-		return rbmWrapper.getHidden(image);
+		return rbmWrapper.getHidden(image, false);
 	}
 
 	@Override
