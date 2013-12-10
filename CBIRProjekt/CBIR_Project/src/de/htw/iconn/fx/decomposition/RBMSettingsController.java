@@ -68,7 +68,6 @@ public class RBMSettingsController extends AController {
         TreeItem<String> settingsMain = new TreeItem<>("Main");
         
         
-        IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         
         TreeItem[] items = new TreeItem[]{
             settingsMain
@@ -77,6 +76,9 @@ public class RBMSettingsController extends AController {
         AController[] controllers = new AController[]{
             addSettings(settingsRBM, settingsMain, "settings/RBMSettingsMain.fxml")
         };
+        
+        
+        IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         this.model = new RBMSettingsModel(rbm, items, controllers);
         
         trv_rbmSettingsMenue.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);   
