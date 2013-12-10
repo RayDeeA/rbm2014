@@ -65,15 +65,27 @@ public class RBMSettingsController extends AController {
         settingsRBM.setExpanded(true);
         
         TreeItem<String> settingsMain = new TreeItem<>("Main");
+        TreeItem<String> settingsStoppingCondition = new TreeItem<>("Stopping Conditions");
+        TreeItem<String> settingsLearningRate = new TreeItem<>("Learning Rate");
+        TreeItem<String> settingsVisualizations = new TreeItem<>("Training Visualizations");
+        TreeItem<String> settingsLogger = new TreeItem<>("Logger");
         
         
         
         TreeItem[] items = new TreeItem[]{
-            settingsMain
+            settingsMain,
+            settingsStoppingCondition,
+            settingsLearningRate,
+            settingsVisualizations,
+            settingsLogger
         }; 
         
         AController[] controllers = new AController[]{
-            addSettings(settingsRBM, settingsMain, "settings/RBMSettingsMain.fxml")
+            addSettings(settingsRBM, settingsMain, "settings/RBMSettingsMain.fxml"),
+            addSettings(settingsRBM, settingsStoppingCondition, "settings/RBMSettingsStoppingCondition.fxml"),
+            addSettings(settingsRBM, settingsLearningRate, "settings/RBMSettingsLearningRate.fxml"),
+            addSettings(settingsRBM, settingsVisualizations, "settings/RBMSettingsVisualizations.fxml"),
+            addSettings(settingsRBM, settingsLogger, "settings/RBMSettingsLogger.fxml")
         };
         
         
@@ -90,7 +102,7 @@ public class RBMSettingsController extends AController {
                 
                 int idx = 0;
                 for (int i = 0; i < items.length; i++) {
-                    if(items[i] == newItem) {
+                    if(items[i].equals(newItem)) {
                         idx = i;
                         break;
                     }

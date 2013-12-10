@@ -25,13 +25,15 @@ public class RBMSettingsLearningRateController extends AController{
     private TextField txt_learningRate;
     @FXML
     private AnchorPane view;
+    
+    private RBMSettingsLearningRateModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.model = new RBMSettingsLearningRateModel();
     }    
 
     @FXML
@@ -41,6 +43,10 @@ public class RBMSettingsLearningRateController extends AController{
     @Override
     public Node getView() {
         return this.view;
+    }
+    
+    public RBMSettingsLearningRateModel getModel() {
+        return model;
     }
     
 }
