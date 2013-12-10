@@ -12,4 +12,19 @@ package de.htw.iconn.fx.decomposition.settings;
  */
 public class RBMSettingsLearningRateModel {
     
+    private double constantLearningRate = 0.1;
+
+    /**
+     * @return the constantLearningRate
+     */
+    public double getConstantLearningRate() {
+        return constantLearningRate;
+    }
+
+    /**
+     * @param constantLearningRate the constantLearningRate to set
+     */
+    public void setConstantLearningRate(double constantLearningRate) {
+        this.constantLearningRate = constantLearningRate;
+    }
 }
