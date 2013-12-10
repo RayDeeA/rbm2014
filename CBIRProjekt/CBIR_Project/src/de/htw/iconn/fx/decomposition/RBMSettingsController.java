@@ -45,6 +45,8 @@ public class RBMSettingsController extends AController {
     
     private RBMSettingsModel model;
     
+    
+    
 
     /**
      * Initializes the controller class.
@@ -54,6 +56,11 @@ public class RBMSettingsController extends AController {
         //dummy rbm only temporary for testing
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         this.model = new RBMSettingsModel(rbm);
+        TreeItem settingsRBM = new TreeItem<String>("RBM");
+        TreeItem settingsMain = new TreeItem<String>("Main");
+        settingsRBM.getChildren().add(settingsMain);
+        trv_rbmSettingsMenue.setRoot(settingsRBM);
+        
         //trv_rbmSettingsMenue.setRoot(new TreeItem<String>(RBM));
     }    
 
