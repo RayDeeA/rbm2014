@@ -53,6 +53,6 @@
     </TitledPane>
   </children>
   <stylesheets>
-    <URL value="@simplerbm.css" />
+    <URL value="@std.css" />
   </stylesheets>
 </AnchorPane>
