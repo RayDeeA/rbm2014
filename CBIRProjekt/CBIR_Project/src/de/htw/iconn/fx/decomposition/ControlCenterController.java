@@ -23,6 +23,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 /**
  * FXML Controller class
@@ -38,24 +40,28 @@ public class ControlCenterController extends AController  {
     private VBox vbox;
         
     private BenchmarkController benchmarkController;
+    @FXML
+    private MenuItem mnu_saveConfiguration;
+    @FXML
+    private MenuItem mnu_loadConfiguration;
+    
+    private RBMSaver rbmSaver;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rbmSaver = new RBMSaver();
+        
         try {
-            
-            // will load the default rbm #hack
-            // mnu_newRbmAction(new ActionEvent());
-
             benchmarkController =  (BenchmarkController)loadController("Benchmark.fxml");
             
             vbox.getChildren().add(benchmarkController.getView());
             
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }   
     }
     
 
@@ -76,5 +82,19 @@ public class ControlCenterController extends AController  {
     @Override
     public Node getView() {
         return this.view;
+    }
+
+    @FXML
+    private void mnu_saveConfigurationAction(ActionEvent event) {
+        try {
+            rbmSaver.saveConfigurationToFile(this.benchmarkController.getModel());
+        } catch (IOException | ParserConfigurationException | TransformerException ex) {
+            System.err.println("ERROR: could not save configuration to file");
+            Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void mnu_loadConfigurationAction(ActionEvent event) {
     }
 }

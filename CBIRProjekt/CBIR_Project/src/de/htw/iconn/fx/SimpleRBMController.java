@@ -1,6 +1,8 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
+
+import java.awt.Checkbox;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,7 +27,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -63,6 +65,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private CheckBox cbx_logger;
     @FXML
     private CheckBox cbx_visualization;
+    @FXML
+    private Checkbox cbx_visualizationError;
     @FXML
     private TextField txt_updateFrequency;
     @FXML
@@ -627,6 +631,11 @@ public class SimpleRBMController implements Initializable, IFXController {
         } else {
             closePRChartView();
         }
+    }
+    
+    @FXML
+    private void cbx_visualizationErrorAction(ActionEvent event) {
+    	
     }
 
     private void updateTraining() {
