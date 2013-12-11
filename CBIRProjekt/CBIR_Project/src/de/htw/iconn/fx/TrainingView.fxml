@@ -18,12 +18,12 @@
         <Button mnemonicParsing="false" text="Play" />
       </items>
     </ToolBar>
-    <LineChart id="LineChartNxN" fx:id="chart_line" prefHeight="370.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+    <LineChart fx:id="chart_line" createSymbols="true" prefHeight="370.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
       <xAxis>
-        <NumberAxis fx:id="axis_epochs" side="BOTTOM" />
+        <NumberAxis fx:id="axis_epochs" label="Epochs" side="BOTTOM" />
       </xAxis>
       <yAxis>
-        <NumberAxis fx:id="axis_error" side="LEFT" />
+        <NumberAxis fx:id="axis_error" label="Error" minorTickCount="2" side="LEFT" tickLabelGap="2.0" tickLabelRotation="0.0" upperBound="125.0" />
       </yAxis>
     </LineChart>
   </children>
