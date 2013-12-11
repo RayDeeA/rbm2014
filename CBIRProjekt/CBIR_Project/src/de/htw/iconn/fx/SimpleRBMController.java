@@ -209,6 +209,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 	}
 
 	private void updateView() {
+		System.out.println("updateView");
 
 		if (this.model.getImageManager() == null) {
 			lbl_imageSet.setText("no image set selected");
@@ -218,6 +219,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
 		while (this.model.isRbmTraining()) {
 			updateTraining();
+			updateError();
 		}
 
 		this.txt_inputSize.setDisable(this.model.getSelectedRbmFeature() == 0 || this.model.getSelectedRbmFeature() == 1);
@@ -351,9 +353,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 		}
 	}
 
-	private void initializeTrainingErrorScatterView() {
+	private void initializeTrainingErrorView() {
 
-		System.out.println("initialize error scatter viewer");
 		try {
 			this.errorController = (TrainingViewController) loadController("TrainingView.fxml");
 			Parent root = (Parent) this.errorController.getView();
@@ -791,12 +792,12 @@ public class SimpleRBMController implements Initializable, IFXController {
 		this.model.setShowError(cbx_visualisationError.isSelected());
 
 		if (this.model.isShowTrainingError()) {
-			initializeTrainingErrorScatterView();
+			initializeTrainingErrorView();
 			//Set DCT
 			this.errorController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
 			this.errorController.setDisplayDimensions();
 
-			this.updateError();
+//			this.updateError();
 		} else {
 			if (this.errorStage != null) {
 				this.errorStage.close();
