@@ -6,6 +6,14 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.decomposition.XMLWeightsLoader;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+
 /**
  *
  * @author Moritz
@@ -17,7 +25,12 @@ public class RBMSettingsWeightsModel {
     private boolean useSeed = false;
     private int seed = 0;
     private double[][] weights;
+    private final XMLWeightsLoader loader;
 
+    public RBMSettingsWeightsModel() {
+        this.loader = new XMLWeightsLoader();
+    }
+            
     public boolean isUseBias() {
         return useBias;
     }
@@ -62,6 +75,17 @@ public class RBMSettingsWeightsModel {
 
     public void setWeights(double[][] weights) {
         this.weights = weights;
+    }
+    
+    public void loadWeights() {
+        try {
+            weights = this.loader.loadWeightsFromXML();
+            this.initializedWeights = false;
+            
+            System.out.println(getWeights()[0][0]);
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(RBMSettingsWeightsModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
    
 }

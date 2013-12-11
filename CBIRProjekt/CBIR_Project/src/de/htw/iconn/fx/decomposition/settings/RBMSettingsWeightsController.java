@@ -48,7 +48,7 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_loadWeightsAction(ActionEvent event) {
-        this.model.setInitializedWeights(false);
+        this.model.loadWeights();
     }
 
     @FXML

@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 public class XMLWeightsLoader {
     private File loadFile(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("CBIR_Project/RBMLogs"));
+        fileChooser.setInitialDirectory(new File("RBMLogs"));
         Stage fileChooserStage = new Stage();
         File file = fileChooser.showOpenDialog(fileChooserStage);
         return file;

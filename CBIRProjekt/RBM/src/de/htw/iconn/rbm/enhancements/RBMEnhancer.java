@@ -18,7 +18,7 @@ public class RBMEnhancer implements IRBM {
 		this.rbm = rbm;
 		this.traningEnhancements = new LinkedList<>();
 		this.endEnhancements = new LinkedList<>();
-                this.info = new RBMInfoPackage(0, rbm.getWeights()[0], 0);
+                this.info = new RBMInfoPackage(0, rbm.getWeightsWithBias()[0], 0);
 	}
 
 	
@@ -64,7 +64,7 @@ public class RBMEnhancer implements IRBM {
 
         private void setInfo(IRBM rbm, double[][] trainingData, int epochs) {
                 this.info.setError(rbm.error(trainingData, false, false));
-                this.info.setWeights(rbm.getWeights()[0]);
+                this.info.setWeights(rbm.getWeightsWithBias()[0]);
                 this.info.setEpochs(epochs);
         }
 	@Override
