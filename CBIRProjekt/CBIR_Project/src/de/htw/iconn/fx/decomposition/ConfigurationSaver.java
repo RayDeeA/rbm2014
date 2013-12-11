@@ -6,6 +6,18 @@
 
 package de.htw.iconn.fx.decomposition;
 
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateModel;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsLoggerController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsLoggerModel;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainModel;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsStoppingConditionController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsStoppingConditionModel;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
 import de.htw.iconn.rbm.IRBM;
 import java.io.File;
 import java.io.IOException;
@@ -36,14 +48,11 @@ import org.w3c.dom.Element;
 public class ConfigurationSaver {   
     private final String baseFolder = "RBMSaver";
     
-    public void saveConfigurationToFile(BenchmarkModel model) throws 
+    public void saveConfigurationToFile(BenchmarkModel benchmarkModel) throws 
             IOException, ParserConfigurationException, 
             TransformerConfigurationException, TransformerException{
         
-        IRBM rbmStack = model.getRbmStack();
-        
-        // TODO: get rbm list from benchmarkmodel
-        LinkedList<IRBM> rbms = new LinkedList<>();
+        LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         
         String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());		
         String xmlFolder = this.baseFolder;
@@ -58,52 +67,75 @@ public class ConfigurationSaver {
         File xmlFile = new File(xmlFolder + "/" + xmlLocation);
         StreamResult result = new StreamResult(xmlFile);
 
-        // Output to console for testing
-        //StreamResult result = new StreamResult(System.out);
-
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        //logdata
-        Element rootElement = doc.createElement("data");
+        // root
+        Element rootElement = doc.createElement("root");
         doc.appendChild(rootElement);
+        
+        // benchmark
+        Element benchmarkElement = doc.createElement("benchmark");
+        rootElement.appendChild(benchmarkElement);
+        retrieveBenchmarkData(benchmarkModel, benchmarkElement, doc);  
         
         int rbmID = 0;
         
-        for(IRBM rbm : rbms){
-            //rbm
+        for(RBMSettingsController rbmSettings : rbmSettingsList){
+         
+            // get different models from controllers
+            IRBM rbm = rbmSettings.getModel().getRBM();
+            RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
+            RBMSettingsLearningRateModel learningRateModel = rbmSettings.getModel().getController(RBMSettingsLearningRateController.class).getModel();
+            RBMSettingsStoppingConditionModel stoppingConditionModel = rbmSettings.getModel().getController(RBMSettingsStoppingConditionController.class).getModel();
+            RBMSettingsVisualizationsModel visualizationsModel = rbmSettings.getModel().getController(RBMSettingsVisualizationsController.class).getModel();
+            RBMSettingsLoggerModel loggerModel = rbmSettings.getModel().getController(RBMSettingsLoggerController.class).getModel();
+            RBMSettingsWeightsModel weightsModel = rbmSettings.getModel().getController(RBMSettingsWeightsController.class).getModel();         
+            
+            // create document nodes
             Element rbmElement = doc.createElement("rbm");
-            doc.appendChild(rbmElement);
+            rootElement.appendChild(rbmElement);
 
             Attr id = doc.createAttribute("id");
-            id.setValue(new Integer(rbmID).toString());
+            id.setValue(its(rbmID++));
             rbmElement.setAttributeNode(id);
-
-            StringBuffer rowSB;
-            double[][] weights2d = rbm.getWeightsWithBias()[0];
             
-            Element weightsElement = doc.createElement("weights");
-            rbmElement.appendChild(weightsElement);
-
-            for(int i = 0; i < weights2d.length; ++i){
-                rowSB = new StringBuffer();
-                for(int j = 0; j < weights2d[0].length; ++j){
-                        rowSB.append(weights2d[i][j]);
-                        if(j < weights2d[0].length - 1){
-                                rowSB.append(",");
-                        }
-                }
-                Element rowElement = doc.createElement("row");
-                weightsElement.appendChild(rowElement);
-
-                Attr num = doc.createAttribute("num");
-                num.setValue(new Integer(i).toString());
-                rowElement.setAttributeNode(num);
-
-                rowElement.appendChild(doc.createTextNode(rowSB.toString()));
-            } 
-            ++rbmID;
+            // settings root
+            Element settingsElement = doc.createElement("settings");
+            rbmElement.appendChild(settingsElement);
+            
+            // settings children
+            Element mainSettingsElement = doc.createElement("main");
+            settingsElement.appendChild(mainSettingsElement);         
+            retrieveMainData(mainModel, mainSettingsElement, doc);
+            
+            Element learningRateSettingsElement = doc.createElement("learningRate");
+            settingsElement.appendChild(learningRateSettingsElement);
+            retrieveLearningRateData(learningRateModel, learningRateSettingsElement, doc);
+            
+            Element stoppingConditionSettingsElement = doc.createElement("stoppingCondition");
+            settingsElement.appendChild(stoppingConditionSettingsElement);
+            retrieveStoppingConditionData(stoppingConditionModel, stoppingConditionSettingsElement, doc);
+            
+            Element visualizationsSettingsElement = doc.createElement("visualizations");
+            settingsElement.appendChild(mainSettingsElement);
+            retrieveVisualizationsData(visualizationsModel, visualizationsSettingsElement, doc);
+            
+            Element loggerSettingsElement = doc.createElement("logger");
+            settingsElement.appendChild(loggerSettingsElement);
+            retrieveLoggerData(loggerModel, loggerSettingsElement, doc);
+            
+            Element weightsSettingsElement = doc.createElement("weights");
+            settingsElement.appendChild(weightsSettingsElement);
+            retrieveWeightsData(weightsModel, weightsSettingsElement, doc);
+            
+            if(rbm != null){
+                // machine
+                Element machineElement = doc.createElement("machine");
+                rbmElement.appendChild(machineElement);
+                retrieveRBMData(rbm, machineElement, doc);
+            }
         }
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -113,8 +145,113 @@ public class ConfigurationSaver {
         transformer.transform(source, result);
     }
     
-    public IRBM loadConfigurationFromFile(){
-        IRBM rbmStack = null;
-        return rbmStack;
+    private void retrieveRBMData(IRBM rbm, Element parent, Document doc){
+        createDataElement("int", "inputSize", its(rbm.getInputSize()), parent, doc);
+        createDataElement("int", "ouputSize", its(rbm.getOutputSize()), parent, doc);
+        createDataElement("boolean", "useBias", bts(rbm.hasBias()), parent, doc);
+        
+        Element weightsElement = doc.createElement("weights");
+        parent.appendChild(weightsElement);
+
+        double[][] weights2d = rbm.getWeightsWithBias()[0];
+        StringBuffer rowSB;
+        for(int i = 0; i < weights2d.length; ++i){
+            rowSB = new StringBuffer();
+            for(int j = 0; j < weights2d[0].length; ++j){
+                    rowSB.append(weights2d[i][j]);
+                    if(j < weights2d[0].length - 1){
+                            rowSB.append(",");
+                    }
+            }
+            Element rowElement = doc.createElement("row");
+            weightsElement.appendChild(rowElement);
+
+            Attr num = doc.createAttribute("num");
+            num.setValue(its(i));
+            rowElement.setAttributeNode(num);
+
+            rowElement.appendChild(doc.createTextNode(rowSB.toString()));
+        }
+    }
+    
+    private void retrieveBenchmarkData(BenchmarkModel model, Element parent, Document doc){
+        createDataElement("boolean", "isShowImageViewer", bts(model.isShowImageViewer()), parent, doc);
+        if(model.getImageManager() != null)
+            createDataElement("String", "selectedImageSet", model.getImageManager().getImageSetName(), parent, doc);
+    }
+    
+    private void retrieveMainData(RBMSettingsMainModel model, Element parent, Document doc){
+        createDataElement("int", "selectedRBMImplementation", its(model.getSelectedRbmImplementation()), parent, doc);
+        createDataElement("int", "selectedRBMFeature", its(model.getSelectedRbmFeature()), parent, doc);
+        createDataElement("int", "selectedLogisticFunction", its(model.getSelectedLogisticFunction()), parent, doc);
+        createDataElement("int", "inputSize", its(model.getInputSize()), parent, doc);
+        createDataElement("int", "outputSize", its(model.getOutputSize()), parent, doc);
+    }
+    
+    private void retrieveLearningRateData(RBMSettingsLearningRateModel model, Element parent, Document doc){
+        createDataElement("double", "constantLearningRate", dts(model.getConstantLearningRate()), parent, doc);
+    }
+    
+    private void retrieveStoppingConditionData(RBMSettingsStoppingConditionModel model, Element parent, Document doc){
+        createDataElement("boolean", "epochsOn", bts(model.isEpochsOn()), parent, doc);
+        createDataElement("boolean", "errorOn", bts(model.isErrorOn()), parent, doc);
+        createDataElement("int", "epochs", its(model.getEpochs()), parent, doc);
+        createDataElement("double", "error", dts(model.getError()), parent, doc);
+    }
+    
+    private void retrieveVisualizationsData(RBMSettingsVisualizationsModel model, Element parent, Document doc){
+        createDataElement("boolean", "showWeights", bts(model.isShowWeights()), parent, doc);
+        createDataElement("boolean", "showErrorGraph", bts(model.isShowErrorGraph()), parent, doc);
+    }
+    
+    private void retrieveLoggerData(RBMSettingsLoggerModel model, Element parent, Document doc){
+        createDataElement("boolean", "continuousLoggerOn", bts(model.isContinuousLoggerOn()), parent, doc);
+        createDataElement("boolean", "finalLoggerOn", bts(model.isFinalLoggerOn()), parent, doc);
+        createDataElement("int", "continuousInterval", its(model.getContinuousInterval()), parent, doc);
+    }
+    
+    private void retrieveWeightsData(RBMSettingsWeightsModel model, Element parent, Document doc){
+        createDataElement("boolean", "initializedWeights", bts(model.isInitializedWeights()), parent, doc);
+        createDataElement("boolean", "useBias", bts(model.isUseBias()), parent, doc);
+        createDataElement("boolean", "useSeed", bts(model.isUseSeed()), parent, doc);
+        createDataElement("int", "seed", its(model.getSeed()), parent, doc);
+    }
+    
+    private void createDataElement(String type, String key, String value, Element parent, Document doc){
+        Element dataElement = doc.createElement("data");
+        parent.appendChild(dataElement);
+        
+        Attr typeAttribute = doc.createAttribute("type");
+        typeAttribute.setValue(type);
+        dataElement.setAttributeNode(typeAttribute);
+        
+        Attr keyAttribute = doc.createAttribute("key");
+        keyAttribute.setValue(key);
+        dataElement.setAttributeNode(keyAttribute);
+        
+        Attr valueAttribute = doc.createAttribute("value");
+        valueAttribute.setValue(value);
+        dataElement.setAttributeNode(valueAttribute);
+    }
+    
+    // boolean to string
+    private String bts(boolean b){
+        if(b) return "true";
+        return "false";
+    }
+    
+    // int to string
+    private String its(int i){
+        return new Integer(i).toString();
+    }
+    
+    // double to string
+    private String dts(double d){
+        return new Double(d).toString();
+    }
+    
+    public BenchmarkModel loadConfigurationFromFile(){
+        BenchmarkModel benchmarkModel = null;
+        return benchmarkModel;
     }
 }
