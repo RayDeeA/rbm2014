@@ -144,6 +144,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private WeightVisualizationController visualController;
     private Stage trainingStage;
     private TrainingViewController trainingController;
+    private Stage errorStage;
+    private TrainingViewController errorController;
 
     /**
      * Initializes the controller class.
@@ -337,7 +339,9 @@ public class SimpleRBMController implements Initializable, IFXController {
     }
     
     private void initializeTrainingErrorScatterView() {
-        try {
+        
+    	/*
+    	try {
          
             this.trainingController = (TrainingViewController) loadController("TrainingView.fxml");
             Parent root = (Parent) this.trainingController.getView();
@@ -349,7 +353,46 @@ public class SimpleRBMController implements Initializable, IFXController {
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
+    	
+        System.out.println("initialize error scatter viewer");
+        try {
+            this.errorController = (TrainingViewController) loadController("TrainingView.fxml");
 
+            Parent root = (Parent) this.errorController.getView();
+            Scene scene = new Scene(root, 600, 400);
+            this.errorStage = new Stage();
+            this.errorStage.setTitle("Map Viewer");
+            this.errorStage.setScene(scene);
+            this.errorStage.setOnCloseRequest(new EventHandler() {
+
+                @Override
+                public void handle(Event t) {
+
+                }
+
+            });
+            errorStage.setY(imageViewer.getY() + imageViewer.getHeight());
+            errorStage.setX(imageViewer.getX());
+            errorStage.setWidth(imageViewer.getWidth());
+            this.errorStage.show();
+            this.model.setShowError(true);
+            this.updateView();
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    private void closeErrorChartView() {
+        System.out.println("close error viewer");
+        if (this.errorController != null) {
+            this.errorStage.close();
+        }
+        this.errorController = null;
+        this.errorStage = null;
+        this.model.setShowError(false);
+        this.updateView();
     }
 
     private static boolean isInteger(String s) {
@@ -655,19 +698,19 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void cbx_visualizationErrorAction(ActionEvent event) {
     	
-        this.model.setShowTrainingError(cbx_visualisationError.isSelected());
+        this.model.setShowError(cbx_visualisationError.isSelected());
 
         if (this.model.isShowTrainingError()) {
         	initializeTrainingErrorScatterView();
             //Set DCT
-        this.trainingController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
-        this.trainingController.setDisplayDimensions();
-        this.trainingController.update();
+        this.errorController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        this.errorController.setDisplayDimensions();
+        this.errorController.update();
         
             //updateTraining();
         } else {
-            if (this.trainingStage != null) {
-                this.trainingStage.close();
+            if (this.errorStage != null) {
+                this.errorStage.close();
             }
         }
         this.updateView();
