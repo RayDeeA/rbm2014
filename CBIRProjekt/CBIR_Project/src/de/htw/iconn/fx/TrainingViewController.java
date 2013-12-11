@@ -30,6 +30,7 @@ public class TrainingViewController implements Initializable, IFXController {
 
     private ArrayList<Double> errors = new ArrayList<Double>();
 
+    private TrainingViewController model;      
     @FXML
     private AnchorPane view;
     @FXML
@@ -84,4 +85,8 @@ public class TrainingViewController implements Initializable, IFXController {
 		// TODO Auto-generated method stub
 		
 	}
+        public TrainingViewController getTrainingViewController(){
+        return this.model;
+        } 
+        
 }

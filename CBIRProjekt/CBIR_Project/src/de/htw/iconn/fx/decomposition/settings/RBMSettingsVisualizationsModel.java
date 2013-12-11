@@ -19,6 +19,7 @@ public class RBMSettingsVisualizationsModel {
     
     private WeightsVisualizationModel model;
     private WeightVisualizationController wvC;
+    private TrainingViewController tvC;
     
     public boolean isShowWeights() {
         return showWeights;
@@ -37,8 +38,11 @@ public class RBMSettingsVisualizationsModel {
     }
     
     public WeightVisualizationController getWeightVisualizationController(){
-        return this.wvC;
-       
+        return this.wvC;  
+    }
+    
+    public TrainingViewController getTrainingViewController(){
+        return this.tvC;     
     }
     
     
