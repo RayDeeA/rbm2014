@@ -12,46 +12,46 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
- * @author christoph
+ * @author Moritz
  */
-public class RBMSettingsLearningRateController extends AController{
-    @FXML
-    private TextField txt_learningRate;
+public class RBMSettingsWeightsController extends AController {
     @FXML
     private AnchorPane view;
-    
-    private RBMSettingsLearningRateModel model;
+    private RBMSettingsWeightsModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsLearningRateModel();
-        this.txt_learningRate.setText("" + this.model.getConstantLearningRate());
+        this.model = new RBMSettingsWeightsModel();
     }    
 
-    private void txt_learningRateKeyTyped(KeyEvent event) {
-        try {
-            this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
-        } catch(NumberFormatException e) {
+    @FXML
+    private void btn_setWeightsRandomAction(ActionEvent event) {
+        this.model.setInitializedWeights(true);
+    }
 
-        }       
+    @FXML
+    private void btn_loadWeightsAction(ActionEvent event) {
+        this.model.setInitializedWeights(false);
+    }
+
+    @FXML
+    private void btn_saveCurrentWeightsAction(ActionEvent event) {
+        this.model.setInitializedWeights(false);
     }
 
     @Override
     public Node getView() {
-        return this.view;
+        return view;
     }
-    
-    public RBMSettingsLearningRateModel getModel() {
-        return model;
+    public RBMSettingsWeightsModel getModel() {
+        return this.model;
     }
 }

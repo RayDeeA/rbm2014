@@ -99,7 +99,7 @@ public class ImageViewer {
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
                 xMouseMove = 0;
                 yMouseMove = 0;
-                ImageViewer.this.draw();
+                ImageViewer.this.show();
             }
         };
         this.scene.widthProperty().addListener(onResize);
@@ -145,7 +145,7 @@ public class ImageViewer {
                 yMouseMove = yMousePos - yMouseStartPos;
                 xMouseStartPos = xMousePos;
                 yMouseStartPos = yMousePos;
-                draw();
+                show();
             }
         });
         this.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -177,7 +177,7 @@ public class ImageViewer {
                         image.setRank(image.getId());
                     }
                 }
-                draw();
+                show();
             }
         });
 
@@ -196,7 +196,7 @@ public class ImageViewer {
 
                                 System.out.println("NotImplemented Yet: ImageViewer -> sortByImage()");
                                 // controller.sortByImage(image);
-                                draw();
+                                show();
                             }
                         }
                     }
@@ -223,7 +223,7 @@ public class ImageViewer {
                         zoomFactor = 1;
                     }
                 }
-                ImageViewer.this.draw();
+                ImageViewer.this.show();
             }
         });
 
@@ -251,7 +251,7 @@ public class ImageViewer {
         return null; // kein Bild gefunden
     }
 
-    public void draw() {
+    public void show() {
 
         if (images != null) {
             root.getChildren().clear();

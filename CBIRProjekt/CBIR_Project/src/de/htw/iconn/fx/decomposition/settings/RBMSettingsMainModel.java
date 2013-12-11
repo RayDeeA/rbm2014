@@ -1,5 +1,16 @@
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+
 /**
  *
  * @author Moritz
@@ -19,6 +30,18 @@ public class RBMSettingsMainModel {
         "Rectifier",
         "TanH",
         "SqareRoot"
+    };
+    
+    private final ILogistic[] logisticFunctionImplementation = {
+        new DefaultLogisticMatrixFunction(),
+        new GaussMatrixFunction(),
+        new HardClipMatrixFunction(),
+        new LinearClippedMatrixFunction(),
+        new LinearInterpolatedMatrixFunction(),
+        new LinearUnclippedMatrixFunction(),
+        new RectifierMatrixFunction(),
+        new TanHMatrixFunction(),
+        new SquareRootLogistic()
     };
     
     private int selectedRbmImplementation = 0;
@@ -50,6 +73,10 @@ public class RBMSettingsMainModel {
 
     public int getSelectedLogisticFunction() {
         return selectedLogisticFunction;
+    }
+    
+    public ILogistic getSelectedLogisticFunctionImplementation() {
+        return this.logisticFunctionImplementation[selectedLogisticFunction];
     }
 
     public void setSelectedLogisticFunction(int selectedLogisticFunction) {

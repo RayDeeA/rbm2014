@@ -270,7 +270,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeImageView() {
 
         this.imageViewer = new ImageViewer(this.model.getImageManager());
-        this.imageViewer.draw();
+        this.imageViewer.show();
     }
 
     private void initializePRChartView() {
@@ -433,7 +433,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
             this.runHiddenController.setRBMFeature(this.model.getRbmFeature());
 
-            // this.prChartViewerController.draw(lineChart);
+            // this.prChartViewerController.show(lineChart);
             this.runHiddenStage.show();
 
         } catch (IOException ex) {
@@ -453,7 +453,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.daydreamStage.setScene(scene);
             this.daydreamController.setRBMFeature(this.model.getRbmFeature());
 
-            // this.prChartViewerController.draw(lineChart);
+            // this.prChartViewerController.show(lineChart);
             this.daydreamStage.show();
 
         } catch (IOException ex) {
