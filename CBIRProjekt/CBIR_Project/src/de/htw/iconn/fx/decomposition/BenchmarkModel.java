@@ -41,6 +41,10 @@ public class BenchmarkModel {
 
     }
 
+    public LinkedList<RBMSettingsController> getRbmSettingsList() {
+        return rbmSettingsList;
+    }
+
     public void setImageManager(ImageManager imageManager) {
 
         this.imageManager = imageManager;

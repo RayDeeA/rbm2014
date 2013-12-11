@@ -14,7 +14,7 @@ public class RBMSettingsLoggerModel {
     private boolean continuousLoggerOn = false;
     private boolean finalLoggerOn = true;
     
-    private int continuousIntervall = 1000;
+    private int continuousInterval = 1000;
 
     /**
      * @return the continuousLoggerOn
@@ -45,16 +45,16 @@ public class RBMSettingsLoggerModel {
     }
 
     /**
-     * @return the continuousIntervall
+     * @return the continuousInterval
      */
-    public int getContinuousIntervall() {
-        return continuousIntervall;
+    public int getContinuousInterval() {
+        return continuousInterval;
     }
 
     /**
-     * @param continuousIntervall the continuousIntervall to set
+     * @param continuousInterval the continuousInterval to set
      */
-    public void setContinuousIntervall(int continuousIntervall) {
-        this.continuousIntervall = continuousIntervall;
+    public void setContinuousInterval(int continuousInterval) {
+        this.continuousInterval = continuousInterval;
     }
 }

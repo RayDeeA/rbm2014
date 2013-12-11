@@ -13,6 +13,33 @@ package de.htw.iconn.fx.decomposition.settings;
 public class RBMSettingsWeightsModel {
     
     private boolean initializedWeights = true;
+    private boolean useBias = true;
+    private boolean useSeed = false;
+    private int seed = 0;
+
+    public boolean isUseBias() {
+        return useBias;
+    }
+
+    public void setUseBias(boolean useBias) {
+        this.useBias = useBias;
+    }
+
+    public boolean isUseSeed() {
+        return useSeed;
+    }
+
+    public void setUseSeed(boolean useSeed) {
+        this.useSeed = useSeed;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
 
     /**
      * @return the initializedWeights

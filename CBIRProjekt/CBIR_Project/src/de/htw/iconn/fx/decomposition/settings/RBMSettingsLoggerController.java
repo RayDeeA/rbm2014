@@ -30,10 +30,10 @@ public class RBMSettingsLoggerController extends AController{
     private CheckBox cbx_continuousLogger;
     @FXML
     private CheckBox cbx_finalLogger;
-    @FXML
-    private TextField txt_frequency;
     
     private RBMSettingsLoggerModel model;
+    @FXML
+    private TextField txt_interval;
 
     /**
      * Initializes the controller class.
@@ -56,16 +56,6 @@ public class RBMSettingsLoggerController extends AController{
         this.model.setFinalLoggerOn(cbx_finalLogger.isSelected());
     }
 
-    @FXML
-    private void txt_frequencyKeyTyped(KeyEvent event) {
-
-        try {
-            this.model.setContinuousIntervall(Integer.parseInt(txt_frequency.getText()));
-        } catch(NumberFormatException e) {
-
-        }
-    }
-
     @Override
     public Node getView() {
         return this.view;
@@ -73,6 +63,15 @@ public class RBMSettingsLoggerController extends AController{
     
     public RBMSettingsLoggerModel getModel() {
         return model;
+    }
+
+    @FXML
+    private void txt_intervalKeyTyped(KeyEvent event) {
+        try {
+            this.model.setContinuousInterval(Integer.parseInt(txt_interval.getText()));
+        } catch(NumberFormatException e) {
+
+        }
     }
     
 }

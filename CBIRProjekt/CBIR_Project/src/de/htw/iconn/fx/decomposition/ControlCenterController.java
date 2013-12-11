@@ -45,14 +45,14 @@ public class ControlCenterController extends AController  {
     @FXML
     private MenuItem mnu_loadConfiguration;
     
-    private RBMSaver rbmSaver;
+    private ConfigurationSaver configurationSaver;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.rbmSaver = new RBMSaver();
+        this.configurationSaver = new ConfigurationSaver();
         
         try {
             benchmarkController =  (BenchmarkController)loadController("Benchmark.fxml");
@@ -87,7 +87,7 @@ public class ControlCenterController extends AController  {
     @FXML
     private void mnu_saveConfigurationAction(ActionEvent event) {
         try {
-            rbmSaver.saveConfigurationToFile(this.benchmarkController.getModel());
+            configurationSaver.saveConfigurationToFile(this.benchmarkController.getModel());
         } catch (IOException | ParserConfigurationException | TransformerException ex) {
             System.err.println("ERROR: could not save configuration to file");
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);

@@ -12,6 +12,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -23,6 +26,12 @@ public class RBMSettingsWeightsController extends AController {
     @FXML
     private AnchorPane view;
     private RBMSettingsWeightsModel model;
+    @FXML
+    private CheckBox cbx_useBias;
+    @FXML
+    private CheckBox cbx_useSeed;
+    @FXML
+    private TextField txt_seed;
 
     /**
      * Initializes the controller class.
@@ -53,5 +62,20 @@ public class RBMSettingsWeightsController extends AController {
     }
     public RBMSettingsWeightsModel getModel() {
         return this.model;
+    }
+
+    @FXML
+    private void cbx_useBiasAction(ActionEvent event) {
+        this.model.setUseBias(cbx_useBias.isSelected());
+    }
+
+    @FXML
+    private void cbx_useSeedAction(ActionEvent event) {
+        this.model.setUseSeed(cbx_useSeed.isSelected());
+    }
+
+    @FXML
+    private void txt_seedKeyTyped(KeyEvent event) {
+        this.model.setSeed(Integer.parseInt(txt_seed.getText()));
     }
 }
