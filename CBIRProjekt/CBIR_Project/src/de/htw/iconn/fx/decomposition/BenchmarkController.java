@@ -10,11 +10,17 @@ import de.htw.cbir.ImageManager;
 import de.htw.iconn.fx.ImageViewer;
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -26,19 +32,24 @@ import javafx.stage.Stage;
  * @author Moritz
  */
 public class BenchmarkController extends AController {
-    @FXML
-    private Label txt_imageSetSelected;
     
     @FXML
     private AnchorPane view;
     
     private BenchmarkModel model; 
+    @FXML
+    private CheckBox cbx_imageViewer;
+    @FXML
+    private ComboBox<?> cmb_mAPTests;
+    @FXML
+    private Label lbl_imageSetSelected;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new BenchmarkModel();
+        loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
     }    
 
     @FXML
@@ -103,13 +114,26 @@ public class BenchmarkController extends AController {
     public BenchmarkModel getModel() {
         return model;
     }
-
+    
     private void initCmbImageManager() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<String> mapTest;
+        if (this.model.getImageManager() != null) {
+            mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
+            mapTest.add(0, "All");
+        } else {
+            mapTest = new LinkedList<>();
+        }
+        ObservableList mapTestObs = FXCollections.observableList(mapTest);
+        this.cmb_mAPTests.setItems(mapTestObs);
+        this.cmb_mAPTests.getSelectionModel().selectFirst();
     }
 
     private void updateView() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.model.getImageManager() == null) {
+            lbl_imageSetSelected.setText("no image set selected");
+        } else {
+            lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
+        }
     }
 
 
