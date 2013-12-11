@@ -34,17 +34,11 @@ public class TrainingViewController implements Initializable, IFXController {
 	private NumberAxis xaxis = new NumberAxis();
 	@FXML
 	private NumberAxis yaxis = new NumberAxis();
-    private TrainingViewController model;      
-    @FXML
-    private AnchorPane view;
-    @FXML
+	private TrainingViewController model;      
+	@FXML
+	private AnchorPane view;
+	@FXML
 	private LineChart.Series<Number,Number> series;
-
-
-	public void addErrorToGraph(Double error) {
-		errors.add(error);
-	}
-
 
 	@Override
 	public Node getView() {
@@ -69,15 +63,15 @@ public class TrainingViewController implements Initializable, IFXController {
 
 	private void addDummyDataToErrorList() {
 		Random r = new Random();
-		for (int i = 0; i < 73; i++) {
+		for (int i = 0; i < 13; i++) {
 			errors.add(r.nextDouble() * 123);
 		}
 	}
 
-	public void buildGraph() {
-		
+	private void buildGraph() {
+
 		addDummyDataToErrorList();
-		
+
 
 		chart_line.setId("Error Chart");
 		chart_line.setTitle("Error Chart");
@@ -86,6 +80,7 @@ public class TrainingViewController implements Initializable, IFXController {
 		xaxis.setForceZeroInRange(false);
 
 		series = new XYChart.Series<Number, Number>();       
+		series.setName("dummy series");
 
 		for (int i = 0; i < errors.size(); i++) {
 			series.getData().add(new XYChart.Data<Number, Number>(i, errors.get(i)));
@@ -94,7 +89,7 @@ public class TrainingViewController implements Initializable, IFXController {
 		}
 
 		chart_line.getData().add(series);
-		System.out.println("build graph - size of list" + errors.get(13));
+		//		System.out.println("build graph - size of list" + errors.get(13));
 
 		//		return scatter_chart;
 	}
@@ -104,9 +99,10 @@ public class TrainingViewController implements Initializable, IFXController {
 		// TODO Auto-generated method stub
 		buildGraph();
 	}
-        public TrainingViewController getTrainingViewController(){
-        return this.model;
-        } 
-        
+
+	public TrainingViewController getTrainingViewController(){
+		return this.model;
+	} 
+
 }
 

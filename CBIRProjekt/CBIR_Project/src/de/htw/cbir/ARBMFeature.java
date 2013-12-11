@@ -99,4 +99,9 @@ public abstract class ARBMFeature {
         public IRBM getRBM() {
             return rbm;
         }
+
+		public Double getErrorAsDouble() {
+			// TODO Auto-generated method stub
+			return 42.23;
+		}
 }

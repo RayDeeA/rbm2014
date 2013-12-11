@@ -796,22 +796,20 @@ public class SimpleRBMController implements Initializable, IFXController {
 			this.errorController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
 			this.errorController.setDisplayDimensions();
 
+			this.updateError();
 		} else {
 			if (this.errorStage != null) {
 				this.errorStage.close();
 			}
 		}
 		this.updateView();
-
-
 	}
 
 	private void updateTraining() {
-
-		//System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
-
 		this.visualController.setWeights(this.model.getRbmFeature().getWeights());
-
 	}
 
+	private void updateError() {
+		this.errorController.update(this.model.getRbmFeature().getErrorAsDouble());
+	}
 }
