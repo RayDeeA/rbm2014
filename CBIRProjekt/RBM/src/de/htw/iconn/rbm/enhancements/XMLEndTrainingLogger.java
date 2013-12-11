@@ -22,11 +22,15 @@ public class XMLEndTrainingLogger implements IRBMEndTrainingEnhancement  {
         this.logger = new XMLWeightLogger();
     }
 
+    public XMLEndTrainingLogger() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
     @Override
-    public void action(CBIREvaluationModel evaluationModel) {
+    public void action(RBMInfoPackage info) {
         try {
-            logger.stepXmlLogTraining(evaluationModel);
+            logger.stepXmlLogTraining(info);
         } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
             Logger.getLogger(XMLTrainingLogger.class.getName()).log(Level.SEVERE, null, ex);
         }

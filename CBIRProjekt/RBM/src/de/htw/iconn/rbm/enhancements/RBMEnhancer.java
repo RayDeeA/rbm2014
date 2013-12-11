@@ -11,15 +11,14 @@ public class RBMEnhancer implements IRBM {
 	private final IRBM rbm;
 	private final LinkedList<IRBMTrainingEnhancement> traningEnhancements;
 	private final LinkedList<IRBMEndTrainingEnhancement> endEnhancements;
-	private final CBIREvaluationModel evaluationModel;
-
+        private final RBMInfoPackage info;
 	
-	public RBMEnhancer(IRBM rbm, CBIREvaluationModel evaluationModel) {
+	public RBMEnhancer(IRBM rbm) {
 		super();
 		this.rbm = rbm;
-		this.evaluationModel = evaluationModel;
 		this.traningEnhancements = new LinkedList<>();
 		this.endEnhancements = new LinkedList<>();
+                this.info = new RBMInfoPackage(0, rbm.getWeights()[0], 0);
 	}
 
 	
@@ -42,9 +41,7 @@ public class RBMEnhancer implements IRBM {
 	
 	@Override
 	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
-		boolean updateModel = true;
-		this.evaluationModel.setEpochs(max_epochs);
-		
+		boolean updateModel = true;		
 		for (int i = 0; i < max_epochs; i++) {
 			updateModel = true;
 			rbm.train(trainingData, 1, useHiddenStates, useVisibleStates);
@@ -52,17 +49,18 @@ public class RBMEnhancer implements IRBM {
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
-						this.evaluationModel.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
-						this.evaluationModel.setWeights(rbm.getWeightsWithBias());
+						this.info.setError(rbm.error(trainingData, false, false));
+                                                this.info.setWeights(rbm.getWeights()[0]);
+                                                this.info.setEpochs(i);
 						updateModel = false;
 					}
-					enhancement.action(evaluationModel);
+					enhancement.action(this.info);
 				}
 			}
 		}
 		
 		for (IRBMEndTrainingEnhancement enhancement : this.endEnhancements) {
-			enhancement.action(evaluationModel);
+			enhancement.action(this.info);
 		}
 	}
 

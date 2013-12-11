@@ -88,7 +88,7 @@ public class RBMSettingsController extends AController {
         
         
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
-        this.model = new RBMSettingsModel(rbm, items, controllers);
+        this.model = new RBMSettingsModel(items, controllers);
         
         trv_rbmSettingsMenue.setRoot(settingsRBM);
         

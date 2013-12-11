@@ -64,7 +64,7 @@ public abstract class ARBMFeature {
 	protected abstract double[][] createTrainingsData(Pic[] images);
 
 	public abstract double[] getHidden(Pic image, boolean useHiddenStates);
-    public abstract double[] getVisible(double[] hiddenData, boolean useVisibleStates);
+        public abstract double[] getVisible(double[] hiddenData, boolean useVisibleStates);
 
 	public int getVisibleCount() {
 		return inputSize;
@@ -95,4 +95,8 @@ public abstract class ARBMFeature {
 			System.out.println();
 		}
 	}
+        
+        public IRBM getRBM() {
+            return rbm;
+        }
 }

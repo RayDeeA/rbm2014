@@ -54,5 +54,13 @@ public class RBMSettingsWeightsModel {
     public void setInitializedWeights(boolean initializedWeights) {
         this.initializedWeights = initializedWeights;
     }
+
+    public double[][] getWeights() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setWeights(double[][] weights) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
 }

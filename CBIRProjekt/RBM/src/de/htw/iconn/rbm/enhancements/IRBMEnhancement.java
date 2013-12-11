@@ -4,5 +4,5 @@ import de.htw.cbir.CBIREvaluationModel;
 
 public abstract interface IRBMEnhancement {
 
-	void action(CBIREvaluationModel evaluationModel);
+	void action(RBMInfoPackage info);
 }
