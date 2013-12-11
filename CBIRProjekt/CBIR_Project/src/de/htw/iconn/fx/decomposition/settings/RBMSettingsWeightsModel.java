@@ -16,6 +16,7 @@ public class RBMSettingsWeightsModel {
     private boolean useBias = true;
     private boolean useSeed = false;
     private int seed = 0;
+    private double[][] weights;
 
     public boolean isUseBias() {
         return useBias;
@@ -56,11 +57,11 @@ public class RBMSettingsWeightsModel {
     }
 
     public double[][] getWeights() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.weights;
     }
 
     public void setWeights(double[][] weights) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.weights = weights;
     }
    
 }
