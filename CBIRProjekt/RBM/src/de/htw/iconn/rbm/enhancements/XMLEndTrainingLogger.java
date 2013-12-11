@@ -17,16 +17,17 @@ import org.xml.sax.SAXException;
 public class XMLEndTrainingLogger implements IRBMEndTrainingEnhancement  {
     
     private final XMLWeightLogger logger;
-    
-    public XMLEndTrainingLogger(int updateIntervall) {
+
+
+    public XMLEndTrainingLogger() {
         this.logger = new XMLWeightLogger();
     }
 
 
     @Override
-    public void action(CBIREvaluationModel evaluationModel) {
+    public void action(RBMInfoPackage info) {
         try {
-            logger.stepXmlLogTraining(evaluationModel);
+            logger.stepXmlLogTraining(info);
         } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
             Logger.getLogger(XMLTrainingLogger.class.getName()).log(Level.SEVERE, null, ex);
         }

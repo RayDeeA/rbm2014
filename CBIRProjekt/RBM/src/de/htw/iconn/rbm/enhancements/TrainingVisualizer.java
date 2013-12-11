@@ -1,6 +1,5 @@
 package de.htw.iconn.rbm.enhancements;
 
-import de.htw.cbir.CBIREvaluationModel;
 import de.htw.cbir.gui.RBMVisualizationFrame;
 
 public class TrainingVisualizer implements IRBMTrainingEnhancement {
@@ -15,8 +14,8 @@ public class TrainingVisualizer implements IRBMTrainingEnhancement {
 	}
 
 	@Override
-	public void action(CBIREvaluationModel evaluationModel) {
-		frame.updatePanel(evaluationModel.getWeights()[0], evaluationModel.getError(), 0);
+	public void action(RBMInfoPackage info) {
+		frame.updatePanel(info.getWeights(), info.getError(), 0);
 	}
 
 	@Override

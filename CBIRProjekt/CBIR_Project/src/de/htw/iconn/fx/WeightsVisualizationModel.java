@@ -9,7 +9,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import de.htw.cbir.model.Pic;
 
-public class VisualizationModel {
+public class WeightsVisualizationModel {
 	
     Random random = new Random();
 	
@@ -27,7 +27,7 @@ public class VisualizationModel {
     
     double[][] weights;
 
-	public VisualizationModel() {
+	public WeightsVisualizationModel() {
 		
 	}
       

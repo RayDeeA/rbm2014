@@ -49,10 +49,7 @@ public class RBMSettingsController extends AController {
     private Insets x1;
     
     private RBMSettingsModel model;
-    
 
-    
-    
     /**
      * Initializes the controller class.
      */
@@ -65,15 +62,15 @@ public class RBMSettingsController extends AController {
         settingsRBM.setExpanded(true);
         
         TreeItem<String> settingsMain = new TreeItem<>("Main");
+        TreeItem<String> settingsWeights = new TreeItem<>("Weights");
         TreeItem<String> settingsStoppingCondition = new TreeItem<>("Stopping Conditions");
         TreeItem<String> settingsLearningRate = new TreeItem<>("Learning Rate");
         TreeItem<String> settingsVisualizations = new TreeItem<>("Training Visualizations");
         TreeItem<String> settingsLogger = new TreeItem<>("Logger");
-        
-        
-        
+       
         TreeItem[] items = new TreeItem[]{
             settingsMain,
+            settingsWeights,
             settingsStoppingCondition,
             settingsLearningRate,
             settingsVisualizations,
@@ -82,6 +79,7 @@ public class RBMSettingsController extends AController {
         
         AController[] controllers = new AController[]{
             addSettings(settingsRBM, settingsMain, "settings/RBMSettingsMain.fxml"),
+            addSettings(settingsRBM, settingsWeights, "settings/RBMSettingsWeights.fxml"),
             addSettings(settingsRBM, settingsStoppingCondition, "settings/RBMSettingsStoppingCondition.fxml"),
             addSettings(settingsRBM, settingsLearningRate, "settings/RBMSettingsLearningRate.fxml"),
             addSettings(settingsRBM, settingsVisualizations, "settings/RBMSettingsVisualizations.fxml"),
@@ -90,8 +88,10 @@ public class RBMSettingsController extends AController {
         
         
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
-        this.model = new RBMSettingsModel(rbm, items, controllers);
+        this.model = new RBMSettingsModel(items, controllers);
         
+        trv_rbmSettingsMenue.setRoot(settingsRBM);
+
         trv_rbmSettingsMenue.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);   
         
         trv_rbmSettingsMenue.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>(){
@@ -112,7 +112,6 @@ public class RBMSettingsController extends AController {
             }
             
         });
-        trv_rbmSettingsMenue.setRoot(settingsRBM);
     }    
 
     private AController addSettings(TreeItem<String> root, TreeItem<String> child, String controllerURL) {
@@ -135,6 +134,7 @@ public class RBMSettingsController extends AController {
 
     @FXML
     private void btn_srartRBMTrainingAction(ActionEvent event) {
+        this.model.trainRBM();
     }
 
     @FXML
@@ -148,7 +148,5 @@ public class RBMSettingsController extends AController {
 
     public RBMSettingsModel getModel() {
        return this.model;
-    }
-    
-      
+    }  
 }

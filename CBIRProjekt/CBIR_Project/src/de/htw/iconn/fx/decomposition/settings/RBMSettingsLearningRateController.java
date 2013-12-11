@@ -9,6 +9,7 @@ package de.htw.iconn.fx.decomposition.settings;
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -37,7 +38,6 @@ public class RBMSettingsLearningRateController extends AController{
         this.txt_learningRate.setText("" + this.model.getConstantLearningRate());
     }    
 
-    @FXML
     private void txt_learningRateKeyTyped(KeyEvent event) {
         try {
             this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
@@ -54,5 +54,4 @@ public class RBMSettingsLearningRateController extends AController{
     public RBMSettingsLearningRateModel getModel() {
         return model;
     }
-    
 }

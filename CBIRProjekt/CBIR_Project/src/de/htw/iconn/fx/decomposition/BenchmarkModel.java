@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx.decomposition;
 
+import de.htw.cbir.ImageManager;
+import de.htw.iconn.fx.ImageViewer;
 import de.htw.iconn.rbm.RBMStack;
 import java.util.LinkedList;
 
@@ -14,10 +15,13 @@ import java.util.LinkedList;
  * @author Moritz
  */
 public class BenchmarkModel {
-    
+
     private final RBMStack rbmStack;
-    
+
     private final LinkedList<RBMSettingsController> rbmSettingsList;
+    private ImageManager imageManager = null;
+    private ImageViewer imageViewer;
+    private boolean showImageViewer = false;
 
     public BenchmarkModel() {
         this.rbmStack = new RBMStack();
@@ -30,14 +34,53 @@ public class BenchmarkModel {
     public RBMStack getRbmStack() {
         return rbmStack;
     }
+
     public boolean add(RBMSettingsController rbmSettings) {
         rbmStack.add(rbmSettings.getModel().getRBM());
-        return this.rbmSettingsList.add(rbmSettings);
         
+        if(rbmSettingsList.size() == 0) {
+            if( this.rbmSettingsList.add(rbmSettings)) {
+                setRBMImageSet();
+                return true;
+            }
+        }
+        
+        return this.rbmSettingsList.add(rbmSettings);
+
     }
-    
-    
-    
-    
-    
+
+    public LinkedList<RBMSettingsController> getRbmSettingsList() {
+        return rbmSettingsList;
+    }
+
+    public void setImageManager(ImageManager imageManager) {
+        
+        this.imageManager = imageManager;
+        
+            this.setRBMImageSet();
+    }
+
+    public boolean isShowImageViewer() {
+        return showImageViewer;
+    }
+
+    public ImageManager getImageManager() {
+        return imageManager;
+    }
+
+    public void createImageViewer() {
+        this.imageViewer = new ImageViewer(imageManager);
+    }
+
+    public ImageViewer getImageViewer() {
+        return imageViewer;
+    }
+
+    private void setRBMImageSet() {
+        if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+            // TODO: checkbox for shuffled input data
+            this.getRbmSettingsList().getFirst().getModel().setData(imageManager.getImages(false));
+        }
+    }
+
 }

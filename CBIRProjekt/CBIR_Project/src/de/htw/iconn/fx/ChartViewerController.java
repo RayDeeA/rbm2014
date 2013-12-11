@@ -64,4 +64,12 @@ public class ChartViewerController implements Initializable, IFXController {
     public Node getView() {
         return view;
     }
+    
+    // methods to use this chartview for error plotting while training
+    
+    public void useAsErrorChart() {
+    	this.cha_PRTable.setTitle("Error");
+    }
+    
+    
 }

@@ -1,5 +1,20 @@
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.cbir.ARBMFeature;
+import de.htw.cbir.RBMFeatureDCT;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.rbm.functions.GaussMatrixFunction;
+import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
+import de.htw.iconn.rbm.functions.ILogistic;
+import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
+import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
+import de.htw.iconn.rbm.functions.SquareRootLogistic;
+import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+
 /**
  *
  * @author Moritz
@@ -21,6 +36,18 @@ public class RBMSettingsMainModel {
         "SqareRoot"
     };
     
+    private final ILogistic[] logisticFunctionImplementation = {
+        new DefaultLogisticMatrixFunction(),
+        new GaussMatrixFunction(),
+        new HardClipMatrixFunction(),
+        new LinearClippedMatrixFunction(),
+        new LinearInterpolatedMatrixFunction(),
+        new LinearUnclippedMatrixFunction(),
+        new RectifierMatrixFunction(),
+        new TanHMatrixFunction(),
+        new SquareRootLogistic()
+    };
+    
     private int selectedRbmImplementation = 0;
     private int selectedRbmFeature = 0;
     private int selectedLogisticFunction = 0;
@@ -36,20 +63,24 @@ public class RBMSettingsMainModel {
     }
 
     public int getSelectedRbmFeature() {
-        return selectedRbmFeature;
+        return this.selectedRbmFeature;      
     }
 
     public void setSelectedRbmFeature(int selectedRbmFeature) {
         this.selectedRbmFeature = selectedRbmFeature;
-        if(this.selectedRbmFeature == 0){
+        if(this.selectedRbmFeature == 0) {
             this.inputSize = 28 * 28;
-        }else if(this.selectedRbmFeature == 1){
+        }else if(this.selectedRbmFeature == 1) {
             this.inputSize = 15;
         }
     }
 
     public int getSelectedLogisticFunction() {
         return selectedLogisticFunction;
+    }
+    
+    public ILogistic getSelectedLogisticFunctionImplementation() {
+        return this.logisticFunctionImplementation[selectedLogisticFunction];
     }
 
     public void setSelectedLogisticFunction(int selectedLogisticFunction) {

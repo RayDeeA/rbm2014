@@ -77,7 +77,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private CheckBox cbx_visualization;
     @FXML
-    private Checkbox cbx_visualizationError;
+    private CheckBox cbx_visualisationError;
     @FXML
     private TextField txt_updateFrequency;
     @FXML
@@ -152,7 +152,11 @@ public class SimpleRBMController implements Initializable, IFXController {
     private ChartViewerController prChartViewerController;
     private SimpleRBMModel model;
     private Stage vz_viewer;
-    private VisualizationController visualController;
+    private WeightsVisualizationController visualController;
+    private Stage trainingStage;
+    private TrainingViewController trainingController;
+    private Stage errorStage;
+    private TrainingViewController errorController;
 
     /**
      * Initializes the controller class.
@@ -226,6 +230,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_visualization.setSelected(this.model.isShowVisualization());
+        this.cbx_visualisationError.setSelected(this.model.isShowTrainingError());
 
         this.cbx_randomOrder.setSelected(this.model.isUseRandomOrder());
         this.cbx_logger.setSelected(this.model.isUseLogger());
@@ -285,7 +290,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeImageView() {
 
         this.imageViewer = new ImageViewer(this.model.getImageManager());
-        this.imageViewer.draw();
+        this.imageViewer.show();
     }
 
     private void initializePRChartView() {
@@ -331,7 +336,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeVizView() {
         try {
          
-            this.visualController = (VisualizationController) loadController("VisualizationView.fxml");
+            this.visualController = (WeightsVisualizationController) loadController("VisualizationView.fxml");
             Parent root = (Parent) this.visualController.getView();
             Scene scene = new Scene(root, 600, 400);
             this.vz_viewer = new Stage();
@@ -342,6 +347,63 @@ public class SimpleRBMController implements Initializable, IFXController {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    private void initializeTrainingErrorScatterView() {
+        
+    	/*
+    	try {
+         
+            this.trainingController = (TrainingViewController) loadController("TrainingView.fxml");
+            Parent root = (Parent) this.trainingController.getView();
+            Scene scene = new Scene(root, 600, 400);
+            this.trainingStage = new Stage();
+            this.trainingStage.setTitle("Error Viewer");
+            this.trainingStage.setScene(scene);  
+            this.trainingStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+    	
+        System.out.println("initialize error scatter viewer");
+        try {
+            this.errorController = (TrainingViewController) loadController("TrainingView.fxml");
+
+            Parent root = (Parent) this.errorController.getView();
+            Scene scene = new Scene(root, 600, 400);
+            this.errorStage = new Stage();
+            this.errorStage.setTitle("Map Viewer");
+            this.errorStage.setScene(scene);
+            this.errorStage.setOnCloseRequest(new EventHandler() {
+
+                @Override
+                public void handle(Event t) {
+
+                }
+
+            });
+            errorStage.setY(imageViewer.getY() + imageViewer.getHeight());
+            errorStage.setX(imageViewer.getX());
+            errorStage.setWidth(imageViewer.getWidth());
+            this.errorStage.show();
+            this.model.setShowError(true);
+            this.updateView();
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    private void closeErrorChartView() {
+        System.out.println("close error viewer");
+        if (this.errorController != null) {
+            this.errorStage.close();
+        }
+        this.errorController = null;
+        this.errorStage = null;
+        this.model.setShowError(false);
+        this.updateView();
     }
 
     private static boolean isInteger(String s) {
@@ -547,7 +609,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
             this.runHiddenController.setRBMFeature(this.model.getRbmFeature());
 
-            // this.prChartViewerController.draw(lineChart);
+            // this.prChartViewerController.show(lineChart);
             this.runHiddenStage.show();
 
         } catch (IOException ex) {
@@ -567,7 +629,7 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.daydreamStage.setScene(scene);
             this.daydreamController.setRBMFeature(this.model.getRbmFeature());
 
-            // this.prChartViewerController.draw(lineChart);
+            // this.prChartViewerController.show(lineChart);
             this.daydreamStage.show();
 
         } catch (IOException ex) {
@@ -745,6 +807,23 @@ public class SimpleRBMController implements Initializable, IFXController {
     
     @FXML
     private void cbx_visualizationErrorAction(ActionEvent event) {
+    	
+        this.model.setShowError(cbx_visualisationError.isSelected());
+
+        if (this.model.isShowTrainingError()) {
+        	initializeTrainingErrorScatterView();
+            //Set DCT
+        this.errorController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        this.errorController.setDisplayDimensions();
+        this.errorController.update();
+        
+            //updateTraining();
+        } else {
+            if (this.errorStage != null) {
+                this.errorStage.close();
+            }
+        }
+        this.updateView();
     	
     }
 

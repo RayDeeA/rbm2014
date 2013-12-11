@@ -29,6 +29,9 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showErrorGraph;
     
     private RBMSettingsVisualizationsModel model;
+    
+    
+   
 
     /**
      * Initializes the controller class.
@@ -40,9 +43,9 @@ public class RBMSettingsVisualizationsController extends AController {
 
     @FXML
     private void cbx_showWeightsAction(ActionEvent event) {
-        this.model.setShowWeights(cbx_showWeights.isSelected());
+        this.model.setShowWeights(cbx_showWeights.isSelected()); 
     }
-
+    
     @FXML
     private void cbx_showErrorGraphAction(ActionEvent event) {
         this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
@@ -55,5 +58,7 @@ public class RBMSettingsVisualizationsController extends AController {
     
     public RBMSettingsVisualizationsModel getModel(){
         return this.model;
+       
     }
+
 }
