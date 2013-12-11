@@ -6,8 +6,6 @@ package de.htw.iconn.fx;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.jblas.util.Random;
@@ -15,17 +13,12 @@ import org.jblas.util.Random;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+
 
 /**
  * FXML Controller class
@@ -36,26 +29,16 @@ public class TrainingViewController implements Initializable, IFXController {
 	private ArrayList<Double> errors = new ArrayList<Double>();
 
 	@FXML
-	private ScatterChart <Number, Number> scatter_chart;
+	private LineChart <Number, Number> chart_line;
 	@FXML
-	private NumberAxis xaxis;
+	private NumberAxis xaxis = new NumberAxis();
 	@FXML
-	private NumberAxis yaxis;
+	private NumberAxis yaxis = new NumberAxis();
     private TrainingViewController model;      
     @FXML
     private AnchorPane view;
     @FXML
-    private ScatterChart<Number, Number> chart_scatter; 
-    @FXML
-    private CategoryAxis chartaxis_epochs;
-    @FXML
-    private NumberAxis chartaxis_error;
-    
-    private SequentialTransition animation;
-    
-    final int width = 500, height = 400, margin_top = 60, margin_right = 300, margin_bottom = 20, margin_left = 20;
-
-	private ScatterChart.Series<Number,Number> series;
+	private LineChart.Series<Number,Number> series;
 
 
 	public void addErrorToGraph(Double error) {
@@ -84,7 +67,7 @@ public class TrainingViewController implements Initializable, IFXController {
 
 	}
 
-	private void addDummyData() {
+	private void addDummyDataToErrorList() {
 		Random r = new Random();
 		for (int i = 0; i < 73; i++) {
 			errors.add(r.nextDouble() * 123);
@@ -92,28 +75,26 @@ public class TrainingViewController implements Initializable, IFXController {
 	}
 
 	public void buildGraph() {
-		addDummyData();
-		xaxis = new NumberAxis();
-		xaxis.setForceZeroInRange(false);
-		yaxis = new NumberAxis(0, 200, 13);
-		scatter_chart = new ScatterChart<Number, Number>(xaxis, yaxis);
-		scatter_chart.setId("Error Chart");
-		scatter_chart.setTitle("Error Chart");
+		
+		addDummyDataToErrorList();
+		
+
+		chart_line.setId("Error Chart");
+		chart_line.setTitle("Error Chart");
 		xaxis.setAutoRanging(true);
 		yaxis.setAutoRanging(true);
+		xaxis.setForceZeroInRange(false);
 
-		//		series = new ScatterChart.Series<Number,Number>();     
-		series = new XYChart.Series<Number,Number>();       
+		series = new XYChart.Series<Number, Number>();       
 
 		for (int i = 0; i < errors.size(); i++) {
-//			series.getData().add(new ScatterChart.Data<Number, Number>(i, errors.get(i)));
-			series.getData().add(new XYChart.Data<Number, Number>(errors.get(i), i));
+			series.getData().add(new XYChart.Data<Number, Number>(i, errors.get(i)));
 
 
 		}
 
-		scatter_chart.getData().add(series);
-//		System.out.println("build graph - size of list" + errors.get(13));
+		chart_line.getData().add(series);
+		System.out.println("build graph - size of list" + errors.get(13));
 
 		//		return scatter_chart;
 	}
