@@ -24,14 +24,14 @@
     </AnchorPane>
     <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="30.0">
       <children>
-        <LineChart id="LineChart" fx:id="chart_line_training" prefHeight="370.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScatterChart id="ScatterChart" fx:id="chart_scatter" prefHeight="370.0" prefWidth="600.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-100.0" AnchorPane.topAnchor="0.0">
           <xAxis>
-            <CategoryAxis side="BOTTOM" />
+            <CategoryAxis id="chart_epochs" fx:id="chartaxis_epochs" endMargin="100.0" label="Epochs" side="BOTTOM" />
           </xAxis>
           <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis fx:id="chartaxis_error" label="Error" side="LEFT" />
           </yAxis>
-        </LineChart>
+        </ScatterChart>
       </children>
     </AnchorPane>
   </children>

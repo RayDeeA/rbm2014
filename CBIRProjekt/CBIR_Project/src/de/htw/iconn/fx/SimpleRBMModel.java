@@ -49,6 +49,7 @@ public class SimpleRBMModel {
     private boolean showImageViewer;
     private boolean useLogger;
     private boolean showVisualization;
+    private boolean showTrainingError;
     private boolean showPRChart;
     private int updateFrequency;
     private int selectedRbmImplementation;
@@ -242,6 +243,10 @@ public class SimpleRBMModel {
     public boolean isShowVisualization() {
         return showVisualization;
     }
+    
+    public boolean isShowTrainingError() {
+    	return showTrainingError;
+    }
 
     public int getUpdateFrequency() {
         return updateFrequency;
@@ -317,6 +322,10 @@ public class SimpleRBMModel {
 
     public void setShowVisualization(boolean showVisualization) {
         this.showVisualization = showVisualization;
+    }
+    
+    public void setShowTrainingError(boolean showTrainingError) {
+    	this.showTrainingError = showTrainingError;
     }
 
     public void setUpdateFrequency(int updateFrequency) {

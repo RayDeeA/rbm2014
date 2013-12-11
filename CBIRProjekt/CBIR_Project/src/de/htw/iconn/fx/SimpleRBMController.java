@@ -66,7 +66,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private CheckBox cbx_visualization;
     @FXML
-    private Checkbox cbx_visualizationError;
+    private CheckBox cbx_visualisationError;
     @FXML
     private TextField txt_updateFrequency;
     @FXML
@@ -142,6 +142,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private SimpleRBMModel model;
     private Stage vz_viewer;
     private VisualizationController visualController;
+    private Stage trainingStage;
+    private TrainingViewController trainingController;
 
     /**
      * Initializes the controller class.
@@ -215,6 +217,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cbx_visualization.setSelected(this.model.isShowVisualization());
+        this.cbx_visualisationError.setSelected(this.model.isShowTrainingError());
 
         this.cbx_randomOrder.setSelected(this.model.isUseRandomOrder());
         this.cbx_logger.setSelected(this.model.isUseLogger());
@@ -327,6 +330,22 @@ public class SimpleRBMController implements Initializable, IFXController {
             this.vz_viewer.setTitle("Visualization Viewer");
             this.vz_viewer.setScene(scene);  
             this.vz_viewer.show();
+        } catch (IOException ex) {
+            Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    private void initializeTrainingErrorScatterView() {
+        try {
+         
+            this.trainingController = (TrainingViewController) loadController("TrainingView.fxml");
+            Parent root = (Parent) this.trainingController.getView();
+            Scene scene = new Scene(root, 600, 400);
+            this.trainingStage = new Stage();
+            this.trainingStage.setTitle("Error Viewer");
+            this.trainingStage.setScene(scene);  
+            this.trainingStage.show();
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -635,6 +654,23 @@ public class SimpleRBMController implements Initializable, IFXController {
     
     @FXML
     private void cbx_visualizationErrorAction(ActionEvent event) {
+    	
+        this.model.setShowTrainingError(cbx_visualisationError.isSelected());
+
+        if (this.model.isShowTrainingError()) {
+        	initializeTrainingErrorScatterView();
+            //Set DCT
+        this.trainingController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        this.trainingController.setDisplayDimensions();
+        this.trainingController.update();
+        
+            //updateTraining();
+        } else {
+            if (this.trainingStage != null) {
+                this.trainingStage.close();
+            }
+        }
+        this.updateView();
     	
     }
 
