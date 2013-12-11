@@ -60,7 +60,7 @@ public class VisualizationController implements Initializable, IFXController {
         update();
     }
     
-   public void update(){
+    private void update(){
        imgView.setImage(this.model.generateImage());
     }
     
