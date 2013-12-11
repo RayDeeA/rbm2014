@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -44,10 +45,20 @@ public class XMLWeightsLoader {
 
         Document doc = docBuilder.parse(file);
         Element rootElement = doc.getDocumentElement();
-
         
+        NodeList rows = rootElement.getElementsByTagName("row");
+        int inputSize = rows.getLength();
+        int outputSize = rows.item(0).getTextContent().split(",").length;
 
-        double[][] weights = new double[0][0];
+        double[][] weights = new double[inputSize][outputSize];
+        
+        for(int i = 0; i < weights.length; ++i){
+            String[] weightRow = rows.item(i).getTextContent().split(",");
+            for(int j = 0; j < weights[0].length; ++j){
+                weights[i][j] = Double.parseDouble(weightRow[j]);
+            }
+        }
+        
         return weights;
     }
 }
