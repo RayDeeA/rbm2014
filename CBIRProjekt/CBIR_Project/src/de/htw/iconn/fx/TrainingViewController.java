@@ -30,10 +30,11 @@ public class TrainingViewController implements Initializable, IFXController {
 
     private ArrayList<Double> errors = new ArrayList<Double>();
 
+    private TrainingViewController model;      
     @FXML
     private AnchorPane view;
     @FXML
-    private ScatterChart.Series<Number, Number> chart_scatter; 
+    private ScatterChart<Number, Number> chart_scatter; 
     @FXML
     private CategoryAxis chartaxis_epochs;
     @FXML
@@ -84,4 +85,8 @@ public class TrainingViewController implements Initializable, IFXController {
 		// TODO Auto-generated method stub
 		
 	}
+        public TrainingViewController getTrainingViewController(){
+        return this.model;
+        } 
+        
 }
