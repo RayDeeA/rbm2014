@@ -1,6 +1,8 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
+
+import java.awt.Checkbox;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,7 +27,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -63,6 +65,8 @@ public class SimpleRBMController implements Initializable, IFXController {
     private CheckBox cbx_logger;
     @FXML
     private CheckBox cbx_visualization;
+    @FXML
+    private Checkbox cbx_visualizationError;
     @FXML
     private TextField txt_updateFrequency;
     @FXML
@@ -315,14 +319,13 @@ public class SimpleRBMController implements Initializable, IFXController {
 
     private void initializeVizView() {
         try {
-
-            this.visualController = (VisualizationController) loadController("Visualization_Viewer.fxml");
+         
+            this.visualController = (VisualizationController) loadController("VisualizationView.fxml");
             Parent root = (Parent) this.visualController.getView();
             Scene scene = new Scene(root, 600, 400);
             this.vz_viewer = new Stage();
             this.vz_viewer.setTitle("Visualization Viewer");
-            this.vz_viewer.setScene(scene);
-            this.visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+            this.vz_viewer.setScene(scene);  
             this.vz_viewer.show();
         } catch (IOException ex) {
             Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
@@ -370,6 +373,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     @FXML
     private void btn_startTrainingAction(ActionEvent event) {
         this.model.trainRBM();
+        
         this.updateView();
     }
 
@@ -390,13 +394,13 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model.setShowVisualization(cbx_visualization.isSelected());
 
         if (this.model.isShowVisualization()) {
-            if (this.model.getImageManager() != null) {
-                initializeImageView();
-            }
-
             initializeVizView();
-
-            updateTraining();
+            //Set DCT
+        this.visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+        this.visualController.setDisplayDimensions();
+        this.visualController.update();
+        
+            //updateTraining();
         } else {
             if (this.vz_viewer != null) {
                 this.vz_viewer.close();
@@ -628,12 +632,18 @@ public class SimpleRBMController implements Initializable, IFXController {
             closePRChartView();
         }
     }
+    
+    @FXML
+    private void cbx_visualizationErrorAction(ActionEvent event) {
+    	
+    }
 
     private void updateTraining() {
 
         //System.out.println(this.model.getInputSize()+ ","+ this.model.getOutputSize());
-        visualController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
-
+        
+       this.visualController.setWeights(this.model.getRbmFeature().getWeights());
+       
     }
 
 }
