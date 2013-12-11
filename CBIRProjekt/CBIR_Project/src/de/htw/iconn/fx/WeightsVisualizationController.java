@@ -5,25 +5,22 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ARBMFeature;
-import java.awt.image.BufferedImage;
+import de.htw.iconn.fx.decomposition.AController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
-import java.util.TimerTask;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javax.imageio.ImageIO;
 
 /**
  * FXML Controller class
  *
  * @author dvarul
  */
-public class VisualizationController implements Initializable, IFXController {
+public class WeightsVisualizationController extends AController {
 
     @FXML
     private AnchorPane view;
@@ -32,23 +29,20 @@ public class VisualizationController implements Initializable, IFXController {
     private ImageView imgView;
 
     
-    VisualizationModel model;
-    private Timer timer;
+    WeightsVisualizationModel model;
        
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new VisualizationModel();   
+        this.model = new WeightsVisualizationModel();   
     }
     
     public void setDimensions(int x, int y){     
         this.model.setDCT(x, y);   
     }
     public void setDisplayDimensions(){
-        
-        //(int)imgView.getFitWidth()
        this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
     }
     
@@ -60,7 +54,7 @@ public class VisualizationController implements Initializable, IFXController {
         update();
     }
     
-    private void update(){
+   public void update(){
        imgView.setImage(this.model.generateImage());
     }
     
@@ -68,5 +62,9 @@ public class VisualizationController implements Initializable, IFXController {
 	public Node getView() {
 		return this.view;
 	}
+
+    public WeightsVisualizationModel getModel() {
+        return this.model;
+    }
     
 }

@@ -23,6 +23,10 @@ public class XMLTrainingLogger implements IRBMTrainingEnhancement {
         this.logger = new XMLWeightLogger();
     }
 
+    public XMLTrainingLogger() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
       
     @Override
     public int getUpdateInterval() {
@@ -30,9 +34,9 @@ public class XMLTrainingLogger implements IRBMTrainingEnhancement {
     }
 
     @Override
-    public void action(CBIREvaluationModel evaluationModel) {
+    public void action(RBMInfoPackage info) {
         try {
-            logger.stepXmlLogTraining(evaluationModel);
+            logger.stepXmlLogTraining(info);
         } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
             Logger.getLogger(XMLTrainingLogger.class.getName()).log(Level.SEVERE, null, ex);
         }

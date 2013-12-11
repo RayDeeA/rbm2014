@@ -5,6 +5,7 @@
  */
 
 package de.htw.iconn.fx.decomposition.settings;
+import  de.htw.iconn.fx.*;
 
 /**
  *
@@ -12,9 +13,14 @@ package de.htw.iconn.fx.decomposition.settings;
  */
 
 public class RBMSettingsVisualizationsModel {
+    
     private boolean showWeights = false;
     private boolean showErrorGraph = false;
-
+    
+    private WeightsVisualizationModel model;
+    private WeightsVisualizationController wvC;
+    private TrainingViewController tvC;
+    
     public boolean isShowWeights() {
         return showWeights;
     }
@@ -30,4 +36,14 @@ public class RBMSettingsVisualizationsModel {
     public void setShowErrorGraph(boolean showErrorGraph) {
         this.showErrorGraph = showErrorGraph;
     }
+    
+    public WeightsVisualizationController getWeightVisualizationController(){
+        return this.wvC;  
+    }
+    
+    public TrainingViewController getTrainingViewController(){
+        return this.tvC;     
+    }
+    
+    
 }

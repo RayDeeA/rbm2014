@@ -1,5 +1,9 @@
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.cbir.ARBMFeature;
+import de.htw.cbir.RBMFeatureDCT;
+import de.htw.cbir.RBMFeaturePixel;
+import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
 import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
@@ -59,14 +63,14 @@ public class RBMSettingsMainModel {
     }
 
     public int getSelectedRbmFeature() {
-        return selectedRbmFeature;
+        return this.selectedRbmFeature;      
     }
 
     public void setSelectedRbmFeature(int selectedRbmFeature) {
         this.selectedRbmFeature = selectedRbmFeature;
-        if(this.selectedRbmFeature == 0){
+        if(this.selectedRbmFeature == 0) {
             this.inputSize = 28 * 28;
-        }else if(this.selectedRbmFeature == 1){
+        }else if(this.selectedRbmFeature == 1) {
             this.inputSize = 15;
         }
     }

@@ -39,10 +39,9 @@ public final class XMLWeightLogger {
 	}
 
 	
-	public void stepXmlLogTraining(CBIREvaluationModel evaluationModel) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+	public void stepXmlLogTraining(RBMInfoPackage info) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
-		LinkedList<double[][][]> collectedWeights = evaluationModel.getCollectedWeights();
-		evaluationModel.resetCollectedWeights();
+		LinkedList<double[][]> collectedWeights = info.getCollectedWeights();
 		StringBuffer rowSB;
 		
 		String xmlFolder = this.baseFolder + "/XMLSteps";
@@ -76,9 +75,9 @@ public final class XMLWeightLogger {
 			stepCount = rootElement.getElementsByTagName("step").getLength();
 		}
 		
-		Iterator<double[][][]> it = collectedWeights.iterator();
+		Iterator<double[][]> it = collectedWeights.iterator();
 		while(it.hasNext()){
-			double[][][] weights = it.next();
+			double[][] weights = it.next();
 			Element step = doc.createElement("step");
 			rootElement.appendChild(step);
 	 
@@ -95,9 +94,9 @@ public final class XMLWeightLogger {
 				rbm.setAttributeNode(id);
 				for(int j = 0; j < weights[i].length; ++j){
 					rowSB = new StringBuffer();
-					for(int k = 0; k < weights[i][j].length; ++k){
-						rowSB.append(weights[i][j][k]);
-						if(k < weights[i][j].length - 1){
+					for(int k = 0; k < weights[i].length; ++k){
+						rowSB.append(weights[i][j]);
+						if(k < weights[i].length - 1){
 							rowSB.append(",");
 						}
 					}

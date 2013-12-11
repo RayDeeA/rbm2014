@@ -324,7 +324,7 @@ public class SimpleRBMModel {
         this.showVisualization = showVisualization;
     }
     
-    public void setShowTrainingError(boolean showTrainingError) {
+    public void setShowError(boolean showTrainingError) {
     	this.showTrainingError = showTrainingError;
     }
 
