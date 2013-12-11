@@ -6,6 +6,7 @@
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.cbir.ARBMFeature;
+import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.RBMFeaturePixel;
 import de.htw.cbir.model.Pic;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
@@ -46,6 +47,7 @@ public class RBMSettingsModel {
 
         this.controllers = controllers;
         this.items = items;
+        initialize();
     }
 
     public TreeItem[] getTreeItems() {
@@ -65,7 +67,8 @@ public class RBMSettingsModel {
         return null;
     }
 
-    public void trainRBM() {
+    private void initialize() {
+    
         RBMEnhancer rbm;
         RBMSettingsMainModel mainModel = this.getController(RBMSettingsMainController.class).getModel();
         RBMSettingsWeightsModel weightsModel = this.getController(RBMSettingsWeightsController.class).getModel();
@@ -98,8 +101,16 @@ public class RBMSettingsModel {
         if (!weightsModel.isInitializedWeights()) {
             rbm.setWeightsWithBias(weightsModel.getWeights());
         }
-        
-        rbmFeature = new RBMFeaturePixel(inputSize, outputSize, rbm);
+        if(mainModel.getSelectedRbmFeature() == 0)
+            rbmFeature = new RBMFeaturePixel(inputSize, outputSize, rbm);
+        else            
+            rbmFeature = new RBMFeatureDCT(inputSize, outputSize, rbm);
+    }
+    
+    public void trainRBM() {
+        initialize();
+        RBMSettingsStoppingConditionModel stoppingConditionModel = this.getController(RBMSettingsStoppingConditionController.class).getModel();
+        RBMSettingsWeightsModel weightsModel = this.getController(RBMSettingsWeightsController.class).getModel();
 
         rbmFeature.train(data, stoppingConditionModel.getEpochs(), true, true);
         
@@ -118,6 +129,7 @@ public class RBMSettingsModel {
      * @param data the data to set
      */
     public void setData(Pic[] data) {
+        System.out.println("no null anymore");
         this.data = data;
     }
 

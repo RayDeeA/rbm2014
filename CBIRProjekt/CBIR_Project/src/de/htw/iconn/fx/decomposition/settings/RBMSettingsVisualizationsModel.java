@@ -18,7 +18,7 @@ public class RBMSettingsVisualizationsModel {
     private boolean showErrorGraph = false;
     
     private WeightsVisualizationModel model;
-    private WeightVisualizationController wvC;
+    private WeightsVisualizationController wvC;
     private TrainingViewController tvC;
     
     public boolean isShowWeights() {
@@ -37,7 +37,7 @@ public class RBMSettingsVisualizationsModel {
         this.showErrorGraph = showErrorGraph;
     }
     
-    public WeightVisualizationController getWeightVisualizationController(){
+    public WeightsVisualizationController getWeightVisualizationController(){
         return this.wvC;  
     }
     

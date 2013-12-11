@@ -19,7 +19,7 @@ public class BenchmarkModel {
     private final RBMStack rbmStack;
 
     private final LinkedList<RBMSettingsController> rbmSettingsList;
-    private ImageManager imageManager;
+    private ImageManager imageManager = null;
     private ImageViewer imageViewer;
     private boolean showImageViewer = false;
 
@@ -37,6 +37,14 @@ public class BenchmarkModel {
 
     public boolean add(RBMSettingsController rbmSettings) {
         rbmStack.add(rbmSettings.getModel().getRBM());
+        
+        if(rbmSettingsList.size() == 0) {
+            if( this.rbmSettingsList.add(rbmSettings)) {
+                setRBMImageSet();
+                return true;
+            }
+        }
+        
         return this.rbmSettingsList.add(rbmSettings);
 
     }
@@ -46,8 +54,10 @@ public class BenchmarkModel {
     }
 
     public void setImageManager(ImageManager imageManager) {
-
+        
         this.imageManager = imageManager;
+        
+            this.setRBMImageSet();
     }
 
     public boolean isShowImageViewer() {
@@ -64,6 +74,13 @@ public class BenchmarkModel {
 
     public ImageViewer getImageViewer() {
         return imageViewer;
+    }
+
+    private void setRBMImageSet() {
+        if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+            // TODO: checkbox for shuffled input data
+            this.getRbmSettingsList().getFirst().getModel().setData(imageManager.getImages(false));
+        }
     }
 
 }

@@ -5,12 +5,12 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ARBMFeature;
+import de.htw.iconn.fx.decomposition.AController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +20,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author dvarul
  */
-public class WeightVisualizationController implements Initializable, IFXController {
+public class WeightsVisualizationController extends AController {
 
     @FXML
     private AnchorPane view;
@@ -30,7 +30,6 @@ public class WeightVisualizationController implements Initializable, IFXControll
 
     
     WeightsVisualizationModel model;
-    private Timer timer;
        
     /**
      * Initializes the controller class.

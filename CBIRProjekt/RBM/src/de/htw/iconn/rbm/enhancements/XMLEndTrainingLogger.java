@@ -17,13 +17,10 @@ import org.xml.sax.SAXException;
 public class XMLEndTrainingLogger implements IRBMEndTrainingEnhancement  {
     
     private final XMLWeightLogger logger;
-    
-    public XMLEndTrainingLogger(int updateIntervall) {
-        this.logger = new XMLWeightLogger();
-    }
+
 
     public XMLEndTrainingLogger() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.logger = new XMLWeightLogger();
     }
 
 
