@@ -3,6 +3,7 @@ package de.htw.iconn.fx;
 import de.htw.cbir.ImageManager;
 
 import java.awt.Checkbox;
+import java.awt.image.BufferedImage;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+
+import javafx.animation.Interpolator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,6 +40,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
@@ -61,6 +68,10 @@ public class SimpleRBMController implements Initializable, IFXController {
     private Button btn_startTraining;
     @FXML
     private Button btn_startEvolution;
+    @FXML
+    private Button btn_exportVisible;
+    @FXML
+    private Button btn_exportWeights;
     @FXML
     private CheckBox cbx_logger;
     @FXML
@@ -375,6 +386,105 @@ public class SimpleRBMController implements Initializable, IFXController {
         this.model.trainRBM();
         
         this.updateView();
+    }
+    
+    @FXML
+    private void btn_exportVisibleAction(ActionEvent event) {
+    	
+    	Stage directoryStage = new Stage();
+    	
+    	DirectoryChooser directoryChooser = new DirectoryChooser();
+        String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
+    	
+    	double[][] weights = this.model.getRbm().getWeights()[0];
+    	
+    	int inputSize = this.model.getInputSize();
+    	int outputSize = this.model.getOutputSize();
+    	
+    	for(int i = 0; i < this.model.getOutputSize(); i++) {
+    		double[] hiddenData = new double[this.model.getOutputSize()];  
+    		hiddenData[i] = 1.0f;
+    		
+    		double[] visibleData = this.model.getRbmFeature().getVisible(hiddenData, false);
+    		
+    		int imageWidth = (int) Math.sqrt(visibleData.length), imageHeight = (int) Math.sqrt(visibleData.length);
+    		
+            WritableImage image = new WritableImage(imageWidth, imageHeight);
+            PixelWriter writer = image.getPixelWriter();
+
+            for (int y = 0; y < imageHeight; y++) {
+                for (int x = 0; x < imageWidth; x++) {
+                	int value = (int) (visibleData[y * imageWidth + x] * 255);
+                	Color color = Color.rgb(value, value, value);
+                    writer.setColor(x, y, color);
+                }
+            }
+    		
+            try {
+				ImageIO.write(SwingFXUtils.fromFXImage(image, null),"png", new File(path + "/" + i + "_th_hiddenNeuronActive.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    	}
+    }
+    
+    @FXML
+    private void btn_exportWeightsAction(ActionEvent event) {
+    	
+    	Stage directoryStage = new Stage();
+    	
+    	DirectoryChooser directoryChooser = new DirectoryChooser();
+        String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
+    	
+    	double[][] weights = this.model.getRbm().getWeights()[0];
+    	
+    	double min = Double.MAX_VALUE, max = 0; 
+    	for(int o = 0; o < weights[0].length; o++) {
+    		for(int i = 0; i < weights.length; i++) {
+        		min = Math.min(min, weights[i][o]); 
+        		max = Math.max(max, weights[i][o]); 
+    		}
+    	}
+    	
+    	for(int i = 0; i < weights[0].length; i++) {
+    		
+    		int imageDimensions = weights.length;
+    		
+    		int imageWidth = (int) Math.sqrt(imageDimensions), imageHeight = (int) Math.sqrt(imageDimensions);
+    		
+            WritableImage image = new WritableImage(imageWidth, imageHeight);
+            PixelWriter writer = image.getPixelWriter();
+
+            for (int y = 0, pos = 0; y < imageHeight; y++) {
+                for (int x = 0; x < imageWidth; x++, pos++) {
+                	double value = (double) (weights[pos][i]);
+                	double valueInterpolated = interpolate(min, max, value);
+                	int valueArgb = (int) (valueInterpolated * 255);
+                	
+                	Color color = Color.rgb(valueArgb, valueArgb, valueArgb);
+                    writer.setColor(x, y, color);
+                }
+            }
+            
+            try {
+    			ImageIO.write(SwingFXUtils.fromFXImage(image, null),"png", new File(path + "/" + i + "_th_hiddenToVisibleWeights.png"));
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    }
+    
+    // -0,2 + (0,5 - -0,2) * 0,5
+    private double interpolate(double min, double max, double value) {
+    	
+    	double slope = 1.0 * (1.0 - 0.0) / (max - min);
+    	double output = 0.0 + slope * (value - min);
+    	
+    	return output;
     }
 
     @FXML

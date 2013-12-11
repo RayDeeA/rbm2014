@@ -18,7 +18,7 @@ public class IdxReader {
 		String inputImagePath = "CBIR_Project/imagesRaw/MNIST/train-images-idx3-ubyte";
 		String inputLabelPath = "CBIR_Project/imagesRaw/MNIST/train-labels-idx1-ubyte";
 		
-		String outputPath = "CBIR_Project/images/MNIST_Database_ARGB/";
+		String outputPath = "CBIR_Project/images/MNIST_All_Database/";
 		
 		int[] hashMap = new int[10]; 
 

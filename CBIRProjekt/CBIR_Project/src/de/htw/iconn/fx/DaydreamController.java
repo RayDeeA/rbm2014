@@ -91,7 +91,6 @@ public class DaydreamController implements Initializable, IFXController {
         Timer timer = new Timer();
         this.timer = timer;
         timer.scheduleAtFixedRate(new TimerTask() {
-
             public void run() {
             	System.out.println("Dream");
             	imgv_Result.setImage(model.daydream());
