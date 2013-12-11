@@ -91,7 +91,7 @@ public class RBMSettingsController extends AController {
         this.model = new RBMSettingsModel(rbm, items, controllers);
         
         trv_rbmSettingsMenue.setRoot(settingsRBM);
-        
+
         trv_rbmSettingsMenue.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);   
         
         trv_rbmSettingsMenue.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>(){

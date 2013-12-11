@@ -78,6 +78,7 @@ public class RBMSettingsModel {
        RBMSettingsStoppingConditionModel stoppingConditionModel = this.getController(RBMSettingsStoppingConditionController.class).getModel();
        RBMSettingsVisualizationsModel visualizationsModel = this.getController(RBMSettingsVisualizationsController.class).getModel();
        
+   
        int inputSize = mainModel.getInputSize();
        int outputSize = mainModel.getOutputSize();
        ILogistic logisticFunction = mainModel.getSelectedLogisticFunctionImplementation();
