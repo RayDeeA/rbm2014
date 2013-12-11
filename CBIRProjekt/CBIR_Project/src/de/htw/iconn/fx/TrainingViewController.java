@@ -33,7 +33,7 @@ public class TrainingViewController implements Initializable, IFXController {
     @FXML
     private AnchorPane view;
     @FXML
-    private ScatterChart.Series<Number, Number> chart_scatter; 
+    private ScatterChart<Number, Number> chart_scatter; 
     @FXML
     private CategoryAxis chartaxis_epochs;
     @FXML
