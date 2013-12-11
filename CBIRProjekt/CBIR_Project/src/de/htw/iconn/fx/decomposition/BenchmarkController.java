@@ -59,6 +59,7 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 initializeImageView();
             }
+            
             this.initCmbImageManager();
             this.updateView();
         }
