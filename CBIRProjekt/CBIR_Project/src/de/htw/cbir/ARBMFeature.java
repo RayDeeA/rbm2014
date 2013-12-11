@@ -75,7 +75,7 @@ public abstract class ARBMFeature {
 	}
 
 	public double[][] getWeights() {
-		return rbm.getWeights()[0];
+		return rbm.getWeightsWithBias()[0];
 	}
 
 	public void setWeights(double[][] weights) {

@@ -99,8 +99,10 @@ public class RBMSettingsModel {
         
         
         if (!weightsModel.isInitializedWeights()) {
+            System.out.println(weightsModel.getWeights()[0][0]);
             rbm.setWeightsWithBias(weightsModel.getWeights());
         }
+        
         if(mainModel.getSelectedRbmFeature() == 0)
             rbmFeature = new RBMFeaturePixel(inputSize, outputSize, rbm);
         else            
@@ -116,6 +118,7 @@ public class RBMSettingsModel {
         
         weightsModel.setWeights(rbmFeature.getWeights());
         weightsModel.setInitializedWeights(false);
+        
     }
 
     /**

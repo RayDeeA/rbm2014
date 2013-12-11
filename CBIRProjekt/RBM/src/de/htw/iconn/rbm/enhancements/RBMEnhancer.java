@@ -18,7 +18,7 @@ public class RBMEnhancer implements IRBM {
 		this.rbm = rbm;
 		this.traningEnhancements = new LinkedList<>();
 		this.endEnhancements = new LinkedList<>();
-                this.info = new RBMInfoPackage(0, rbm.getWeights()[0], 0);
+                this.info = new RBMInfoPackage(0, rbm.getWeightsWithBias()[0], 0);
 	}
 
 	
@@ -49,21 +49,24 @@ public class RBMEnhancer implements IRBM {
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
-						this.info.setError(rbm.error(trainingData, false, false));
-                                                this.info.setWeights(rbm.getWeights()[0]);
-                                                this.info.setEpochs(i);
 						updateModel = false;
+                                                setInfo(rbm, trainingData, i);
 					}
 					enhancement.action(this.info);
 				}
 			}
 		}
-		
+		setInfo(rbm, trainingData, max_epochs);
 		for (IRBMEndTrainingEnhancement enhancement : this.endEnhancements) {
 			enhancement.action(this.info);
 		}
 	}
 
+        private void setInfo(IRBM rbm, double[][] trainingData, int epochs) {
+                this.info.setError(rbm.error(trainingData, false, false));
+                this.info.setWeights(rbm.getWeightsWithBias()[0]);
+                this.info.setEpochs(epochs);
+        }
 	@Override
 	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
