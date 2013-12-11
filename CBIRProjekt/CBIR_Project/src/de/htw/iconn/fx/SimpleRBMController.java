@@ -141,7 +141,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private ChartViewerController prChartViewerController;
     private SimpleRBMModel model;
     private Stage vz_viewer;
-    private VisualizationController visualController;
+    private WeightVisualizationController visualController;
     private Stage trainingStage;
     private TrainingViewController trainingController;
 
@@ -323,7 +323,7 @@ public class SimpleRBMController implements Initializable, IFXController {
     private void initializeVizView() {
         try {
          
-            this.visualController = (VisualizationController) loadController("VisualizationView.fxml");
+            this.visualController = (WeightVisualizationController) loadController("VisualizationView.fxml");
             Parent root = (Parent) this.visualController.getView();
             Scene scene = new Scene(root, 600, 400);
             this.vz_viewer = new Stage();
