@@ -38,6 +38,8 @@ public class RBMSettingsModel {
 
     private final AController[] controllers;
     private final TreeItem[] items;
+    
+    RBMSettingsMainModel mainModel;
 
     private Pic[] data;
 
@@ -114,7 +116,7 @@ public class RBMSettingsModel {
         RBMSettingsStoppingConditionModel stoppingConditionModel = this.getController(RBMSettingsStoppingConditionController.class).getModel();
         RBMSettingsWeightsModel weightsModel = this.getController(RBMSettingsWeightsController.class).getModel();
 
-        rbmFeature.train(data, stoppingConditionModel.getEpochs(), true, true);
+        rbmFeature.train(data, stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
         
         weightsModel.setWeights(rbmFeature.getWeights());
         weightsModel.setInitializedWeights(false);

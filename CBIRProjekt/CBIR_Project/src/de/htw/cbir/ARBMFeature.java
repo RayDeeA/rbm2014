@@ -42,7 +42,7 @@ public abstract class ARBMFeature {
 	public void train(Pic[] images, int maxEpoche, boolean useHiddenStates, boolean useVisibleStates) {
 		double[][] trainingsData = createTrainingsData(images);
 		if (maxEpoche > 0)
-			rbm.train(trainingsData, maxEpoche, useHiddenStates, useHiddenStates);
+			rbm.train(trainingsData, maxEpoche, useHiddenStates, useVisibleStates);
 	}
 
 	public double getError(Pic[] images, boolean useHiddenStates, boolean useVisibleStates) {

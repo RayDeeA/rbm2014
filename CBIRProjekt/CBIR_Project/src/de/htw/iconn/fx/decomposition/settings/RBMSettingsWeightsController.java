@@ -31,6 +31,10 @@ public class RBMSettingsWeightsController extends AController {
     @FXML
     private CheckBox cbx_useSeed;
     @FXML
+    private CheckBox cbx_useBinarizeHidden;
+    @FXML
+    private CheckBox cbx_useBinarizeVisible;
+    @FXML
     private TextField txt_seed;
 
     /**
@@ -67,6 +71,16 @@ public class RBMSettingsWeightsController extends AController {
     @FXML
     private void cbx_useBiasAction(ActionEvent event) {
         this.model.setUseBias(cbx_useBias.isSelected());
+    }
+    
+    @FXML
+    private void cbx_useBinarizeHiddenAction(ActionEvent event) {
+        this.model.setBinarizeHidden(cbx_useBinarizeHidden.isSelected());
+    }
+    
+    @FXML
+    private void cbx_useBinarizeVisibleAction(ActionEvent event) {
+        this.model.setBinarizeVisible(cbx_useBinarizeVisible.isSelected());
     }
 
     @FXML

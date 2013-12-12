@@ -50,20 +50,20 @@ public class RBMEnhancer implements IRBM {
 				if(i % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
 						updateModel = false;
-                                                setInfo(rbm, trainingData, i);
+                        setInfo(rbm, trainingData, i, useHiddenStates, useVisibleStates);
 					}
 					enhancement.action(this.info);
 				}
 			}
 		}
-		setInfo(rbm, trainingData, max_epochs);
+		setInfo(rbm, trainingData, max_epochs, useHiddenStates, useVisibleStates);
 		for (IRBMEndTrainingEnhancement enhancement : this.endEnhancements) {
 			enhancement.action(this.info);
 		}
 	}
 
-        private void setInfo(IRBM rbm, double[][] trainingData, int epochs) {
-                this.info.setError(rbm.error(trainingData, false, false));
+        private void setInfo(IRBM rbm, double[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
+                this.info.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
                 this.info.setWeights(rbm.getWeightsWithBias()[0]);
                 this.info.setEpochs(epochs);
         }

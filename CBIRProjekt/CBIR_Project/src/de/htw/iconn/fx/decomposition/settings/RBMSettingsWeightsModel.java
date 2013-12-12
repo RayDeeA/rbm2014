@@ -22,6 +22,8 @@ public class RBMSettingsWeightsModel {
     
     private boolean initializedWeights = true;
     private boolean useBias = true;
+    private boolean binarizeHidden = false;
+    private boolean binarizeVisible = false;
     private boolean useSeed = false;
     private int seed = 0;
     private double[][] weights;
@@ -39,7 +41,23 @@ public class RBMSettingsWeightsModel {
         this.useBias = useBias;
     }
 
-    public boolean isUseSeed() {
+    public boolean isBinarizeHidden() {
+		return binarizeHidden;
+	}
+
+	public void setBinarizeHidden(boolean binarizeHidden) {
+		this.binarizeHidden = binarizeHidden;
+	}
+
+	public boolean isBinarizeVisible() {
+		return binarizeVisible;
+	}
+
+	public void setBinarizeVisible(boolean binarizeVisible) {
+		this.binarizeVisible = binarizeVisible;
+	}
+
+	public boolean isUseSeed() {
         return useSeed;
     }
 
