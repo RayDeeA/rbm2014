@@ -22,12 +22,21 @@ public class BenchmarkModel extends AModel {
     private ImageManager imageManager = null;
     private ImageViewer imageViewer;
     private boolean showImageViewer = false;
+    private int selectedMAPTest = 0;
+
+    public int getSelectedMAPTest() {
+        return selectedMAPTest;
+    }
+
+    public void setSelectedMAPTest(int selectedMAPTest) {
+        this.selectedMAPTest = selectedMAPTest;
+    }
 
     public BenchmarkModel(BenchmarkController controller) {
-        this.addObserver(controller);
         this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
-        hasChanged();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
 
     /**

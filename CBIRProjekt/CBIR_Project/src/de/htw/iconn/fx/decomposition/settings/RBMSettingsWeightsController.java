@@ -25,8 +25,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class RBMSettingsWeightsController extends AController {
     @FXML
-    private AnchorPane view;
-    private RBMSettingsWeightsModel model;
+    private AnchorPane view;   
     @FXML
     private CheckBox cbx_useBias;
     @FXML
@@ -37,9 +36,13 @@ public class RBMSettingsWeightsController extends AController {
     private CheckBox cbx_useBinarizeVisible;
     @FXML
     private TextField txt_seed;
+    
+    private RBMSettingsWeightsModel model;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,5 +99,10 @@ public class RBMSettingsWeightsController extends AController {
 
     @Override
     public void update(Observable o, Object arg) {
+        this.cbx_useBias.setSelected(this.model.isUseBias());
+        this.cbx_useBinarizeHidden.setSelected((this.model.isBinarizeHidden()));
+        this.cbx_useBinarizeVisible.setSelected((this.model.isBinarizeVisible()));
+        this.cbx_useSeed.setSelected(this.model.isUseSeed());
+        this.txt_seed.setText(new Integer(this.model.getSeed()).toString());
     }
 }

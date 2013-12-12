@@ -10,7 +10,6 @@ import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
 import java.util.Observable;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -32,11 +31,12 @@ public class RBMSettingsLearningRateController extends AController{
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel(this);
-        this.txt_learningRate.setText("" + this.model.getConstantLearningRate());
     }    
 
     private void txt_learningRateKeyTyped(KeyEvent event) {
@@ -58,5 +58,6 @@ public class RBMSettingsLearningRateController extends AController{
 
     @Override
     public void update(Observable o, Object arg) {
+        this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
     }
 }

@@ -69,8 +69,6 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 initializeImageView();
             }
-
-
             this.initCmbImageManager();
             this.updateView();
         }
@@ -96,6 +94,7 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void cmb_mAPTestsAction(ActionEvent event) {
+        this.model.setSelectedMAPTest(this.cmb_mAPTests.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
@@ -128,9 +127,8 @@ public class BenchmarkController extends AController {
         }
         ObservableList mapTestObs = FXCollections.observableList(mapTest);
         this.cmb_mAPTests.setItems(mapTestObs);
-        this.cmb_mAPTests.getSelectionModel().selectFirst();
+        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
-
     private void updateView() {
         if (this.model.getImageManager() == null) {
             lbl_imageSetSelected.setText("no image set selected");
@@ -141,7 +139,8 @@ public class BenchmarkController extends AController {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
+        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
 

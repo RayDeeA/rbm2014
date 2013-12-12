@@ -30,8 +30,9 @@ public class RBMSettingsWeightsModel extends AModel {
     private final XMLWeightsLoader loader;
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
-        addObserver(controller);
         this.loader = new XMLWeightsLoader();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
             
     public boolean isUseBias() {

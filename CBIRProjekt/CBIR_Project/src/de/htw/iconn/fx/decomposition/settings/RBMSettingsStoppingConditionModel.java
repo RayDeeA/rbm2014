@@ -19,7 +19,8 @@ public class RBMSettingsStoppingConditionModel extends AModel {
     private double error = 0.1;
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {
-        addObserver(controller);
+        this.addObserver(controller);
+        this.notifyObservers();
     }
     public boolean isEpochsOn() {
         return epochsOn;

@@ -38,13 +38,12 @@ public class RBMSettingsModel extends AModel {
 
     private ARBMFeature rbmFeature;
 
-    public RBMSettingsModel(TreeItem[] items, AController[] controllers, RBMSettingsController controller) {
-
+    public RBMSettingsModel(TreeItem[] items, AController[] controllers, RBMSettingsController controller){
         this.controllers = controllers;
-        this.items = items;
-        addObserver(controller);
-        initialize();
-        hasChanged();
+        this.items = items;    
+        this.initialize();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
 
     public TreeItem[] getTreeItems() {

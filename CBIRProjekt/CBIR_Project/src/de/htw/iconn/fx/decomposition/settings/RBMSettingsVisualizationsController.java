@@ -30,16 +30,15 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showErrorGraph;
     
     private RBMSettingsVisualizationsModel model;
-    
-    
-   
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsVisualizationsModel();
+        this.model = new RBMSettingsVisualizationsModel(this);
     }    
 
     @FXML
@@ -65,9 +64,8 @@ public class RBMSettingsVisualizationsController extends AController {
 
     @Override
     public void update(Observable o, Object arg) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        this.model.updateError();
-        this.model.updateWeights();
+        this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
+        this.cbx_showWeights.setSelected(this.model.isShowWeights());
     }
 
 }
