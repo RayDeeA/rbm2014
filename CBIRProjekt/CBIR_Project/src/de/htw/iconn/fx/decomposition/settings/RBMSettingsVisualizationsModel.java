@@ -18,8 +18,13 @@ public class RBMSettingsVisualizationsModel {
     private boolean showErrorGraph = false;
     
     private WeightsVisualizationModel model;
-    private WeightsVisualizationController wvC;
-    private ErrorViewController tvC;
+    private WeightsVisualizationController weightsVisualizationController;
+    private ErrorViewController errorViewController;
+    
+    public RBMSettingsVisualizationsModel() {
+    	this.weightsVisualizationController = new WeightsVisualizationController();
+    	this.errorViewController = new ErrorViewController();
+    }
     
     public boolean isShowWeights() {
         return showWeights;
@@ -38,12 +43,23 @@ public class RBMSettingsVisualizationsModel {
     }
     
     public WeightsVisualizationController getWeightVisualizationController(){
-        return this.wvC;  
+        return this.weightsVisualizationController;  
     }
     
-    public ErrorViewController getTrainingViewController(){
-        return this.tvC;     
+    public ErrorViewController getErrorViewController(){
+        return this.errorViewController;     
     }
+
+	public void updateError() {
+		// TODO Auto-generated method stub
+		// probably the place to call the update of the controller
+		
+	}
+
+	public void updateWeights() {
+		// TODO Auto-generated method stub
+		this.errorViewController.update(4.2);
+	}
     
     
 }
