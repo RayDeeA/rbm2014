@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
+
 
 /**
  * FXML Controller class
@@ -96,5 +99,10 @@ public class ControlCenterController extends AController  {
 
     @FXML
     private void mnu_loadConfigurationAction(ActionEvent event) {
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
     }
 }

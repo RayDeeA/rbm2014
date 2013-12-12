@@ -353,8 +353,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 		}
 	}
 
-	private void initializeTrainingErrorView() {
-
+	private void initializeTrainingErrorScatterView() {
 		try {
 			this.errorController = (TrainingViewController) loadController("TrainingView.fxml");
 			Parent root = (Parent) this.errorController.getView();
@@ -479,8 +478,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
-
-		double[][] weights = this.model.getRbm().getWeights()[0];
+		double[][] weights = this.model.getRbm().getWeights();
 
 		int inputSize = this.model.getInputSize();
 		int outputSize = this.model.getOutputSize();
@@ -521,8 +519,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
-
-		double[][] weights = this.model.getRbm().getWeights()[0];
+		double[][] weights = this.model.getRbm().getWeights();
 
 		double min = Double.MAX_VALUE, max = 0; 
 		for(int o = 0; o < weights[0].length; o++) {
@@ -792,7 +789,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 		this.model.setShowError(cbx_visualisationError.isSelected());
 
 		if (this.model.isShowTrainingError()) {
-			initializeTrainingErrorView();
+			initializeTrainingErrorScatterView();
 			//Set DCT
 			this.errorController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
 			this.errorController.setDisplayDimensions();

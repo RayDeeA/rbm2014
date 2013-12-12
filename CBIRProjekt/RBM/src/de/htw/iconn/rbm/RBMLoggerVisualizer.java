@@ -12,6 +12,7 @@ import de.htw.cbir.CBIREvaluationModel;
 import de.htw.cbir.gui.RBMVisualizationFrame;
 import de.htw.iconn.rbm.functions.ILogistic;
 
+@Deprecated
 public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	
 	private RBMLogger logger;
@@ -28,8 +29,8 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 		int steps = max_epochs / evaluationModel.getUpdateInterval();
 		for(int i = 0; i < steps; ++i){		
 			logger.train(trainingData, evaluationModel.getUpdateInterval(), useHiddenStates, useVisibleStates);
-			frame.updatePanel(logger.getWeights()[0], logger.error(trainingData, useHiddenStates, useVisibleStates), 47.11);
-			evaluationModel.addToCollectedWeights(logger.getWeightsWithBias());
+			frame.updatePanel(logger.getWeights(), logger.error(trainingData, useHiddenStates, useVisibleStates), 47.11);
+			evaluationModel.addToCollectedWeights(logger.getWeights());
 			if((i*evaluationModel.getUpdateInterval()) % evaluationModel.getXmlOutputFrequency() == 0){
 				try {
 					logger.stepXmlLogTraining(evaluationModel);
@@ -95,18 +96,13 @@ public class RBMLoggerVisualizer implements IRBMLogger, IRBM{
 	}
 
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
-		logger.setWeightsWithBias(weights);	
+	public void setWeights(double[][] weights) {
+		logger.setWeights(weights);	
 	}
 
 	@Override
-	public double[][][] getWeights() {
+	public double[][] getWeights() {
 		return logger.getWeights();
-	}
-
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return logger.getWeightsWithBias();
 	}
 
 	@Override

@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,7 +41,7 @@ public class RBMSettingsLoggerController extends AController{
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsLoggerModel();
+        this.model = new RBMSettingsLoggerModel(this);
         cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
         
@@ -72,6 +73,10 @@ public class RBMSettingsLoggerController extends AController{
         } catch(NumberFormatException e) {
 
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
     }
     
 }

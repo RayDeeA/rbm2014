@@ -42,7 +42,7 @@ public class RBMJBlasTest {
 		rbm.train(trainingData, 1, false, false);
 		rbmJ.train(trainingData, epochs,  false,  false);
 		
-		assert2D(rbmJ.getWeightsWithBias()[0], rbm.getWeights()[0], delta);
+		assert2D(rbmJ.getWeights(), rbm.getWeights(), delta);
 		
 		
 	}

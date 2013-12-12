@@ -4,14 +4,15 @@ import java.util.LinkedList;
 
 import de.htw.iconn.rbm.IRBMLogger;
 
+@Deprecated
 public class CBIREvaluationModel {
 	private double mAP;
 	private double error;
 	private int epochs;
 	private evaluationType type;
 	private int imageSetSize;
-	private double[][][] weights;
-	private LinkedList<double[][][]> collectedWeights;
+	private double[][] weights;
+	private LinkedList<double[][]> collectedWeights;
 	private double[][] weights2d;
 	private int seed;
 	private boolean useSeed;
@@ -41,19 +42,19 @@ public class CBIREvaluationModel {
 		this.logger = null;
 		this.useSeed = false;
 		this.seed = 0;
-		this.collectedWeights = new LinkedList<double[][][]>();
+		this.collectedWeights = new LinkedList<double[][]>();
 	}
 	
 	public CBIREvaluationModel(){
 		this(0);
 	}	
 	public void resetCollectedWeights(){
-		collectedWeights = new LinkedList<double[][][]>();
+		collectedWeights = new LinkedList<double[][]>();
 	}	
-	public void addToCollectedWeights(double[][][] weights){
+	public void addToCollectedWeights(double[][] weights){
 		collectedWeights.add(weights);
 	}
-	public LinkedList<double[][][]> getCollectedWeights(){
+	public LinkedList<double[][]> getCollectedWeights(){
 		return this.collectedWeights;
 	}
 	public double getMAP() {
@@ -86,10 +87,10 @@ public class CBIREvaluationModel {
 	public void setImageSetSize(int imageSetSize) {
 		this.imageSetSize = imageSetSize;
 	}
-	public double[][][] getWeights() {
+	public double[][] getWeights() {
 		return weights;
 	}
-	public void setWeights(double[][][] weights) {
+	public void setWeights(double[][] weights) {
 		this.weights = weights;
 	}	
 	public boolean getUseSeed() {

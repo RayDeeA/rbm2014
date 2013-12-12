@@ -6,8 +6,8 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.decomposition.AModel;
 import de.htw.iconn.fx.decomposition.XMLWeightsLoader;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
  *
  * @author Moritz
  */
-public class RBMSettingsWeightsModel {
+public class RBMSettingsWeightsModel extends AModel {
     
     private boolean initializedWeights = true;
     private boolean useBias = true;
@@ -29,7 +29,8 @@ public class RBMSettingsWeightsModel {
     private double[][] weights;
     private final XMLWeightsLoader loader;
 
-    public RBMSettingsWeightsModel() {
+    public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
+        addObserver(controller);
         this.loader = new XMLWeightsLoader();
     }
             
@@ -41,6 +42,10 @@ public class RBMSettingsWeightsModel {
         this.useBias = useBias;
     }
 
+    public boolean isUseSeed() {
+        return useSeed;
+    }
+    
     public boolean isBinarizeHidden() {
 		return binarizeHidden;
 	}
@@ -56,10 +61,6 @@ public class RBMSettingsWeightsModel {
 	public void setBinarizeVisible(boolean binarizeVisible) {
 		this.binarizeVisible = binarizeVisible;
 	}
-
-	public boolean isUseSeed() {
-        return useSeed;
-    }
 
     public void setUseSeed(boolean useSeed) {
         this.useSeed = useSeed;
@@ -105,5 +106,4 @@ public class RBMSettingsWeightsModel {
             Logger.getLogger(RBMSettingsWeightsModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
 }

@@ -24,7 +24,7 @@ public class RBMFeaturePixel extends ARBMFeature {
 	}
 
 	public ARBMFeature shallowCopy() {
-		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights()[0], new DefaultLogisticMatrixFunction());
+		IRBM newRBM = new RBMJBlas(inputSize, outputSize, learnRate, rbm.getWeights(), new DefaultLogisticMatrixFunction());
 		return new RBMFeaturePixel(inputSize, outputSize, newRBM);
 	}
 

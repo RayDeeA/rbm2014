@@ -3,6 +3,7 @@ package de.htw.iconn.fx.decomposition.settings;
 import de.htw.cbir.ARBMFeature;
 import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.RBMFeaturePixel;
+import de.htw.iconn.fx.decomposition.AModel;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import de.htw.iconn.rbm.functions.GaussMatrixFunction;
@@ -19,10 +20,14 @@ import de.htw.iconn.rbm.functions.TanHMatrixFunction;
  *
  * @author Moritz
  */
-public class RBMSettingsMainModel {
+public class RBMSettingsMainModel extends AModel{
     //combobox select options
     private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
+
+    public RBMSettingsMainModel(RBMSettingsMainController controller) {
+        addObserver(controller);
+    }
 
     private final String[] logisticFunctions = {
         "Standard",

@@ -365,19 +365,15 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
+	public void setWeights(double[][] weights) {
 		this.weights = weights;
 	} 
 	
 	@Override
-	public double[][][] getWeights() {
-		return new double[][][]{this.weights};
+	public double[][] getWeights() {
+		return this.weights;
 	}
-	
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return new double[][][]{this.weights};
-	}
+
 
 
 	public static void main(String[] args) {

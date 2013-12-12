@@ -6,16 +6,21 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.decomposition.AModel;
+
 /**
  *
  * @author moritz
  */
-public class RBMSettingsLoggerModel {
+public class RBMSettingsLoggerModel extends AModel {
     private boolean continuousLoggerOn = false;
     private boolean finalLoggerOn = true;
     
     private int continuousInterval = 1000;
 
+    RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
+        addObserver(controller);
+    }
     /**
      * @return the continuousLoggerOn
      */

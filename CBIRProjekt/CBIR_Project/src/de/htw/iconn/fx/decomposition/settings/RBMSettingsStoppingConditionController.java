@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +45,7 @@ public class RBMSettingsStoppingConditionController extends AController{
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsStoppingConditionModel();
+        this.model = new RBMSettingsStoppingConditionModel(this);
     }    
 
     @FXML
@@ -82,5 +83,9 @@ public class RBMSettingsStoppingConditionController extends AController{
     @FXML
     private void cbx_errorAction(ActionEvent event) {
         this.model.setErrorOn(cbx_error.isSelected());
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
     }
 }

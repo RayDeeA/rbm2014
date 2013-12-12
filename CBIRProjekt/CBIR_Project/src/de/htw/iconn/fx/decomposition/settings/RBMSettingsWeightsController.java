@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +43,7 @@ public class RBMSettingsWeightsController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsWeightsModel();
+        this.model = new RBMSettingsWeightsModel(this);
     }    
 
     @FXML
@@ -91,5 +92,9 @@ public class RBMSettingsWeightsController extends AController {
     @FXML
     private void txt_seedKeyTyped(KeyEvent event) {
         this.model.setSeed(Integer.parseInt(txt_seed.getText()));
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
     }
 }
