@@ -75,11 +75,11 @@ public abstract class ARBMFeature {
 	}
 
 	public double[][] getWeights() {
-		return rbm.getWeightsWithBias()[0];
+		return rbm.getWeights();
 	}
 
 	public void setWeights(double[][] weights) {
-		rbm.setWeightsWithBias(weights);
+		rbm.setWeights(weights);
 	}
 
 	public void save(Path path) {
@@ -88,7 +88,7 @@ public abstract class ARBMFeature {
 
 	public void printWeightAnalyse() {
 		System.out.println("weights");
-		double[][] weights = rbm.getWeights()[0];
+		double[][] weights = rbm.getWeights();
 		for (int i = 0; i < weights.length; i++) {
 			for (int j = 0; j < weights[0].length; j++)
 				System.out.printf("%6.2f ", weights[i][j]);

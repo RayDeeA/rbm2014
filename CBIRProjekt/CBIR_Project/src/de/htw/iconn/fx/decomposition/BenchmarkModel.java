@@ -14,7 +14,7 @@ import java.util.LinkedList;
  *
  * @author Moritz
  */
-public class BenchmarkModel {
+public class BenchmarkModel extends AModel {
 
     private final RBMStack rbmStack;
 
@@ -23,9 +23,11 @@ public class BenchmarkModel {
     private ImageViewer imageViewer;
     private boolean showImageViewer = false;
 
-    public BenchmarkModel() {
+    public BenchmarkModel(BenchmarkController controller) {
+        this.addObserver(controller);
         this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
+        hasChanged();
     }
 
     /**

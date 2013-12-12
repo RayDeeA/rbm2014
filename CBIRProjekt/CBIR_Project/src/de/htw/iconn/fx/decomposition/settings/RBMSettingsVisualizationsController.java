@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,6 +60,11 @@ public class RBMSettingsVisualizationsController extends AController {
     public RBMSettingsVisualizationsModel getModel(){
         return this.model;
        
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

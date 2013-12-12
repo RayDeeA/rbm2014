@@ -34,7 +34,7 @@ import javafx.scene.control.TreeItem;
  *
  * @author Moritz
  */
-public class RBMSettingsModel {
+public class RBMSettingsModel extends AModel {
 
     private final AController[] controllers;
     private final TreeItem[] items;
@@ -43,11 +43,13 @@ public class RBMSettingsModel {
 
     private ARBMFeature rbmFeature;
 
-    public RBMSettingsModel(TreeItem[] items, AController[] controllers) {
+    public RBMSettingsModel(TreeItem[] items, AController[] controllers, RBMSettingsController controller) {
 
         this.controllers = controllers;
         this.items = items;
+        addObserver(controller);
         initialize();
+        hasChanged();
     }
 
     public TreeItem[] getTreeItems() {
@@ -100,7 +102,7 @@ public class RBMSettingsModel {
         
         if (!weightsModel.isInitializedWeights()) {
             System.out.println(weightsModel.getWeights()[0][0]);
-            rbm.setWeightsWithBias(weightsModel.getWeights());
+            rbm.setWeights(weightsModel.getWeights());
         }
         
         if(mainModel.getSelectedRbmFeature() == 0)

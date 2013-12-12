@@ -479,7 +479,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
 
-		double[][] weights = this.model.getRbm().getWeights()[0];
+		double[][] weights = this.model.getRbm().getWeights();
 
 		int inputSize = this.model.getInputSize();
 		int outputSize = this.model.getOutputSize();
@@ -521,7 +521,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		String path = directoryChooser.showDialog(directoryStage).getAbsolutePath();
 
-		double[][] weights = this.model.getRbm().getWeights()[0];
+		double[][] weights = this.model.getRbm().getWeights();
 
 		double min = Double.MAX_VALUE, max = 0; 
 		for(int o = 0; o < weights[0].length; o++) {

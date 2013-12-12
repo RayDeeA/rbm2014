@@ -6,14 +6,22 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.decomposition.AModel;
+
 /**
  *
  * @author moritz
  */
-public class RBMSettingsLearningRateModel {
+public class RBMSettingsLearningRateModel extends AModel{
     
     private double constantLearningRate = 0.1;
 
+    public RBMSettingsLearningRateModel(RBMSettingsLearningRateController controller) {
+        addObserver(controller);
+        hasChanged();
+    }
+
+    
     /**
      * @return the constantLearningRate
      */

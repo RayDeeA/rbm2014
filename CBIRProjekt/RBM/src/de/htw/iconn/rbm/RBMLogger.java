@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 import de.htw.cbir.CBIREvaluationModel;
 import de.htw.iconn.rbm.functions.ILogistic;
 
+@Deprecated
 public class RBMLogger implements IRBM, IRBMLogger{
 	
 	private IRBM rbm;
@@ -151,7 +152,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	@Override
 	public void stepXmlLogTraining(CBIREvaluationModel evaluationModel) throws IOException, ParserConfigurationException, SAXException, TransformerException {
 		this.evaluationModel = evaluationModel;
-		LinkedList<double[][][]> collectedWeights = evaluationModel.getCollectedWeights();
+		LinkedList<double[][]> collectedWeights = evaluationModel.getCollectedWeights();
 		evaluationModel.resetCollectedWeights();
 		StringBuffer rowSB;
 		
@@ -186,9 +187,9 @@ public class RBMLogger implements IRBM, IRBMLogger{
 			stepCount = rootElement.getElementsByTagName("step").getLength();
 		}
 		
-		Iterator<double[][][]> it = collectedWeights.iterator();
+		Iterator<double[][]> it = collectedWeights.iterator();
 		while(it.hasNext()){
-			double[][][] weights = it.next();
+			double[][] weights = it.next();
 			Element step = doc.createElement("step");
 			rootElement.appendChild(step);
 	 
@@ -196,18 +197,17 @@ public class RBMLogger implements IRBM, IRBMLogger{
 			count.setValue(new Integer(stepCount++).toString());
 			step.setAttributeNode(count);
 			
-			for(int i = 0; i < weights.length; ++i){
 				Element rbm = doc.createElement("rbm");
 				step.appendChild(rbm);
 				
 				Attr id = doc.createAttribute("id");
-				id.setValue(new Integer(i).toString());
+				id.setValue(new Integer(0).toString());
 				rbm.setAttributeNode(id);
-				for(int j = 0; j < weights[i].length; ++j){
+				for(int j = 0; j < weights.length; ++j){
 					rowSB = new StringBuffer();
-					for(int k = 0; k < weights[i][j].length; ++k){
-						rowSB.append(weights[i][j][k]);
-						if(k < weights[i][j].length - 1){
+					for(int k = 0; k < weights[j].length; ++k){
+						rowSB.append(weights[j][k]);
+						if(k < weights[j].length - 1){
 							rowSB.append(",");
 						}
 					}
@@ -221,7 +221,7 @@ public class RBMLogger implements IRBM, IRBMLogger{
 					row.appendChild(doc.createTextNode(rowSB.toString()));
 				}
 			}
-		}
+
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -322,18 +322,13 @@ public class RBMLogger implements IRBM, IRBMLogger{
 	}
 
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
-		rbm.setWeightsWithBias(weights);
+	public void setWeights(double[][] weights) {
+		rbm.setWeights(weights);
 	}
 
 	@Override
-	public double[][][] getWeights() {
+	public double[][] getWeights() {
 		return rbm.getWeights();
-	}
-
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return rbm.getWeightsWithBias();
 	}
 
 	@Override

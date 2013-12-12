@@ -9,9 +9,8 @@ public interface IRBM {
 	public double[][] run_visible(double[][] userData, boolean useHiddenStates);
 	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates);
 	
-	public void setWeightsWithBias(double[][] weights);
-	public double[][][] getWeights();
-	public double[][][] getWeightsWithBias();
+	public void setWeights(double[][] weights);
+	public double[][] getWeights();
 	
 	public int getInputSize();
 	public int getOutputSize();

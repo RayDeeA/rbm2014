@@ -7,11 +7,11 @@
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.cbir.ImageManager;
-import de.htw.iconn.fx.ImageViewer;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +47,7 @@ public class BenchmarkController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new BenchmarkModel();
+        model = new BenchmarkModel(this);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
     }    
 
@@ -137,6 +137,11 @@ public class BenchmarkController extends AController {
         } else {
             lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 
 

@@ -257,18 +257,13 @@ public class RBMJBlas implements IRBM {
 	}
 	
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
+	public void setWeights(double[][] weights) {
 		this.weights = new DoubleMatrix(weights);
 	}
 	
 	@Override
-	public double[][][] getWeights() {
-		return new double[][][]{(this.weights.getRange(1, weights.getRows(), 1, weights.getColumns())).toArray2()};
-	}
-	
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return new double[][][]{this.weights.toArray2()};
+	public double[][] getWeights() {
+		return this.weights.toArray2();
 	}
 
 	@Override

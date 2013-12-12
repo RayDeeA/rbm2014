@@ -351,18 +351,13 @@ public class RBMNico implements IRBM {
 	}
 
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
+	public void setWeights(double[][] weights) {
 		this.weights = weights;
 	}
 
 	@Override
-	public double[][][] getWeights() {
-		return new double[][][]{this.weights};
-	}
-	
-	@Override
-	public double[][][] getWeightsWithBias() {
-		return new double[][][]{this.weights};
+	public double[][] getWeights() {
+		return this.weights;
 	}
 
 	@Override

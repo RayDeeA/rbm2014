@@ -75,46 +75,13 @@ public class RBMStack implements IRBM {
 	}
 
 	@Override
-	public void setWeightsWithBias(double[][] weights) {
-
+	public void setWeights(double[][] weights) {
+             throw new UnsupportedOperationException("Not supported by " + RBMStack.class.getName());
 	}
 
 	@Override
-	public double[][][] getWeights() {
-		LinkedList<double[][]> weights = new LinkedList<>();
-		
-		for (IRBM rbm : rbms) {
-			if(rbm instanceof RBMStack) {
-				double [][][] cascadeWeights = ((RBMStack)rbm).getWeights();
-				for (double[][] ds : cascadeWeights) {
-					weights.add(ds);
-				}
-			}
-			else {
-				weights.add(rbm.getWeights()[0]);
-			}
-		}
-		
-		return (double[][][])weights.toArray();
-	}
-
-	@Override
-	public double[][][] getWeightsWithBias() {
-		LinkedList<double[][]> weights = new LinkedList<>();
-		
-		for (IRBM rbm : rbms) {
-			if(rbm instanceof RBMStack) {
-				double [][][] cascadeWeights = ((RBMStack)rbm).getWeightsWithBias();
-				for (double[][] ds : cascadeWeights) {
-					weights.add(ds);
-				}
-			}
-			else {
-				weights.add(rbm.getWeightsWithBias()[0]);
-			}
-		}
-		
-		return (double[][][])weights.toArray();
+	public double[][] getWeights() {	
+             throw new UnsupportedOperationException("Not supported by " + RBMStack.class.getName());
 	}
 
 	@Override
@@ -148,5 +115,7 @@ public class RBMStack implements IRBM {
         public boolean add(IRBM rbm) {
            return this.rbms.add(rbm);
         }
+
+   
 
 }

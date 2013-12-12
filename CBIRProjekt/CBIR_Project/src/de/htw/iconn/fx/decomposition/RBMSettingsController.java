@@ -11,6 +11,7 @@ import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,7 +89,7 @@ public class RBMSettingsController extends AController {
         
         
         IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
-        this.model = new RBMSettingsModel(items, controllers);
+        this.model = new RBMSettingsModel(items, controllers, this);
         
         trv_rbmSettingsMenue.setRoot(settingsRBM);
 
@@ -149,4 +150,9 @@ public class RBMSettingsController extends AController {
     public RBMSettingsModel getModel() {
        return this.model;
     }  
+
+    @Override
+    public void update(Observable o, Object arg) {
+    
+    }
 }

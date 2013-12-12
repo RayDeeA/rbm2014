@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import de.htw.cbir.CBIREvaluationModel;
 
+@Deprecated
 public interface IRBMLogger {
 	public void finalCsvLog(CBIREvaluationModel evaluationModel) throws IOException;
 	public void stepCsvLog(CBIREvaluationModel evaluationModel) throws IOException;
