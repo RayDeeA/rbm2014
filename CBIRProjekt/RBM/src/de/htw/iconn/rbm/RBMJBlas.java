@@ -74,10 +74,7 @@ public class RBMJBlas implements IRBM {
 			double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
 			for (int y = 0; y < tmpHiddenStates.length; y++) {
 				for (int x = 0; x < tmpHiddenStates[y].length; x++) {
-					if(tmpHiddenStates[y][x] > randomMatrix[y][x])
-						tmpHiddenStates[y][x] = 1;
-					else
-						tmpHiddenStates[y][x] = 0;			
+					tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;			
 				}
 			}
 			posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
@@ -95,10 +92,7 @@ public class RBMJBlas implements IRBM {
 			double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
 			for (int y = 0; y < tmpVisibleStates.length; y++) {
 				for (int x = 0; x < tmpVisibleStates[y].length; x++) {				
-					if(tmpVisibleStates[y][x] > randomMatrix[y][x])
-						tmpVisibleStates[y][x] = 1;
-					else
-						tmpVisibleStates[y][x] = 0;			
+					tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;		
 				}
 			}
 			negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
@@ -127,11 +121,8 @@ public class RBMJBlas implements IRBM {
 		    	
 				double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
 				for (int y = 0; y < tmpHiddenStates.length; y++) {
-					for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
-						if(tmpHiddenStates[y][x] > randomMatrix[y][x])
-							tmpHiddenStates[y][x] = 1;
-						else
-							tmpHiddenStates[y][x] = 0;			
+					for (int x = 0; x < tmpHiddenStates[y].length; x++) {
+						tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;		
 					}
 				}
 				posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
@@ -151,10 +142,7 @@ public class RBMJBlas implements IRBM {
 				double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
 				for (int y = 0; y < tmpVisibleStates.length; y++) {
 					for (int x = 0; x < tmpVisibleStates[y].length; x++) {				
-						if(tmpVisibleStates[y][x] > randomMatrix[y][x])
-							tmpVisibleStates[y][x] = 1;
-						else
-							tmpVisibleStates[y][x] = 0;			
+						tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;		
 					}
 				}
 				negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
@@ -199,12 +187,7 @@ public class RBMJBlas implements IRBM {
 			double[][] tmpHiddenStates = hiddenNodes.dup().toArray2();
 			for (int y = 0; y < tmpHiddenStates.length; y++) {
 				for (int x = 0; x < tmpHiddenStates[y].length; x++) {				
-					// (p + r) / 2
-					// ez eg.: .6, .9 => .75
-					if(tmpHiddenStates[y][x] > randomMatrix[y][x])
-						tmpHiddenStates[y][x] = 1;
-					else
-						tmpHiddenStates[y][x] = 0;			
+					tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;			
 				}
 			}
 			hiddenNodes = new DoubleMatrix(tmpHiddenStates);
@@ -237,12 +220,7 @@ public class RBMJBlas implements IRBM {
 			double[][] tmpVisibleStates = visibleNodes.dup().toArray2();
 			for (int y = 0; y < tmpVisibleStates.length; y++) {
 				for (int x = 0; x < tmpVisibleStates[0].length; x++) {				
-					// (p + r) / 2
-					// ez eg.: .6, .9 => .75
-					if(tmpVisibleStates[y][x] > randomMatrix[y][x])
-						tmpVisibleStates[y][x] = 1;
-					else
-						tmpVisibleStates[y][x] = 0;			
+					tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;		
 				}
 			}
 			
