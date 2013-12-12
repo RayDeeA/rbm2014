@@ -7,6 +7,7 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.Chooser;
 import java.net.URL;
 import java.util.Observable;
 import java.util.ResourceBundle;
@@ -56,7 +57,7 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_loadWeightsAction(ActionEvent event) {
-        this.model.loadWeights();
+        this.model.loadWeights(Chooser.openFileChooser("RBMLogs"));
     }
 
     @FXML
