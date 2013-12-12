@@ -24,7 +24,7 @@ import javafx.scene.layout.AnchorPane;
  * FXML Controller class
  * @author turbodiesel
  */
-public class TrainingViewController implements Initializable, IFXController {
+public class ErrorViewController implements Initializable, IFXController {
 
 	private ArrayList<Double> errors = new ArrayList<Double>();
 
@@ -34,7 +34,7 @@ public class TrainingViewController implements Initializable, IFXController {
 	private NumberAxis xaxis = new NumberAxis();
 	@FXML
 	private NumberAxis yaxis = new NumberAxis();
-	private TrainingViewController model;      
+	private ErrorViewController model;      
 	@FXML
 	private AnchorPane view;
 	@FXML
@@ -101,7 +101,7 @@ public class TrainingViewController implements Initializable, IFXController {
 		buildGraph();
 	}
 
-	public TrainingViewController getTrainingViewController(){
+	public ErrorViewController getTrainingViewController(){
 		return this.model;
 	} 
 

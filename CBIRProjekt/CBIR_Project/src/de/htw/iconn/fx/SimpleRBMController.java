@@ -156,9 +156,9 @@ public class SimpleRBMController implements Initializable, IFXController {
 	private Stage vz_viewer;
 	private WeightsVisualizationController visualController;
 	private Stage trainingStage;
-	private TrainingViewController trainingController;
+	private ErrorViewController trainingController;
 	private Stage errorStage;
-	private TrainingViewController errorController;
+	private ErrorViewController errorController;
 
 	/**
 	 * Initializes the controller class.
@@ -355,7 +355,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 
 	private void initializeTrainingErrorScatterView() {
 		try {
-			this.errorController = (TrainingViewController) loadController("TrainingView.fxml");
+			this.errorController = (ErrorViewController) loadController("TrainingView.fxml");
 			Parent root = (Parent) this.errorController.getView();
 			Scene scene = new Scene(root, 600, 400);
 
