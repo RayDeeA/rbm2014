@@ -128,7 +128,6 @@ public class RBMSettingsModel extends AModel {
      * @param data the data to set
      */
     public void setData(Pic[] data) {
-        System.out.println("no null anymore");
         this.data = data;
     }
 

@@ -94,7 +94,7 @@ public class RBMSettingsWeightsController extends AController {
     }
 
     @FXML
-    private void txt_seedKeyTyped(KeyEvent event) {
+    private void txt_seedKey(KeyEvent event) {
         this.model.setSeed(Integer.parseInt(txt_seed.getText()));
     }
 

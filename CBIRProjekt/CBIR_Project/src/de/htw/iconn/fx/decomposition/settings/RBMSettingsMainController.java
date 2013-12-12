@@ -89,7 +89,7 @@ public class RBMSettingsMainController extends AController {
     }
 
     @FXML
-    private void txt_outputSizeKeyTyped(KeyEvent event) {
+    private void txt_outputSizeKey(KeyEvent event) {
         try{
             this.model.setOutputSize(Integer.parseInt(this.txt_outputSize.getText()));
         }catch(NumberFormatException e){

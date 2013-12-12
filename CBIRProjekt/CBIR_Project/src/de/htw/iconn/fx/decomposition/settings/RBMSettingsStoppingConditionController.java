@@ -48,7 +48,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     }    
 
     @FXML
-    private void txt_epochsKeyTyped(KeyEvent event) {
+    private void txt_epochsKey(KeyEvent event) {
         try{
             this.model.setEpochs(Integer.parseInt(this.txt_epochs.getText()));
         }catch(NumberFormatException e){
@@ -57,7 +57,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     }
 
     @FXML
-    private void txt_errorKeyTyped(KeyEvent event) {
+    private void txt_errorKey(KeyEvent event) {
         try{
             this.model.setError(Double.parseDouble(this.txt_error.getText()));
         }catch(NumberFormatException e){

@@ -14,7 +14,7 @@
         <CheckBox fx:id="cbx_continuousLogger" mnemonicParsing="false" onAction="#cbx_continuousLoggerAction" text="Continuous" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <CheckBox fx:id="cbx_finalLogger" mnemonicParsing="false" onAction="#cbx_finalLoggerAction" text="Final" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <Label text="Interval" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <TextField id="txt_frequency" fx:id="txt_interval" onKeyTyped="#txt_intervalKeyTyped" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <TextField id="txt_frequency" fx:id="txt_continuousInterval" onKeyReleased="#txt_continuousIntervalKey" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

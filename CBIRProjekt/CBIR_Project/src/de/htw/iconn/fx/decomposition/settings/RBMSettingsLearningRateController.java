@@ -39,7 +39,7 @@ public class RBMSettingsLearningRateController extends AController{
         this.model = new RBMSettingsLearningRateModel(this);
     }    
 
-    private void txt_learningRateKeyTyped(KeyEvent event) {
+    private void txt_learningRateKey(KeyEvent event) {
         try {
             this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
         } catch(NumberFormatException e) {

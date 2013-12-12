@@ -31,7 +31,7 @@ public class RBMSettingsLoggerController extends AController{
     @FXML
     private CheckBox cbx_finalLogger;
     @FXML
-    private TextField txt_interval;
+    private TextField txt_continuousInterval;
     
     private RBMSettingsLoggerModel model; 
 
@@ -65,11 +65,11 @@ public class RBMSettingsLoggerController extends AController{
     }
 
     @FXML
-    private void txt_intervalKeyTyped(KeyEvent event) {
+    private void txt_continuousIntervalKey(KeyEvent event) {
         try {
-            this.model.setContinuousInterval(Integer.parseInt(txt_interval.getText()));
+            this.model.setContinuousInterval(Integer.parseInt(this.txt_continuousInterval.getText()));
         } catch(NumberFormatException e) {
-
+            
         }
     }
 
@@ -77,7 +77,7 @@ public class RBMSettingsLoggerController extends AController{
     public void update(Observable o, Object arg) {
         this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
-        this.txt_interval.setText(new Integer(this.model.getContinuousInterval()).toString());
+        this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
     }
     
 }
