@@ -64,23 +64,22 @@ public class BenchmarkModel extends AModel {
         return rbmSettingsList;
     }
 
-    public void setImageManager(ImageManager imageManager) {
-        
+    public void setImageManager(ImageManager imageManager) {      
         this.imageManager = imageManager;
-        
-            this.setRBMImageSet();
+        this.setRBMImageSet();
+        this.imageViewer = new ImageViewer(imageManager);
     }
 
     public boolean isShowImageViewer() {
         return showImageViewer;
     }
+    
+    public void setShowImageViewer(boolean showImageViewer){
+        this.showImageViewer = showImageViewer;
+    }
 
     public ImageManager getImageManager() {
         return imageManager;
-    }
-
-    public void createImageViewer() {
-        this.imageViewer = new ImageViewer(imageManager);
     }
 
     public ImageViewer getImageViewer() {

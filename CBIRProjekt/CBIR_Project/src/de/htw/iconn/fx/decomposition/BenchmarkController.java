@@ -53,39 +53,30 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
-        loadImageSet(null);
+        loadImageSet(Chooser.openDirectoryChooser("CBIR_Project/images"));
     }
 
     private void loadImageSet(File file) {
-        if (file == null) {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setInitialDirectory(new File("CBIR_Project/images"));
-            Stage fileChooserStage = new Stage();
-            file = directoryChooser.showDialog(fileChooserStage);
-        }
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
-
-            if (this.model.isShowImageViewer()) {
-                initializeImageView();
-            }
             this.initCmbImageManager();
+            if(this.model.isShowImageViewer()){
+                this.model.getImageViewer().show();         
+            }
             this.updateView();
         }
     }
     
-    private void initializeImageView() {
-
-        this.model.createImageViewer();
-        this.model.getImageViewer().show();
-    }
-    
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
-        if(this.model.getImageViewer() == null)
-            
-        this.model.createImageViewer();
-        this.model.getImageViewer().show();
+        this.model.setShowImageViewer(this.cbx_imageViewer.isSelected());
+        if(this.model.getImageViewer() != null){
+            if(this.model.isShowImageViewer()){
+                this.model.getImageViewer().show();
+            }else{
+                this.model.getImageViewer().close();
+            }
+        }
     }
 
     @FXML
