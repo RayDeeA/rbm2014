@@ -59,6 +59,7 @@ public class TrainingViewController implements Initializable, IFXController {
 		errors.add(input);
 		buildGraph();
 
+		System.out.println("error update called");
 	}
 
 	private void addDummyDataToErrorList() {
@@ -70,7 +71,7 @@ public class TrainingViewController implements Initializable, IFXController {
 
 	private void buildGraph() {
 
-		addDummyDataToErrorList();
+//		addDummyDataToErrorList();
 
 
 		chart_line.setId("Error Chart");

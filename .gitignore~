@@ -6,6 +6,10 @@ CBIRProjekt/*.dat
 CBIRProjekt/CBIR_Project/images/MNIST_Database_ARGB
 CBIRProjekt/CBIR_Project/images/MNIST_Database
 CBIRProjekt/CBIR_Project/images/MNIST_1000_Database
+CBIRProjekt/CBIR_Project/images/MNIST_1000
+CBITProjekt/CBIR_Project/images/MNIST_1000.zip
+CBIRProjekt/CBIR_Project/images/MNIST
+CBITProjekt/CBIR_Project/images/MNIST.zip
 /CBIR_Projekt/nbproject/private/
 /ICONN/nbproject/private/
 
@@ -19,4 +23,5 @@ CBIRProjekt/CBIR_Project/images/MNIST_1000_Database
 /CBIRProjekt/dist
 /CBIRProjekt/lib
 /CBIRProjekt/libs
+/CBIRProjekt/RBM/lib
 nbproject
