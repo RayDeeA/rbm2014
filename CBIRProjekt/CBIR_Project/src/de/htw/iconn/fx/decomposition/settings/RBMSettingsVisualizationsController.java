@@ -66,7 +66,9 @@ public class RBMSettingsVisualizationsController extends AController {
     @Override
     public void update(Observable o, Object arg) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        this.model.updateError();
+       
+    	// TODO - where do we get the data from?
+    	this.model.updateError();
         this.model.updateWeights();
     }
 
