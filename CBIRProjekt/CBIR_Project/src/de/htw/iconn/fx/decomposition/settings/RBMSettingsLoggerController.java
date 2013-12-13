@@ -12,7 +12,6 @@ import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -31,20 +30,19 @@ public class RBMSettingsLoggerController extends AController{
     private CheckBox cbx_continuousLogger;
     @FXML
     private CheckBox cbx_finalLogger;
-    
-    private RBMSettingsLoggerModel model;
     @FXML
-    private TextField txt_interval;
+    private TextField txt_continuousInterval;
+    
+    private RBMSettingsLoggerModel model; 
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLoggerModel(this);
-        cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
-        cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
-        
     }    
 
     @FXML
@@ -67,16 +65,19 @@ public class RBMSettingsLoggerController extends AController{
     }
 
     @FXML
-    private void txt_intervalKeyTyped(KeyEvent event) {
+    private void txt_continuousIntervalKey(KeyEvent event) {
         try {
-            this.model.setContinuousInterval(Integer.parseInt(txt_interval.getText()));
+            this.model.setContinuousInterval(Integer.parseInt(this.txt_continuousInterval.getText()));
         } catch(NumberFormatException e) {
-
+            
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
+        this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
+        this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
+        this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
     }
     
 }

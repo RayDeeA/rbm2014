@@ -26,7 +26,8 @@ public class RBMSettingsMainModel extends AModel{
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
 
     public RBMSettingsMainModel(RBMSettingsMainController controller) {
-        addObserver(controller);
+        this.addObserver(controller);
+        this.notifyObservers();
     }
 
     private final String[] logisticFunctions = {

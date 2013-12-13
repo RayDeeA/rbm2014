@@ -6,24 +6,27 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 import  de.htw.iconn.fx.*;
+import de.htw.iconn.fx.decomposition.AModel;
 
 /**
  *
  * @author christoph
  */
 
-public class RBMSettingsVisualizationsModel {
+public class RBMSettingsVisualizationsModel extends AModel{
     
     private boolean showWeights = false;
     private boolean showErrorGraph = false;
     
     private WeightsVisualizationModel model;
-    private WeightsVisualizationController weightsVisualizationController;
-    private ErrorViewController errorViewController;
+    private final WeightsVisualizationController weightsVisualizationController;
+    private final ErrorViewController errorViewController;
     
-    public RBMSettingsVisualizationsModel() {
+    public RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller) {
     	this.weightsVisualizationController = new WeightsVisualizationController();
     	this.errorViewController = new ErrorViewController();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
     
     public boolean isShowWeights() {
@@ -49,17 +52,4 @@ public class RBMSettingsVisualizationsModel {
     public ErrorViewController getErrorViewController(){
         return this.errorViewController;     
     }
-
-	public void updateError() {
-		// TODO Auto-generated method stub
-		// probably the place to call the update of the controller
-		
-	}
-
-	public void updateWeights() {
-		// TODO Auto-generated method stub
-		this.errorViewController.update(4.2);
-	}
-    
-    
 }

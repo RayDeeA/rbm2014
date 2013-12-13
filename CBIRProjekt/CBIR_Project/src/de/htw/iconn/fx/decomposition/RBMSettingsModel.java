@@ -38,13 +38,12 @@ public class RBMSettingsModel extends AModel {
 
     private ARBMFeature rbmFeature;
 
-    public RBMSettingsModel(TreeItem[] items, AController[] controllers, RBMSettingsController controller) {
-
+    public RBMSettingsModel(TreeItem[] items, AController[] controllers, RBMSettingsController controller){
         this.controllers = controllers;
-        this.items = items;
-        addObserver(controller);
-        initialize();
-        hasChanged();
+        this.items = items;    
+        this.initialize();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
 
     public TreeItem[] getTreeItems() {
@@ -116,10 +115,6 @@ public class RBMSettingsModel extends AModel {
         weightsModel.setWeights(rbmFeature.getWeights());
         weightsModel.setInitializedWeights(false);
     }
-    
-    public ARBMFeature getRBMFeature() {
-    	return this.rbmFeature;
-    }
 
     /**
      * @return the data
@@ -132,7 +127,6 @@ public class RBMSettingsModel extends AModel {
      * @param data the data to set
      */
     public void setData(Pic[] data) {
-        System.out.println("no null anymore");
         this.data = data;
     }
 

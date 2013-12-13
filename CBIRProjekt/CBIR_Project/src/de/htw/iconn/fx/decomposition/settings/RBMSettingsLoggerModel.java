@@ -19,7 +19,8 @@ public class RBMSettingsLoggerModel extends AModel {
     private int continuousInterval = 1000;
 
     RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
-        addObserver(controller);
+        this.addObserver(controller);
+        this.notifyObservers();
     }
     /**
      * @return the continuousLoggerOn

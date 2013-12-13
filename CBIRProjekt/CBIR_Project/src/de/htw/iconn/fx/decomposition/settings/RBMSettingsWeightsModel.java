@@ -7,7 +7,9 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AModel;
+import de.htw.iconn.fx.decomposition.Chooser;
 import de.htw.iconn.fx.decomposition.XMLWeightsLoader;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,8 +32,9 @@ public class RBMSettingsWeightsModel extends AModel {
     private final XMLWeightsLoader loader;
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
-        addObserver(controller);
         this.loader = new XMLWeightsLoader();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
             
     public boolean isUseBias() {
@@ -96,9 +99,9 @@ public class RBMSettingsWeightsModel extends AModel {
         this.weights = weights;
     }
     
-    public void loadWeights() {
+    public void loadWeights(File file) {
         try {
-            weights = this.loader.loadWeightsFromXML();
+            weights = this.loader.loadWeightsFromXML(file);
             this.initializedWeights = false;
             
             System.out.println(getWeights()[0][0]);

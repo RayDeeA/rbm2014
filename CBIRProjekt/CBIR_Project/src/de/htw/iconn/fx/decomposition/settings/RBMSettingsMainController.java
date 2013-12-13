@@ -47,6 +47,8 @@ public class RBMSettingsMainController extends AController {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,7 +89,7 @@ public class RBMSettingsMainController extends AController {
     }
 
     @FXML
-    private void txt_outputSizeKeyTyped(KeyEvent event) {
+    private void txt_outputSizeKey(KeyEvent event) {
         try{
             this.model.setOutputSize(Integer.parseInt(this.txt_outputSize.getText()));
         }catch(NumberFormatException e){
@@ -106,6 +108,11 @@ public class RBMSettingsMainController extends AController {
 
     @Override
     public void update(Observable o, Object arg) {
+        this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
+        this.cmb_rbmFeature.getSelectionModel().select(this.model.getSelectedRbmFeature());
+        this.cmb_rbmImplementation.getSelectionModel().select(this.model.getSelectedRbmImplementation());
+        this.txt_outputSize.setText(new Integer(this.model.getOutputSize()).toString());
+        this.lbl_inputSize.setText(new Integer(this.model.getInputSize()).toString());
     }
     
 }

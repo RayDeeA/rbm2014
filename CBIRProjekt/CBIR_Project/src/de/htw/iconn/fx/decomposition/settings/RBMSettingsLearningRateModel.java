@@ -17,8 +17,8 @@ public class RBMSettingsLearningRateModel extends AModel{
     private double constantLearningRate = 0.1;
 
     public RBMSettingsLearningRateModel(RBMSettingsLearningRateController controller) {
-        addObserver(controller);
-        hasChanged();
+        this.addObserver(controller);
+        this.notifyObservers();
     }
 
     

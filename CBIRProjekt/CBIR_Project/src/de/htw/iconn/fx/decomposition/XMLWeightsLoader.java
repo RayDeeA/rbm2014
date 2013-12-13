@@ -26,16 +26,9 @@ import org.xml.sax.SAXException;
  * @author christoph
  */
 public class XMLWeightsLoader {
-    private File loadFile(){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("RBMLogs"));
-        Stage fileChooserStage = new Stage();
-        File file = fileChooser.showOpenDialog(fileChooserStage);
-        return file;
-    }
     
-    public double[][] loadWeightsFromXML() throws ParserConfigurationException, SAXException, IOException{
-        File file = loadFile();
+    public double[][] loadWeightsFromXML(File file) throws ParserConfigurationException, SAXException, IOException{
+        
         if(file == null){
             return null;
         }

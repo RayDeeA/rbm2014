@@ -12,12 +12,9 @@ import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -42,6 +39,8 @@ public class RBMSettingsStoppingConditionController extends AController{
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,7 +48,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     }    
 
     @FXML
-    private void txt_epochsKeyTyped(KeyEvent event) {
+    private void txt_epochsKey(KeyEvent event) {
         try{
             this.model.setEpochs(Integer.parseInt(this.txt_epochs.getText()));
         }catch(NumberFormatException e){
@@ -58,7 +57,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     }
 
     @FXML
-    private void txt_errorKeyTyped(KeyEvent event) {
+    private void txt_errorKey(KeyEvent event) {
         try{
             this.model.setError(Double.parseDouble(this.txt_error.getText()));
         }catch(NumberFormatException e){
@@ -87,5 +86,9 @@ public class RBMSettingsStoppingConditionController extends AController{
 
     @Override
     public void update(Observable o, Object arg) {
+        this.cbx_epochs.setSelected(this.model.isEpochsOn());
+        this.cbx_error.setSelected(this.model.isErrorOn());
+        this.txt_epochs.setText(new Integer(this.model.getEpochs()).toString());
+        this.txt_error.setText(new Double(this.model.getError()).toString());
     }
 }

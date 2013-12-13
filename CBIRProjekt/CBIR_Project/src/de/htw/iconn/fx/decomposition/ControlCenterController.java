@@ -67,8 +67,6 @@ public class ControlCenterController extends AController  {
         }   
     }
     
-
-
     @FXML
     private void mnu_newRbmAction(ActionEvent event) {
         try {

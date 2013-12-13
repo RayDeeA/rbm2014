@@ -626,21 +626,7 @@ public class SimpleRBMController implements Initializable, IFXController {
 	
 	@FXML
 	private void btn_loadAction(ActionEvent event) {
-		XMLWeightsLoader loader = new XMLWeightsLoader();
-		try {
-			double[][] weights = loader.loadWeightsFromXML();
-			this.model.getRbm().setWeights(weights);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 	}
 
 	@FXML
