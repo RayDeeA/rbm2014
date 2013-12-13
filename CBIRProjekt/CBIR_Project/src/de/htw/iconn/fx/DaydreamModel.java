@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import de.htw.cbir.model.Pic;
+import de.htw.iconn.rbm.RBMStack;
 
 public class DaydreamModel {
 	

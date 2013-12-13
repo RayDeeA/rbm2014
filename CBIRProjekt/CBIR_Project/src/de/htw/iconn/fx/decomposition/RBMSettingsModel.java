@@ -115,7 +115,10 @@ public class RBMSettingsModel extends AModel {
         
         weightsModel.setWeights(rbmFeature.getWeights());
         weightsModel.setInitializedWeights(false);
-        
+    }
+    
+    public ARBMFeature getRBMFeature() {
+    	return this.rbmFeature;
     }
 
     /**

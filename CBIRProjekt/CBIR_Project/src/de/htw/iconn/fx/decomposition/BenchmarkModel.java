@@ -73,6 +73,10 @@ public class BenchmarkModel extends AModel {
     public void createImageViewer() {
         this.imageViewer = new ImageViewer(imageManager);
     }
+    
+    public void createDaydreamViewer() {
+
+    }
 
     public ImageViewer getImageViewer() {
         return imageViewer;

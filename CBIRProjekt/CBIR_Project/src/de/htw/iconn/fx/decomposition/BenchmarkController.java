@@ -7,17 +7,26 @@
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.cbir.ImageManager;
+import de.htw.iconn.fx.SimpleRBMController;
+import de.htw.iconn.fx.decomposition.views.DaydreamController;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -42,6 +51,10 @@ public class BenchmarkController extends AController {
     private ComboBox<?> cmb_mAPTests;
     @FXML
     private Label lbl_imageSetSelected;
+    @FXML
+    private DaydreamController daydreamController;
+    
+    private Stage daydreamStage;
     /**
      * Initializes the controller class.
      */
@@ -69,7 +82,6 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 initializeImageView();
             }
-
 
             this.initCmbImageManager();
             this.updateView();
@@ -103,7 +115,31 @@ public class BenchmarkController extends AController {
     }
 
     @FXML
-    private void btn_daydreamAction(ActionEvent event) {
+    private void btn_openDaydreamAction(ActionEvent event) {
+		try {
+			this.daydreamController = (DaydreamController) new DaydreamController().loadController("views/DaydreamView.fxml");
+			Parent root = (Parent) this.daydreamController.getView();
+
+			Scene scene = new Scene(root, 600, 400);
+			this.daydreamStage = new Stage();
+			this.daydreamStage.setTitle("Daydream");
+			this.daydreamStage.setScene(scene);
+			this.daydreamController.setRbmStack(this.model.getRbmStack());
+
+			//Event<WindowEvent> event = new Event<>(arg0);
+			daydreamStage.setOnCloseRequest(daydreamController);
+			
+			// this.prChartViewerController.show(lineChart);
+			this.daydreamStage.show();
+
+		} catch (IOException ex) {
+			Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+    }
+    
+    @FXML
+    private void btn_openRunHiddenAction(ActionEvent event) {
+    	
     }
 
     @Override
