@@ -109,7 +109,7 @@ public class BenchmarkController extends AController {
     @FXML
     private void btn_openDaydreamAction(ActionEvent event) {
 		try {
-			this.daydreamController = (DaydreamController) new DaydreamController().loadController("views/DaydreamView.fxml");
+			this.daydreamController = (DaydreamController) new DaydreamController().loadController("DaydreamView.fxml");
 			Parent root = (Parent) this.daydreamController.getView();
 
 			Scene scene = new Scene(root, 600, 400);
@@ -119,9 +119,8 @@ public class BenchmarkController extends AController {
 			this.daydreamController.setRbmStack(this.model.getRbmStack());
 
 			//Event<WindowEvent> event = new Event<>(arg0);
-			daydreamStage.setOnCloseRequest(daydreamController);
+			//daydreamStage.setOnCloseRequest(daydreamController);
 			
-			// this.prChartViewerController.show(lineChart);
 			this.daydreamStage.show();
 
 		} catch (IOException ex) {
