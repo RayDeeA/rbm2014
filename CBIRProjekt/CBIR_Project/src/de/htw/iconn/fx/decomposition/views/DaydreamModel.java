@@ -1,7 +1,8 @@
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.cbir.ImageManager;
-
+import de.htw.iconn.fx.decomposition.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -13,14 +14,12 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import de.htw.cbir.model.Pic;
-import de.htw.iconn.rbm.RBMStack;
 
 public class DaydreamModel {
 	
-	Random random = new Random();
+    Random random = new Random();
 	
-	RBMStack rbmStack;
+    RBMStack rbmStack;
     Pic pic;
     Image daydreamImage;
 

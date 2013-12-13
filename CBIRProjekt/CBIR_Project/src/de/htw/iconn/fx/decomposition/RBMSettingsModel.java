@@ -1,9 +1,15 @@
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.cbir.ARBMFeature;
-import de.htw.cbir.RBMFeatureDCT;
-import de.htw.cbir.RBMFeaturePixel;
-import de.htw.cbir.model.Pic;
+import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
+import de.htw.iconn.fx.decomposition.enhancement.TrainingVisualizer;
+import de.htw.iconn.fx.decomposition.enhancement.XMLEndTrainingLogger;
+import de.htw.iconn.fx.decomposition.enhancement.XMLTrainingLogger;
+import de.htw.iconn.fx.decomposition.logistic.ILogistic;
+import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
+import de.htw.iconn.fx.decomposition.rbm.RBMFeatureDCT;
+import de.htw.iconn.fx.decomposition.rbm.RBMFeaturePixel;
+import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLoggerController;
@@ -16,13 +22,7 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsControlle
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.enhancements.RBMEnhancer;
-import de.htw.iconn.rbm.enhancements.TrainingVisualizer;
-import de.htw.iconn.rbm.enhancements.XMLEndTrainingLogger;
-import de.htw.iconn.rbm.enhancements.XMLTrainingLogger;
-import de.htw.iconn.rbm.functions.ILogistic;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -90,7 +90,7 @@ public class RBMSettingsModel extends AModel {
         
         if(visualizationsModel.isShowWeights()) {
             // TODO: RBMSettingsVisualizations need to have an update intervall
-            rbm.addEnhancement(new TrainingVisualizer(null, 1000));
+            rbm.addEnhancement(new TrainingVisualizer(1000));
         }
         
         

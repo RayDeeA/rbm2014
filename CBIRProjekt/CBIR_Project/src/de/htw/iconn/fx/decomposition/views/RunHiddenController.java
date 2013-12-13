@@ -9,8 +9,8 @@ package de.htw.iconn.fx.decomposition.views;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.htw.cbir.ARBMFeature;
 import de.htw.iconn.fx.decomposition.IFXController;
+import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;

@@ -1,4 +1,4 @@
-package de.htw.iconn.rbm.enhancements;
+package de.htw.iconn.fx.decomposition.enhancement;
 
 import de.htw.iconn.fx.decomposition.legacy.CBIREvaluationModel;
 import java.io.File;

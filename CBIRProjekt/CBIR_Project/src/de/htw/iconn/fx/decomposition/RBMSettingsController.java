@@ -6,9 +6,9 @@
 
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
+import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;

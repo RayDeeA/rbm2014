@@ -6,8 +6,7 @@
 
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.cbir.ImageManager;
-import de.htw.iconn.fx.SimpleRBMController;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.views.DaydreamController;
 
 import java.io.File;
@@ -17,8 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +28,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 /**
@@ -108,23 +104,23 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_openDaydreamAction(ActionEvent event) {
-		try {
-			this.daydreamController = (DaydreamController) new DaydreamController().loadController("DaydreamView.fxml");
-			Parent root = (Parent) this.daydreamController.getView();
+        try {
+            this.daydreamController = (DaydreamController) new DaydreamController().loadController("DaydreamView.fxml");
+            Parent root = (Parent) this.daydreamController.getView();
 
-			Scene scene = new Scene(root, 600, 400);
-			this.daydreamStage = new Stage();
-			this.daydreamStage.setTitle("Daydream");
-			this.daydreamStage.setScene(scene);
-			this.daydreamController.setRbmStack(this.model.getRbmStack());
+            Scene scene = new Scene(root, 600, 400);
+            this.daydreamStage = new Stage();
+            this.daydreamStage.setTitle("Daydream");
+            this.daydreamStage.setScene(scene);
+            this.daydreamController.setRbmStack(this.model.getRbmStack());
 
-			daydreamStage.setOnCloseRequest(daydreamController);
-			
-			this.daydreamStage.show();
+            daydreamStage.setOnCloseRequest(daydreamController);
 
-		} catch (IOException ex) {
-			Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
-		}
+            this.daydreamStage.show();
+
+        } catch (IOException ex) {
+
+        }
     }
     
     @FXML

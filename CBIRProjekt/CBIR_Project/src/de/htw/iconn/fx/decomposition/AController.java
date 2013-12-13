@@ -7,7 +7,6 @@
 package de.htw.iconn.fx.decomposition;
 
 import java.io.IOException;
-import java.util.Observable;
 import java.util.Observer;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

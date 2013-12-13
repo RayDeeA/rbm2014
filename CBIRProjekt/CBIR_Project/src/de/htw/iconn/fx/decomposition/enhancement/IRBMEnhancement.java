@@ -1,4 +1,4 @@
-package de.htw.iconn.rbm.enhancements;
+package de.htw.iconn.fx.decomposition.enhancement;
 
 public abstract interface IRBMEnhancement {
 

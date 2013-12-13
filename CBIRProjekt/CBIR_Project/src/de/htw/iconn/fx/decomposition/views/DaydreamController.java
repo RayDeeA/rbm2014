@@ -4,26 +4,19 @@
  */
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.cbir.ARBMFeature;
 import de.htw.iconn.fx.decomposition.AController;
-import de.htw.iconn.fx.decomposition.IFXController;
-import de.htw.iconn.fx.decomposition.RBMSettingsController;
-import de.htw.iconn.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.sun.glass.events.WindowEvent;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;

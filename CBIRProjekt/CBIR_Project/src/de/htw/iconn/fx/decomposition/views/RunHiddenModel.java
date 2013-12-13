@@ -6,10 +6,9 @@
 
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.cbir.ImageManager;
-import de.htw.cbir.ARBMFeature;
-import de.htw.cbir.model.Pic;
-
+import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

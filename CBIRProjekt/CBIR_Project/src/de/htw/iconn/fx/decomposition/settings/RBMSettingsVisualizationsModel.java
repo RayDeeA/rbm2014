@@ -5,8 +5,11 @@
  */
 
 package de.htw.iconn.fx.decomposition.settings;
-import  de.htw.iconn.fx.*;
+
 import de.htw.iconn.fx.decomposition.AModel;
+import de.htw.iconn.fx.decomposition.views.ErrorViewController;
+import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
+import de.htw.iconn.fx.decomposition.views.WeightsVisualizationModel;
 
 /**
  *

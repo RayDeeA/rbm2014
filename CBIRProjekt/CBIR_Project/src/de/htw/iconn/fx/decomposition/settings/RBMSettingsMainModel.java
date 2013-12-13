@@ -1,20 +1,17 @@
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.cbir.ARBMFeature;
-import de.htw.cbir.RBMFeatureDCT;
-import de.htw.cbir.RBMFeaturePixel;
+
 import de.htw.iconn.fx.decomposition.AModel;
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
-import de.htw.iconn.rbm.functions.GaussMatrixFunction;
-import de.htw.iconn.rbm.functions.HardClipMatrixFunction;
-import de.htw.iconn.rbm.functions.ILogistic;
-import de.htw.iconn.rbm.functions.LinearClippedMatrixFunction;
-import de.htw.iconn.rbm.functions.LinearInterpolatedMatrixFunction;
-import de.htw.iconn.rbm.functions.LinearUnclippedMatrixFunction;
-import de.htw.iconn.rbm.functions.RectifierMatrixFunction;
-import de.htw.iconn.rbm.functions.SquareRootLogistic;
-import de.htw.iconn.rbm.functions.TanHMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.GaussMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.HardClipMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.ILogistic;
+import de.htw.iconn.fx.decomposition.logistic.LinearClippedMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.LinearInterpolatedMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.LinearUnclippedMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.RectifierMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.SquareRootLogistic;
+import de.htw.iconn.fx.decomposition.logistic.TanHMatrixFunction;
 
 /**
  *

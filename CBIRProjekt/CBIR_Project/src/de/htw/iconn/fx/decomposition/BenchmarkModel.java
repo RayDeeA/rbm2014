@@ -5,9 +5,9 @@
  */
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.cbir.ImageManager;
-import de.htw.iconn.fx.ImageViewer;
-import de.htw.iconn.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import java.util.LinkedList;
 
 /**

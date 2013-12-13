@@ -1,4 +1,4 @@
-package de.htw.iconn.rbm.enhancements;
+package de.htw.iconn.fx.decomposition.enhancement;
 
 import de.htw.iconn.fx.decomposition.logistic.ILogistic;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;

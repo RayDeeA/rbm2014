@@ -1,6 +1,6 @@
 
 
-package de.htw.iconn.rbm.enhancements;
+package de.htw.iconn.fx.decomposition.enhancement;
 
 import java.io.IOException;
 import java.util.logging.Level;
