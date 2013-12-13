@@ -91,9 +91,9 @@ public class DaydreamModel {
     }
     
     public Image daydream(int visWidth, int visHeight) {
-    	double[] hiddenData = null;//rbmStack.getHidden(this.pic, this.useHiddenStates);
-    	double[] visibleDataForCalculation =  null;//rbmStack.rbmFeature.getVisible(hiddenData, this.useVisibleStates);
-    	double[] visibleDataForVisualization =  null; //rbmStack.rbmFeature.getVisible(hiddenData, false);
+    	double[] hiddenData = getHidden(this.pic, this.useHiddenStates);
+    	double[] visibleDataForCalculation = getVisible(hiddenData, this.useVisibleStates);
+    	double[] visibleDataForVisualization = getVisible(hiddenData, false);
     	
     	int width = this.pic.getDisplayImage().getWidth();
     	int height = this.pic.getDisplayImage().getHeight();
@@ -129,6 +129,47 @@ public class DaydreamModel {
         this.pic.setDisplayImage(bufferedImageCalc);
         
         return imageVis;
+    }
+    
+	public double[] getHidden(Pic image, boolean useHiddenStates) {
+		BufferedImage bi = image.getDisplayImage();
+
+		int[] pixels = new int[bi.getWidth() * bi.getHeight()];
+		bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), pixels, 0, bi.getWidth());
+
+		double[] fvFloat = new double[pixels.length];
+
+		for (int i = 0; i < pixels.length; i++) {
+			int argb = pixels[i];
+
+			int r = (argb >> 16) & 0xFF;
+			int g = (argb >> 8) & 0xFF;
+			int b = (argb) & 0xFF;
+
+			int pixel = (r + g + b) / 3;
+			fvFloat[i] = pixel / 255.0f;
+		}
+
+		double[][] useData = new double[1][pixels.length];
+		for (int i = 0; i < pixels.length; i++)
+			useData[0][i] = fvFloat[i];
+
+		// ermittle die hidden Neurons
+		double[][] hidden_data = this.rbmStack.run_visible(useData, useHiddenStates);
+		return hidden_data[0];
+	}
+	
+    public double[] getVisible(double[] hiddenData, boolean useVisibleStates) {
+
+        double[][] useData = new double[1][hiddenData.length];
+        for (int i = 0; i < hiddenData.length; i++) {
+            useData[0][i] = hiddenData[i];
+        }
+
+        // ermittle die visible Neurons
+        double[][] visible_data = this.rbmStack.run_hidden(useData, useVisibleStates);
+
+        return visible_data[0];
     }
     
     public void setUseHiddenStates(boolean useHiddenStates) {

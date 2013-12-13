@@ -118,7 +118,6 @@ public class BenchmarkController extends AController {
 			this.daydreamStage.setScene(scene);
 			this.daydreamController.setRbmStack(this.model.getRbmStack());
 
-			//Event<WindowEvent> event = new Event<>(arg0);
 			daydreamStage.setOnCloseRequest(daydreamController);
 			
 			this.daydreamStage.show();
