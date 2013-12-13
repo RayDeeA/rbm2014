@@ -125,11 +125,13 @@ public class DaydreamController extends AController implements EventHandler {
     	this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
     }
     
-    private void stopDreaming() {
-    	timer.cancel();
-    	timer.purge();
-    	this.btn_daydream.setDisable(true);
-    	this.btn_stopDaydream.setDisable(true);
+    public void stopDreaming() {
+    	if(timer != null) {
+	    	timer.cancel();
+	    	timer.purge();
+	    	this.btn_daydream.setDisable(true);
+	    	this.btn_stopDaydream.setDisable(true);
+    	}
     }
 
 	@Override
@@ -140,7 +142,6 @@ public class DaydreamController extends AController implements EventHandler {
 	@Override
 	public void handle(Event arg0) {
 		stopDreaming();
-		System.out.println("Stop");
 	}
 
 	@Override
