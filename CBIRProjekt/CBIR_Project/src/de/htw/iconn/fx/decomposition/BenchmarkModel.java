@@ -36,7 +36,6 @@ public class BenchmarkModel extends AModel {
         this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
         this.addObserver(controller);
-        this.notifyObservers();
     }
 
     /**

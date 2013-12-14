@@ -29,7 +29,6 @@ public class RBMSettingsVisualizationsModel extends AModel{
     	this.weightsVisualizationController = new WeightsVisualizationController();
     	this.errorViewController = new ErrorViewController();
         this.addObserver(controller);
-        this.notifyObservers();
     }
     
     public boolean isShowWeights() {

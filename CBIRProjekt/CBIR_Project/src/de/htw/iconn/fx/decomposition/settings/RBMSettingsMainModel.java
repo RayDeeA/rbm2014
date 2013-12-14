@@ -24,7 +24,6 @@ public class RBMSettingsMainModel extends AModel{
 
     public RBMSettingsMainModel(RBMSettingsMainController controller) {
         this.addObserver(controller);
-        this.notifyObservers();
     }
 
     private final String[] logisticFunctions = {

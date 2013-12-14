@@ -113,6 +113,7 @@ public class RBMSettingsController extends AController {
             }
             
         });
+        this.update(this.model, null);
     }    
 
     private AController addSettings(TreeItem<String> root, TreeItem<String> child, String controllerURL) {

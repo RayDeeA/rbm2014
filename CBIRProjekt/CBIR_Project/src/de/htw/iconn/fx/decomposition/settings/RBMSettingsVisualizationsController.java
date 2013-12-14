@@ -39,6 +39,7 @@ public class RBMSettingsVisualizationsController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsVisualizationsModel(this);
+        this.update(this.model, null);
     }    
 
     @FXML

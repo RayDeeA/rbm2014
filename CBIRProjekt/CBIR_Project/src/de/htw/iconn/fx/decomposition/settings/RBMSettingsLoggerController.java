@@ -43,6 +43,7 @@ public class RBMSettingsLoggerController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLoggerModel(this);
+        this.update(this.model, null);
     }    
 
     @FXML

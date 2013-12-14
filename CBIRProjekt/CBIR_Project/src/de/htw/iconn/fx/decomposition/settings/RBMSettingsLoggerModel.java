@@ -20,7 +20,6 @@ public class RBMSettingsLoggerModel extends AModel {
 
     RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
         this.addObserver(controller);
-        this.notifyObservers();
     }
     /**
      * @return the continuousLoggerOn

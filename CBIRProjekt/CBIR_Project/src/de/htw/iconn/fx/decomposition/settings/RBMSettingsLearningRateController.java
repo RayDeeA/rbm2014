@@ -37,6 +37,7 @@ public class RBMSettingsLearningRateController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel(this);
+        this.update(this.model, null);
     }    
 
     @FXML
@@ -60,5 +61,6 @@ public class RBMSettingsLearningRateController extends AController{
     @Override
     public void update(Observable o, Object arg) {
         this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
+        System.out.println("update");
     }
 }

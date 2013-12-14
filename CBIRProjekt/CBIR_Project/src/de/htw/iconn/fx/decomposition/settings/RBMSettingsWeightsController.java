@@ -48,6 +48,7 @@ public class RBMSettingsWeightsController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsWeightsModel(this);
+        this.update(this.model, null);
     }    
 
     @FXML

@@ -20,7 +20,6 @@ public class RBMSettingsStoppingConditionModel extends AModel {
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {
         this.addObserver(controller);
-        this.notifyObservers();
     }
     public boolean isEpochsOn() {
         return epochsOn;

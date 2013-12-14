@@ -43,7 +43,6 @@ public class RBMSettingsModel extends AModel {
         this.items = items;    
         this.initialize();
         this.addObserver(controller);
-        this.notifyObservers();
     }
 
     public TreeItem[] getTreeItems() {

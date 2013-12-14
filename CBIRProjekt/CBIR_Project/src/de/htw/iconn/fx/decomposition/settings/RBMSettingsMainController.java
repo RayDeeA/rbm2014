@@ -54,6 +54,7 @@ public class RBMSettingsMainController extends AController {
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsMainModel(this);
         initCmb();
+        this.update(this.model, null);
     }
     
     private void initCmb() {

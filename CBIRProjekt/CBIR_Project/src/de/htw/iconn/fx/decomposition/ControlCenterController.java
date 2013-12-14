@@ -58,7 +58,7 @@ public class ControlCenterController extends AController  {
             
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }
     
     @FXML

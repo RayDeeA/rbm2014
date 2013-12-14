@@ -58,6 +58,7 @@ public class BenchmarkController extends AController {
     public void initialize(URL url, ResourceBundle rb) {
         model = new BenchmarkModel(this);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
+        this.update(this.model, null);
     }    
 
     @FXML

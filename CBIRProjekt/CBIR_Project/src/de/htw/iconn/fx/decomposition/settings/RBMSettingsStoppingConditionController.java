@@ -45,6 +45,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsStoppingConditionModel(this);
+        this.update(this.model, null);
     }    
 
     @FXML

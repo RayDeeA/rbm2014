@@ -18,7 +18,6 @@ public class RBMSettingsLearningRateModel extends AModel{
 
     public RBMSettingsLearningRateModel(RBMSettingsLearningRateController controller) {
         this.addObserver(controller);
-        this.notifyObservers();
     }
 
     
