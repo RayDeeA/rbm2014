@@ -4,12 +4,18 @@ import static org.junit.Assert.*;
 import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.rbm.RBMOriginal;
 import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import junit.framework.TestCase;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Test;
 
-public class RBMJBlasTest {
+public class RBMJBlasTest extends TestCase{
 
+    
+        public static void main(String args[]) {
+            new RBMJBlasTest().test();
+        }
+    
 	@Test
 	public void test() {
 		final double delta = 0.01;

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.functions.ILogistic;
+import junit.runner.*;
 
 public class RBMEnhancer implements IRBM {
 	
