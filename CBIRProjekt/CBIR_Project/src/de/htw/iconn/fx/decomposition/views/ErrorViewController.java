@@ -5,6 +5,9 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.IFXController;
+import de.htw.iconn.fx.decomposition.IVisualizeObserver;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
  * FXML Controller class
  * @author turbodiesel
  */
-public class ErrorViewController implements Initializable, IFXController {
+public class ErrorViewController implements Initializable, IFXController, IVisualizeObserver {
 
 	private ArrayList<Double> errors = new ArrayList<Double>();
 
@@ -103,6 +106,12 @@ public class ErrorViewController implements Initializable, IFXController {
 
 	public ErrorViewController getTrainingViewController(){
 		return this.model;
+	}
+
+	@Override
+	public void update(RBMInfoPackage pack) {
+		// TODO Auto-generated method stub
+		
 	} 
 
 }

@@ -89,7 +89,13 @@ public class RBMSettingsModel extends AModel {
         
         if(visualizationsModel.isShowWeights()) {
             // TODO: RBMSettingsVisualizations need to have an update intervall
-            rbm.addEnhancement(new TrainingVisualizer(1000));
+            rbm.addEnhancement(new TrainingVisualizer(1000, visualizationsModel.getWeightVisualizationController()));
+            
+           
+        }
+        
+        if(visualizationsModel.isShowErrorGraph()) {
+        	rbm.addEnhancement(new TrainingVisualizer(1000, visualizationsModel.getErrorViewController()));
         }
         
         
