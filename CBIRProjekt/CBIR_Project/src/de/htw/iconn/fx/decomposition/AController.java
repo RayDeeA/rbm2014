@@ -7,8 +7,6 @@
 package de.htw.iconn.fx.decomposition;
 
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -16,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Moritz
  */
-public abstract class AController implements Initializable, IFXController, Observer {
+public abstract class AController implements Initializable, IFXController {
    
     protected Object loadController(String url) throws IOException
     {

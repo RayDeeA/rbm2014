@@ -212,7 +212,7 @@ public class ImageViewer {
             @Override
             public void handle(ScrollEvent scroll) {
                 double delta = scroll.getDeltaY();
-                if (delta < 0) {
+                if (delta > 0) {
                     zoomFactor *= 1.1;
                     if (zoomFactor > 50) {
                         zoomFactor = 50;

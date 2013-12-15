@@ -5,29 +5,38 @@
  */
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.cbir.ImageManager;
-import de.htw.iconn.fx.ImageViewer;
-import de.htw.iconn.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import java.util.LinkedList;
 
 /**
  *
  * @author Moritz
  */
-public class BenchmarkModel extends AModel {
+public class BenchmarkModel {
 
+    private final BenchmarkController controller;
     private final RBMStack rbmStack;
 
     private final LinkedList<RBMSettingsController> rbmSettingsList;
     private ImageManager imageManager = null;
     private ImageViewer imageViewer;
     private boolean showImageViewer = false;
+    private int selectedMAPTest = 0;
+
+    public int getSelectedMAPTest() {
+        return selectedMAPTest;
+    }
+
+    public void setSelectedMAPTest(int selectedMAPTest) {
+        this.selectedMAPTest = selectedMAPTest;
+    }
 
     public BenchmarkModel(BenchmarkController controller) {
-        this.addObserver(controller);
         this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
-        hasChanged();
+        this.controller = controller;
     }
 
     /**
@@ -55,23 +64,26 @@ public class BenchmarkModel extends AModel {
         return rbmSettingsList;
     }
 
-    public void setImageManager(ImageManager imageManager) {
-        
+    public void setImageManager(ImageManager imageManager) {      
         this.imageManager = imageManager;
-        
-            this.setRBMImageSet();
+        this.setRBMImageSet();
+        this.imageViewer = new ImageViewer(imageManager);
     }
 
     public boolean isShowImageViewer() {
         return showImageViewer;
     }
+    
+    public void setShowImageViewer(boolean showImageViewer){
+        this.showImageViewer = showImageViewer;
+    }
 
     public ImageManager getImageManager() {
         return imageManager;
     }
+    
+    public void createDaydreamViewer() {
 
-    public void createImageViewer() {
-        this.imageViewer = new ImageViewer(imageManager);
     }
 
     public ImageViewer getImageViewer() {

@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,11 +46,14 @@ public class RBMSettingsMainController extends AController {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsMainModel(this);
         initCmb();
+        this.update();
     }
     
     private void initCmb() {
@@ -87,7 +89,7 @@ public class RBMSettingsMainController extends AController {
     }
 
     @FXML
-    private void txt_outputSizeKeyTyped(KeyEvent event) {
+    private void txt_outputSizeKey(KeyEvent event) {
         try{
             this.model.setOutputSize(Integer.parseInt(this.txt_outputSize.getText()));
         }catch(NumberFormatException e){
@@ -104,8 +106,12 @@ public class RBMSettingsMainController extends AController {
         return model;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
+        this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
+        this.cmb_rbmFeature.getSelectionModel().select(this.model.getSelectedRbmFeature());
+        this.cmb_rbmImplementation.getSelectionModel().select(this.model.getSelectedRbmImplementation());
+        this.txt_outputSize.setText(new Integer(this.model.getOutputSize()).toString());
+        this.lbl_inputSize.setText(new Integer(this.model.getInputSize()).toString());
     }
     
 }

@@ -2,7 +2,6 @@
 
 package de.htw.iconn.rbm.enhancements;
 
-import de.htw.cbir.CBIREvaluationModel;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

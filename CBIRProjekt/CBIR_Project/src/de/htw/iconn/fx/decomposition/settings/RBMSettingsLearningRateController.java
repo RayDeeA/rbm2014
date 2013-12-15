@@ -8,9 +8,7 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -32,18 +30,21 @@ public class RBMSettingsLearningRateController extends AController{
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel(this);
-        this.txt_learningRate.setText("" + this.model.getConstantLearningRate());
+        this.update();
     }    
 
-    private void txt_learningRateKeyTyped(KeyEvent event) {
+    @FXML
+    private void txt_learningRateKey(KeyEvent event) {
         try {
             this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
         } catch(NumberFormatException e) {
-
+        	
         }       
     }
 
@@ -55,8 +56,9 @@ public class RBMSettingsLearningRateController extends AController{
     public RBMSettingsLearningRateModel getModel() {
         return model;
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
+    
+    public void update() {
+        this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
+        System.out.println("update");
     }
 }

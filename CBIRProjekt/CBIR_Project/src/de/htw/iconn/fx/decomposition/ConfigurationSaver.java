@@ -6,6 +6,7 @@
 
 package de.htw.iconn.fx.decomposition;
 
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLoggerController;
@@ -18,7 +19,6 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsControlle
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
-import de.htw.iconn.rbm.IRBM;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;

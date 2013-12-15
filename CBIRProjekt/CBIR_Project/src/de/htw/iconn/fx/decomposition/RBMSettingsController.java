@@ -6,12 +6,11 @@
 
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.RBMJBlas;
-import de.htw.iconn.rbm.functions.DefaultLogisticMatrixFunction;
+import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
+import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,6 +112,7 @@ public class RBMSettingsController extends AController {
             }
             
         });
+        this.update();
     }    
 
     private AController addSettings(TreeItem<String> root, TreeItem<String> child, String controllerURL) {
@@ -151,8 +151,7 @@ public class RBMSettingsController extends AController {
        return this.model;
     }  
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
     
     }
 }

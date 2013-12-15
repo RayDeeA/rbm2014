@@ -5,25 +5,47 @@
  */
 
 package de.htw.iconn.fx.decomposition.settings;
-import  de.htw.iconn.fx.*;
+
+import de.htw.iconn.fx.decomposition.views.ErrorViewController;
+import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
 
 /**
  *
  * @author christoph
  */
 
-public class RBMSettingsVisualizationsModel {
+public class RBMSettingsVisualizationsModel{
+    private final RBMSettingsVisualizationsController controller;
     
     private boolean showWeights = false;
     private boolean showErrorGraph = false;
     
-    private WeightsVisualizationModel model;
-    private WeightsVisualizationController weightsVisualizationController;
-    private ErrorViewController errorViewController;
+    private final WeightsVisualizationController weightsVisualizationController;
+    private final ErrorViewController errorViewController;
     
-    public RBMSettingsVisualizationsModel() {
+    private int weightsInterval = 1000;
+    private int errorInterval = 1000;
+
+    public int getWeightsInterval() {
+        return weightsInterval;
+    }
+
+    public void setWeightsInterval(int weightsInterval) {
+        this.weightsInterval = weightsInterval;
+    }
+
+    public int getErrorInterval() {
+        return errorInterval;
+    }
+
+    public void setErrorInterval(int errorInterval) {
+        this.errorInterval = errorInterval;
+    }
+    
+    public RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller) {
     	this.weightsVisualizationController = new WeightsVisualizationController();
     	this.errorViewController = new ErrorViewController();
+        this.controller = controller;
     }
     
     public boolean isShowWeights() {
@@ -49,17 +71,4 @@ public class RBMSettingsVisualizationsModel {
     public ErrorViewController getErrorViewController(){
         return this.errorViewController;     
     }
-
-	public void updateError() {
-		// TODO Auto-generated method stub
-		// probably the place to call the update of the controller
-		
-	}
-
-	public void updateWeights() {
-		// TODO Auto-generated method stub
-		this.errorViewController.update(4.2);
-	}
-    
-    
 }

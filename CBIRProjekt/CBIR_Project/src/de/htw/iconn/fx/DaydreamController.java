@@ -5,6 +5,7 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ARBMFeature;
+import de.htw.iconn.rbm.RBMStack;
 
 import java.net.URL;
 import java.util.ResourceBundle;

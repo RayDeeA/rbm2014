@@ -41,7 +41,7 @@
         </ComboBox>
         <Label text="Input Size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <Label text="Output Size" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txt_outputSize" onKeyTyped="#txt_outputSizeKeyTyped" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <TextField fx:id="txt_outputSize" onKeyReleased="#txt_outputSizeKey" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
           <GridPane.margin>
             <Insets />
           </GridPane.margin>

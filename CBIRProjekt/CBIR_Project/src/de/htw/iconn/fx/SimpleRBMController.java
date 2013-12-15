@@ -1,6 +1,7 @@
 package de.htw.iconn.fx;
 
 import de.htw.cbir.ImageManager;
+import de.htw.iconn.fx.decomposition.XMLWeightsLoader;
 
 import java.awt.Checkbox;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import javafx.animation.Interpolator;
 import javafx.collections.FXCollections;
@@ -617,6 +621,12 @@ public class SimpleRBMController implements Initializable, IFXController {
 
 	@FXML
 	private void btn_saveRbmFileAction(ActionEvent event) {
+		
+	}
+	
+	@FXML
+	private void btn_loadAction(ActionEvent event) {
+
 	}
 
 	@FXML

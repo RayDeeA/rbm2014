@@ -53,8 +53,9 @@
                 <Label fx:id="lbl_training_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running training..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <Label fx:id="lbl_evolution_started" alignment="CENTER" contentDisplay="CENTER" disable="false" prefHeight="22.0" prefWidth="136.0" text="Running evolution..." textAlignment="LEFT" textOverrun="ELLIPSIS" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <CheckBox id="cbx_viserror" fx:id="cbx_visualisationError" mnemonicParsing="false" onAction="#cbx_visualizationErrorAction" text="Vis Error" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                <Button id="btn_exportVisible" fx:id="btn_exportVisible" mnemonicParsing="false" onAction="#btn_exportVisibleAction" prefWidth="135.0" text="Export Visible" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Button id="btn_exportWeights" fx:id="btn_exportWeights" mnemonicParsing="false" onAction="#btn_exportWeightsAction" prefWidth="135.0" text="Export Weights" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button fx:id="btn_exportVisible" mnemonicParsing="false" onAction="#btn_exportVisibleAction" prefWidth="135.0" text="Export Visible" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Button fx:id="btn_exportWeights" mnemonicParsing="false" onAction="#btn_exportWeightsAction" prefWidth="135.0" text="Export Weights" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button fx:id="btn_load" mnemonicParsing="false" onAction="#btn_loadAction" prefWidth="136.0" text="Load" GridPane.columnIndex="3" GridPane.rowIndex="5" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

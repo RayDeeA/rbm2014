@@ -10,9 +10,9 @@ public class RBMStack implements IRBM {
 
 	private final LinkedList<IRBM> rbms;
 	
-        public RBMStack() {
-            this.rbms = new LinkedList<IRBM>();
-        }
+    public RBMStack() {
+        this.rbms = new LinkedList<IRBM>();
+    }
         
 	public RBMStack(LinkedList<IRBM> rbms) {
 		
@@ -25,8 +25,6 @@ public class RBMStack implements IRBM {
 		}
 		
 		this.rbms = rbms;
-                
-		
 	}
 	
 	@Override
@@ -66,7 +64,6 @@ public class RBMStack implements IRBM {
 
 	@Override
 	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
-		
 		double[][] data = hiddenData;
 		for (IRBM rbm : rbms)  {
 			data = rbm.run_hidden(data, useVisibleStates);
@@ -112,9 +109,9 @@ public class RBMStack implements IRBM {
 		return false;
 	}
         
-        public boolean add(IRBM rbm) {
-           return this.rbms.add(rbm);
-        }
+    public boolean add(IRBM rbm) {
+       return this.rbms.add(rbm);
+    }
 
    
 

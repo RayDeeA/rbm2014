@@ -21,6 +21,8 @@ public class IdxReader {
 		String outputPath = "CBIR_Project/images/MNIST_All_Database/";
 		
 		int[] hashMap = new int[10]; 
+		
+		boolean binarize = true;
 
         try {
         	inImage = new FileInputStream(inputImagePath);
@@ -43,8 +45,13 @@ public class IdxReader {
             	if(i % 100 == 0) {System.out.println("Number of images extracted: " + i);}
             	
             	for(int p = 0; p < numberOfPixels; p++) {
-            		int gray = 255 - inImage.read();
-            		imgPixels[p] = 0xFF000000 | (gray<<16) | (gray<<8) | gray;
+            		int value = 255 - inImage.read();
+            		
+            		if(binarize) {
+            			value = (value < 128) ? 0 : 1;
+            		}
+            		
+            		imgPixels[p] = 0xFF000000 | (value<<16) | (value<<8) | value;
             	}
             	
                 image.setRGB(0, 0, numberOfColumns, numberOfRows, imgPixels, 0, numberOfColumns);

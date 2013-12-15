@@ -7,6 +7,7 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.Chooser;
 import java.net.URL;
 import java.util.Observable;
 import java.util.ResourceBundle;
@@ -25,8 +26,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class RBMSettingsWeightsController extends AController {
     @FXML
-    private AnchorPane view;
-    private RBMSettingsWeightsModel model;
+    private AnchorPane view;   
     @FXML
     private CheckBox cbx_useBias;
     @FXML
@@ -37,13 +37,18 @@ public class RBMSettingsWeightsController extends AController {
     private CheckBox cbx_useBinarizeVisible;
     @FXML
     private TextField txt_seed;
+    
+    private RBMSettingsWeightsModel model;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsWeightsModel(this);
+        this.update();
     }    
 
     @FXML
@@ -53,7 +58,7 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_loadWeightsAction(ActionEvent event) {
-        this.model.loadWeights();
+        this.model.loadWeights(Chooser.openFileChooser("RBMLogs"));
     }
 
     @FXML
@@ -90,11 +95,15 @@ public class RBMSettingsWeightsController extends AController {
     }
 
     @FXML
-    private void txt_seedKeyTyped(KeyEvent event) {
+    private void txt_seedKey(KeyEvent event) {
         this.model.setSeed(Integer.parseInt(txt_seed.getText()));
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
+        this.cbx_useBias.setSelected(this.model.isUseBias());
+        this.cbx_useBinarizeHidden.setSelected((this.model.isBinarizeHidden()));
+        this.cbx_useBinarizeVisible.setSelected((this.model.isBinarizeVisible()));
+        this.cbx_useSeed.setSelected(this.model.isUseSeed());
+        this.txt_seed.setText(new Integer(this.model.getSeed()).toString());
     }
 }

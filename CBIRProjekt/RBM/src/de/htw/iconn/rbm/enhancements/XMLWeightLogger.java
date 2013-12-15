@@ -1,5 +1,6 @@
 package de.htw.iconn.rbm.enhancements;
 
+import de.htw.iconn.fx.decomposition.legacy.CBIREvaluationModel;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -24,8 +25,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import de.htw.cbir.CBIREvaluationModel;
 
 public final class XMLWeightLogger {
 

@@ -11,8 +11,8 @@
   <children>
     <GridPane hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <children>
-        <TextField fx:id="txt_epochs" onKeyTyped="#txt_epochsKeyTyped" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <TextField fx:id="txt_error" onKeyTyped="#txt_errorKeyTyped" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="txt_epochs" onKeyReleased="#txt_epochsKey" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="txt_error" onKeyReleased="#txt_errorKey" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <CheckBox fx:id="cbx_epochs" mnemonicParsing="false" onAction="#cbx_epochsAction" text="Epochs" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <CheckBox fx:id="cbx_error" mnemonicParsing="false" onAction="#cbx_errorAction" text="Error" GridPane.columnIndex="0" GridPane.rowIndex="1" />
       </children>
