@@ -4,9 +4,6 @@ import de.htw.iconn.fx.decomposition.logistic.ILogistic;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import java.util.LinkedList;
 
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.functions.ILogistic;
-import junit.runner.*;
 
 public class RBMEnhancer implements IRBM {
 	
