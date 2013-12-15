@@ -8,7 +8,6 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -37,7 +36,7 @@ public class RBMSettingsLearningRateController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel(this);
-        this.update(this.model, null);
+        this.update();
     }    
 
     @FXML
@@ -57,9 +56,8 @@ public class RBMSettingsLearningRateController extends AController{
     public RBMSettingsLearningRateModel getModel() {
         return model;
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
+    
+    public void update() {
         this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
         System.out.println("update");
     }

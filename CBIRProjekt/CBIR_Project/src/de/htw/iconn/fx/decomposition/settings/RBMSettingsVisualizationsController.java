@@ -8,7 +8,6 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +38,7 @@ public class RBMSettingsVisualizationsController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsVisualizationsModel(this);
-        this.update(this.model, null);
+        this.update();
     }    
 
     @FXML
@@ -63,8 +62,7 @@ public class RBMSettingsVisualizationsController extends AController {
        
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());
     }

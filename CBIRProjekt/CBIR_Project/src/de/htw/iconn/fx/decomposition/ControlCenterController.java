@@ -8,7 +8,6 @@ package de.htw.iconn.fx.decomposition;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +45,8 @@ public class ControlCenterController extends AController  {
     
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,8 +94,7 @@ public class ControlCenterController extends AController  {
     private void mnu_loadConfigurationAction(ActionEvent event) {
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         
     }
 }

@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -53,12 +52,14 @@ public class BenchmarkController extends AController {
     private Stage daydreamStage;
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new BenchmarkModel(this);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
-        this.update(this.model, null);
+        this.update();
     }    
 
     @FXML
@@ -161,8 +162,7 @@ public class BenchmarkController extends AController {
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }

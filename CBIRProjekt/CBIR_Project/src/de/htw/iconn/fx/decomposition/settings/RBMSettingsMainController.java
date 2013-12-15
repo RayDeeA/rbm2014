@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,7 +53,7 @@ public class RBMSettingsMainController extends AController {
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsMainModel(this);
         initCmb();
-        this.update(this.model, null);
+        this.update();
     }
     
     private void initCmb() {
@@ -107,8 +106,7 @@ public class RBMSettingsMainController extends AController {
         return model;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
         this.cmb_rbmFeature.getSelectionModel().select(this.model.getSelectedRbmFeature());
         this.cmb_rbmImplementation.getSelectionModel().select(this.model.getSelectedRbmImplementation());

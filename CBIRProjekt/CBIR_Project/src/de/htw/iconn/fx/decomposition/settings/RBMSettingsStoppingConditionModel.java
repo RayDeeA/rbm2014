@@ -6,20 +6,20 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.decomposition.AModel;
-
 /**
  *
  * @author christoph
  */
-public class RBMSettingsStoppingConditionModel extends AModel {
+public class RBMSettingsStoppingConditionModel {
+    private final RBMSettingsStoppingConditionController controller;
+    
     private boolean epochsOn = true;
     private boolean errorOn = false;
     private int epochs = 1000;
     private double error = 0.1;
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {
-        this.addObserver(controller);
+        this.controller = controller;
     }
     public boolean isEpochsOn() {
         return epochsOn;

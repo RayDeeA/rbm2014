@@ -11,7 +11,6 @@ import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,7 +112,7 @@ public class RBMSettingsController extends AController {
             }
             
         });
-        this.update(this.model, null);
+        this.update();
     }    
 
     private AController addSettings(TreeItem<String> root, TreeItem<String> child, String controllerURL) {
@@ -152,8 +151,7 @@ public class RBMSettingsController extends AController {
        return this.model;
     }  
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
     
     }
 }

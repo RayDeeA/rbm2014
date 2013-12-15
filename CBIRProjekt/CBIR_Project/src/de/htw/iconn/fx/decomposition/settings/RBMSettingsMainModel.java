@@ -1,7 +1,6 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 
-import de.htw.iconn.fx.decomposition.AModel;
 import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.fx.decomposition.logistic.GaussMatrixFunction;
 import de.htw.iconn.fx.decomposition.logistic.HardClipMatrixFunction;
@@ -17,13 +16,15 @@ import de.htw.iconn.fx.decomposition.logistic.TanHMatrixFunction;
  *
  * @author Moritz
  */
-public class RBMSettingsMainModel extends AModel{
+public class RBMSettingsMainModel{
+    private final RBMSettingsMainController controller;
+    
     //combobox select options
     private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
 
     public RBMSettingsMainModel(RBMSettingsMainController controller) {
-        this.addObserver(controller);
+        this.controller = controller;
     }
 
     private final String[] logisticFunctions = {

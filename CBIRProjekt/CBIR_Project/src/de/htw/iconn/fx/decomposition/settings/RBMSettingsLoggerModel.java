@@ -6,20 +6,20 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.decomposition.AModel;
-
 /**
  *
  * @author moritz
  */
-public class RBMSettingsLoggerModel extends AModel {
+public class RBMSettingsLoggerModel{
+    private final RBMSettingsLoggerController controller;
+    
     private boolean continuousLoggerOn = false;
     private boolean finalLoggerOn = true;
     
     private int continuousInterval = 1000;
 
     RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
-        this.addObserver(controller);
+        this.controller = controller;
     }
     /**
      * @return the continuousLoggerOn
@@ -43,7 +43,7 @@ public class RBMSettingsLoggerModel extends AModel {
     }
 
     /**
-     * @param finalLoggerOn the endLoggerOn to set
+     * @param endLoggerOn
      */
     public void setFinalLoggerOn(boolean endLoggerOn) {
         this.finalLoggerOn = endLoggerOn;

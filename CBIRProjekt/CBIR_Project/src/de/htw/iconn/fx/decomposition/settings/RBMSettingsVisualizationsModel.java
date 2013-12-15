@@ -6,7 +6,6 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.decomposition.AModel;
 import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationModel;
@@ -16,7 +15,8 @@ import de.htw.iconn.fx.decomposition.views.WeightsVisualizationModel;
  * @author christoph
  */
 
-public class RBMSettingsVisualizationsModel extends AModel{
+public class RBMSettingsVisualizationsModel{
+    private final RBMSettingsVisualizationsController controller;
     
     private boolean showWeights = false;
     private boolean showErrorGraph = false;
@@ -28,7 +28,7 @@ public class RBMSettingsVisualizationsModel extends AModel{
     public RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller) {
     	this.weightsVisualizationController = new WeightsVisualizationController();
     	this.errorViewController = new ErrorViewController();
-        this.addObserver(controller);
+        this.controller = controller;
     }
     
     public boolean isShowWeights() {

@@ -29,7 +29,9 @@ import javafx.scene.control.TreeItem;
  *
  * @author Moritz
  */
-public class RBMSettingsModel extends AModel {
+public class RBMSettingsModel {
+    
+    private final RBMSettingsController controller;
 
     private final AController[] controllers;
     private final TreeItem[] items;
@@ -42,7 +44,7 @@ public class RBMSettingsModel extends AModel {
         this.controllers = controllers;
         this.items = items;    
         this.initialize();
-        this.addObserver(controller);
+        this.controller = controller;
     }
 
     public TreeItem[] getTreeItems() {

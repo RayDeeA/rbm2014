@@ -45,7 +45,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsStoppingConditionModel(this);
-        this.update(this.model, null);
+        this.update();
     }    
 
     @FXML
@@ -85,8 +85,7 @@ public class RBMSettingsStoppingConditionController extends AController{
         this.model.setErrorOn(cbx_error.isSelected());
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         this.cbx_epochs.setSelected(this.model.isEpochsOn());
         this.cbx_error.setSelected(this.model.isErrorOn());
         this.txt_epochs.setText(new Integer(this.model.getEpochs()).toString());

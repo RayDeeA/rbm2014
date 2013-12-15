@@ -48,7 +48,7 @@ public class RBMSettingsWeightsController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsWeightsModel(this);
-        this.update(this.model, null);
+        this.update();
     }    
 
     @FXML
@@ -99,8 +99,7 @@ public class RBMSettingsWeightsController extends AController {
         this.model.setSeed(Integer.parseInt(txt_seed.getText()));
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         this.cbx_useBias.setSelected(this.model.isUseBias());
         this.cbx_useBinarizeHidden.setSelected((this.model.isBinarizeHidden()));
         this.cbx_useBinarizeVisible.setSelected((this.model.isBinarizeVisible()));
