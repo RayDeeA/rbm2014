@@ -5,11 +5,14 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.IVisualizeObserver;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
 
 import java.net.URL;
 import java.util.Observable;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -20,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author dvarul
  */
-public class WeightsVisualizationController extends AController {
+public class WeightsVisualizationController extends AController implements IVisualizeObserver{
 
     @FXML
     private AnchorPane view;
@@ -71,5 +74,11 @@ public class WeightsVisualizationController extends AController {
     public void update(Observable o, Object arg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	public void update(RBMInfoPackage pack) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

@@ -6,9 +6,14 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
+import de.htw.iconn.fx.ErrorViewController;
+import de.htw.iconn.fx.WeightsVisualizationController;
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -29,6 +34,8 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showErrorGraph;
     
     private RBMSettingsVisualizationsModel model;
+    private ErrorViewController errorViewController;
+    private WeightsVisualizationController weightsViewController;
 
     /**
      * Initializes the controller class.
@@ -50,6 +57,21 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private void cbx_showErrorGraphAction(ActionEvent event) {
         this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
+        
+		if (this.cbx_showErrorGraph.isSelected()) {
+			generateErrorView();
+			//Set DCT
+			
+//			this.errorViewController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+			this.errorViewController.setDisplayDimensions();
+		}
+//			this.updateError();
+//		} else {
+//			if (this.errorStage != null) {
+//				this.errorStage.close();
+//			}
+//		}
+//		this.updateView();
     }
 
     @Override
@@ -66,5 +88,22 @@ public class RBMSettingsVisualizationsController extends AController {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());
     }
+    
+    private void generateErrorView() {
+    	
+    }
+    
+    private void generateWeightsView() {
+    	
+    }
 
+    public void update(RBMInfoPackage pack) {
+    
+    	if(this.cbx_showErrorGraph.isSelected()); 
+    	
+    	this.errorViewController.update(pack.getError());
+    	
+    }
+    
+    
 }
