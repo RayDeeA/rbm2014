@@ -67,7 +67,7 @@ public class Evaluation {
 		double mAP = 0;
 		for (int i = 0; i < queryImages.length; i++)
 			mAP += test(queryImages[i], i, table);
-		mAP /= images.length;
+		mAP /= queryImages.length;
 		
                 this.model.setmAP(mAP);
                 

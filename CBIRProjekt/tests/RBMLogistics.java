@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import de.htw.iconn.rbm.functions.*;
+import de.htw.iconn.fx.decomposition.logistic.*;
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import org.jblas.DoubleMatrix;
