@@ -4,6 +4,7 @@ import de.htw.iconn.fx.decomposition.logistic.ILogistic;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import java.util.LinkedList;
 
+
 public class RBMEnhancer implements IRBM {
 	
 	private final IRBM rbm;

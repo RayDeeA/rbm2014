@@ -38,6 +38,7 @@ public final class XMLWeightLogger {
     }
 
     public void singleWeights(RBMInfoPackage info) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        
         this.dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
         double[][] weights = info.getWeights();
         StringBuffer rowSB;
