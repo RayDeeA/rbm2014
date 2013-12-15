@@ -23,8 +23,5 @@ public abstract class AController implements Initializable, IFXController {
         return loader.getController();
     }
 
-    
-
-    
-    
+    abstract public void update();
 }

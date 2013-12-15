@@ -89,6 +89,7 @@ public class RBMSettingsVisualizationsController extends AController {
        
     }
 
+    @Override
     public void update() {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());

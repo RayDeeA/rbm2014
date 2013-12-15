@@ -58,6 +58,7 @@ public class WeightsVisualizationController extends AController implements IVisu
         update();
     }
     
+    @Override
    public void update(){
        imgView.setImage(this.model.generateImage());
     }

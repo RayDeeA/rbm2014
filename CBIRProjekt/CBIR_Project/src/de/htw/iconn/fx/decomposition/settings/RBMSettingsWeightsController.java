@@ -9,7 +9,6 @@ package de.htw.iconn.fx.decomposition.settings;
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.Chooser;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,6 +98,7 @@ public class RBMSettingsWeightsController extends AController {
         this.model.setSeed(Integer.parseInt(txt_seed.getText()));
     }
 
+    @Override
     public void update() {
         this.cbx_useBias.setSelected(this.model.isUseBias());
         this.cbx_useBinarizeHidden.setSelected((this.model.isBinarizeHidden()));

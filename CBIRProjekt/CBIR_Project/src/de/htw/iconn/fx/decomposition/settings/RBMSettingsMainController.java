@@ -106,6 +106,7 @@ public class RBMSettingsMainController extends AController {
         return model;
     }
 
+    @Override
     public void update() {
         this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
         this.cmb_rbmFeature.getSelectionModel().select(this.model.getSelectedRbmFeature());

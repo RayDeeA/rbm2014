@@ -57,6 +57,7 @@ public class RBMSettingsLearningRateController extends AController{
         return model;
     }
     
+    @Override
     public void update() {
         this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
         System.out.println("update");

@@ -4,7 +4,7 @@
  */
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.iconn.fx.decomposition.IFXController;
+import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.IVisualizeObserver;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 
@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import org.jblas.util.Random;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -27,7 +26,7 @@ import javafx.scene.layout.AnchorPane;
  * FXML Controller class
  * @author turbodiesel
  */
-public class ErrorViewController implements Initializable, IFXController, IVisualizeObserver {
+public class ErrorViewController extends AController implements IVisualizeObserver {
 
 	private ArrayList<Double> errors = new ArrayList<Double>();
 
@@ -113,6 +112,11 @@ public class ErrorViewController implements Initializable, IFXController, IVisua
 		// TODO Auto-generated method stub
 		
 	} 
+
+    @Override
+    public void update() {
+        
+    }
 
 }
 

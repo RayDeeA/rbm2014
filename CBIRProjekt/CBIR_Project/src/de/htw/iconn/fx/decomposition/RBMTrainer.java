@@ -33,14 +33,14 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
  * @author christoph
  */
 public class RBMTrainer {
-     public void train(RBMSettingsController controller){
-               
-            RBMSettingsMainModel mainModel = controller.getModel().getController(RBMSettingsMainController.class).getModel();
-            RBMSettingsWeightsModel weightsModel = controller.getModel().getController(RBMSettingsWeightsController.class).getModel();
-            RBMSettingsLearningRateModel learningRateModel = controller.getModel().getController(RBMSettingsLearningRateController.class).getModel();
-            RBMSettingsLoggerModel loggerModel = controller.getModel().getController(RBMSettingsLoggerController.class).getModel();
-            RBMSettingsStoppingConditionModel stoppingConditionModel = controller.getModel().getController(RBMSettingsStoppingConditionController.class).getModel();
-            RBMSettingsVisualizationsModel visualizationsModel = controller.getModel().getController(RBMSettingsVisualizationsController.class).getModel();
+     public void trainSingelRBM(RBMSettingsController controller){
+            RBMSettingsModel model = controller.getModel();   
+            RBMSettingsMainModel mainModel = model.getController(RBMSettingsMainController.class).getModel();
+            RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
+            RBMSettingsLearningRateModel learningRateModel = model.getController(RBMSettingsLearningRateController.class).getModel();
+            RBMSettingsLoggerModel loggerModel = model.getController(RBMSettingsLoggerController.class).getModel();
+            RBMSettingsStoppingConditionModel stoppingConditionModel = model.getController(RBMSettingsStoppingConditionController.class).getModel();
+            RBMSettingsVisualizationsModel visualizationsModel = model.getController(RBMSettingsVisualizationsController.class).getModel();
             
             int inputSize = mainModel.getInputSize();
             int outputSize = mainModel.getOutputSize();
@@ -79,5 +79,10 @@ public class RBMTrainer {
                 feature = new RBMFeaturePixel(inputSize, outputSize, rbm);
             else            
                 feature = new RBMFeatureDCT(inputSize, outputSize, rbm);
+            
+            feature.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
+        
+            weightsModel.setWeights(feature.getWeights());
+            weightsModel.setInitializedWeights(false);
      }
 }

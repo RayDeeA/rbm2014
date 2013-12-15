@@ -85,6 +85,7 @@ public class RBMSettingsStoppingConditionController extends AController{
         this.model.setErrorOn(cbx_error.isSelected());
     }
 
+    @Override
     public void update() {
         this.cbx_epochs.setSelected(this.model.isEpochsOn());
         this.cbx_error.setSelected(this.model.isErrorOn());
