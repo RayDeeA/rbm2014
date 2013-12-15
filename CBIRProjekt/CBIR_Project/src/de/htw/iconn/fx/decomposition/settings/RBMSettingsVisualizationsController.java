@@ -18,6 +18,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -36,6 +38,10 @@ public class RBMSettingsVisualizationsController extends AController {
     private RBMSettingsVisualizationsModel model;
     private ErrorViewController errorViewController;
     private WeightsVisualizationController weightsViewController;
+    @FXML
+    private TextField txt_weightsInterval;
+    @FXML
+    private TextField txt_errorInterval;
 
     /**
      * Initializes the controller class.
@@ -59,7 +65,6 @@ public class RBMSettingsVisualizationsController extends AController {
         this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
         
 		if (this.cbx_showErrorGraph.isSelected()) {
-			generateErrorView();
 			//Set DCT
 			
 //			this.errorViewController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
@@ -87,22 +92,34 @@ public class RBMSettingsVisualizationsController extends AController {
     public void update() {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());
-    }
-    
-    private void generateErrorView() {
-    	
-    }
-    
-    private void generateWeightsView() {
-    	
+        this.txt_weightsInterval.setText(new Integer(this.model.getWeightsInterval()).toString());
+        this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
     }
 
     public void update(RBMInfoPackage pack) {
     
-    	if(this.cbx_showErrorGraph.isSelected()); 
+    	if(this.cbx_showErrorGraph.isSelected()){
+            this.errorViewController.update(pack.getError());
+        }
     	
-    	this.errorViewController.update(pack.getError());
-    	
+    }
+
+    @FXML
+    private void txt_weightsIntervalKey(KeyEvent event) {
+        try{
+            this.model.setWeightsInterval(Integer.parseInt(this.txt_weightsInterval.getText()));
+        }catch(NumberFormatException e){
+            
+        }
+    }
+
+    @FXML
+    private void txt_errorIntervalKey(KeyEvent event) {
+        try{
+            this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
+        }catch(NumberFormatException e){
+            
+        }
     }
     
     

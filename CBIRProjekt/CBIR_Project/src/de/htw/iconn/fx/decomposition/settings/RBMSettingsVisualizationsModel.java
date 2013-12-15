@@ -8,7 +8,6 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
-import de.htw.iconn.fx.decomposition.views.WeightsVisualizationModel;
 
 /**
  *
@@ -21,9 +20,27 @@ public class RBMSettingsVisualizationsModel{
     private boolean showWeights = false;
     private boolean showErrorGraph = false;
     
-    private WeightsVisualizationModel model;
     private final WeightsVisualizationController weightsVisualizationController;
     private final ErrorViewController errorViewController;
+    
+    private int weightsInterval = 1000;
+    private int errorInterval = 1000;
+
+    public int getWeightsInterval() {
+        return weightsInterval;
+    }
+
+    public void setWeightsInterval(int weightsInterval) {
+        this.weightsInterval = weightsInterval;
+    }
+
+    public int getErrorInterval() {
+        return errorInterval;
+    }
+
+    public void setErrorInterval(int errorInterval) {
+        this.errorInterval = errorInterval;
+    }
     
     public RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller) {
     	this.weightsVisualizationController = new WeightsVisualizationController();
