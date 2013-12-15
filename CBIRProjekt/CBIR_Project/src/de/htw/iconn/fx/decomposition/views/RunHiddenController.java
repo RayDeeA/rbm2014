@@ -51,7 +51,8 @@ public class RunHiddenController implements Initializable, IFXController, EventH
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RunHiddenModel();
+        this.model = new RunHiddenModel(this);
+        this.update();
     }
     
     public void setRBMFeature(ARBMFeature rbmFeature) {
@@ -84,14 +85,18 @@ public class RunHiddenController implements Initializable, IFXController, EventH
         this.imgv_Result.setImage(this.model.runHidden());
     }
 
-	@Override
-	public Node getView() {
-		return this.view;
-	}
+    @Override
+    public Node getView() {
+            return this.view;
+    }
 
-	@Override
-	public void handle(Event arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void handle(Event arg0) {
+            // TODO Auto-generated method stub
+
+    }
+    
+    public void update(){
+        
+    }
 }

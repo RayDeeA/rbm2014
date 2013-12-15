@@ -68,7 +68,6 @@ public class WeightsVisualizationController extends AController {
         return this.model;
     }
 
-    @Override
     public void update(Observable o, Object arg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

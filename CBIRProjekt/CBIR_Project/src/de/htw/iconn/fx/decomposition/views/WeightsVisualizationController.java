@@ -10,7 +10,6 @@ import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
 
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -36,10 +35,12 @@ public class WeightsVisualizationController extends AController implements IVisu
        
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new WeightsVisualizationModel();   
+        this.model = new WeightsVisualizationModel(this);
     }
     
     public void setDimensions(int x, int y){     
@@ -68,11 +69,6 @@ public class WeightsVisualizationController extends AController implements IVisu
 
     public WeightsVisualizationModel getModel() {
         return this.model;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 	@Override

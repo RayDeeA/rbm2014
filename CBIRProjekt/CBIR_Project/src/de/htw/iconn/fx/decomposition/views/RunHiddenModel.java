@@ -31,15 +31,18 @@ import javax.imageio.ImageIO;
  */
 public class RunHiddenModel {
     
+    private final RunHiddenController controller;
+    
     private ARBMFeature rbmFeature;
     private Pic pic;
     
     private boolean useHiddenStates;
-	private boolean useVisibleStates;
+    private boolean useVisibleStates;
     
-    public RunHiddenModel() {
+    public RunHiddenModel(RunHiddenController controller) {
     	useHiddenStates = false;
     	useVisibleStates = false;
+        this.controller = controller;
     }
 
     public void setRbmFeature(ARBMFeature rbmFeature) {

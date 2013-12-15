@@ -16,6 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class DaydreamModel {
+    
+    private final DaydreamController controller;
 	
     Random random = new Random();
 	
@@ -26,9 +28,10 @@ public class DaydreamModel {
     private boolean useHiddenStates;
 	private boolean useVisibleStates;
     
-	public DaydreamModel() {
-    	this.useHiddenStates = false;
-    	this.useVisibleStates = false;
+	public DaydreamModel(DaydreamController controller) {
+            this.useHiddenStates = false;
+            this.useVisibleStates = false;
+            this.controller = controller;
 	}
 	
 	public void setRBMStack(RBMStack rbmStack) {

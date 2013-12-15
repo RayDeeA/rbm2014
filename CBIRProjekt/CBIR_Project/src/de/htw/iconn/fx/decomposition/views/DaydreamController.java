@@ -8,7 +8,6 @@ import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -56,10 +55,13 @@ public class DaydreamController extends AController implements EventHandler {
 	
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new DaydreamModel();
+        model = new DaydreamModel(this);
+        this.update();
     }
     
 	public void setRbmStack(RBMStack rbmStack) {
@@ -91,9 +93,9 @@ public class DaydreamController extends AController implements EventHandler {
     	
     	int delay = 0; // delay for 3 sec. 
         int period = 50; // repeat every 5 sec. 
-        Timer timer = new Timer();
-        this.timer = timer;
+        this.timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
             public void run() {
             	System.out.println("Dream");
             	imgv_Result.setImage(model.daydream((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
@@ -137,10 +139,8 @@ public class DaydreamController extends AController implements EventHandler {
 		stopDreaming();
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+	public void update() {
+            		
 	}
 
 }

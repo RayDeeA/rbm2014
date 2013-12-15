@@ -10,6 +10,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
 public class WeightsVisualizationModel {
+    private final WeightsVisualizationController controller;
 	
     Random random = new Random();
 	
@@ -27,9 +28,9 @@ public class WeightsVisualizationModel {
     
     double[][] weights;
 
-	public WeightsVisualizationModel() {
-		
-	}
+    public WeightsVisualizationModel(WeightsVisualizationController controller) {
+        this.controller = controller;
+    }
       
     public void setRbmFeature(ARBMFeature rbmFeature) {
         this.rbmFeature = rbmFeature;
@@ -124,9 +125,7 @@ public class WeightsVisualizationModel {
         if(weights != null) {
 			double[][] weights = relativateWeights(this.weights);
 			
-			float rc = 0;
-			float gc = 0;
-			float bc = 0;
+			float rc, gc, bc;
 
 			for (int y = 0; y < output; y++) {
 				for (int x = 0; x < input; x++) {
