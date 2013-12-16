@@ -161,7 +161,7 @@ public class RBMJBlas implements IRBM {
 		    
 		    //System.out.println(error);
 	    }
-	    System.out.println(error);
+	    //System.out.println(error);
 	}
 	
 	@Override
