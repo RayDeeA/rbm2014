@@ -10,7 +10,7 @@ import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -56,7 +56,7 @@ public class RunHiddenController extends AController implements EventHandler {
         this.update();
     }
     
-    public void setRBMFeature(ARBMFeature rbmFeature) {
+    public void setRBMFeature(ARBMAdapter rbmFeature) {
     	this.model.setRbmFeature(rbmFeature);
     }
 

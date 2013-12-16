@@ -6,7 +6,7 @@
 
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
@@ -33,7 +33,7 @@ public class RunHiddenModel {
     
     private final RunHiddenController controller;
     
-    private ARBMFeature rbmFeature;
+    private ARBMAdapter rbmFeature;
     private Pic pic;
     
     private boolean useHiddenStates;
@@ -45,7 +45,7 @@ public class RunHiddenModel {
         this.controller = controller;
     }
 
-    public void setRbmFeature(ARBMFeature rbmFeature) {
+    public void setRbmFeature(ARBMAdapter rbmFeature) {
         this.rbmFeature = rbmFeature;
     }
     
@@ -112,8 +112,8 @@ public class RunHiddenModel {
     }
 
     public Image runHidden() {
-        double[] hiddenData = rbmFeature.getHidden(this.pic, this.useHiddenStates);
-        double[] visibleData = rbmFeature.getVisible(hiddenData, this.useVisibleStates);
+        double[] hiddenData = null;
+        double[] visibleData = null;
         
         int width = this.pic.getDisplayImage().getWidth();
         int height = this.pic.getDisplayImage().getHeight();

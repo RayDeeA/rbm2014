@@ -8,8 +8,10 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.Chooser;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,8 +28,6 @@ import javafx.scene.layout.AnchorPane;
 public class RBMSettingsWeightsController extends AController {
     @FXML
     private AnchorPane view;   
-    @FXML
-    private CheckBox cbx_useBias;
     @FXML
     private CheckBox cbx_useSeed;
     @FXML
@@ -52,7 +52,7 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_setWeightsRandomAction(ActionEvent event) {
-        this.model.setInitializedWeights(true);
+        this.model.setWeights(null);
     }
 
     @FXML
@@ -62,7 +62,8 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_saveCurrentWeightsAction(ActionEvent event) {
-        this.model.setInitializedWeights(false);
+        // TODO Implement that shit
+    	throw new UnsupportedOperationException();
     }
 
     @Override
@@ -71,11 +72,6 @@ public class RBMSettingsWeightsController extends AController {
     }
     public RBMSettingsWeightsModel getModel() {
         return this.model;
-    }
-
-    @FXML
-    private void cbx_useBiasAction(ActionEvent event) {
-        this.model.setUseBias(cbx_useBias.isSelected());
     }
     
     @FXML
@@ -100,7 +96,6 @@ public class RBMSettingsWeightsController extends AController {
 
     @Override
     public void update() {
-        this.cbx_useBias.setSelected(this.model.isUseBias());
         this.cbx_useBinarizeHidden.setSelected((this.model.isBinarizeHidden()));
         this.cbx_useBinarizeVisible.setSelected((this.model.isBinarizeVisible()));
         this.cbx_useSeed.setSelected(this.model.isUseSeed());

@@ -5,7 +5,6 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
-import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,10 +62,6 @@ public class DaydreamController extends AController implements EventHandler {
         model = new DaydreamModel(this);
         this.update();
     }
-    
-	public void setRbmStack(RBMStack rbmStack) {
-		this.model.setRBMStack(rbmStack);
-	}
     
     @FXML
     private void btn_loadImageAction(ActionEvent event) {

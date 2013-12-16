@@ -9,27 +9,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" minWidth="585.0" prefHeight="507.0" prefWidth="585.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
+<AnchorPane id="AnchorPane" fx:id="view" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
   <children>
-    <TitledPane id="ttl_panel_features" animated="false" layoutX="0.0" layoutY="0.0" prefHeight="507.0" prefWidth="585.0" text="RBM Settings">
+    <TitledPane id="ttl_panel_features" animated="false" layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0" text="RBM Settings">
       <content>
-        <VBox prefHeight="200.0" prefWidth="100.0">
+        <VBox prefHeight="400.0" prefWidth="584.0">
           <children>
             <HBox prefHeight="-1.0" prefWidth="-1.0">
               <children>
                 <TreeView fx:id="trv_rbmSettingsMenue" prefHeight="-1.0" prefWidth="-1.0" />
                 <ScrollPane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
                   <content>
-                    <VBox id="vbox_" fx:id="vbox_rbmSettingsTemplatePane" prefHeight="-1.0" prefWidth="-1.0" />
+                    <VBox fx:id="vbox_rbmSettingsTemplatePane" prefHeight="-1.0" prefWidth="-1.0" />
                   </content>
                 </ScrollPane>
               </children>
             </HBox>
-            <GridPane alignment="TOP_CENTER" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="20.0" VBox.vgrow="NEVER">
+            <GridPane alignment="TOP_CENTER" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0" VBox.vgrow="NEVER">
               <children>
-                <Button fx:id="btn_intiializeRBM" mnemonicParsing="false" onAction="#btn_intiializeRBMAction" prefWidth="194.0" text="Initialize" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Button fx:id="btn_srartRBMTraining" mnemonicParsing="false" onAction="#btn_srartRBMTrainingAction" prefWidth="194.0" text="Start Training" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Button id="btn_" fx:id="btn_cancelRBMTraining" mnemonicParsing="false" onAction="#btn_cancelRBMTrainingAction" prefWidth="194.0" text="Cancel Training" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Button fx:id="btn_startRBMTraining" mnemonicParsing="false" onAction="#btn_startRBMTrainingAction" prefWidth="194.0" text="Start Training" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Button fx:id="btn_cancelRBMTraining" mnemonicParsing="false" onAction="#btn_cancelRBMTrainingAction" prefWidth="194.0" text="Cancel Training" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,7 +43,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
               <VBox.margin>
-                <Insets fx:id="x1" />
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
               </VBox.margin>
             </GridPane>
           </children>

@@ -114,7 +114,7 @@ public class BenchmarkController extends AController {
             this.daydreamStage = new Stage();
             this.daydreamStage.setTitle("Daydream");
             this.daydreamStage.setScene(scene);
-            this.daydreamController.setRbmStack(this.model.getRbmStack());
+            // this.daydreamController.setRbmStack(this.model.getRbmStack());
 
             daydreamStage.setOnCloseRequest(daydreamController);
 

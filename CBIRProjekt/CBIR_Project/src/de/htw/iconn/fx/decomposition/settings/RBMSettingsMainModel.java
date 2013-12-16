@@ -21,7 +21,7 @@ public class RBMSettingsMainModel{
     
     //combobox select options
     private final String[] rbmImplementations = {"RBMJBlas"};
-    private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
+    private final String[] rbmFeatures = {"Pixel Intensities"};
 
     public RBMSettingsMainModel(RBMSettingsMainController controller) {
         this.controller = controller;
@@ -54,8 +54,8 @@ public class RBMSettingsMainModel{
     private int selectedRbmImplementation = 0;
     private int selectedRbmFeature = 0;
     private int selectedLogisticFunction = 0;
-    private int inputSize = 28 * 28;
-    private int outputSize = 10;
+    private int inputSize = 28;
+    private int outputSize = 150;
 
     public int getSelectedRbmImplementation() {
         return selectedRbmImplementation;
@@ -71,11 +71,6 @@ public class RBMSettingsMainModel{
 
     public void setSelectedRbmFeature(int selectedRbmFeature) {
         this.selectedRbmFeature = selectedRbmFeature;
-        if(this.selectedRbmFeature == 0) {
-            this.inputSize = 28 * 28;
-        }else if(this.selectedRbmFeature == 1) {
-            this.inputSize = 15;
-        }
     }
 
     public int getSelectedLogisticFunction() {
@@ -110,7 +105,7 @@ public class RBMSettingsMainModel{
         return rbmImplementations;
     }
 
-    public String[] getRbmFeatures() {
+    public String[] getFeatures() {
         return rbmFeatures;
     }
 

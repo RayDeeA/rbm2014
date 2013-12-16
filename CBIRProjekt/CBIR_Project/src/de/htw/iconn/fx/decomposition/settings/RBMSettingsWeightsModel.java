@@ -21,8 +21,6 @@ import org.xml.sax.SAXException;
 public class RBMSettingsWeightsModel{
     private final RBMSettingsWeightsController controller;
     
-    private boolean initializedWeights = true;
-    private boolean useBias = true;
     private boolean binarizeHidden = false;
     private boolean binarizeVisible = false;
     private boolean useSeed = false;
@@ -33,14 +31,6 @@ public class RBMSettingsWeightsModel{
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
         this.loader = new XMLWeightsLoader();
         this.controller = controller;
-    }
-            
-    public boolean isUseBias() {
-        return useBias;
-    }
-
-    public void setUseBias(boolean useBias) {
-        this.useBias = useBias;
     }
 
     public boolean isUseSeed() {
@@ -75,20 +65,6 @@ public class RBMSettingsWeightsModel{
         this.seed = seed;
     }
 
-    /**
-     * @return the initializedWeights
-     */
-    public boolean isInitializedWeights() {
-        return initializedWeights;
-    }
-
-    /**
-     * @param initializedWeights the initializedWeights to set
-     */
-    public void setInitializedWeights(boolean initializedWeights) {
-        this.initializedWeights = initializedWeights;
-    }
-
     public double[][] getWeights() {
         return this.weights;
     }
@@ -100,9 +76,6 @@ public class RBMSettingsWeightsModel{
     public void loadWeights(File file) {
         try {
             weights = this.loader.loadWeightsFromXML(file);
-            this.initializedWeights = false;
-            
-            System.out.println(getWeights()[0][0]);
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(RBMSettingsWeightsModel.class.getName()).log(Level.SEVERE, null, ex);
         }

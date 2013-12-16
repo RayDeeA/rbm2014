@@ -1,6 +1,5 @@
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
@@ -21,7 +20,6 @@ public class DaydreamModel {
 	
     Random random = new Random();
 	
-    RBMStack rbmStack;
     Pic pic;
     Image daydreamImage;
 
@@ -32,10 +30,6 @@ public class DaydreamModel {
             this.useHiddenStates = false;
             this.useVisibleStates = false;
             this.controller = controller;
-	}
-	
-	public void setRBMStack(RBMStack rbmStack) {
-		this.rbmStack = rbmStack;
 	}
     
     public Image loadImage() {
@@ -157,7 +151,7 @@ public class DaydreamModel {
 			useData[0][i] = fvFloat[i];
 
 		// ermittle die hidden Neurons
-		double[][] hidden_data = this.rbmStack.run_visible(useData, useHiddenStates);
+		double[][] hidden_data = null;
 		return hidden_data[0];
 	}
 	
@@ -169,7 +163,7 @@ public class DaydreamModel {
         }
 
         // ermittle die visible Neurons
-        double[][] visible_data = this.rbmStack.run_hidden(useData, useVisibleStates);
+        double[][] visible_data = null;
 
         return visible_data[0];
     }
