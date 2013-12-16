@@ -40,20 +40,23 @@ public class RBMTrainer {
 		 LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 		 RBMSettingsController lastController = null;
 		 
+                 int counter = 1;
 		 for(RBMSettingsController c : rbmSettingsList) {
+                         System.out.println("RBM " + counter++);
 			 if(lastController != null) {
 		
-				 IRBM lastRbm = initializeRBM(lastController);
+				 ARBMAdapter lastRbmAdapter = new RBMAdapterGeneral(initializeRBM(lastController));
 				 RBMSettingsModel lastModel = lastController.getModel(); 
 				 RBMSettingsWeightsModel lastWeightsModel = lastModel.getController(RBMSettingsWeightsController.class).getModel();
 				 
-				 double[][] data = lastRbm.getHidden(lastModel.getData(), lastWeightsModel.isBinarizeHidden());
+				 double[][] data = lastRbmAdapter.getHidden(lastModel.getData(), lastWeightsModel.isBinarizeHidden());
 				 
 				 c.getModel().setData(data);
 			 }
 			 this.trainSingleRBM(c);
 			 lastController = c;
 		 }
+                 System.out.println("Training for all RBMs finished");
 	 }
 	 
 	 private IRBM initializeRBM(RBMSettingsController controller) {
@@ -74,6 +77,7 @@ public class RBMTrainer {
 	 }
 	
      public void trainSingleRBM(RBMSettingsController controller){
+         System.out.println("Start Training...");
     	 RBMSettingsModel model = controller.getModel();   
          RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
          RBMSettingsLoggerModel loggerModel = model.getController(RBMSettingsLoggerController.class).getModel();

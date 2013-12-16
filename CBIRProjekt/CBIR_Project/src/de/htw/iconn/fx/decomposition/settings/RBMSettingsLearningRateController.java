@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
@@ -20,16 +19,18 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author christoph
  */
-public class RBMSettingsLearningRateController extends AController{
+public class RBMSettingsLearningRateController extends AController {
+
     @FXML
     private TextField txt_learningRate;
     @FXML
     private AnchorPane view;
-    
+
     private RBMSettingsLearningRateModel model;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -37,29 +38,28 @@ public class RBMSettingsLearningRateController extends AController{
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLearningRateModel(this);
         this.update();
-    }    
+    }
 
     @FXML
     private void txt_learningRateKey(KeyEvent event) {
         try {
             this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
-        } catch(NumberFormatException e) {
-        	
-        }       
+        } catch (NumberFormatException e) {
+
+        }
     }
 
     @Override
     public Node getView() {
         return this.view;
     }
-    
+
     public RBMSettingsLearningRateModel getModel() {
         return model;
     }
-    
+
     @Override
     public void update() {
         this.txt_learningRate.setText(new Double(this.model.getConstantLearningRate()).toString());
-        System.out.println("update");
     }
 }
