@@ -73,6 +73,7 @@ public class RBMSettingsLoggerController extends AController{
         }
     }
 
+    @Override
     public void update() {
         this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());

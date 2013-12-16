@@ -36,7 +36,7 @@ public class RBMSettingsMainController extends AController {
     @FXML
     private ComboBox<?> cmb_rbmImplementation;
     @FXML
-    private ComboBox<?> cmb_rbmFeature;
+    private ComboBox<?> cmb_feature;
     @FXML
     private ComboBox<?> cmb_logisticFunction;
     @FXML
@@ -62,10 +62,10 @@ public class RBMSettingsMainController extends AController {
         this.cmb_rbmImplementation.setItems(rbmImplementationObs);
         this.cmb_rbmImplementation.getSelectionModel().selectFirst();
 
-        List<String> rbmFeature = new LinkedList<>(Arrays.asList(this.model.getRbmFeatures()));
-        ObservableList rbmFeatureObs = FXCollections.observableList(rbmFeature);
-        this.cmb_rbmFeature.setItems(rbmFeatureObs);
-        this.cmb_rbmFeature.getSelectionModel().select(1);
+        List<String> feature = new LinkedList<>(Arrays.asList(this.model.getFeatures()));
+        ObservableList rbmFeatureObs = FXCollections.observableList(feature);
+        this.cmb_feature.setItems(rbmFeatureObs);
+        this.cmb_feature.getSelectionModel().select(1);
 
         List<String> logisticFunction = new LinkedList<>(Arrays.asList(this.model.getLogisticFunctions()));
         ObservableList logisticFunctionObs = FXCollections.observableList(logisticFunction);
@@ -79,8 +79,8 @@ public class RBMSettingsMainController extends AController {
     }
 
     @FXML
-    private void cmb_rbmFeatureAction(ActionEvent event) {
-        this.model.setSelectedRbmFeature(cmb_rbmFeature.getSelectionModel().getSelectedIndex());
+    private void cmb_featureAction(ActionEvent event) {
+        this.model.setSelectedRbmFeature(cmb_feature.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
@@ -106,9 +106,10 @@ public class RBMSettingsMainController extends AController {
         return model;
     }
 
+    @Override
     public void update() {
         this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
-        this.cmb_rbmFeature.getSelectionModel().select(this.model.getSelectedRbmFeature());
+        this.cmb_feature.getSelectionModel().select(this.model.getSelectedRbmFeature());
         this.cmb_rbmImplementation.getSelectionModel().select(this.model.getSelectedRbmImplementation());
         this.txt_outputSize.setText(new Integer(this.model.getOutputSize()).toString());
         this.lbl_inputSize.setText(new Integer(this.model.getInputSize()).toString());

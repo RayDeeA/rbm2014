@@ -9,11 +9,13 @@ package de.htw.iconn.fx.decomposition;
 import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -40,15 +42,15 @@ public class RBMSettingsController extends AController {
     @FXML
     private VBox vbox_rbmSettingsTemplatePane;
     @FXML
-    private Button btn_intiializeRBM;
-    @FXML
-    private Button btn_srartRBMTraining;
+    private Button btn_startRBMTraining;
     @FXML
     private Button btn_cancelRBMTraining;
     @FXML
     private Insets x1;
     
     private RBMSettingsModel model;
+    
+    private RBMTrainer trainer;
 
     /**
      * Initializes the controller class.
@@ -86,8 +88,6 @@ public class RBMSettingsController extends AController {
             addSettings(settingsRBM, settingsLogger, "settings/RBMSettingsLogger.fxml")
         };
         
-        
-        IRBM rbm = new RBMJBlas(15 , 4, 0.1, new DefaultLogisticMatrixFunction());
         this.model = new RBMSettingsModel(items, controllers, this);
         
         trv_rbmSettingsMenue.setRoot(settingsRBM);
@@ -112,6 +112,9 @@ public class RBMSettingsController extends AController {
             }
             
         });
+        
+        this.trainer = new RBMTrainer();
+        
         this.update();
     }    
 
@@ -129,17 +132,16 @@ public class RBMSettingsController extends AController {
         root.getChildren().add(child);
         return (AController) controller;
     }
+    
     @FXML
-    private void btn_intiializeRBMAction(ActionEvent event) {
+    private void btn_startRBMTrainingAction(ActionEvent event) {
+    	trainer.trainSingleRBM(this);
     }
 
-    @FXML
-    private void btn_srartRBMTrainingAction(ActionEvent event) {
-        this.model.trainRBM();
-    }
-
-    @FXML
+	@FXML
     private void btn_cancelRBMTrainingAction(ActionEvent event) {
+		// TODO
+		throw new UnsupportedOperationException();
     }
 
     @Override

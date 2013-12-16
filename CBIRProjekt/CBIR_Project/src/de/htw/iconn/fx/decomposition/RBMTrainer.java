@@ -11,9 +11,8 @@ import de.htw.iconn.fx.decomposition.enhancement.TrainingVisualizer;
 import de.htw.iconn.fx.decomposition.enhancement.XMLEndTrainingLogger;
 import de.htw.iconn.fx.decomposition.enhancement.XMLTrainingLogger;
 import de.htw.iconn.fx.decomposition.logistic.ILogistic;
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
-import de.htw.iconn.fx.decomposition.rbm.RBMFeatureDCT;
-import de.htw.iconn.fx.decomposition.rbm.RBMFeaturePixel;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
+import de.htw.iconn.fx.decomposition.rbm.RBMAdapterGeneral;
 import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateModel;
@@ -33,51 +32,55 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
  * @author christoph
  */
 public class RBMTrainer {
-     public void train(RBMSettingsController controller){
-               
-            RBMSettingsMainModel mainModel = controller.getModel().getController(RBMSettingsMainController.class).getModel();
-            RBMSettingsWeightsModel weightsModel = controller.getModel().getController(RBMSettingsWeightsController.class).getModel();
-            RBMSettingsLearningRateModel learningRateModel = controller.getModel().getController(RBMSettingsLearningRateController.class).getModel();
-            RBMSettingsLoggerModel loggerModel = controller.getModel().getController(RBMSettingsLoggerController.class).getModel();
-            RBMSettingsStoppingConditionModel stoppingConditionModel = controller.getModel().getController(RBMSettingsStoppingConditionController.class).getModel();
-            RBMSettingsVisualizationsModel visualizationsModel = controller.getModel().getController(RBMSettingsVisualizationsController.class).getModel();
+	
+     public void trainSingleRBM(RBMSettingsController controller){
+            RBMSettingsModel model = controller.getModel();   
+            RBMSettingsMainModel mainModel = model.getController(RBMSettingsMainController.class).getModel();
+            RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
+            RBMSettingsLearningRateModel learningRateModel = model.getController(RBMSettingsLearningRateController.class).getModel();
+            RBMSettingsLoggerModel loggerModel = model.getController(RBMSettingsLoggerController.class).getModel();
+            RBMSettingsStoppingConditionModel stoppingConditionModel = model.getController(RBMSettingsStoppingConditionController.class).getModel();
+            RBMSettingsVisualizationsModel visualizationsModel = model.getController(RBMSettingsVisualizationsController.class).getModel();
             
             int inputSize = mainModel.getInputSize();
+            inputSize *= inputSize;
             int outputSize = mainModel.getOutputSize();
             ILogistic logisticFunction = mainModel.getSelectedLogisticFunctionImplementation();
             double learningRate = learningRateModel.getConstantLearningRate();
+            int seed = weightsModel.getSeed();
+            boolean useSeed = weightsModel.isUseSeed();
+            double[][] weights = weightsModel.getWeights();
             
-            RBMEnhancer rbm = new RBMEnhancer(new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction));
+            RBMJBlas rbm = new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights); 
+            
+            RBMEnhancer rbmEnhancer = new RBMEnhancer(rbm);
 
             if(loggerModel.isFinalLoggerOn()) {
-                rbm.addEnhancement(new XMLEndTrainingLogger());
+            	rbmEnhancer.addEnhancement(new XMLEndTrainingLogger());
             }
 
             if(loggerModel.isContinuousLoggerOn()) {
-                rbm.addEnhancement(new XMLTrainingLogger());
+            	rbmEnhancer.addEnhancement(new XMLTrainingLogger());
             }
             
             int weightsInterval = visualizationsModel.getWeightsInterval();
             int errorInterval = visualizationsModel.getErrorInterval();
 
             if(visualizationsModel.isShowWeights()) {
-                rbm.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
+            	rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
             }
             
             if(visualizationsModel.isShowErrorGraph()) {
-                    rbm.addEnhancement(new TrainingVisualizer(errorInterval, visualizationsModel.getErrorViewController()));
+            	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, visualizationsModel.getErrorViewController()));
             }
             
-            if (!weightsModel.isInitializedWeights()) {
-                System.out.println(weightsModel.getWeights()[0][0]);
-                rbm.setWeights(weightsModel.getWeights());
-            }
+            ARBMAdapter adapter = new RBMAdapterGeneral(rbmEnhancer);
             
-            ARBMFeature feature;
-
-            if(mainModel.getSelectedRbmFeature() == 0)
-                feature = new RBMFeaturePixel(inputSize, outputSize, rbm);
-            else            
-                feature = new RBMFeatureDCT(inputSize, outputSize, rbm);
+            adapter.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
+        
+            weightsModel.setWeights(adapter.getWeights());
      }
+     
+     //public void train()
+     
 }

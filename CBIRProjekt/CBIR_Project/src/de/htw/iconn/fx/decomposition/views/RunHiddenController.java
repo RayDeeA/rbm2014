@@ -6,16 +6,15 @@
 
 package de.htw.iconn.fx.decomposition.views;
 
+import de.htw.iconn.fx.decomposition.AController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.htw.iconn.fx.decomposition.IFXController;
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -28,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Radek
  */
-public class RunHiddenController implements Initializable, IFXController, EventHandler {
+public class RunHiddenController extends AController implements EventHandler {
     @FXML
     private Button btn_loadNewTestImage;
     @FXML
@@ -48,6 +47,8 @@ public class RunHiddenController implements Initializable, IFXController, EventH
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,7 +56,7 @@ public class RunHiddenController implements Initializable, IFXController, EventH
         this.update();
     }
     
-    public void setRBMFeature(ARBMFeature rbmFeature) {
+    public void setRBMFeature(ARBMAdapter rbmFeature) {
     	this.model.setRbmFeature(rbmFeature);
     }
 
@@ -96,6 +97,7 @@ public class RunHiddenController implements Initializable, IFXController, EventH
 
     }
     
+    @Override
     public void update(){
         
     }

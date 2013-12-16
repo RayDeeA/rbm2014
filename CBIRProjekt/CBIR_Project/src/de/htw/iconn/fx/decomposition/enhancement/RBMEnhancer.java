@@ -1,6 +1,5 @@
 package de.htw.iconn.fx.decomposition.enhancement;
 
-import de.htw.iconn.fx.decomposition.logistic.ILogistic;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import java.util.LinkedList;
 
@@ -71,53 +70,18 @@ public class RBMEnhancer implements IRBM {
 	}
 
 	@Override
-	public double[][] run_visible(double[][] userData, boolean useHiddenStates) {
-		return rbm.run_visible(userData, useHiddenStates);
+	public double[][] getHidden(double[][] userData, boolean useHiddenStates) {
+		return rbm.getHidden(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] run_hidden(double[][] hiddenData, boolean useVisibleStates) {
-		return rbm.run_hidden(hiddenData, useVisibleStates);
-	}
-
-	@Override
-	public void setWeights(double[][] weights) {
-		rbm.setWeights(weights);
+	public double[][] getVisible(double[][] hiddenData, boolean useVisibleStates) {
+		return rbm.getVisible(hiddenData, useVisibleStates);
 	}
 
 	@Override
 	public double[][] getWeights() {
 		return rbm.getWeights();
-	}
-
-
-	@Override
-	public int getInputSize() {
-		return rbm.getInputSize();
-	}
-
-	@Override
-	public int getOutputSize() {
-		return rbm.getOutputSize();
-	}
-
-	@Override
-	public double getLearnRate() {
-		return rbm.getLearnRate();
-	}
-
-	@Override
-	public ILogistic getLogisticFunction() {
-		return rbm.getLogisticFunction();
-	}
-
-	@Override
-	public boolean hasBias() {
-		return rbm.hasBias();
-	}
-	
-	public IRBM getRBM() {
-		return rbm;
 	}
 
 }

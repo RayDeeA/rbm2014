@@ -7,20 +7,27 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.ErrorViewController;
+import de.htw.iconn.fx.SimpleRBMController;
 import de.htw.iconn.fx.WeightsVisualizationController;
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -42,6 +49,7 @@ public class RBMSettingsVisualizationsController extends AController {
     private TextField txt_weightsInterval;
     @FXML
     private TextField txt_errorInterval;
+	private Stage errorStage;
 
     /**
      * Initializes the controller class.
@@ -63,6 +71,8 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private void cbx_showErrorGraphAction(ActionEvent event) {
         this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
+        
+        initErrorView();
         
 		if (this.cbx_showErrorGraph.isSelected()) {
 			//Set DCT
@@ -89,6 +99,7 @@ public class RBMSettingsVisualizationsController extends AController {
        
     }
 
+    @Override
     public void update() {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());
@@ -122,5 +133,25 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
     
+	private void initErrorView() {
+		try {
+			this.errorViewController = (ErrorViewController) loadController("ErrorView.fxml");
+			Parent root = (Parent) this.errorViewController.getView();
+			Scene scene = new Scene(root, 600, 400);
+
+			this.errorStage = new Stage();
+			this.errorStage.setTitle("Error Viewer");
+			this.errorStage.setScene(scene);
+			this.errorStage.setY(42.0);;
+			this.errorStage.setX(42.0);
+			this.errorStage.setWidth(600.0);
+			this.errorStage.show();
+			this.model.setShowErrorGraph(true);
+			this.update();
+		} catch (IOException ex) {
+			Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+	}
     
 }

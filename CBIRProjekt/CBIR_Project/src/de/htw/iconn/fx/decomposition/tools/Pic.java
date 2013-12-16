@@ -3,9 +3,7 @@ package de.htw.iconn.fx.decomposition.tools;
 import java.awt.image.BufferedImage;
 
 public class Pic extends Object{
-	
 
-	
 	private String name;
 	private String type;
 	private int id;
@@ -16,6 +14,7 @@ public class Pic extends Object{
 	private double distance;
 	private int typeOccurrence;
 	
+	private double[] data;	
 	private double[] featureVector;	
 	
 	// Originalgröße des Bildes
