@@ -46,15 +46,16 @@ public class DaydreamController extends AController implements EventHandler {
     private ImageView imgv_Input;
     @FXML
     private AnchorPane view;
-	
-	DaydreamModel model;
-        
-	Timer timer;
-	int maxDreams = 60;
-	int currentDream = 0;
-	
+
+    DaydreamModel model;
+
+    Timer timer;
+    int maxDreams = 60;
+    int currentDream = 0;
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -63,85 +64,85 @@ public class DaydreamController extends AController implements EventHandler {
         model = new DaydreamModel(this);
         this.update();
     }
-    
-	public void setRbmStack(RBMStack rbmStack) {
-		this.model.setRBMStack(rbmStack);
-	}
-    
+
+    public void setRbmStack(RBMStack rbmStack) {
+        this.model.setRBMStack(rbmStack);
+    }
+
     @FXML
     private void btn_loadImageAction(ActionEvent event) {
         Image image = this.model.loadImage();
-        if(!image.isError()) {
+        if (!image.isError()) {
             this.imgv_Input.setImage(image);
         } else {
             System.out.println("error");
         }
-    	
-    	this.btn_daydream.setDisable(false);
-    	this.btn_stopDaydream.setDisable(true);
-    }
-    
-    @FXML
-    private void btn_generateImageAction(ActionEvent event) {
-    	this.imgv_Input.setImage(this.model.generateImage());
-    	this.btn_daydream.setDisable(false);
-    	this.btn_stopDaydream.setDisable(true);
+
+        this.btn_daydream.setDisable(false);
+        this.btn_stopDaydream.setDisable(true);
     }
 
     @FXML
-	private void btn_daydreamAction(ActionEvent event) {
-    	
-    	int delay = 0; // delay for 3 sec. 
+    private void btn_generateImageAction(ActionEvent event) {
+        this.imgv_Input.setImage(this.model.generateImage());
+        this.btn_daydream.setDisable(false);
+        this.btn_stopDaydream.setDisable(true);
+    }
+
+    @FXML
+    private void btn_daydreamAction(ActionEvent event) {
+
+        int delay = 0; // delay for 3 sec. 
         int period = 50; // repeat every 5 sec. 
         this.timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-            	System.out.println("Dream");
-            	imgv_Result.setImage(model.daydream((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
+                System.out.println("Dream");
+                imgv_Result.setImage(model.daydream((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
             }
         }, delay, period);
-    	this.btn_daydream.setDisable(true);
-    	this.btn_stopDaydream.setDisable(false);
-	}
-    
+        this.btn_daydream.setDisable(true);
+        this.btn_stopDaydream.setDisable(false);
+    }
+
     @FXML
-	private void btn_stopDaydreamAction(ActionEvent event) {
-    	stopDreaming();
-	}
-    
+    private void btn_stopDaydreamAction(ActionEvent event) {
+        stopDreaming();
+    }
+
     @FXML
     private void btn_hiddenStatesAction(ActionEvent event) {
-    	this.model.setUseHiddenStates(this.btn_hiddenStates.isSelected());
+        this.model.setUseHiddenStates(this.btn_hiddenStates.isSelected());
     }
-    
+
     @FXML
     private void btn_visibleStatesAction(ActionEvent event) {
-    	this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
+        this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
     }
-    
+
     public void stopDreaming() {
-    	if(timer != null) {
-	    	timer.cancel();
-	    	timer.purge();
-	    	this.btn_daydream.setDisable(true);
-	    	this.btn_stopDaydream.setDisable(true);
-    	}
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            this.btn_daydream.setDisable(true);
+            this.btn_stopDaydream.setDisable(true);
+        }
     }
 
-	@Override
-	public Node getView() {
-		return this.view;
-	}
+    @Override
+    public Node getView() {
+        return this.view;
+    }
 
-	@Override
-	public void handle(Event arg0) {
-		stopDreaming();
-	}
+    @Override
+    public void handle(Event arg0) {
+        stopDreaming();
+    }
 
-        @Override
-	public void update() {
-            		
-	}
+    @Override
+    public void update() {
+
+    }
 
 }

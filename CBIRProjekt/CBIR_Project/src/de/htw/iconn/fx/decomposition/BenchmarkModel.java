@@ -8,6 +8,7 @@ package de.htw.iconn.fx.decomposition;
 import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.ImageViewer;
+import de.htw.iconn.fx.decomposition.views.PRTMAPController;
 import java.util.LinkedList;
 
 /**
@@ -22,8 +23,10 @@ public class BenchmarkModel {
     private final LinkedList<RBMSettingsController> rbmSettingsList;
     private ImageManager imageManager = null;
     private ImageViewer imageViewer;
+    private PRTMAPController prtmapController;
     private boolean showImageViewer = false;
     private int selectedMAPTest = 0;
+    private boolean isPRTMAPViewerVisible;
 
     public int getSelectedMAPTest() {
         return selectedMAPTest;
@@ -48,14 +51,14 @@ public class BenchmarkModel {
 
     public boolean add(RBMSettingsController rbmSettings) {
         rbmStack.add(rbmSettings.getModel().getRBM());
-        
-        if(rbmSettingsList.size() == 0) {
-            if( this.rbmSettingsList.add(rbmSettings)) {
+
+        if (rbmSettingsList.size() == 0) {
+            if (this.rbmSettingsList.add(rbmSettings)) {
                 setRBMImageSet();
                 return true;
             }
         }
-        
+
         return this.rbmSettingsList.add(rbmSettings);
 
     }
@@ -64,24 +67,36 @@ public class BenchmarkModel {
         return rbmSettingsList;
     }
 
-    public void setImageManager(ImageManager imageManager) {      
+    public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
         this.setRBMImageSet();
         this.imageViewer = new ImageViewer(imageManager);
     }
 
+    public void setPRTMAPController() {
+        this.prtmapController = new PRTMAPController();
+    }
+
     public boolean isShowImageViewer() {
         return showImageViewer;
     }
-    
-    public void setShowImageViewer(boolean showImageViewer){
+
+    public void setShowImageViewer(boolean showImageViewer) {
         this.showImageViewer = showImageViewer;
+    }
+
+    public void setVisibilityPRTMAPViewer(boolean b) {
+        this.isPRTMAPViewerVisible = b;
+    }
+
+    public boolean isPRTMAPViewerVisible() {
+        return isPRTMAPViewerVisible;
     }
 
     public ImageManager getImageManager() {
         return imageManager;
     }
-    
+
     public void createDaydreamViewer() {
 
     }
@@ -91,10 +106,14 @@ public class BenchmarkModel {
     }
 
     private void setRBMImageSet() {
-        if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+        if (this.getRbmSettingsList().size() > 0 && imageManager != null) {
             // TODO: checkbox for shuffled input data
             this.getRbmSettingsList().getFirst().getModel().setData(imageManager.getImages(false));
         }
+    }
+
+    PRTMAPController getPRTMAPController() {
+        return prtmapController;
     }
 
 }

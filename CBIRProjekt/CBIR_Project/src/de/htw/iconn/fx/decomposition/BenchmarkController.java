@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.views.DaydreamController;
+import de.htw.iconn.fx.decomposition.views.PRTMAPController;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +23,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -35,23 +37,35 @@ import javafx.stage.Stage;
  * @author Moritz
  */
 public class BenchmarkController extends AController {
-    
+
     @FXML
     private AnchorPane view;
-    
-    private BenchmarkModel model; 
+
+    private BenchmarkModel model;
     @FXML
+
     private CheckBox cbx_imageViewer;
     @FXML
     private ComboBox<?> cmb_mAPTests;
     @FXML
     private Label lbl_imageSetSelected;
-    @FXML
+
     private DaydreamController daydreamController;
-    
+
+    private PRTMAPController prtmapController;
+
     private Stage daydreamStage;
+    private Stage prtmapStage;
+    @FXML
+    private Button btn_openDaydream;
+    @FXML
+    private Button btn_openRunHidden;
+    @FXML
+    private ToggleButton toggleBtn_PRTMAP;
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -60,7 +74,7 @@ public class BenchmarkController extends AController {
         model = new BenchmarkModel(this);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
-    }    
+    }
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
@@ -70,22 +84,22 @@ public class BenchmarkController extends AController {
     private void loadImageSet(File file) {
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
-            
+
             this.initCmbImageManager();
-            if(this.model.isShowImageViewer()){
-                this.model.getImageViewer().show();         
+            if (this.model.isShowImageViewer()) {
+                this.model.getImageViewer().show();
             }
             this.updateView();
         }
     }
-    
+
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
         this.model.setShowImageViewer(this.cbx_imageViewer.isSelected());
-        if(this.model.getImageViewer() != null){
-            if(this.model.isShowImageViewer()){
+        if (this.model.getImageViewer() != null) {
+            if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
-            }else{
+            } else {
                 this.model.getImageViewer().close();
             }
         }
@@ -124,10 +138,10 @@ public class BenchmarkController extends AController {
 
         }
     }
-    
+
     @FXML
     private void btn_openRunHiddenAction(ActionEvent event) {
-    	
+
     }
 
     @Override
@@ -141,7 +155,7 @@ public class BenchmarkController extends AController {
     public BenchmarkModel getModel() {
         return model;
     }
-    
+
     private void initCmbImageManager() {
         List<String> mapTest;
         if (this.model.getImageManager() != null) {
@@ -154,6 +168,7 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.setItems(mapTestObs);
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
+
     private void updateView() {
         if (this.model.getImageManager() == null) {
             lbl_imageSetSelected.setText("no image set selected");
@@ -167,6 +182,26 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
+    @FXML
+    private void toggleBtn_PRTMAPAction(ActionEvent event) {
 
-    
+        this.model.setVisibilityPRTMAPViewer(this.toggleBtn_PRTMAP.isSelected());
+        if (this.model.getPRTMAPController() != null) {
+            this.model.getPRTMAPController().toggleVisibility();
+        } else {
+            try {
+                this.model.setPRTMAPController();
+                this.prtmapController = (PRTMAPController) this.model.getPRTMAPController().loadController("PRTMAP.fxml");
+
+                Parent root = (Parent) this.prtmapController.getView();
+                Scene scene = new Scene(root, 600, 400);
+                this.prtmapStage = new Stage();
+                this.prtmapStage.setTitle("Map Viewer");
+                this.prtmapStage.setScene(scene);
+                prtmapStage.setOnCloseRequest(prtmapController);
+                this.prtmapStage.show();
+            } catch (IOException ex) {
+            }
+        }
+    }
 }
