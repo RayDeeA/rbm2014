@@ -41,7 +41,6 @@ public class BenchmarkModel {
     }
 
     public BenchmarkModel(BenchmarkController controller, PRTMAPController prtmapController) {
-        this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
         this.controller = controller;
         this.prtmapController = prtmapController;

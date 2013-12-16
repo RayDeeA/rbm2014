@@ -74,7 +74,7 @@ public class BenchmarkController extends AController {
     public void initialize(URL url, ResourceBundle rb) {
         PRTMAPController tmpController = null;
         try {
-            tmpController = (PRTMAPController) new PRTMAPController().loadController("PRTMAP.fxml");
+            tmpController = (PRTMAPController) loadController("views/PRTMAP.fxml");
         } catch (IOException ex) {
             Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -19,7 +19,4 @@
       </yAxis>
     </LineChart>
   </children>
-  <stylesheets>
-    <URL value="@chartviewer.css" />
-  </stylesheets>
 </AnchorPane>
