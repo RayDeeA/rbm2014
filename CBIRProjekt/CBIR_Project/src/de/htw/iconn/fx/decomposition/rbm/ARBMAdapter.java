@@ -17,12 +17,16 @@ public abstract class ARBMAdapter implements IRBM{
 	public double error(double[][] data, boolean binarizeHidden, boolean binarizeVisible) {
 		return rbm.error(data, binarizeHidden, binarizeVisible);
 	}
-
-        @Override
-	public abstract double[][] getHidden(double[][] data, boolean binarizeHidden);
         
         @Override
-        public abstract double[][] getVisible(double[][] data, boolean binarizeVisible);
+	public double[][] getHidden(double[][] data, boolean binarizeHidden) {
+		return rbm.getHidden(data, binarizeHidden);
+	}
+	
+        @Override
+        public double[][] getVisible(double[][] data, boolean binarizeVisible) {
+            return rbm.getVisible(data, binarizeVisible);
+        }
 
         @Override
 	public double[][] getWeights() {
