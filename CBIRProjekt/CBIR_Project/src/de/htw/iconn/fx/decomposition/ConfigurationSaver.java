@@ -85,7 +85,7 @@ public class ConfigurationSaver {
         for(RBMSettingsController rbmSettings : rbmSettingsList){
          
             // get different models from controllers
-            IRBM rbm = rbmSettings.getModel().getRBM();
+
             RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
             RBMSettingsLearningRateModel learningRateModel = rbmSettings.getModel().getController(RBMSettingsLearningRateController.class).getModel();
             RBMSettingsStoppingConditionModel stoppingConditionModel = rbmSettings.getModel().getController(RBMSettingsStoppingConditionController.class).getModel();
@@ -130,12 +130,6 @@ public class ConfigurationSaver {
             settingsElement.appendChild(weightsSettingsElement);
             retrieveWeightsData(weightsModel, weightsSettingsElement, doc);
             
-            if(rbm != null){
-                // machine
-                Element machineElement = doc.createElement("machine");
-                rbmElement.appendChild(machineElement);
-                retrieveRBMData(rbm, machineElement, doc);
-            }
         }
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -146,9 +140,6 @@ public class ConfigurationSaver {
     }
     
     private void retrieveRBMData(IRBM rbm, Element parent, Document doc){
-        createDataElement("int", "inputSize", its(rbm.getInputSize()), parent, doc);
-        createDataElement("int", "ouputSize", its(rbm.getOutputSize()), parent, doc);
-        createDataElement("boolean", "useBias", bts(rbm.hasBias()), parent, doc);
         
         Element weightsElement = doc.createElement("weights");
         parent.appendChild(weightsElement);
@@ -211,8 +202,6 @@ public class ConfigurationSaver {
     }
     
     private void retrieveWeightsData(RBMSettingsWeightsModel model, Element parent, Document doc){
-        createDataElement("boolean", "initializedWeights", bts(model.isInitializedWeights()), parent, doc);
-        createDataElement("boolean", "useBias", bts(model.isUseBias()), parent, doc);
         createDataElement("boolean", "useSeed", bts(model.isUseSeed()), parent, doc);
         createDataElement("int", "seed", its(model.getSeed()), parent, doc);
     }

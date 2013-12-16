@@ -1,6 +1,6 @@
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -14,7 +14,7 @@ public class WeightsVisualizationModel {
 	
     Random random = new Random();
 	
-    ARBMFeature rbmFeature;
+    ARBMAdapter rbmFeature;
     Pic pic;
     Image vizImage;
     Random rand = new Random();
@@ -32,7 +32,7 @@ public class WeightsVisualizationModel {
         this.controller = controller;
     }
       
-    public void setRbmFeature(ARBMFeature rbmFeature) {
+    public void setRbmFeature(ARBMAdapter rbmFeature) {
         this.rbmFeature = rbmFeature;
     } 
     

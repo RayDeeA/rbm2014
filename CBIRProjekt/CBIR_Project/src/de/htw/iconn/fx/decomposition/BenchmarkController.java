@@ -53,7 +53,9 @@ public class BenchmarkController extends AController {
     private Label lbl_imageSetSelected;
 
     private DaydreamController daydreamController;
-
+    
+    private RBMTrainer rbmTrainer;
+    
     private Stage daydreamStage;
     @FXML
     private Button btn_openDaydream;
@@ -79,6 +81,7 @@ public class BenchmarkController extends AController {
 
         model = new BenchmarkModel(this, tmpController);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
+        this.rbmTrainer = new RBMTrainer();
         this.update();
     }
 
@@ -136,7 +139,7 @@ public class BenchmarkController extends AController {
             this.daydreamStage = new Stage();
             this.daydreamStage.setTitle("Daydream");
             this.daydreamStage.setScene(scene);
-            this.daydreamController.setRbmStack(this.model.getRbmStack());
+            // this.daydreamController.setRbmStack(this.model.getRbmStack());
 
             daydreamStage.setOnCloseRequest(daydreamController);
 
@@ -149,7 +152,13 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_openRunHiddenAction(ActionEvent event) {
-
+    	//TODO
+    	throw new UnsupportedOperationException();
+    }
+    
+    @FXML
+    private void btn_trainAllAction(ActionEvent event) {
+    	this.rbmTrainer.trainAllRBMs(this);
     }
 
     @Override

@@ -5,7 +5,8 @@
  */
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.fx.decomposition.rbm.RBMStack;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
+import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainModel;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.PRTMAPController;
@@ -22,7 +23,6 @@ import javafx.stage.Stage;
 public class BenchmarkModel {
 
     private final BenchmarkController controller;
-    private final RBMStack rbmStack;
 
     private final LinkedList<RBMSettingsController> rbmSettingsList;
     private ImageManager imageManager = null;
@@ -48,21 +48,18 @@ public class BenchmarkModel {
 
     }
 
-    /**
-     * @return the rbmStack
-     */
-    public RBMStack getRbmStack() {
-        return rbmStack;
-    }
-
     public boolean add(RBMSettingsController rbmSettings) {
-        rbmStack.add(rbmSettings.getModel().getRBM());
-
-        if (rbmSettingsList.size() == 0) {
-            if (this.rbmSettingsList.add(rbmSettings)) {
+        
+        if(rbmSettingsList.size() == 0) {
+            if( this.rbmSettingsList.add(rbmSettings)) {
                 setRBMImageSet();
                 return true;
             }
+        } else {
+        	RBMSettingsController lastController = this.rbmSettingsList.getLast();
+        	int lastOutputSize = lastController.getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
+        	RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
+        	mainModel.setInputSize(lastOutputSize);
         }
 
         return this.rbmSettingsList.add(rbmSettings);
@@ -108,9 +105,13 @@ public class BenchmarkModel {
     }
 
     private void setRBMImageSet() {
-        if (this.getRbmSettingsList().size() > 0 && imageManager != null) {
+        if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+        	int edgeSize = 28;
             // TODO: checkbox for shuffled input data
-            this.getRbmSettingsList().getFirst().getModel().setData(imageManager.getImages(false));
+        	RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
+        	RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
+        	firstMainModel.setInputSize(edgeSize * edgeSize);
+            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), edgeSize));
         }
     }
 

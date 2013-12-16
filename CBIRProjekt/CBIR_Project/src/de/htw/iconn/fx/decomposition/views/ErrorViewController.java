@@ -5,16 +5,19 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.IFXController;
 import de.htw.iconn.fx.decomposition.IVisualizeObserver;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 import org.jblas.util.Random;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -26,7 +29,7 @@ import javafx.scene.layout.AnchorPane;
  * FXML Controller class
  * @author turbodiesel
  */
-public class ErrorViewController extends AController implements IVisualizeObserver {
+public class ErrorViewController extends AController implements Initializable, IFXController, IVisualizeObserver {
 
 	private ArrayList<Double> errors = new ArrayList<Double>();
 
@@ -36,11 +39,12 @@ public class ErrorViewController extends AController implements IVisualizeObserv
 	private NumberAxis xaxis = new NumberAxis();
 	@FXML
 	private NumberAxis yaxis = new NumberAxis();
-	private ErrorViewController model;      
 	@FXML
 	private AnchorPane view;
 	@FXML
 	private LineChart.Series<Number,Number> series;
+	
+	private ErrorViewModel model;
 
 	@Override
 	public Node getView() {
@@ -73,7 +77,7 @@ public class ErrorViewController extends AController implements IVisualizeObserv
 
 	private void buildGraph() {
 
-//		addDummyDataToErrorList();
+		addDummyDataToErrorList();
 
 
 		chart_line.setId("Error Chart");
@@ -94,29 +98,28 @@ public class ErrorViewController extends AController implements IVisualizeObserv
 		chart_line.getData().add(series);
 		//		System.out.println("build graph - size of list" + errors.get(13));
 
-		//		return scatter_chart;
 	}
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		buildGraph();
-	}
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        model = new ErrorViewModel(this);
+        this.update();
+        buildGraph();
+    }
 
-	public ErrorViewController getTrainingViewController(){
-		return this.model;
-	}
 
 	@Override
 	public void update(RBMInfoPackage pack) {
-		// TODO Auto-generated method stub
+		this.update(pack.getError());
+		this.buildGraph();
 		
-	} 
+	}
+	
+	public void update() {
+		
+	}
 
-    @Override
-    public void update() {
-        
-    }
+
 
 }
 

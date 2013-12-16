@@ -1,6 +1,5 @@
 package de.htw.iconn.fx.decomposition.views;
 
-import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.Pic;
 import java.awt.image.BufferedImage;
@@ -20,24 +19,19 @@ public class DaydreamModel {
     private final DaydreamController controller;
 
     Random random = new Random();
-
-    RBMStack rbmStack;
+	
     Pic pic;
     Image daydreamImage;
 
     private boolean useHiddenStates;
-    private boolean useVisibleStates;
-
-    public DaydreamModel(DaydreamController controller) {
-        this.useHiddenStates = false;
-        this.useVisibleStates = false;
-        this.controller = controller;
-    }
-
-    public void setRBMStack(RBMStack rbmStack) {
-        this.rbmStack = rbmStack;
-    }
-
+	private boolean useVisibleStates;
+    
+	public DaydreamModel(DaydreamController controller) {
+            this.useHiddenStates = false;
+            this.useVisibleStates = false;
+            this.controller = controller;
+	}
+    
     public Image loadImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("CBIR_Project/images"));
@@ -154,16 +148,11 @@ public class DaydreamModel {
             fvFloat[i] = pixel / 255.0f;
         }
 
-        double[][] useData = new double[1][pixels.length];
-        for (int i = 0; i < pixels.length; i++) {
-            useData[0][i] = fvFloat[i];
-        }
-
-        // ermittle die hidden Neurons
-        double[][] hidden_data = this.rbmStack.run_visible(useData, useHiddenStates);
-        return hidden_data[0];
-    }
-
+		// ermittle die hidden Neurons
+		double[][] hidden_data = null;
+		return hidden_data[0];
+	}
+	
     public double[] getVisible(double[] hiddenData, boolean useVisibleStates) {
 
         double[][] useData = new double[1][hiddenData.length];
@@ -172,7 +161,7 @@ public class DaydreamModel {
         }
 
         // ermittle die visible Neurons
-        double[][] visible_data = this.rbmStack.run_hidden(useData, useVisibleStates);
+        double[][] visible_data = null;
 
         return visible_data[0];
     }

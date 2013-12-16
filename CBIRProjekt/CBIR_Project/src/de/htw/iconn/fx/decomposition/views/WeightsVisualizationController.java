@@ -7,7 +7,7 @@ package de.htw.iconn.fx.decomposition.views;
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.IVisualizeObserver;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
-import de.htw.iconn.fx.decomposition.rbm.ARBMFeature;
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,7 +50,7 @@ public class WeightsVisualizationController extends AController implements IVisu
        this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
     }
     
-    public void setRBMFeature(ARBMFeature rbmFeature) {
+    public void setRBMFeature(ARBMAdapter rbmFeature) {
     	this.model.setRbmFeature(rbmFeature);
     }
     public void setWeights(double[][] w) {

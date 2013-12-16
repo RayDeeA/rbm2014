@@ -1,7 +1,8 @@
 package de.htw.iconn.rbm.enhancements;
 
-import de.htw.iconn.fx.decomposition.logistic.ILogistic;
-import de.htw.iconn.fx.decomposition.rbm.IRBM;
+import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.functions.ILogistic;
+
 import java.util.LinkedList;
 
 
