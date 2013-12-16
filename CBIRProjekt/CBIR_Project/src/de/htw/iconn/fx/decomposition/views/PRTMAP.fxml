@@ -18,5 +18,6 @@
         <NumberAxis autoRanging="false" label="Precision" side="LEFT" tickUnit="0.1" upperBound="1.1" />
       </yAxis>
     </LineChart>
+    <Button fx:id="btn_clear" layoutX="6.0" layoutY="367.0" mnemonicParsing="false" onAction="#btn_clearAction" text="Clear Table" />
   </children>
 </AnchorPane>
