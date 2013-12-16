@@ -6,11 +6,11 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.ErrorViewController;
-import de.htw.iconn.fx.SimpleRBMController;
-import de.htw.iconn.fx.WeightsVisualizationController;
+
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+import de.htw.iconn.fx.decomposition.views.ErrorViewController;
+import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,107 +35,105 @@ import javafx.stage.Stage;
  * @author moritz
  */
 public class RBMSettingsVisualizationsController extends AController {
-    @FXML
-    private AnchorPane view;
-    @FXML
-    private CheckBox cbx_showWeights;
-    @FXML
-    private CheckBox cbx_showErrorGraph;
-    
-    private RBMSettingsVisualizationsModel model;
-    private ErrorViewController errorViewController;
-    private WeightsVisualizationController weightsViewController;
-    @FXML
-    private TextField txt_weightsInterval;
-    @FXML
-    private TextField txt_errorInterval;
+	@FXML
+	private AnchorPane view;
+	@FXML
+	private CheckBox cbx_showWeights;
+	@FXML
+	private CheckBox cbx_showErrorGraph;
+
+	private RBMSettingsVisualizationsModel model;
+	private ErrorViewController errorViewController;
+	private WeightsVisualizationController weightsViewController;
+	@FXML
+	private TextField txt_weightsInterval;
+	@FXML
+	private TextField txt_errorInterval;
 	private Stage errorStage;
 
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsVisualizationsModel(this);
-        this.update();
-    }    
+	/**
+	 * Initializes the controller class.
+	 * @param url
+	 * @param rb
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		this.model = new RBMSettingsVisualizationsModel(this);
+		this.update();
+	}    
 
-    @FXML
-    private void cbx_showWeightsAction(ActionEvent event) {
-        this.model.setShowWeights(cbx_showWeights.isSelected()); 
-        
-    }
-    
-    @FXML
-    private void cbx_showErrorGraphAction(ActionEvent event) {
-        this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
-        
-        initErrorView();
-        
-		if (this.cbx_showErrorGraph.isSelected()) {
-			//Set DCT
-			
-//			this.errorViewController.setDimensions(this.model.getInputSize(), this.model.getOutputSize());
+	@FXML
+	private void cbx_showWeightsAction(ActionEvent event) {
+		this.model.setShowWeights(cbx_showWeights.isSelected()); 
+
+	}
+
+	@FXML
+	private void cbx_showErrorGraphAction(ActionEvent event) {
+		this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
+
+
+		if (this.model.isShowErrorGraph()) {
+			initErrorView();
+
 			this.errorViewController.setDisplayDimensions();
-		}
 //			this.updateError();
-//		} else {
-//			if (this.errorStage != null) {
-//				this.errorStage.close();
-//			}
-//		}
-//		this.updateView();
-    }
 
-    @Override
-    public Node getView() {
-        return view;
-    }
-    
-    public RBMSettingsVisualizationsModel getModel(){
-        return this.model;
-       
-    }
+		} else {
+			if (this.errorStage != null) {
+				this.errorStage.close();
+			}
+		}
+		this.update();
+	}
 
-    @Override
-    public void update() {
-        this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
-        this.cbx_showWeights.setSelected(this.model.isShowWeights());
-        this.txt_weightsInterval.setText(new Integer(this.model.getWeightsInterval()).toString());
-        this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
-    }
+	@Override
+	public Node getView() {
+		return view;
+	}
 
-    public void update(RBMInfoPackage pack) {
-    
-    	if(this.cbx_showErrorGraph.isSelected()){
-            this.errorViewController.update(pack.getError());
-        }
-    	
-    }
+	public RBMSettingsVisualizationsModel getModel(){
+		return this.model;
 
-    @FXML
-    private void txt_weightsIntervalKey(KeyEvent event) {
-        try{
-            this.model.setWeightsInterval(Integer.parseInt(this.txt_weightsInterval.getText()));
-        }catch(NumberFormatException e){
-            
-        }
-    }
+	}
 
-    @FXML
-    private void txt_errorIntervalKey(KeyEvent event) {
-        try{
-            this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
-        }catch(NumberFormatException e){
-            
-        }
-    }
-    
+	@Override
+	public void update() {
+		this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
+		this.cbx_showWeights.setSelected(this.model.isShowWeights());
+		this.txt_weightsInterval.setText(new Integer(this.model.getWeightsInterval()).toString());
+		this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
+	}
+
+	public void update(RBMInfoPackage pack) {
+
+		if(this.cbx_showErrorGraph.isSelected()){
+			this.errorViewController.update(pack.getError());
+		}
+
+	}
+
+	@FXML
+	private void txt_weightsIntervalKey(KeyEvent event) {
+		try{
+			this.model.setWeightsInterval(Integer.parseInt(this.txt_weightsInterval.getText()));
+		}catch(NumberFormatException e){
+
+		}
+	}
+
+	@FXML
+	private void txt_errorIntervalKey(KeyEvent event) {
+		try{
+			this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
+		}catch(NumberFormatException e){
+
+		}
+	}
+
 	private void initErrorView() {
 		try {
-			this.errorViewController = (ErrorViewController) loadController("ErrorView.fxml");
+			this.errorViewController = (ErrorViewController) loadController("../views/ErrorView.fxml");
 			Parent root = (Parent) this.errorViewController.getView();
 			Scene scene = new Scene(root, 600, 400);
 
@@ -147,11 +145,11 @@ public class RBMSettingsVisualizationsController extends AController {
 			this.errorStage.setWidth(600.0);
 			this.errorStage.show();
 			this.model.setShowErrorGraph(true);
-			this.update();
+//			this.update();
 		} catch (IOException ex) {
-			Logger.getLogger(SimpleRBMController.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}
-    
+
 }
