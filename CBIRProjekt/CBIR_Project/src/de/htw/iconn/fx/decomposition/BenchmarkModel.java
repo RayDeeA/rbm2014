@@ -46,6 +46,11 @@ public class BenchmarkModel {
                 setRBMImageSet();
                 return true;
             }
+        } else {
+        	RBMSettingsController lastController = this.rbmSettingsList.getLast();
+        	int lastOutputSize = lastController.getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
+        	RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
+        	mainModel.setInputSize(lastOutputSize);
         }
         
         return this.rbmSettingsList.add(rbmSettings);
@@ -84,11 +89,12 @@ public class BenchmarkModel {
 
     private void setRBMImageSet() {
         if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+        	int edgeSize = 28;
             // TODO: checkbox for shuffled input data
         	RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
         	RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
-        	int inputSize = firstMainModel.getInputSize();
-            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), inputSize));
+        	firstMainModel.setInputSize(edgeSize * edgeSize);
+            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), edgeSize));
         }
     }
 

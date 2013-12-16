@@ -6,12 +6,15 @@
 
 package de.htw.iconn.fx.decomposition;
 
+import java.util.LinkedList;
+
 import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
 import de.htw.iconn.fx.decomposition.enhancement.TrainingVisualizer;
 import de.htw.iconn.fx.decomposition.enhancement.XMLEndTrainingLogger;
 import de.htw.iconn.fx.decomposition.enhancement.XMLTrainingLogger;
 import de.htw.iconn.fx.decomposition.logistic.ILogistic;
 import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.rbm.RBMAdapterGeneral;
 import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsLearningRateController;
@@ -33,25 +36,50 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
  */
 public class RBMTrainer {
 	
+	 public void trainAllRBMs(BenchmarkController benchmarkController){
+		 LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
+		 RBMSettingsController lastController = null;
+		 
+		 for(RBMSettingsController c : rbmSettingsList) {
+			 if(lastController != null) {
+		
+				 IRBM lastRbm = initializeRBM(lastController);
+				 RBMSettingsModel lastModel = lastController.getModel(); 
+				 RBMSettingsWeightsModel lastWeightsModel = lastModel.getController(RBMSettingsWeightsController.class).getModel();
+				 
+				 double[][] data = lastRbm.getHidden(lastModel.getData(), lastWeightsModel.isBinarizeHidden());
+				 
+				 c.getModel().setData(data);
+			 }
+			 this.trainSingleRBM(c);
+			 lastController = c;
+		 }
+	 }
+	 
+	 private IRBM initializeRBM(RBMSettingsController controller) {
+         RBMSettingsModel model = controller.getModel();   
+         RBMSettingsMainModel mainModel = model.getController(RBMSettingsMainController.class).getModel();
+         RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
+         RBMSettingsLearningRateModel learningRateModel = model.getController(RBMSettingsLearningRateController.class).getModel();
+         
+         int inputSize = mainModel.getInputSize();
+         int outputSize = mainModel.getOutputSize();
+         ILogistic logisticFunction = mainModel.getSelectedLogisticFunctionImplementation();
+         double learningRate = learningRateModel.getConstantLearningRate();
+         int seed = weightsModel.getSeed();
+         boolean useSeed = weightsModel.isUseSeed();
+         double[][] weights = weightsModel.getWeights();
+         
+         return new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights); 
+	 }
+	
      public void trainSingleRBM(RBMSettingsController controller){
-            RBMSettingsModel model = controller.getModel();   
-            RBMSettingsMainModel mainModel = model.getController(RBMSettingsMainController.class).getModel();
-            RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
-            RBMSettingsLearningRateModel learningRateModel = model.getController(RBMSettingsLearningRateController.class).getModel();
-            RBMSettingsLoggerModel loggerModel = model.getController(RBMSettingsLoggerController.class).getModel();
-            RBMSettingsStoppingConditionModel stoppingConditionModel = model.getController(RBMSettingsStoppingConditionController.class).getModel();
-            RBMSettingsVisualizationsModel visualizationsModel = model.getController(RBMSettingsVisualizationsController.class).getModel();
-            
-            int inputSize = mainModel.getInputSize();
-            inputSize *= inputSize;
-            int outputSize = mainModel.getOutputSize();
-            ILogistic logisticFunction = mainModel.getSelectedLogisticFunctionImplementation();
-            double learningRate = learningRateModel.getConstantLearningRate();
-            int seed = weightsModel.getSeed();
-            boolean useSeed = weightsModel.isUseSeed();
-            double[][] weights = weightsModel.getWeights();
-            
-            RBMJBlas rbm = new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights); 
+    	 RBMSettingsModel model = controller.getModel();   
+         RBMSettingsWeightsModel weightsModel = model.getController(RBMSettingsWeightsController.class).getModel();
+         RBMSettingsLoggerModel loggerModel = model.getController(RBMSettingsLoggerController.class).getModel();
+         RBMSettingsStoppingConditionModel stoppingConditionModel = model.getController(RBMSettingsStoppingConditionController.class).getModel();
+         RBMSettingsVisualizationsModel visualizationsModel = model.getController(RBMSettingsVisualizationsController.class).getModel();
+    	 	IRBM rbm = this.initializeRBM(controller);
             
             RBMEnhancer rbmEnhancer = new RBMEnhancer(rbm);
 
@@ -80,7 +108,5 @@ public class RBMTrainer {
         
             weightsModel.setWeights(adapter.getWeights());
      }
-     
-     //public void train()
      
 }

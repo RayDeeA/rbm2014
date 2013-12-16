@@ -49,6 +49,8 @@ public class BenchmarkController extends AController {
     @FXML
     private DaydreamController daydreamController;
     
+    private RBMTrainer rbmTrainer;
+    
     private Stage daydreamStage;
     /**
      * Initializes the controller class.
@@ -57,8 +59,9 @@ public class BenchmarkController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new BenchmarkModel(this);
+    	this.model = new BenchmarkModel(this);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
+        this.rbmTrainer = new RBMTrainer();
         this.update();
     }    
 
@@ -127,7 +130,13 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void btn_openRunHiddenAction(ActionEvent event) {
-    	
+    	//TODO
+    	throw new UnsupportedOperationException();
+    }
+    
+    @FXML
+    private void btn_trainAllAction(ActionEvent event) {
+    	this.rbmTrainer.trainAllRBMs(this);
     }
 
     @Override

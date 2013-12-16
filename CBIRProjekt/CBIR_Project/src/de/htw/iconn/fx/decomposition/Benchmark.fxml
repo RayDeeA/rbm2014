@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="585.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.BenchmarkController">
+<AnchorPane id="AnchorPane" fx:id="view" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="585.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.BenchmarkController">
   <children>
-    <TitledPane animated="false" layoutX="0.0" layoutY="1.0" prefHeight="-1.0" prefWidth="585.0" text="Benchmark">
+    <TitledPane animated="false" layoutY="1.0" prefHeight="-1.0" prefWidth="-1.0" text="Benchmark" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <content>
         <GridPane disable="false" gridLinesVisible="false" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
           <children>
@@ -34,6 +34,7 @@
             <Label id="lbl_imageSet" fx:id="lbl_imageSetSelected" prefWidth="280.0" text="" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
             <Button id="btn_daydream" fx:id="btn_openDaydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_openDaydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Button fx:id="btn_openRunHidden" mnemonicParsing="false" onAction="#btn_openRunHiddenAction" prefWidth="135.0" text="Run Hidden" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="btn_trainAll" mnemonicParsing="false" onAction="#btn_trainAllAction" prefWidth="135.0" text="Train All" GridPane.columnIndex="0" GridPane.rowIndex="4" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
