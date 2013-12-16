@@ -1,16 +1,17 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
-import de.htw.iconn.fx.decomposition.IVisualizeObserver;
-import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Gregor Altastädt
  */
 public class PRTMAPController extends AController implements EventHandler {
+
     @FXML
     private AnchorPane view;
 
@@ -29,9 +31,17 @@ public class PRTMAPController extends AController implements EventHandler {
     private ImageView imgView;
 
     private PRTMAPModel model;
+    private final Stage prtmapStage = new Stage();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        Parent root = (Parent) this.getView();
+        Scene scene = new Scene(root, 600, 400);
+        prtmapStage.setTitle("Map Viewer");
+        prtmapStage.setScene(scene);
+        prtmapStage.setOnCloseRequest(this);
+
         this.model = new PRTMAPModel(this);
         this.update();
     }
@@ -49,12 +59,15 @@ public class PRTMAPController extends AController implements EventHandler {
         return this.model;
     }
 
-
     @Override
     public void handle(Event t) {
     }
 
-    public void toggleVisibility() {
-        
+    public void hide() {
+        prtmapStage.hide();
+    }
+
+    public void show() {
+        prtmapStage.show();
     }
 }

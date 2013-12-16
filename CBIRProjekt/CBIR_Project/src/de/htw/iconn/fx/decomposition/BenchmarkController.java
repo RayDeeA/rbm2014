@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,10 +54,7 @@ public class BenchmarkController extends AController {
 
     private DaydreamController daydreamController;
 
-    private PRTMAPController prtmapController;
-
     private Stage daydreamStage;
-    private Stage prtmapStage;
     @FXML
     private Button btn_openDaydream;
     @FXML
@@ -71,7 +70,14 @@ public class BenchmarkController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new BenchmarkModel(this);
+        PRTMAPController tmpController = null;
+        try {
+            tmpController = (PRTMAPController) new PRTMAPController().loadController("PRTMAP.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        model = new BenchmarkModel(this, tmpController);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
     }
@@ -116,6 +122,8 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
+        this.model.getPRTMAPController().show();
+        // make test        
     }
 
     @FXML
@@ -182,26 +190,4 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
-    @FXML
-    private void toggleBtn_PRTMAPAction(ActionEvent event) {
-
-        this.model.setVisibilityPRTMAPViewer(this.toggleBtn_PRTMAP.isSelected());
-        if (this.model.getPRTMAPController() != null) {
-            this.model.getPRTMAPController().toggleVisibility();
-        } else {
-            try {
-                this.model.setPRTMAPController();
-                this.prtmapController = (PRTMAPController) this.model.getPRTMAPController().loadController("PRTMAP.fxml");
-
-                Parent root = (Parent) this.prtmapController.getView();
-                Scene scene = new Scene(root, 600, 400);
-                this.prtmapStage = new Stage();
-                this.prtmapStage.setTitle("Map Viewer");
-                this.prtmapStage.setScene(scene);
-                prtmapStage.setOnCloseRequest(prtmapController);
-                this.prtmapStage.show();
-            } catch (IOException ex) {
-            }
-        }
-    }
 }

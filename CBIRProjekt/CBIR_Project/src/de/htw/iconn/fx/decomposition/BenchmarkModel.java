@@ -9,7 +9,11 @@ import de.htw.iconn.fx.decomposition.rbm.RBMStack;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.PRTMAPController;
+import java.io.IOException;
 import java.util.LinkedList;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  *
@@ -23,7 +27,7 @@ public class BenchmarkModel {
     private final LinkedList<RBMSettingsController> rbmSettingsList;
     private ImageManager imageManager = null;
     private ImageViewer imageViewer;
-    private PRTMAPController prtmapController;
+    private final PRTMAPController prtmapController;
     private boolean showImageViewer = false;
     private int selectedMAPTest = 0;
     private boolean isPRTMAPViewerVisible;
@@ -36,10 +40,12 @@ public class BenchmarkModel {
         this.selectedMAPTest = selectedMAPTest;
     }
 
-    public BenchmarkModel(BenchmarkController controller) {
+    public BenchmarkModel(BenchmarkController controller, PRTMAPController prtmapController) {
         this.rbmStack = new RBMStack();
         this.rbmSettingsList = new LinkedList<>();
         this.controller = controller;
+        this.prtmapController = prtmapController;
+
     }
 
     /**
@@ -71,10 +77,6 @@ public class BenchmarkModel {
         this.imageManager = imageManager;
         this.setRBMImageSet();
         this.imageViewer = new ImageViewer(imageManager);
-    }
-
-    public void setPRTMAPController() {
-        this.prtmapController = new PRTMAPController();
     }
 
     public boolean isShowImageViewer() {
