@@ -13,17 +13,26 @@ import de.htw.iconn.fx.decomposition.enhancement.IRBMEndTrainingEnhancement;
 import de.htw.iconn.fx.decomposition.enhancement.IRBMTrainingEnhancement;
 import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+import de.htw.iconn.fx.decomposition.enhancement.XMLWeightLogger;
+import de.htw.iconn.fx.decomposition.enhancement.XMLWeightLoggerOld;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author Cristea
  */
 
-public class RBMEnhanceTest extends TestCase{
+public class XMLWeightLoggerTest extends TestCase{
 
   /* public RBMEnhanceTest(String testName) {
         super(testName);
@@ -42,8 +51,16 @@ public class RBMEnhanceTest extends TestCase{
     double[][] trainingData = new double[][]
         {{ 0, 0, 0},{1, 0, 1},{ 1, 1, 1}};
     double[][] weights;
+    double[][] oldData;
+    double[][] newData;
     int trainingEpochs = 0;
     
+    XMLWeightLogger xmlLogger = new XMLWeightLogger();
+    XMLWeightLoggerOld xmlLoggerModified = new XMLWeightLoggerOld();
+    XMLWeightsLoader xmlLoader = new XMLWeightsLoader();
+    
+    RBMInfoPackage infoOld;
+ 
     RBMSettingsController rbmController;
     
     
@@ -79,19 +96,35 @@ public class RBMEnhanceTest extends TestCase{
         @Override
         public void action(RBMInfoPackage info) {       
 
-            //Compare Epochs
-            System.out.println("* Epochs");
-            assertEquals(epochs, info.getEpochs()); 
-            //Compare Error
-            System.out.println("* Error"); 
-            //assertEquals(errorOrigin, info.getError());
-            //Compare Weights
-            System.out.println("* Weights"); 
-            Assert.assertArrayEquals(weights, info.getWeights()); 
+             try {
+                xmlLogger.singleWeights(info);
+                xmlLoggerModified.singleWeights(info);
+                
+               File fileOld;
+               File fileNew;
+               
+               fileOld = new File("/Users/Cristea/NetBeansProjects/iconn_v3/virrbm/CBIRProjekt/RBMLogs/XMLSteps/Old.xml");
+               fileNew = new File("/Users/Cristea/NetBeansProjects/iconn_v3/virrbm/CBIRProjekt/RBMLogs/XMLSteps/New.xml");
+                
+               oldData = xmlLoader.loadWeightsFromXML(fileOld);
+               newData = xmlLoader.loadWeightsFromXML(fileNew);
+               
+                Assert.assertArrayEquals(newData, oldData);
+                
+                
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(XMLWeightLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(XMLWeightLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SAXException ex) {
+                Logger.getLogger(XMLWeightLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TransformerException ex) {
+                Logger.getLogger(XMLWeightLoggerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     };
     
-    public void testFunctionTrainingEnhancement(){
+    /*public void testFunctionTrainingEnhancement(){
        System.out.println("* TrainingEnhancement");
    
        IRBM jblasRBM = new RBMJBlas(numVisible, numHidden, learningRate, new DefaultLogisticMatrixFunction(), false, 0, null);
@@ -108,7 +141,7 @@ public class RBMEnhanceTest extends TestCase{
        enhanceJblas.train(trainingData, epochs, true, true);
        
         //assertEquals(e1, e2, delta);
-    }
+    }*/
     
     public void testFunctionEndTrainingEnhancement(){
        System.out.println("\n * EndTrainingEnhancement");
