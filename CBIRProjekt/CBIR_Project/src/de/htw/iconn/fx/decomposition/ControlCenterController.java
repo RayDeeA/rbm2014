@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx.decomposition;
 
 import java.io.IOException;
@@ -20,53 +19,53 @@ import javafx.scene.layout.VBox;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-
-
 /**
  * FXML Controller class
  *
  * @author christoph
  */
-public class ControlCenterController extends AController  {
+public class ControlCenterController extends AController {
+
     @FXML
     private MenuItem mnu_newRbm;
     @FXML
     private AnchorPane view;
     @FXML
     private VBox vbox;
-        
+
     private BenchmarkController benchmarkController;
     @FXML
     private MenuItem mnu_saveConfiguration;
     @FXML
     private MenuItem mnu_loadConfiguration;
-    
+
     private ConfigurationSaver configurationSaver;
-    
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.configurationSaver = new ConfigurationSaver();
-        
+
         try {
-            benchmarkController =  (BenchmarkController)loadController("Benchmark.fxml");
-            
+            benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
+
             vbox.getChildren().add(benchmarkController.getView());
-            
+
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void mnu_newRbmAction(ActionEvent event) {
         try {
-            
-            RBMSettingsController controller = (RBMSettingsController)loadController("RBMSettings.fxml"); 
+
+            RBMSettingsController controller = (RBMSettingsController) loadController("RBMSettings.fxml");
             benchmarkController.getModel().add(controller);
             vbox.getChildren().add(controller.getView());
         } catch (IOException ex) {
@@ -95,6 +94,6 @@ public class ControlCenterController extends AController  {
     }
 
     public void update() {
-        
+
     }
 }

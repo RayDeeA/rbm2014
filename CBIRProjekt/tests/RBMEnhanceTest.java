@@ -5,13 +5,15 @@
  */
 
 import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
-import de.htw.iconn.fx.decomposition.rbm.RBMJBlas;
-import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.fx.decomposition.*;
+import de.htw.iconn.fx.decomposition.rbm.*;
 import de.htw.iconn.rbm.RBMOriginal;
-import de.htw.iconn.rbm.enhancements.IRBMEndTrainingEnhancement;
-import de.htw.iconn.rbm.enhancements.IRBMTrainingEnhancement;
-import de.htw.iconn.rbm.enhancements.RBMEnhancer;
-import de.htw.iconn.rbm.enhancements.RBMInfoPackage;
+import de.htw.iconn.fx.decomposition.*;
+import de.htw.iconn.fx.decomposition.enhancement.IRBMEndTrainingEnhancement;
+import de.htw.iconn.fx.decomposition.enhancement.IRBMTrainingEnhancement;
+import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import org.junit.Assert;
@@ -42,6 +44,9 @@ public class RBMEnhanceTest extends TestCase{
     double[][] weights;
     int trainingEpochs = 0;
     
+    RBMSettingsController rbmController;
+    
+    
      IRBMTrainingEnhancement trainingEnhancement = new IRBMTrainingEnhancement() {
         @Override
         public int getUpdateInterval() {
@@ -65,6 +70,8 @@ public class RBMEnhanceTest extends TestCase{
            assertEquals(weights, info.getWeights()); 
           
         }
+
+       
     };
      
     IRBMEndTrainingEnhancement endTrainingEnhancement = new IRBMEndTrainingEnhancement() {
@@ -87,7 +94,7 @@ public class RBMEnhanceTest extends TestCase{
     public void testFunctionTrainingEnhancement(){
        System.out.println("* TrainingEnhancement");
    
-       RBMJBlas jblasRBM = new RBMJBlas(numVisible, numHidden, learningRate, new DefaultLogisticMatrixFunction());
+       IRBM jblasRBM = new RBMJBlas(numVisible, numHidden, learningRate, new DefaultLogisticMatrixFunction(), false, 0, null);
        RBMOriginal origRBM = new RBMOriginal(numVisible,numHidden,learningRate);
        
        //Train Original RBM
@@ -105,8 +112,8 @@ public class RBMEnhanceTest extends TestCase{
     
     public void testFunctionEndTrainingEnhancement(){
        System.out.println("\n * EndTrainingEnhancement");
-   
-       RBMJBlas jblasRBM = new RBMJBlas(numVisible, numHidden, learningRate, new DefaultLogisticMatrixFunction());
+       
+       IRBM jblasRBM = new RBMJBlas(numVisible, numHidden, learningRate, new DefaultLogisticMatrixFunction(), false, 0, null);
        RBMOriginal origRBM = new RBMOriginal(numVisible,numHidden,learningRate);
        
        //Train Original RBM

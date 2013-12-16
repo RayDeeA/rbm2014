@@ -9,11 +9,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
+<AnchorPane id="AnchorPane" fx:id="view" minWidth="-1.0" prefHeight="-1.0" prefWidth="585.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
   <children>
-    <TitledPane id="ttl_panel_features" animated="false" layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0" text="RBM Settings">
+    <TitledPane id="ttl_panel_features" animated="false" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0" text="RBM Settings" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <content>
-        <VBox prefHeight="400.0" prefWidth="584.0">
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
           <children>
             <HBox prefHeight="-1.0" prefWidth="-1.0">
               <children>

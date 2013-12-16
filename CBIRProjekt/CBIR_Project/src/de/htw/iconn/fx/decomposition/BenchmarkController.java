@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.fx.decomposition;
 
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.views.DaydreamController;
+import de.htw.iconn.fx.decomposition.views.PRTMAPController;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,9 +25,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -35,32 +39,51 @@ import javafx.stage.Stage;
  * @author Moritz
  */
 public class BenchmarkController extends AController {
-    
+
     @FXML
     private AnchorPane view;
-    
-    private BenchmarkModel model; 
+
+    private BenchmarkModel model;
     @FXML
+
     private CheckBox cbx_imageViewer;
     @FXML
     private ComboBox<?> cmb_mAPTests;
     @FXML
     private Label lbl_imageSetSelected;
-    @FXML
+
     private DaydreamController daydreamController;
     
+    private RBMTrainer rbmTrainer;
+    
     private Stage daydreamStage;
+    @FXML
+    private Button btn_openDaydream;
+    @FXML
+    private Button btn_openRunHidden;
+    @FXML
+    private ToggleButton toggleBtn_PRTMAP;
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new BenchmarkModel(this);
+        PRTMAPController tmpController = null;
+        try {
+            tmpController = (PRTMAPController) loadController("views/PRTMAP.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        model = new BenchmarkModel(this, tmpController);
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
+        this.rbmTrainer = new RBMTrainer();
         this.update();
-    }    
+    }
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
@@ -70,22 +93,22 @@ public class BenchmarkController extends AController {
     private void loadImageSet(File file) {
         if (file != null) {
             this.model.setImageManager(new ImageManager(file));
-            
+
             this.initCmbImageManager();
-            if(this.model.isShowImageViewer()){
-                this.model.getImageViewer().show();         
+            if (this.model.isShowImageViewer()) {
+                this.model.getImageViewer().show();
             }
             this.updateView();
         }
     }
-    
+
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
         this.model.setShowImageViewer(this.cbx_imageViewer.isSelected());
-        if(this.model.getImageViewer() != null){
-            if(this.model.isShowImageViewer()){
+        if (this.model.getImageViewer() != null) {
+            if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
-            }else{
+            } else {
                 this.model.getImageViewer().close();
             }
         }
@@ -102,6 +125,8 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
+        this.model.getPRTMAPController().show();
+        // make test        
     }
 
     @FXML
@@ -124,10 +149,16 @@ public class BenchmarkController extends AController {
 
         }
     }
-    
+
     @FXML
     private void btn_openRunHiddenAction(ActionEvent event) {
-    	
+    	//TODO
+    	throw new UnsupportedOperationException();
+    }
+    
+    @FXML
+    private void btn_trainAllAction(ActionEvent event) {
+    	this.rbmTrainer.trainAllRBMs(this);
     }
 
     @Override
@@ -141,7 +172,7 @@ public class BenchmarkController extends AController {
     public BenchmarkModel getModel() {
         return model;
     }
-    
+
     private void initCmbImageManager() {
         List<String> mapTest;
         if (this.model.getImageManager() != null) {
@@ -154,6 +185,7 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.setItems(mapTestObs);
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
+
     private void updateView() {
         if (this.model.getImageManager() == null) {
             lbl_imageSetSelected.setText("no image set selected");
@@ -167,6 +199,4 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
-
-    
 }

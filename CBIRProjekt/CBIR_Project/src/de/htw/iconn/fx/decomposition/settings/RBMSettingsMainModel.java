@@ -54,7 +54,7 @@ public class RBMSettingsMainModel{
     private int selectedRbmImplementation = 0;
     private int selectedRbmFeature = 0;
     private int selectedLogisticFunction = 0;
-    private int inputSize = 28;
+    private int inputSize = 0;
     private int outputSize = 150;
 
     public int getSelectedRbmImplementation() {
@@ -91,6 +91,7 @@ public class RBMSettingsMainModel{
 
     public void setInputSize(int inputSize) {
         this.inputSize = inputSize;
+        this.controller.update();
     }
 
     public int getOutputSize() {
