@@ -12,11 +12,7 @@ public abstract class ARBMAdapter {
 		rbm.train(data, maxEpoche, binarizeHidden, binarizeVisible);
 	}
 
-	public double getError(double[][] data, boolean binarizeHidden, boolean binarizeVisible) {
-		return rbm.error(data, binarizeHidden, binarizeVisible);
-	}
-
-	public double getRawError(double[][] data, boolean binarizeHidden, boolean binarizeVisible) {
+	public double error(double[][] data, boolean binarizeHidden, boolean binarizeVisible) {
 		return rbm.error(data, binarizeHidden, binarizeVisible);
 	}
 

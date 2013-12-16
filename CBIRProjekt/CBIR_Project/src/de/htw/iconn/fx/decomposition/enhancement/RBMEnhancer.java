@@ -1,16 +1,17 @@
 package de.htw.iconn.fx.decomposition.enhancement;
 
+import de.htw.iconn.fx.decomposition.rbm.ARBMAdapter;
 import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import java.util.LinkedList;
 
 public class RBMEnhancer implements IRBM {
 	
-	private final IRBM rbm;
+	private final ARBMAdapter rbm;
 	private final LinkedList<IRBMTrainingEnhancement> traningEnhancements;
 	private final LinkedList<IRBMEndTrainingEnhancement> endEnhancements;
         private final RBMInfoPackage info;
 	
-	public RBMEnhancer(IRBM rbm) {
+	public RBMEnhancer(ARBMAdapter rbm) {
 		super();
 		this.rbm = rbm;
 		this.traningEnhancements = new LinkedList<>();
@@ -59,7 +60,7 @@ public class RBMEnhancer implements IRBM {
 		}
 	}
 
-        private void setInfo(IRBM rbm, double[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
+        private void setInfo(ARBMAdapter rbm, double[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
                 this.info.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
                 this.info.setWeights(rbm.getWeights());
                 this.info.setEpochs(epochs);
