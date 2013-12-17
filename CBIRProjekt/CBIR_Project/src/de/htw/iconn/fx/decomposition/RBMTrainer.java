@@ -211,9 +211,15 @@ public class RBMTrainer {
 			data2Dimensions[0][i] = data[i];
 		}
 		
+		double[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, isBinarizeHidden);
+		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, isBinarizeHidden);
 		
+		double visibleData[] = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			visibleData[i] = visibleData2Dimensions[0][i];
+		}
     	
-    	throw new NotImplementedException();
+    	return visibleData;
     }
     
     public double[] daydreamSingleRBM(RBMSettingsController controller, double[] data, boolean isBinarizeHidden, boolean isBinarizeVisible) {
