@@ -21,3 +21,5 @@ CBIRProjekt/CBIR_Project/images/*
 nbproject
 /build/
 /CBIR_Project
+build.xml
+manifest.mf
