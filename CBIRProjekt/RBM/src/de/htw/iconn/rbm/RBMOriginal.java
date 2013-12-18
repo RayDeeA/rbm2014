@@ -66,7 +66,7 @@ public class RBMOriginal implements IRBM {
 	                str += f.format(m[r][c]) + "\t";
 	            }
 
-	            System.out.println(str + "|");
+	            //System.out.println(str + "|");
 	            str = "|\t";
 	        }
 
@@ -136,7 +136,7 @@ public class RBMOriginal implements IRBM {
 	@Override
 	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		
-		Printer.printMatrix("weights", weights);
+		//Printer.printMatrix("weights", weights);
 		/*
 	    Train the machine.
 
@@ -160,17 +160,17 @@ public class RBMOriginal implements IRBM {
 	    	}
 	    }
 	    
-	    Printer.printMatrix("DataWithBias", dataWithBias);
+	    //Printer.printMatrix("DataWithBias", dataWithBias);
 	    
 	    for (int i = 0; i < max_epochs; i++) {
 	    	
 	    	// Clamp to the data and sample from the hidden units. 
 		    // (This is the "positive CD phase", aka the reality phase.)
 	    	double[][] posHiddenActivations = multiplicar(dataWithBias, this.weights);
-	    	Printer.printMatrix("posHiddenActivations", posHiddenActivations);
+	    	//Printer.printMatrix("posHiddenActivations", posHiddenActivations);
 	    	
 	    	double[][] posHiddenProbs = logistic(posHiddenActivations);
-	    	Printer.printMatrix("posHiddenProbs", posHiddenProbs);
+	    	//Printer.printMatrix("posHiddenProbs", posHiddenProbs);
 	    	/*
 	    	double[][] posHiddenStates = new double[rLength][cLength];
 		    for(int r = 0; r < rLength; r++) {
@@ -183,13 +183,13 @@ public class RBMOriginal implements IRBM {
 		    double[][] dataWithBiasT = transposeMatrix(dataWithBias);
 		    
 		    double[][] posAssociations = multiplicar(dataWithBiasT, posHiddenProbs);
-	    	Printer.printMatrix("posAssociations", posAssociations);
+	    	//Printer.printMatrix("posAssociations", posAssociations);
 		    
 		    
 		    double[][] weightsT = transposeMatrix(this.weights);
 		    
 		    double[][] negVisibleActivations = multiplicar(posHiddenProbs, weightsT);
-	    	Printer.printMatrix("negVisibleActivations", negVisibleActivations);
+	    	//Printer.printMatrix("negVisibleActivations", negVisibleActivations);
 		    
 		    double[][] negVisibleProbs = logistic(negVisibleActivations);
 		    
@@ -198,18 +198,18 @@ public class RBMOriginal implements IRBM {
 		    		if(c==0) negVisibleProbs[r][c] = 1;
 		    	}
 		    }
-	    	Printer.printMatrix("negVisibleProbs", negVisibleProbs);
+	    	//Printer.printMatrix("negVisibleProbs", negVisibleProbs);
 		    
 		    double[][] negHiddenActivations = multiplicar(negVisibleProbs, this.weights);
-	    	Printer.printMatrix("negHiddenActivations", negHiddenActivations);
+	    	//Printer.printMatrix("negHiddenActivations", negHiddenActivations);
 		    
 		    double[][] negHiddenProbs = logistic(negHiddenActivations);
-	    	Printer.printMatrix("negHiddenProbs", negHiddenProbs);
+	    	//Printer.printMatrix("negHiddenProbs", negHiddenProbs);
 		    
 		    double[][] negVisibleProbsT = transposeMatrix(negVisibleProbs);
 		    
 		    double[][] negAssociations = multiplicar(negVisibleProbsT, negHiddenProbs);
-	    	Printer.printMatrix("negAssociations", negAssociations);
+	     //	Printer.printMatrix("negAssociations", negAssociations);
 		    
 		    // Update weights
 		    for(int r = 0; r < weights.length; r++) {
@@ -218,8 +218,8 @@ public class RBMOriginal implements IRBM {
 //		    		weights[r][c] += (posAssociations[r][c] - negAssociations[r][c]);
 		    	}
 		    }
-	    	Printer.printMatrix("weights", weights);
-	    	System.out.println(numberOfExamples);
+	    	//Printer.printMatrix("weights", weights);
+	    	//System.out.println(numberOfExamples);
 		    
 		    error = 0;
 		    for(int r = 0; r < negVisibleProbs.length; r++) {
@@ -227,7 +227,7 @@ public class RBMOriginal implements IRBM {
 		    		error += (dataWithBias[r][c] - negVisibleProbs[r][c]) * (dataWithBias[r][c] - negVisibleProbs[r][c]);
 		    	}
 		    }
-		    System.out.println(error);
+		    //System.out.println(error);
 
 	    }
 
@@ -409,7 +409,7 @@ public class RBMOriginal implements IRBM {
 			rbm.printMatrix("Result", result1);
 			double[][] result2 = rbm.run_hidden(result1, true);
 			rbm.printMatrix("Check", result2);
-			System.out.println("");
+			//System.out.println("");
 		}
 		
 	}
