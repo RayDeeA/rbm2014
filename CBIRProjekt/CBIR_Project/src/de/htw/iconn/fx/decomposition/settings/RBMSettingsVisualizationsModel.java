@@ -27,6 +27,8 @@ public class RBMSettingsVisualizationsModel{
     private int errorInterval = 1000;
 	private int featuresInterval = 1000;
 
+	private boolean showFeatures;
+
     public int getWeightsInterval() {
         return weightsInterval;
     }
@@ -77,9 +79,19 @@ public class RBMSettingsVisualizationsModel{
         return this.weightsVisualizationController;  
     }
     
+	public void setShowFeatures(boolean showFeatures) {
+		this.showFeatures = showFeatures;
+	}
+	
+    public boolean isShowFeatures() {
+        return showFeatures;
+    }
+    
     public ErrorViewController getErrorViewController(){
         return this.errorViewController;     
     }
+
+
 
 
 }

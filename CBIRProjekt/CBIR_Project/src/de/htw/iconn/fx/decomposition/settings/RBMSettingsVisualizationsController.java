@@ -9,6 +9,8 @@ package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
 
@@ -47,6 +49,7 @@ public class RBMSettingsVisualizationsController extends AController {
 
 	private RBMSettingsVisualizationsModel model;
 	private ErrorViewController errorViewController;
+	private ImageViewer featuresView;
 	private WeightsVisualizationController weightsViewController;
 	@FXML
 	private TextField txt_weightsInterval;
@@ -94,8 +97,17 @@ public class RBMSettingsVisualizationsController extends AController {
 	
 	@FXML
 	private void cbx_showFeaturesAction(ActionEvent event) {
-		//TODO
-		throw new NotImplementedException();
+		this.model.setShowFeatures(cbx_showFeatures.isSelected());
+		
+		if (this.model.isShowFeatures()) {
+			initFeaturesView();
+
+		} else {
+			if (this.featuresView != null) {
+				this.featuresView.close();
+			}
+		}
+		this.update();
 	}
 
 	@Override
@@ -133,7 +145,7 @@ public class RBMSettingsVisualizationsController extends AController {
 		try{
 			this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
 		}catch(NumberFormatException e){
-
+			
 		}
 	}
 	
@@ -164,7 +176,15 @@ public class RBMSettingsVisualizationsController extends AController {
 		} catch (IOException ex) {
 			Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
 		}
+	}
+	
+	private void initFeaturesView() {
+		// TODO Auto-generated method stub
 
+	    this.featuresView = new ImageViewer(new ImageManager());
+	    this.featuresView.show();
+
+		
 	}
 
 }
