@@ -1,7 +1,9 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.PrecisionRecallTestResult;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -10,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -35,6 +39,9 @@ public class PRTMAPController extends AController implements EventHandler {
 
     @FXML
     private Button btn_clear;
+    
+    @FXML
+    LineChart<Number, Number> cha_PRTable;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,6 +56,30 @@ public class PRTMAPController extends AController implements EventHandler {
         this.update();
     }
 
+
+    public void addGraph(PrecisionRecallTestResult testAll) {
+        
+        float [][] pUeberR = testAll.getPrTable();
+        
+        XYChart.Series tmpGraph = new XYChart.Series();
+
+        // set title of graph
+        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", testAll.getName(), testAll.getmAP()));
+
+        int precisionIndex = 2, recallIndex = 3;
+        // transfer the float array data to the tmpGraph
+        for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
+
+            double x = pUeberR[recallIndex][i];
+            double y = pUeberR[precisionIndex][i];
+
+            tmpGraph.getData().add(new XYChart.Data(x, y));
+        }
+
+        // finally add and draw the tmpGraph to the PRChart
+        this.cha_PRTable.getData().add(tmpGraph);
+    }
+    
     @Override
     public void update() {
     }
@@ -76,6 +107,8 @@ public class PRTMAPController extends AController implements EventHandler {
 
     @FXML
     private void btn_clearAction(ActionEvent event) {
-        this.model.clearTable();
+        if (cha_PRTable != null) {
+            cha_PRTable.getData().clear();
+        }
     }
 }

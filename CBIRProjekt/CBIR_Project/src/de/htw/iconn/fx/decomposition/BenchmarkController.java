@@ -129,6 +129,7 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
+        this.model.startMAPTest();
         this.model.getPRTMAPController().show();
         //TODO: make test
         //this.model.getPRTMAPController().addGraph(this.model.startMAPTest());
@@ -165,7 +166,7 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
-    	this.rbmTrainer.trainAllRBMs(this);
+        this.getRbmTrainer().trainAllRBMs(this);
     }
 
     @Override
@@ -214,6 +215,13 @@ public class BenchmarkController extends AController {
         } catch(NumberFormatException e){
             
         }
+    }
+
+    /**
+     * @return the rbmTrainer
+     */
+    public RBMTrainer getRbmTrainer() {
+        return rbmTrainer;
     }
 
 }

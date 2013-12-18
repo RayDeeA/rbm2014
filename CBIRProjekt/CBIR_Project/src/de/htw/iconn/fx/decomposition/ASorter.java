@@ -3,7 +3,7 @@ package de.htw.iconn.fx.decomposition;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
-import de.htw.cbir.model.Pic;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 
 public abstract class ASorter {
 	
@@ -48,7 +48,6 @@ public abstract class ASorter {
 	}	
 	
 	protected abstract BufferedImage getFeatureImage(Pic image);
-	protected abstract double[] getFeatureVector(Pic image);
 	public abstract double getDistance(double[] fv1, double[] fv2); 
 	public abstract String getName();
 }
