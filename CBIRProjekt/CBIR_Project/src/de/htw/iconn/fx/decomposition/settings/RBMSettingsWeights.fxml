@@ -11,13 +11,13 @@
   <children>
     <GridPane hgap="10.0" layoutX="0.0" layoutY="0.0" vgap="10.0">
       <children>
-        <Button mnemonicParsing="false" onAction="#btn_setWeightsRandomAction" prefWidth="135.0" text="Random" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Button mnemonicParsing="false" onAction="#btn_loadWeightsAction" prefWidth="124.0" text="Load" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <Button mnemonicParsing="false" onAction="#btn_saveCurrentWeightsAction" prefWidth="105.0" text="Save Current" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-        <CheckBox fx:id="cbx_useSeed" mnemonicParsing="false" onAction="#cbx_useSeedAction" text="Seed" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="txt_seed" onKeyReleased="#txt_seedKey" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <CheckBox fx:id="cbx_useBinarizeHidden" mnemonicParsing="false" onAction="#cbx_useBinarizeHiddenAction" text="Binarize Hidden" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-        <CheckBox fx:id="cbx_useBinarizeVisible" mnemonicParsing="false" onAction="#cbx_useBinarizeVisibleAction" text="Binarize Visible" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_setWeightsRandomAction" prefWidth="-1.0" text="Random" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_loadWeightsAction" prefWidth="-1.0" text="Load" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_saveCurrentWeightsAction" prefWidth="-1.0" text="Save" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+        <CheckBox fx:id="cbx_useSeed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_useSeedAction" text="Seed" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="txt_seed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_seedKey" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+        <CheckBox fx:id="cbx_useBinarizeHidden" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_useBinarizeHiddenAction" text="Binarize Hidden" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <CheckBox fx:id="cbx_useBinarizeVisible" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_useBinarizeVisibleAction" text="Binarize Visible" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

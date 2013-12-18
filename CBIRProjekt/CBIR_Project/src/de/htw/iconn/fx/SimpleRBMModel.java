@@ -5,6 +5,7 @@
  */
 package de.htw.iconn.fx;
 
+import de.htw.iconn.fx.decomposition.SorterRBMFeatures;
 import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
 import de.htw.cbir.RBMFeaturePixel;
@@ -167,12 +168,12 @@ public class SimpleRBMModel {
     }
     
     public boolean generateSorter(){
-        if(this.rbmFeature != null && this.rbmTrained){
-            ForkJoinPool pool = new ForkJoinPool();
-            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, rbmFeature);
-            this.sorter.getFeatureVectors();
-            return true;
-        }
+//        if(this.rbmFeature != null && this.rbmTrained){
+//            ForkJoinPool pool = new ForkJoinPool();
+//            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, rbmFeature);
+//            this.sorter.getFeatureVectors();
+//            return true;
+//        }
         return false;
     }
     

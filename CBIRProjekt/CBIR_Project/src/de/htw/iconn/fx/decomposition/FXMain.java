@@ -26,7 +26,7 @@ public class FXMain extends Application{
     public void start(Stage stage) {
         try {       
             Parent root = FXMLLoader.load(getClass().getResource("ControlCenter.fxml"));         
-            Scene scene = new Scene(root, 600, 650); 
+            Scene scene = new Scene(root, 700, 700); 
             stage.setTitle("ICONN");
             stage.setScene(scene);
             stage.show();

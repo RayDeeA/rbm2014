@@ -1,18 +1,15 @@
-package de.htw.iconn.fx;
+package de.htw.iconn.fx.decomposition;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.ARBMFeature;
-import de.htw.cbir.model.Pic;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 
 public class SorterRBMFeatures extends ASorter {
 
-    private final ARBMFeature rbmWrapper;
-
-    public SorterRBMFeatures(Pic[] images, ForkJoinPool pool, ARBMFeature feature) {
+    public SorterRBMFeatures(Pic[] images, ForkJoinPool pool) {
         super(images, pool);
-        this.rbmWrapper = feature;
     }
 
 
@@ -37,11 +34,6 @@ public class SorterRBMFeatures extends ASorter {
 
         bi.setRGB(0, 0, width, height, pixels, 0, width);
         return bi;
-    }
-
-    @Override
-    protected double[] getFeatureVector(Pic image) {
-        return rbmWrapper.getHidden(image, false);
     }
 
     @Override

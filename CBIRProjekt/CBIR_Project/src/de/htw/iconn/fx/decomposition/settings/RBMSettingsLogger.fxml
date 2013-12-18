@@ -11,10 +11,10 @@
   <children>
     <GridPane hgap="10.0" layoutX="0.0" layoutY="0.0" vgap="10.0">
       <children>
-        <CheckBox fx:id="cbx_continuousLogger" mnemonicParsing="false" onAction="#cbx_continuousLoggerAction" text="Continuous" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <CheckBox fx:id="cbx_finalLogger" mnemonicParsing="false" onAction="#cbx_finalLoggerAction" text="Final" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label text="Interval" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <TextField id="txt_frequency" fx:id="txt_continuousInterval" onKeyReleased="#txt_continuousIntervalKey" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <CheckBox fx:id="cbx_continuousLogger" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_continuousLoggerAction" text="Continuous" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <CheckBox fx:id="cbx_finalLogger" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_finalLoggerAction" text="Final" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Interval" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <TextField id="txt_frequency" fx:id="txt_continuousInterval" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_continuousIntervalKey" prefWidth="-1.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

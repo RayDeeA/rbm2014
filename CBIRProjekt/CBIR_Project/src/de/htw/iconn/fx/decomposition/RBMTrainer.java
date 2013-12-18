@@ -27,6 +27,7 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsControlle
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
+import de.htw.iconn.fx.decomposition.views.ErrorViewModel;
 
 /**
  *
@@ -103,7 +104,9 @@ public class RBMTrainer {
         }
 
         if (visualizationsModel.isShowErrorGraph()) {
-            rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, visualizationsModel.getErrorViewController()));
+            ErrorViewModel errorViewModel = visualizationsModel.getErrorViewController().getModel();
+            errorViewModel.reset();
+            rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, errorViewModel));
         }
 
         rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
