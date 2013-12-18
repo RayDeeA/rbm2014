@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -45,12 +46,12 @@ public class RBMSettingsController extends AController {
     private Button btn_startRBMTraining;
     @FXML
     private Button btn_cancelRBMTraining;
-    @FXML
-    private Insets x1;
     
     private RBMSettingsModel model;
     
     private RBMTrainer trainer;
+    @FXML
+    private ScrollPane scp_settings;
 
     /**
      * Initializes the controller class.
@@ -108,12 +109,16 @@ public class RBMSettingsController extends AController {
                     }
                 }        
                 vbox_rbmSettingsTemplatePane.getChildren().clear();
-                vbox_rbmSettingsTemplatePane.getChildren().add(model.getControllers()[idx].getView());
+                AnchorPane settingsView = (AnchorPane)(model.getControllers()[idx].getView());
+                //settingsView.prefWidthProperty().bind(vbox_rbmSettingsTemplatePane.widthProperty());
+                vbox_rbmSettingsTemplatePane.getChildren().add(settingsView);    
             }
             
         });
         
         this.trainer = new RBMTrainer();
+        
+        //vbox_rbmSettingsTemplatePane.prefWidthProperty().bind(scp_settings.widthProperty().subtract(15));
         
         this.update();
     }    
