@@ -8,7 +8,6 @@ package de.htw.iconn.fx.decomposition;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
 import de.htw.iconn.fx.decomposition.enhancement.TrainingVisualizer;
 import de.htw.iconn.fx.decomposition.enhancement.XMLEndTrainingLogger;

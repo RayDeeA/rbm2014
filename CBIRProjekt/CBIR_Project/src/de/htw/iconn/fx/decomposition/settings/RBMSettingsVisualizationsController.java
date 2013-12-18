@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -41,6 +42,8 @@ public class RBMSettingsVisualizationsController extends AController {
 	private CheckBox cbx_showWeights;
 	@FXML
 	private CheckBox cbx_showErrorGraph;
+	@FXML
+	private CheckBox cbx_showFeatures;
 
 	private RBMSettingsVisualizationsModel model;
 	private ErrorViewController errorViewController;
@@ -49,6 +52,8 @@ public class RBMSettingsVisualizationsController extends AController {
 	private TextField txt_weightsInterval;
 	@FXML
 	private TextField txt_errorInterval;
+	@FXML
+	private TextField txt_featuresInterval;
 	private Stage errorStage;
 
 	/**
@@ -86,6 +91,12 @@ public class RBMSettingsVisualizationsController extends AController {
 		}
 		this.update();
 	}
+	
+	@FXML
+	private void cbx_showFeaturesAction(ActionEvent event) {
+		//TODO
+		throw new NotImplementedException();
+	}
 
 	@Override
 	public Node getView() {
@@ -103,6 +114,7 @@ public class RBMSettingsVisualizationsController extends AController {
 		this.cbx_showWeights.setSelected(this.model.isShowWeights());
 		this.txt_weightsInterval.setText(new Integer(this.model.getWeightsInterval()).toString());
 		this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
+		this.txt_featuresInterval.setText(new Integer(this.model.getFeaturesInterval()).toString());
 	}
 
 
@@ -120,6 +132,15 @@ public class RBMSettingsVisualizationsController extends AController {
 	private void txt_errorIntervalKey(KeyEvent event) {
 		try{
 			this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
+		}catch(NumberFormatException e){
+
+		}
+	}
+	
+	@FXML
+	private void txt_featuresIntervalKey(KeyEvent event) {
+		try{
+			this.model.setFeaturesInterval(Integer.parseInt(this.txt_featuresInterval.getText()));
 		}catch(NumberFormatException e){
 
 		}

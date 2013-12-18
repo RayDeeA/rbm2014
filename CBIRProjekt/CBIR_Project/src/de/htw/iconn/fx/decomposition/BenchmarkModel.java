@@ -10,11 +10,7 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainModel;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.PRTMAPController;
-import java.io.IOException;
 import java.util.LinkedList;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 /**
  *
