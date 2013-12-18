@@ -86,7 +86,6 @@ public class PrecisionRecallTester {
      */
     public PrecisionRecallTestResult test(String imageGroup) {
         Pic[] queryImages = imageManager.getImageInGroup(imageGroup).toArray(new Pic[0]);
-        //PrecisionRecallTable table = new PrecisionRecallTable(true, sorter.getName(), imageGroup);
 
         // starte die komplexe Analyse 
         start(queryImages.length);

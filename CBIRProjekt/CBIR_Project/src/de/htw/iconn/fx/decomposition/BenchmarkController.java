@@ -56,7 +56,6 @@ public class BenchmarkController extends AController {
     private DaydreamController daydreamController;
     private RBMTrainer rbmTrainer;
 
-    
     private Stage daydreamStage;
     @FXML
     private Button btn_openDaydream;
@@ -128,11 +127,11 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
-        
+
         // who can do it better?:
-        String name = new LinkedList<>(this.model.getImageManager().getGroupNames()).get(this.cmb_mAPTests.getSelectionModel().getSelectedIndex());
-        
-        
+        int index = this.cmb_mAPTests.getSelectionModel().getSelectedIndex();
+
+        String name = this.model.getImageManager().getNameFromIndex(index);
         this.model.startMAPTest(name);
         this.model.getPRTMAPController().show();
     }
@@ -142,7 +141,7 @@ public class BenchmarkController extends AController {
         try {
             this.daydreamController = (DaydreamController) new DaydreamController().loadController("DaydreamView.fxml");
             Parent root = (Parent) this.daydreamController.getView();
-            
+
             this.daydreamController.setBenchmarkController(this);
 
             Scene scene = new Scene(root, 600, 400);
@@ -162,10 +161,10 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_openRunHiddenAction(ActionEvent event) {
-    	//TODO
-    	throw new UnsupportedOperationException();
+        //TODO
+        throw new UnsupportedOperationException();
     }
-    
+
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
         this.getRbmTrainer().trainAllRBMs(this);
@@ -212,10 +211,10 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void txt_imageEdgeSizeKey(KeyEvent event) {
-        try{
+        try {
             this.model.setImageEdgeSize(Integer.parseInt(this.txt_imageEdgeSize.getText()));
-        } catch(NumberFormatException e){
-            
+        } catch (NumberFormatException e) {
+
         }
     }
 

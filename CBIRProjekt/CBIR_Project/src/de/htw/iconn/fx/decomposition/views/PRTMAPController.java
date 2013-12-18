@@ -63,7 +63,7 @@ public class PRTMAPController extends AController implements EventHandler {
         XYChart.Series tmpGraph = new XYChart.Series();
 
         // set title of graph
-        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", testAll.getName(), testAll.getmAP()));
+        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", testAll.getTestGroup(), testAll.getmAP()));
 
         int precisionIndex = 2, recallIndex = 3;
         // transfer the float array data to the tmpGraph
