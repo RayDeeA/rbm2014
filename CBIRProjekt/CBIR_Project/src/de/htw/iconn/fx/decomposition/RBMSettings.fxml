@@ -9,18 +9,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" minWidth="-1.0" prefHeight="-1.0" prefWidth="585.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
+<AnchorPane id="AnchorPane" fx:id="view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.fx.decomposition.RBMSettingsController">
   <children>
-    <TitledPane id="ttl_panel_features" animated="false" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0" text="RBM Settings" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <TitledPane id="ttl_panel_features" animated="false" layoutY="0.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" text="RBM Settings" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <content>
         <VBox prefHeight="-1.0" prefWidth="-1.0">
           <children>
             <HBox prefHeight="-1.0" prefWidth="-1.0">
               <children>
-                <TreeView fx:id="trv_rbmSettingsMenue" prefHeight="-1.0" prefWidth="-1.0" />
-                <ScrollPane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
+                <TreeView fx:id="trv_rbmSettingsMenue" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" />
+                <ScrollPane id="spn_settings" fx:id="scp_settings" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
                   <content>
-                    <VBox fx:id="vbox_rbmSettingsTemplatePane" prefHeight="-1.0" prefWidth="-1.0" />
+                    <VBox fx:id="vbox_rbmSettingsTemplatePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" />
                   </content>
                 </ScrollPane>
               </children>

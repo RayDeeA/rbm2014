@@ -54,7 +54,7 @@ public class ControlCenterController extends AController {
         try {
             benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
             AnchorPane benchmarkView = (AnchorPane)(benchmarkController.getView());       
-            benchmarkView.prefWidthProperty().bind(this.view.widthProperty());
+            benchmarkView.prefWidthProperty().bind(this.view.widthProperty().subtract(15));
             vbox.getChildren().add(benchmarkView);
 
         } catch (IOException ex) {
@@ -63,7 +63,7 @@ public class ControlCenterController extends AController {
         
         // standard innitializing
         //mnu_newRbmAction(null);
-        //mnu_newRbmAction(null);
+        mnu_newRbmAction(null);
     }
 
     @FXML
@@ -72,7 +72,7 @@ public class ControlCenterController extends AController {
 
             RBMSettingsController controller = (RBMSettingsController) loadController("RBMSettings.fxml");
             AnchorPane rbmSettingsView = (AnchorPane)(controller.getView());       
-            rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty());
+            rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty().subtract(15));
             benchmarkController.getModel().add(controller);
             vbox.getChildren().add(rbmSettingsView);
         } catch (IOException ex) {

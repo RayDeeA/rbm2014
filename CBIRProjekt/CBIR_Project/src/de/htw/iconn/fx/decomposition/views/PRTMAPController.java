@@ -59,15 +59,16 @@ public class PRTMAPController extends AController implements EventHandler {
 
     public void addGraph(PrecisionRecallTestResult testAll) {
         
-        float [][] pUeberR = testAll.getPrTable();
         
         XYChart.Series tmpGraph = new XYChart.Series();
 
         // set title of graph
-        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", testAll.getName(), testAll.getmAP()));
+        tmpGraph.setName(String.format(Locale.ENGLISH, "%s mAP = %6.3f", testAll.getTestGroup(), testAll.getmAP()));
 
         int precisionIndex = 2, recallIndex = 3;
         // transfer the float array data to the tmpGraph
+        
+        float [][] pUeberR = testAll.getPrTable();
         for (int i = 0; i < pUeberR[precisionIndex].length; i++) {
 
             double x = pUeberR[recallIndex][i];

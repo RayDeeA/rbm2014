@@ -5,7 +5,6 @@
  */
 package de.htw.iconn.fx;
 
-import de.htw.iconn.fx.decomposition.SorterRBMFeatures;
 import de.htw.cbir.RBMFeatureDCT;
 import de.htw.cbir.ImageManager;
 import de.htw.cbir.RBMFeaturePixel;
@@ -29,6 +28,7 @@ import java.util.concurrent.ForkJoinPool;
  * @author christoph
  */
 public class SimpleRBMModel {
+
     //combobox select options
     private final String[] rbmImplementations = {"RBMJBlas"};
     private final String[] rbmFeatures = {"PixelRBM", "DCTRBM"};
@@ -70,27 +70,25 @@ public class SimpleRBMModel {
     private boolean binarizeHiddenProbabilities;
     private boolean rbmTrained;
     private boolean rbmTraining;
-    
+
     //evaluated data
     private double mAP;
     private String mapTest;
     private float[][] prTable;
-    
+
     //class instances
     private ImageManager imageManager;
     private ASorter sorter;
     private ARBMFeature rbmFeature;
     private IRBM rbm;
     private Evaluation evaluation;
-    
 
     public SimpleRBMModel(boolean useRandomOrder, boolean showImageViewer,
             boolean useLogger, boolean showVisualization, int updateFrequency,
             int rbmImplementation, int rbmFeature, int logisticFunction,
             int inputSize, int outputSize, int stoppingCondition, int epochs,
             double error, double learningRate, boolean useMomentum, boolean useSeed,
-            int seed, boolean useBias, boolean binarizeVisibleProbabilities, boolean binarizeHiddenProbabilities, boolean rbmTrained, boolean rbmTraining)
-    {   
+            int seed, boolean useBias, boolean binarizeVisibleProbabilities, boolean binarizeHiddenProbabilities, boolean rbmTrained, boolean rbmTraining) {
         this.selectedRbmImplementation = rbmImplementation;
         this.selectedRbmFeature = rbmFeature;
         this.selectedLogisticFunction = logisticFunction;
@@ -119,55 +117,55 @@ public class SimpleRBMModel {
         this(false, true, true, false, 100, -1, -1, -1, 15,
                 10, 0, 10000, 0.1, 0.1, false, false, 0, true, false, false, false, false);
     }
-    
-    public boolean generateRBM(){
+
+    public boolean generateRBM() {
         this.rbm = null;
         this.rbmFeature = null;
-        
-        if(validate()){
+
+        if (validate()) {
             ILogistic logistic = null;
-            if(this.selectedLogisticFunction == 0){
+            if (this.selectedLogisticFunction == 0) {
                 logistic = new DefaultLogisticMatrixFunction();
-            }else if(this.selectedLogisticFunction == 1){
+            } else if (this.selectedLogisticFunction == 1) {
                 logistic = new GaussMatrixFunction();
-            }else if(this.selectedLogisticFunction == 2){
+            } else if (this.selectedLogisticFunction == 2) {
                 logistic = new HardClipMatrixFunction();
-            }else if(this.selectedLogisticFunction == 3){
+            } else if (this.selectedLogisticFunction == 3) {
                 logistic = new LinearClippedMatrixFunction();
-            }else if(this.selectedLogisticFunction == 4){
+            } else if (this.selectedLogisticFunction == 4) {
                 logistic = new LinearInterpolatedMatrixFunction();
-            }else if(this.selectedLogisticFunction == 5){
+            } else if (this.selectedLogisticFunction == 5) {
                 logistic = new LinearUnclippedMatrixFunction();
-            }else if(this.selectedLogisticFunction == 6){
+            } else if (this.selectedLogisticFunction == 6) {
                 logistic = new RectifierMatrixFunction();
-            }else if(this.selectedLogisticFunction == 7){
+            } else if (this.selectedLogisticFunction == 7) {
                 logistic = new TanHMatrixFunction();
-            }else if(this.selectedLogisticFunction == 8){
+            } else if (this.selectedLogisticFunction == 8) {
                 logistic = new SquareRootLogistic();
             }
-            
-            if(logistic != null){
-                if(this.selectedRbmImplementation == 0){
+
+            if (logistic != null) {
+                if (this.selectedRbmImplementation == 0) {
                     this.rbm = new RBMJBlas(this.inputSize, this.outputSize, this.learningRate, logistic, this.useSeed, this.seed);
                 }
             }
-            
-            if(this.rbm != null){
-                if(this.selectedRbmFeature == 0){
+
+            if (this.rbm != null) {
+                if (this.selectedRbmFeature == 0) {
                     this.rbmFeature = new RBMFeaturePixel(this.inputSize, this.outputSize, rbm);
-                }else if(this.selectedRbmFeature == 1){
+                } else if (this.selectedRbmFeature == 1) {
                     this.rbmFeature = new RBMFeatureDCT(this.inputSize, this.outputSize, rbm);
                 }
             }
-            
-            if(this.rbmFeature != null){
+
+            if (this.rbmFeature != null) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean generateSorter(){
+
+    public boolean generateSorter() {
 //        if(this.rbmFeature != null && this.rbmTrained){
 //            ForkJoinPool pool = new ForkJoinPool();
 //            this.sorter = new SorterRBMFeatures(this.imageManager.getImages(true), pool, rbmFeature);
@@ -176,9 +174,9 @@ public class SimpleRBMModel {
 //        }
         return false;
     }
-    
-    public void trainRBM(){      
-        if(this.generateRBM()){
+
+    public void trainRBM() {
+        if (this.generateRBM()) {
             System.out.println("start training");
             this.rbmFeature.train(this.imageManager.getImages(!this.useRandomOrder), this.epochs, this.binarizeHiddenProbabilities, this.binarizeVisibleProbabilities);
             System.out.println("end training");
@@ -186,11 +184,9 @@ public class SimpleRBMModel {
         this.rbmTraining = false;
         this.rbmTrained = true;
         this.generateSorter();
-        
+
     }
-    
-    
-    
+
     public boolean validate() {
 
         if (this.selectedRbmImplementation != -1 && this.selectedRbmFeature != -1
@@ -210,16 +206,16 @@ public class SimpleRBMModel {
         }
 
     }
-    
-    public void test(){
+
+    public void test() {
         this.prTable = null;
         this.mAP = 0;
-        if(this.evaluation == null){
+        if (this.evaluation == null) {
             this.evaluation = new Evaluation(this, new ForkJoinPool());
         }
-        if(this.mapTest.equalsIgnoreCase("All")) {
+        if (this.mapTest.equalsIgnoreCase("All")) {
             this.evaluation.testAll();
-        }else{
+        } else {
             this.evaluation.test(this.mapTest);
         }
     }
@@ -244,9 +240,9 @@ public class SimpleRBMModel {
     public boolean isShowVisualization() {
         return showVisualization;
     }
-    
+
     public boolean isShowTrainingError() {
-    	return showTrainingError;
+        return showTrainingError;
     }
 
     public int getUpdateFrequency() {
@@ -308,7 +304,7 @@ public class SimpleRBMModel {
     public boolean isBinarizeVisibleProbabilities() {
         return binarizeVisibleProbabilities;
     }
-    
+
     public boolean isBinarizeHiddenProbabilities() {
         return binarizeHiddenProbabilities;
     }
@@ -324,9 +320,9 @@ public class SimpleRBMModel {
     public void setShowVisualization(boolean showVisualization) {
         this.showVisualization = showVisualization;
     }
-    
+
     public void setShowError(boolean showTrainingError) {
-    	this.showTrainingError = showTrainingError;
+        this.showTrainingError = showTrainingError;
     }
 
     public void setUpdateFrequency(int updateFrequency) {
@@ -388,7 +384,7 @@ public class SimpleRBMModel {
     public void setBinarizeVisibleProbabilities(boolean binarizeVisibleProbabilities) {
         this.binarizeVisibleProbabilities = binarizeVisibleProbabilities;
     }
-    
+
     public void setBinarizeHiddenProbabilities(boolean binarizeHiddenProbabilities) {
         this.binarizeHiddenProbabilities = binarizeHiddenProbabilities;
     }
@@ -396,7 +392,7 @@ public class SimpleRBMModel {
     public boolean isRbmTrained() {
         return rbmTrained;
     }
-    
+
     public boolean isRbmTraining() {
         return rbmTraining;
     }
@@ -416,6 +412,7 @@ public class SimpleRBMModel {
     public String[] getLogisticFunctions() {
         return logisticFunctions;
     }
+
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
     }

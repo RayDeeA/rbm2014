@@ -62,7 +62,7 @@ public class PrecisionRecallTester {
         // starte die komplexe Analyse 
         start(images.length);
 
-		// Java 8: ohne Lambda Expression
+        // Java 8: ohne Lambda Expression
         // paralle Berechnungen
         double[] averagePrecisions = new double[images.length];
         ForkTest ft = new ForkTest(this, lookup, images, 0, images.length, averagePrecisions);
@@ -75,6 +75,29 @@ public class PrecisionRecallTester {
         mAP /= images.length;
 
         return new PrecisionRecallTestResult(mAP, sorter.getName(), "all", generatePRTable());
+    }
+
+    /**
+     * Ermittle die Mean Average Precision f��r alle angegebenen Bilder
+     *
+     * @param imageGroup
+     * @param queryImages
+     * @return
+     */
+    public PrecisionRecallTestResult test(String imageGroup) {
+        Pic[] queryImages = imageManager.getImageInGroup(imageGroup).toArray(new Pic[0]);
+
+        // starte die komplexe Analyse 
+        start(queryImages.length);
+
+        // berechne die Average Precision f��r jedes Bild aus
+        double mAP = 0;
+        for (int i = 0; i < queryImages.length; i++) {
+            mAP += test(queryImages[i], i);
+        }
+        mAP /= queryImages.length;
+
+        return new PrecisionRecallTestResult(mAP, sorter.getName(), imageGroup, generatePRTable());
     }
 
     public double test(Pic queryImage) {

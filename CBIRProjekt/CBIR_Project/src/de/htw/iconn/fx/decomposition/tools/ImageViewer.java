@@ -295,6 +295,9 @@ public class ImageViewer {
         if (wCanvas <= 1) {
             wCanvas = this.width;
         }
+        if(hCanvas <= 1){
+            hCanvas = this.height;
+        }
         int h2 = hCanvas / 2;
         int w2 = wCanvas / 2;
 

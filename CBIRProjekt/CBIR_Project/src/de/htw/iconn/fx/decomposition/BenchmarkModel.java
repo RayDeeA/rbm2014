@@ -103,13 +103,20 @@ public class BenchmarkModel {
 
     }
 
-    public void startMAPTest() {
+    public void startMAPTest(String imageCategory) {
 
         double[][] features = controller.getRbmTrainer().getHiddenAllRBMs(controller, null, showImageViewer);
         PrecisionRecallTester prTester = new PrecisionRecallTester(features, imageManager);
-        
-                
-        this.prtmapController.addGraph(prTester.testAll());
+
+        PrecisionRecallTestResult result;
+
+        if (imageCategory.equalsIgnoreCase("All")) {
+            result = prTester.testAll();
+        } else {
+            result = prTester.test(imageCategory);
+        }
+
+        this.prtmapController.addGraph(result);
     }
 
     public ImageViewer getImageViewer() {
