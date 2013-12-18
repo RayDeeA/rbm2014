@@ -15,13 +15,13 @@
       <content>
         <GridPane disable="false" gridLinesVisible="false" hgap="10.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
           <children>
-            <Button id="btn_loadImageSet" mnemonicParsing="false" onAction="#btn_loadImageSetAction" prefWidth="144.0" text="Load Image Set" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Button id="btn_loadImageSet" mnemonicParsing="false" onAction="#btn_loadImageSetAction" prefWidth="136.0" text="Load Image Set" GridPane.columnIndex="0" GridPane.rowIndex="0">
               <GridPane.margin>
                 <Insets />
               </GridPane.margin>
             </Button>
             <CheckBox fx:id="cbx_imageViewer" mnemonicParsing="false" onAction="#cbx_imageViewerAction" text="Image Viewer" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <Button id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_testFeaturesAction" prefWidth="142.0" text="Test Features" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Button id="btn_runVisible" disable="false" mnemonicParsing="false" onAction="#btn_testFeaturesAction" prefWidth="136.0" text="Test Features" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <ComboBox id="btn_mapTests" fx:id="cmb_mAPTests" onAction="#cmb_mAPTestsAction" prefWidth="294.0" promptText="Select mAP Test" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
               <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -31,11 +31,13 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <Button id="btn_startTest" mnemonicParsing="false" onAction="#btn_startmAPTestAction" prefWidth="141.0" text="Start mAP test" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button id="btn_startTest" mnemonicParsing="false" onAction="#btn_startmAPTestAction" prefWidth="136.0" text="Start mAP Test" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label id="lbl_imageSet" fx:id="lbl_imageSetSelected" prefWidth="280.0" text="" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-            <Button id="btn_daydream" fx:id="btn_openDaydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_openDaydreamAction" prefWidth="142.0" text="Daydream" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="btn_openRunHidden" mnemonicParsing="false" onAction="#btn_openRunHiddenAction" prefWidth="135.0" text="Run Hidden" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="btn_trainAll" mnemonicParsing="false" onAction="#btn_trainAllAction" prefWidth="135.0" text="Train All" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Button id="btn_daydream" fx:id="btn_openDaydream" cancelButton="false" disable="false" mnemonicParsing="false" onAction="#btn_openDaydreamAction" prefWidth="136.0" text="Daydream" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="btn_openRunHidden" mnemonicParsing="false" onAction="#btn_openRunHiddenAction" prefWidth="136.0" text="Run Hidden" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="btn_trainAll" mnemonicParsing="false" onAction="#btn_trainAllAction" prefWidth="136.0" text="Train All" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Label text="Image Edge Size" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="txt_imageEdgeSize" onKeyReleased="#txt_imageEdgeSizeKey" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

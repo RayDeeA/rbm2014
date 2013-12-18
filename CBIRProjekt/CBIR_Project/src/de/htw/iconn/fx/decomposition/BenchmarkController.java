@@ -29,7 +29,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -62,7 +64,9 @@ public class BenchmarkController extends AController {
     @FXML
     private Button btn_openRunHidden;
     @FXML
-    private ToggleButton toggleBtn_PRTMAP;
+    private Button btn_trainAll;
+    @FXML
+    private TextField txt_imageEdgeSize;
 
     /**
      * Initializes the controller class.
@@ -197,6 +201,16 @@ public class BenchmarkController extends AController {
     public void update() {
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
+        this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
+    }
+
+    @FXML
+    private void txt_imageEdgeSizeKey(KeyEvent event) {
+        try{
+            this.model.setImageEdgeSize(Integer.parseInt(this.txt_imageEdgeSize.getText()));
+        } catch(NumberFormatException e){
+            
+        }
     }
 
 }
