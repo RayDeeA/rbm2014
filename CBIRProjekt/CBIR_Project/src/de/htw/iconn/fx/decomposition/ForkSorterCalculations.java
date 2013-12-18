@@ -1,4 +1,4 @@
-package de.htw.iconn.fx;
+package de.htw.iconn.fx.decomposition;
 
 import java.util.concurrent.RecursiveAction;
 

@@ -1,5 +1,6 @@
 package de.htw.iconn.fx;
 
+import de.htw.iconn.fx.decomposition.ForkTest;
 import gnu.trove.map.hash.TIntDoubleHashMap;
 
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.concurrent.ForkJoinPool;
 import de.htw.cbir.model.ImagePair;
 import de.htw.cbir.model.Pic;
 
+@Deprecated
 public class Evaluation {
 
 	private Pic[] images;
@@ -29,26 +31,26 @@ public class Evaluation {
 	 * @return
 	 */
 	public void testAll() {
-		final TIntDoubleHashMap lookup = createDistanceLookupTable();
-		final PrecisionRecallTable table = new PrecisionRecallTable(true, model.getSorter().getName(), "all");
-		
-		// starte die komplexe Analyse 
-		table.start(images.length);
-		
-		// Java 8: ohne Lambda Expression
-		// paralle Berechnungen
-		double[] averagePrecisions = new double[images.length];
-		ForkTest ft = new ForkTest(this, lookup, table, images, 0, images.length, averagePrecisions);
-		pool.invoke(ft);
-		
-		double mAP = 0;
-		for (int i = 0; i < averagePrecisions.length; i++)
-			mAP += averagePrecisions[i];
-		mAP /= images.length;
-                
-                this.model.setmAP(mAP);
-		
-		this.model.setPrTable(table.generatePRTable());
+//		final TIntDoubleHashMap lookup = createDistanceLookupTable();
+//		final PrecisionRecallTable table = new PrecisionRecallTable(true, model.getSorter().getName(), "all");
+//		
+//		// starte die komplexe Analyse 
+//		table.start(images.length);
+//		
+//		// Java 8: ohne Lambda Expression
+//		// paralle Berechnungen
+//		double[] averagePrecisions = new double[images.length];
+//		ForkTest ft = new ForkTest(this, lookup, table, images, 0, images.length, averagePrecisions);
+//		pool.invoke(ft);
+//		
+//		double mAP = 0;
+//		for (int i = 0; i < averagePrecisions.length; i++)
+//			mAP += averagePrecisions[i];
+//		mAP /= images.length;
+//                
+//                this.model.setmAP(mAP);
+//		
+//		this.model.setPrTable(table.generatePRTable());
 	}
 	
 	/**

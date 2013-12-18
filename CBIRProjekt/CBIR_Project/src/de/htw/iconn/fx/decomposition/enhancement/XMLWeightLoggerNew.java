@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -30,27 +31,24 @@ public final class XMLWeightLoggerNew {
 
     private String dateString;
     private final String baseFolder;
-
+    private double[][] weights;
+    private double[][] weights2d;
+    private LinkedList<double[][]> collectedWeights;
+    
     public XMLWeightLoggerNew() {
         this.dateString = "New";
 
         this.baseFolder = "RBMLogs";
     }
 
-    public void singleWeights(RBMInfoPackage info) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        double[][] weights = info.getWeights();
-        StringBuffer rowSB;
-
+    public void singleWeights(RBMInfoPackage info) throws IOException, TransformerConfigurationException, ParserConfigurationException, TransformerException {
+        
+        this.weights = info.getWeights();
         String xmlFolder = this.baseFolder + "/XMLSteps";
         String xmlLocation = this.dateString + ".xml";
 
         Path xmlFolderPath = FileSystems.getDefault().getPath(xmlFolder);
         Path xmlLocationPath = FileSystems.getDefault().getPath(xmlFolder, xmlLocation);
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc;
-        Element rootElement;
 
         Path baseFolderPath = FileSystems.getDefault().getPath(baseFolder);
         if (Files.notExists(baseFolderPath, LinkOption.NOFOLLOW_LINKS)) {
@@ -64,7 +62,21 @@ public final class XMLWeightLoggerNew {
         StreamResult result = new StreamResult(xmlFile);
 
         int stepCount = 0;
+   
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(docCreateSingleWeights());
 
+        transformer.transform(source, result);
+    }
+    
+    public Document docCreateSingleWeights() throws ParserConfigurationException{
+        
+        StringBuffer rowSB;
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc;
+        Element rootElement;
 
         doc = docBuilder.newDocument();
         rootElement = doc.createElement("weights");
@@ -88,17 +100,13 @@ public final class XMLWeightLoggerNew {
             row.appendChild(doc.createTextNode(rowSB.toString()));
         }
 
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-
-        transformer.transform(source, result);
+      return doc;
     }
   
 
     public void stepXmlLogTraining(RBMInfoPackage info) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
-        LinkedList<double[][]> collectedWeights = info.getCollectedWeights();
+        this.collectedWeights = info.getCollectedWeights();
         StringBuffer rowSB;
 
         String xmlFolder = this.baseFolder + "/XMLSteps";
@@ -179,11 +187,20 @@ public final class XMLWeightLoggerNew {
 
         transformer.transform(source, result);
     }
-
+    
+    
+    public Document docCreatestepXmlLogTraining() throws ParserConfigurationException{
+    
+        //
+        return null;
+    
+    }
+    
     public void stepXmlLogEvolution(CBIREvaluationModel evaluationModel) throws IOException, ParserConfigurationException, TransformerException {
-
-        double[][] weights2d = evaluationModel.getWeights2d();
-        StringBuffer rowSB;
+        
+        
+        this.weights2d = evaluationModel.getWeights2d();
+              
 
         String xmlFolder = this.baseFolder + "/XMLSteps";
         String xmlLocation = this.dateString + ".xml";
@@ -197,7 +214,18 @@ public final class XMLWeightLoggerNew {
         File xmlFile = new File(xmlFolder + "/" + xmlLocation);
         StreamResult result = new StreamResult(xmlFile);
 
-		// Output to console for testing
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(docCreatestepXmlLogEvolution());
+
+        transformer.transform(source, result);
+
+    }
+    
+    public Document docCreatestepXmlLogEvolution() throws ParserConfigurationException{
+        
+        StringBuffer rowSB;  
+        //Output to console for testing
         //StreamResult result = new StreamResult(System.out);
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -240,13 +268,6 @@ public final class XMLWeightLoggerNew {
 
             row.appendChild(doc.createTextNode(rowSB.toString()));
         }
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-
-        transformer.transform(source, result);
-
+        return doc;
     }
-
 }
