@@ -120,18 +120,18 @@ public class RBMTrainer {
 		return getHiddenAllRBMs(benchmarkController, data, false, false);
 	}
 	
-	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible){
-		return getHiddenAllRBMs(benchmarkController, data, binarizeVisible, true);
+	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden){
+		return getHiddenAllRBMs(benchmarkController, data, binarizeHidden, true);
 	}
     
-    private double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden, boolean useBinarize) {
+    private double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
         double[][] visibleData = data;
         
         for(RBMSettingsController rbmSettingsController : rbmSettingsList) {
         	double[][] hiddenData;
-        	if(useBinarize) {
+        	if(useBinarizeOptionGiven) {
         		hiddenData = this.getHiddenSingleRBM(rbmSettingsController, visibleData, binarizeHidden);
         	} else {
         		hiddenData = this.getVisibleSingleRBM(rbmSettingsController, visibleData);
@@ -196,7 +196,7 @@ public class RBMTrainer {
 		return getVisibleAllRBMs(benchmarkController, data, binarizeVisible, true);
 	}
     
-    private double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible, boolean useBinarize) {
+    private double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
         double[][] hiddenData = data;
@@ -205,7 +205,7 @@ public class RBMTrainer {
         while(rbmSettingsListIterator.hasPrevious()) {
         	RBMSettingsController rbmSettingsController = rbmSettingsListIterator.previous();
         	double[][] visibleData;
-        	if(useBinarize) {
+        	if(useBinarizeOptionGiven) {
         		visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData, binarizeVisible);
         	} else {
         		visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData);
