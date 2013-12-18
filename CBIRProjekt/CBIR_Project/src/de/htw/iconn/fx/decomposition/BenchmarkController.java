@@ -192,6 +192,7 @@ public class BenchmarkController extends AController {
         }
         ObservableList mapTestObs = FXCollections.observableList(mapTest);
         this.cmb_mAPTests.setItems(mapTestObs);
+        this.model.setSelectedMAPTest(0);
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
