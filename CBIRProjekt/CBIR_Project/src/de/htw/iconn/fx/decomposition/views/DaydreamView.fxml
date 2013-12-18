@@ -25,7 +25,4 @@
     <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Daydream" />
     <ImageView fx:id="imgv_Result" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="270.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
   </children>
-  <stylesheets>
-    <URL value="@std.css" />
-  </stylesheets>
 </AnchorPane>
