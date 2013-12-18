@@ -53,12 +53,15 @@ public class ControlCenterController extends AController {
 
         try {
             benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
-
             vbox.getChildren().add(benchmarkController.getView());
 
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        // standard innitializing
+        mnu_newRbmAction(null);
+        mnu_newRbmAction(null);
     }
 
     @FXML
