@@ -35,8 +35,6 @@ public class Pic extends Object{
 	private BufferedImage featureImage;
 	private IDWHistogram histogram;
 
-	
-	
 	public IDWHistogram getHistogram() {
 		return histogram;
 	}

@@ -51,11 +51,11 @@ public class ImageViewer {
     private final int width = 600;
     private final int height = 400;
 
-    private final Scene scene;
-    private final Group root;
-    private final Stage stage;
-    private final Pic[] images;
-    private final ImageManager imageManager;
+    private Scene scene = null;
+    private Group root = null;
+    private Stage stage = null;
+    private Pic[] images = null;
+    private ImageManager imageManager = null;
 
     public double getHeight() {
         return stage.getHeight();
@@ -76,6 +76,17 @@ public class ImageViewer {
     public ImageViewer(ImageManager imageManager) {
         this.imageManager = imageManager;
         this.images = imageManager.getImages(true);
+        
+        initalize();
+    }
+    
+    public ImageViewer(Pic[] images) {
+    	this.images = images;
+    	
+    	initalize();
+    }
+
+    private void initalize() {
         this.root = new Group();
         this.stage = new Stage();
 
@@ -224,10 +235,9 @@ public class ImageViewer {
                 ImageViewer.this.show();
             }
         });
+	}
 
-    }
-
-    /**
+	/**
      * Liefert das Bild zur��ck dass sich an einer bestimmten // Mausposition
      * befindet. Null bedeutet dass unter der Maus kein Bild ist
      *
