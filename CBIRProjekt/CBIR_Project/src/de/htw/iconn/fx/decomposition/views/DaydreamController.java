@@ -62,6 +62,7 @@ public class DaydreamController extends AController implements EventHandler {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new DaydreamModel(this);
+        this.btn_daydream.setDisable(false);
         this.update();
     }
     
@@ -73,16 +74,11 @@ public class DaydreamController extends AController implements EventHandler {
         } else {
             System.out.println("error");
         }
-
-        this.btn_daydream.setDisable(false);
-        this.btn_stopDaydream.setDisable(true);
     }
 
     @FXML
     private void btn_generateImageAction(ActionEvent event) {
         this.imgv_Input.setImage(this.model.generateImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
-        this.btn_daydream.setDisable(false);
-        this.btn_stopDaydream.setDisable(true);
     }
 
     @FXML
@@ -125,7 +121,7 @@ public class DaydreamController extends AController implements EventHandler {
         if (timer != null) {
             timer.cancel();
             timer.purge();
-            this.btn_daydream.setDisable(true);
+            this.btn_daydream.setDisable(false);
             this.btn_stopDaydream.setDisable(true);
         }
     }
