@@ -128,10 +128,13 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
-        this.model.startMAPTest();
+        
+        // who can do it better?:
+        String name = new LinkedList<>(this.model.getImageManager().getGroupNames()).get(this.cmb_mAPTests.getSelectionModel().getSelectedIndex());
+        
+        
+        this.model.startMAPTest(name);
         this.model.getPRTMAPController().show();
-        //TODO: make test
-        //this.model.getPRTMAPController().addGraph(this.model.startMAPTest());
     }
 
     @FXML
