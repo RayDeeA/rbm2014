@@ -5,11 +5,9 @@
  */
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.cbir.ARBMFeature;
-import de.htw.cbir.ImageManager;
-import de.htw.cbir.model.ImagePair;
-import de.htw.cbir.model.Pic;
-import de.htw.iconn.fx.SorterRBMFeatures;
+import de.htw.iconn.fx.decomposition.tools.ImageManager;
+import de.htw.iconn.fx.decomposition.tools.ImagePair;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 import gnu.trove.map.hash.TIntDoubleHashMap;
 import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
@@ -28,11 +26,14 @@ public class PrecisionRecallTester {
     private boolean isStarted;
     private int meanAveragePrecision;
 
-    public PrecisionRecallTester(ASorter sorter, ImageManager imageManager) {
+    public PrecisionRecallTester(double[][] featureVectors, ImageManager imageManager) {
         this.imageManager = imageManager;
         this.pool = new ForkJoinPool();
-        this.sorter = sorter;
-        
+        Pic[] images = imageManager.getImages(true);
+        for (int i = 0; i < images.length; i++) {
+            images[i].setFeatureVector(featureVectors[i]);
+        }
+        sorter = new SorterRBMFeatures(images, pool);
     }
 
     public double test(Pic queryImage, int num, TIntDoubleHashMap lookup) {

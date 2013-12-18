@@ -5,7 +5,6 @@
  */
 package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainModel;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
@@ -57,17 +56,17 @@ public class BenchmarkModel {
     }
 
     public boolean add(RBMSettingsController rbmSettings) {
-        
-        if(rbmSettingsList.size() == 0) {
-            if( this.rbmSettingsList.add(rbmSettings)) {
+
+        if (rbmSettingsList.size() == 0) {
+            if (this.rbmSettingsList.add(rbmSettings)) {
                 this.setRBMImageSet();
                 return true;
             }
         } else {
-        	RBMSettingsController lastController = this.rbmSettingsList.getLast();
-        	int lastOutputSize = lastController.getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
-        	RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
-        	mainModel.setInputSize(lastOutputSize);
+            RBMSettingsController lastController = this.rbmSettingsList.getLast();
+            int lastOutputSize = lastController.getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
+            RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
+            mainModel.setInputSize(lastOutputSize);
         }
 
         return this.rbmSettingsList.add(rbmSettings);
@@ -107,10 +106,14 @@ public class BenchmarkModel {
     public void createDaydreamViewer() {
 
     }
+
     public void startMAPTest() {
 
-        // TODO: Where do we get the ARBMFEature to solve a mAP-Test 
-        //MAPTester mAPTester = new MAPTester( imageManager); 
+        double[][] features = controller.getRbmTrainer().getHiddenAllRBMs(controller, null, showImageViewer);
+        PrecisionRecallTester prTester = new PrecisionRecallTester(features, imageManager);
+        
+                
+        this.prtmapController.addGraph(prTester.testAll());
     }
 
     public ImageViewer getImageViewer() {
@@ -118,11 +121,11 @@ public class BenchmarkModel {
     }
 
     private void setRBMImageSet() {
-        if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
+        if (this.getRbmSettingsList().size() > 0 && imageManager != null) {
             // TODO: checkbox for shuffled input data
-        	RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
-        	RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
-        	firstMainModel.setInputSize(this.imageEdgeSize * this.imageEdgeSize);
+            RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
+            RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
+            firstMainModel.setInputSize(this.imageEdgeSize * this.imageEdgeSize);
             firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize));
         }
     }
@@ -130,6 +133,5 @@ public class BenchmarkModel {
     PRTMAPController getPRTMAPController() {
         return prtmapController;
     }
-    
 
 }

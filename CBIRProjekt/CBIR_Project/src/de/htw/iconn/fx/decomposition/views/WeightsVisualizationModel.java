@@ -97,8 +97,7 @@ public class WeightsVisualizationModel {
                 
             }
         }
-        //INPUT  = X 
-        //OUTPUT = Y
+
         int[] resizedPic = resizePixels(pixelsImage, input, output, (int)width, (int)height);
         Image tmpImage   =  getImageFromArray(resizedPic, (int) width, (int)height);
       

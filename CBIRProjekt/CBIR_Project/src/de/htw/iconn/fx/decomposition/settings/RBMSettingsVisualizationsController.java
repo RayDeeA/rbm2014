@@ -105,13 +105,7 @@ public class RBMSettingsVisualizationsController extends AController {
 		this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
 	}
 
-	public void update(RBMInfoPackage pack) {
 
-		if(this.cbx_showErrorGraph.isSelected()){
-			this.errorViewController.update(pack.getError());
-		}
-
-	}
 
 	@FXML
 	private void txt_weightsIntervalKey(KeyEvent event) {

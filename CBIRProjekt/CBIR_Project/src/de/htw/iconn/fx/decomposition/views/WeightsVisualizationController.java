@@ -22,19 +22,19 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author dvarul
  */
-public class WeightsVisualizationController extends AController implements IVisualizeObserver{
+public class WeightsVisualizationController extends AController implements IVisualizeObserver {
 
     @FXML
     private AnchorPane view;
-    
+
     @FXML
     private ImageView imgView;
 
-    
     WeightsVisualizationModel model;
-       
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -42,40 +42,42 @@ public class WeightsVisualizationController extends AController implements IVisu
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new WeightsVisualizationModel(this);
     }
-    
-    public void setDimensions(int x, int y){     
-        this.model.setDCT(x, y);   
+
+    public void setDimensions(int x, int y) {
+        this.model.setDCT(x, y);
     }
-    public void setDisplayDimensions(){
-       this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
+
+    public void setDisplayDimensions() {
+        this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
     }
-    
+
     public void setRBMFeature(ARBMAdapter rbmFeature) {
-    	this.model.setRbmFeature(rbmFeature);
+        this.model.setRbmFeature(rbmFeature);
     }
+
     public void setWeights(double[][] w) {
-    	this.model.setWeights(w);
+        this.model.setWeights(w);
         update();
     }
-    
+
     @Override
-   public void update(){
-       imgView.setImage(this.model.generateImage());
+    public void update() {
+        imgView.setImage(this.model.generateImage());
     }
-    
-	@Override
-	public Node getView() {
-		return this.view;
-	}
+
+    @Override
+    public Node getView() {
+        return this.view;
+    }
 
     public WeightsVisualizationModel getModel() {
         return this.model;
     }
 
-	@Override
-	public void update(RBMInfoPackage pack) {
+    @Override
+    public void update(RBMInfoPackage pack) {
 		// TODO Auto-generated method stub
-		
-	}
-    
+
+    }
+
 }

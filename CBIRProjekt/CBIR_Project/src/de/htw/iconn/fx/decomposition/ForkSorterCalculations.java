@@ -2,7 +2,7 @@ package de.htw.iconn.fx.decomposition;
 
 import java.util.concurrent.RecursiveAction;
 
-import de.htw.cbir.model.Pic;
+import de.htw.iconn.fx.decomposition.tools.Pic;
 
 public class ForkSorterCalculations extends RecursiveAction {
 
@@ -24,7 +24,6 @@ public class ForkSorterCalculations extends RecursiveAction {
     protected void computeDirectly() {
         for (int index = start; index < start + length; index++) {
         	Pic image = images[index];
-        	image.setFeatureVector(sorter.getFeatureVector(image));
 			image.setFeatureImage(sorter.getFeatureImage(image));
         }
     }
