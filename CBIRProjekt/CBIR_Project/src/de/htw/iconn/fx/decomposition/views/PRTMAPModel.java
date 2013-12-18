@@ -48,5 +48,4 @@ public class PRTMAPModel {
             cha_PRTable.getData().clear();
         }
     }
-
 }
