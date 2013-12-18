@@ -97,6 +97,7 @@ public class BenchmarkController extends AController {
             this.model.setImageManager(new ImageManager(file));
 
             this.initCmbImageManager();
+            
             if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
             }
@@ -130,7 +131,6 @@ public class BenchmarkController extends AController {
 
         // who can do it better?:
         int index = this.cmb_mAPTests.getSelectionModel().getSelectedIndex();
-
         String name = this.model.getImageManager().getNameFromIndex(index);
         this.model.startMAPTest(name);
         this.model.getPRTMAPController().show();

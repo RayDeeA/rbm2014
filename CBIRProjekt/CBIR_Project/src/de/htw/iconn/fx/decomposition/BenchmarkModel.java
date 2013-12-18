@@ -25,7 +25,7 @@ public class BenchmarkModel {
     private ImageViewer imageViewer;
     private final PRTMAPController prtmapController;
     private boolean showImageViewer = false;
-    private int selectedMAPTest;
+    private int selectedMAPTest = 0;
     private boolean isPRTMAPViewerVisible;
     private int imageEdgeSize = 28;
 
