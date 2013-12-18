@@ -34,6 +34,8 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
  * @author christoph
  */
 public class RBMTrainer {
+	
+    // TRAINING
 
     public void trainAllRBMs(BenchmarkController benchmarkController) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
@@ -112,14 +114,28 @@ public class RBMTrainer {
         System.out.println("Training finished");
     }
     
+    // GET HIDDEN
     
-    public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean isBinarizeHidden) {
+	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data) {
+		return getHiddenAllRBMs(benchmarkController, data, false, false);
+	}
+	
+	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden){
+		return getHiddenAllRBMs(benchmarkController, data, binarizeHidden, true);
+	}
+    
+    private double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
         double[][] visibleData = data;
         
         for(RBMSettingsController rbmSettingsController : rbmSettingsList) {
-        	double[][] hiddenData = this.getHiddenSingleRBM(rbmSettingsController, visibleData, isBinarizeHidden);
+        	double[][] hiddenData;
+        	if(useBinarizeOptionGiven) {
+        		hiddenData = this.getHiddenSingleRBM(rbmSettingsController, visibleData, binarizeHidden);
+        	} else {
+        		hiddenData = this.getVisibleSingleRBM(rbmSettingsController, visibleData);
+        	}
         	visibleData = hiddenData;
         }
         
@@ -127,16 +143,21 @@ public class RBMTrainer {
         return hiddenDataFinal;
     }
     
-    public double[][] getHiddenSingleRBM(RBMSettingsController controller, double[][] data, boolean isBinarizeHidden) {
+    public double[][] getHiddenSingleRBM(RBMSettingsController controller, double[][] data) {
+    	boolean binarizeHidden = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeHidden();
+    	return this.getHiddenSingleRBM(controller, data, binarizeHidden);
+    }
+    
+    public double[][] getHiddenSingleRBM(RBMSettingsController controller, double[][] data, boolean binarizeHidden) {
     	double[][] hiddenData = null;
     	
     	IRBM rbm = this.createRBMForTemporaryUse(controller);
     	
     	if(data != null) {
-    		hiddenData = rbm.getHidden(data, isBinarizeHidden);
+    		hiddenData = rbm.getHidden(data, binarizeHidden);
     	} else if(controller.getModel().getData() != null) {
     		data = controller.getModel().getData();
-    		hiddenData = rbm.getHidden(data, isBinarizeHidden);
+    		hiddenData = rbm.getHidden(data, binarizeHidden);
     	} else {
     		throw new IllegalArgumentException(
     			"The data in the model was never set. "
@@ -149,13 +170,13 @@ public class RBMTrainer {
     	return hiddenData;
     }
     
-	public double[] getHiddenSingleRBM(RBMSettingsController controller, double[] data, boolean isBinarizeHidden) {
+	public double[] getHiddenSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeHidden) {
 		double[][] data2Dimensions = new double[1][data.length];
 		for (int i = 0; i < data.length; i++) {
 			data2Dimensions[0][i] = data[i];
 		}
 
-		double[][] hiddenData2Dimensions = getHiddenSingleRBM(controller, data2Dimensions, isBinarizeHidden);
+		double[][] hiddenData2Dimensions = getHiddenSingleRBM(controller, data2Dimensions, binarizeHidden);
 
 		double hiddenData[] = new double[data.length];
 		for (int i = 0; i < data.length; i++) {
@@ -164,8 +185,18 @@ public class RBMTrainer {
 
 		return hiddenData;
 	}
+	
+    // GET VISIBLE
+	
+	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data) {
+		return getVisibleAllRBMs(benchmarkController, data, false, false);
+	}
+	
+	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible){
+		return getVisibleAllRBMs(benchmarkController, data, binarizeVisible, true);
+	}
     
-    public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean isBinarizeVisible) {
+    private double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
         double[][] hiddenData = data;
@@ -173,7 +204,13 @@ public class RBMTrainer {
         
         while(rbmSettingsListIterator.hasPrevious()) {
         	RBMSettingsController rbmSettingsController = rbmSettingsListIterator.previous();
-        	double[][] visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData, isBinarizeVisible);
+        	double[][] visibleData;
+        	if(useBinarizeOptionGiven) {
+        		visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData, binarizeVisible);
+        	} else {
+        		visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData);
+        	}
+        	
         	hiddenData = visibleData;
         }
         
@@ -182,18 +219,28 @@ public class RBMTrainer {
     }
 
     
-    public double[][] getVisibleSingleRBM(RBMSettingsController controller, double[][] data, boolean isBinarizeVisible) {
+    public double[][] getVisibleSingleRBM(RBMSettingsController controller, double[][] data, boolean binarizeVisible) {
     	IRBM rbm = this.createRBMForTemporaryUse(controller);
-    	return rbm.getVisible(data, isBinarizeVisible);
+    	return rbm.getVisible(data, binarizeVisible);
     }
     
-    public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data, boolean isBinarizeVisible) {
+    public double[][] getVisibleSingleRBM(RBMSettingsController controller, double[][] data) {
+    	boolean binarizeVisible = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeVisible();
+    	return this.getVisibleSingleRBM(controller, data, binarizeVisible);
+    }
+    
+    public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data) {
+    	boolean binarizeVisible = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeVisible();
+    	return this.getVisibleSingleRBM(controller, data, binarizeVisible);
+    }
+    
+    public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeVisible) {
 		double[][] data2Dimensions = new double[1][data.length];
 		for (int i = 0; i < data.length; i++) {
 			data2Dimensions[0][i] = data[i];
 		}
 
-		double[][] visibleData2Dimensions = getVisibleSingleRBM(controller, data2Dimensions, isBinarizeVisible);
+		double[][] visibleData2Dimensions = getVisibleSingleRBM(controller, data2Dimensions, binarizeVisible);
 
 		double visibleData[] = new double[data.length];
 		for (int i = 0; i < data.length; i++) {
@@ -203,16 +250,16 @@ public class RBMTrainer {
 		return visibleData;
     }
     
-    public double[] daydreamAllRBMs(BenchmarkController controller, double[] data, boolean isBinarizeHidden, boolean isBinarizeVisible) {
-    	// TODO
-    	
+    // DAYDREAM
+    
+    public double[] daydreamAllRBMs(BenchmarkController controller, double[] data, boolean binarizeHidden, boolean binarizeVisible) {
 		double[][] data2Dimensions = new double[1][data.length];
 		for (int i = 0; i < data.length; i++) {
 			data2Dimensions[0][i] = data[i];
 		}
 		
-		double[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, isBinarizeHidden);
-		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, isBinarizeHidden);
+		double[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, binarizeHidden);
+		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, binarizeHidden);
 		
 		double visibleData[] = new double[data.length];
 		for (int i = 0; i < data.length; i++) {
@@ -222,10 +269,10 @@ public class RBMTrainer {
     	return visibleData;
     }
     
-    public double[] daydreamSingleRBM(RBMSettingsController controller, double[] data, boolean isBinarizeHidden, boolean isBinarizeVisible) {
+    public double[] daydreamSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeHidden, boolean binarizeVisible) {
     	
-    	double[] hiddenData = this.getHiddenSingleRBM(controller, data, isBinarizeHidden);
-    	double[] visibleData = this.getVisibleSingleRBM(controller, hiddenData, isBinarizeVisible);
+    	double[] hiddenData = this.getHiddenSingleRBM(controller, data, binarizeHidden);
+    	double[] visibleData = this.getVisibleSingleRBM(controller, hiddenData, binarizeVisible);
     	
     	return visibleData;
     }

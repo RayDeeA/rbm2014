@@ -32,7 +32,15 @@ public class BenchmarkModel {
     private boolean showImageViewer = false;
     private int selectedMAPTest = 0;
     private boolean isPRTMAPViewerVisible;
-        
+    private int imageEdgeSize = 28;
+
+    public int getImageEdgeSize() {
+        return imageEdgeSize;
+    }
+
+    public void setImageEdgeSize(int imageEdgeSize) {
+        this.imageEdgeSize = imageEdgeSize;
+    }
 
     public int getSelectedMAPTest() {
         return selectedMAPTest;
@@ -52,7 +60,7 @@ public class BenchmarkModel {
         
         if(rbmSettingsList.size() == 0) {
             if( this.rbmSettingsList.add(rbmSettings)) {
-                setRBMImageSet();
+                this.setRBMImageSet();
                 return true;
             }
         } else {
@@ -111,12 +119,11 @@ public class BenchmarkModel {
 
     private void setRBMImageSet() {
         if (this.getRbmSettingsList().size() > 0 && imageManager  != null) {
-        	int edgeSize = 28;
             // TODO: checkbox for shuffled input data
         	RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
         	RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
-        	firstMainModel.setInputSize(edgeSize * edgeSize);
-            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), edgeSize));
+        	firstMainModel.setInputSize(this.imageEdgeSize * this.imageEdgeSize);
+            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize));
         }
     }
 
