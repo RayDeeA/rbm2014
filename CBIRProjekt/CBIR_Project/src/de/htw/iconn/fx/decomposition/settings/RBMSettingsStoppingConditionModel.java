@@ -15,7 +15,7 @@ public class RBMSettingsStoppingConditionModel {
     
     private boolean epochsOn = true;
     private boolean errorOn = false;
-    private int epochs = 1000;
+    private int epochs = 100;
     private double error = 0.1;
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {

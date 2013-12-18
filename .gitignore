@@ -19,3 +19,7 @@ CBIRProjekt/CBIR_Project/images/*
 /CBIRProjekt/libs
 /CBIRProjekt/RBM/lib
 nbproject
+/build/
+/CBIR_Project
+build.xml
+manifest.mf

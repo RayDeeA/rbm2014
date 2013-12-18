@@ -2,11 +2,17 @@ package de.htw.iconn.fx.decomposition.tools;
 
 import java.awt.image.BufferedImage;
 
+import javafx.scene.paint.Color;
+
 public class ImageScaler {
 	
 	private BufferedImage	orgImage;
 	private int[] 			orgImagePixels;	
 	private int 			orgWidth, orgHeight;
+	
+	public ImageScaler() {
+	
+	}
 	
 	public ImageScaler(BufferedImage image) {
 			this.orgImage 				= image;			
@@ -29,7 +35,30 @@ public class ImageScaler {
 		return bufferedImage;
 	}
 	
+	public BufferedImage getScaledImageNeirestNeighbour(BufferedImage image, int newWidth, int newHeight) {
+		int[] pixels = this.getPixelsFromBufferedImage(image);
+		int[] newPixels = new int[newWidth * newHeight];
+		
+		int width = image.getWidth();
+		int height = image.getHeight();
+		
+        double x_ratio = width / (double) newWidth;
+        double y_ratio = height / (double) newHeight;
+        
+        for (int y = 0, pos = 0; y < newHeight; y++) {
+            double py = Math.floor(y * y_ratio);
+            for (int x = 0; x < newWidth; x++, pos++) {
+                double px = Math.floor(x * x_ratio);
+                int argb = (int) pixels[(int) (py * width + px)];
+                newPixels[pos] = argb;
+            }
+        }
+		
+		return this.getBufferedImageFromPixels(newPixels, newWidth, newHeight);
+	}
+	
 	private BufferedImage getScaledImage(int longestEdge) {	
+		
 		// TODO crop
 		/*
 		if((orgWidth == longestEdge || orgHeight == longestEdge) && (orgWidth <= longestEdge && orgHeight <= longestEdge)) { 

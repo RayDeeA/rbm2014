@@ -3,13 +3,7 @@ CBIRProjekt/cma/bin
 CBIRProjekt/RBMLogs
 CBIRProjekt/test.xml
 CBIRProjekt/*.dat
-CBIRProjekt/CBIR_Project/images/MNIST_Database_ARGB
-CBIRProjekt/CBIR_Project/images/MNIST_Database
-CBIRProjekt/CBIR_Project/images/MNIST_1000_Database
-CBIRProjekt/CBIR_Project/images/MNIST_1000
-CBITProjekt/CBIR_Project/images/MNIST_1000.zip
-CBIRProjekt/CBIR_Project/images/MNIST
-CBITProjekt/CBIR_Project/images/MNIST.zip
+CBIRProjekt/CBIR_Project/images/*
 /CBIR_Projekt/nbproject/private/
 /ICONN/nbproject/private/
 
@@ -25,3 +19,5 @@ CBITProjekt/CBIR_Project/images/MNIST.zip
 /CBIRProjekt/libs
 /CBIRProjekt/RBM/lib
 nbproject
+/build/
+/CBIR_Project
