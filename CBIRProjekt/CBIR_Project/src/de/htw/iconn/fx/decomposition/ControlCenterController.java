@@ -53,7 +53,9 @@ public class ControlCenterController extends AController {
 
         try {
             benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
-            vbox.getChildren().add(benchmarkController.getView());
+            AnchorPane benchmarkView = (AnchorPane)(benchmarkController.getView());       
+            benchmarkView.prefWidthProperty().bind(this.view.widthProperty());
+            vbox.getChildren().add(benchmarkView);
 
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,8 +71,10 @@ public class ControlCenterController extends AController {
         try {
 
             RBMSettingsController controller = (RBMSettingsController) loadController("RBMSettings.fxml");
+            AnchorPane rbmSettingsView = (AnchorPane)(controller.getView());       
+            rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty());
             benchmarkController.getModel().add(controller);
-            vbox.getChildren().add(controller.getView());
+            vbox.getChildren().add(rbmSettingsView);
         } catch (IOException ex) {
             System.out.println("Could not load controller");
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);

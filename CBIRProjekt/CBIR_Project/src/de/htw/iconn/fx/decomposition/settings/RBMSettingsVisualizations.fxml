@@ -11,12 +11,12 @@
   <children>
     <GridPane hgap="10.0" layoutX="0.0" layoutY="0.0" vgap="10.0">
       <children>
-        <CheckBox fx:id="cbx_showWeights" mnemonicParsing="false" onAction="#cbx_showWeightsAction" prefWidth="208.0" text="Weights" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="0" />
-        <CheckBox fx:id="cbx_showErrorGraph" mnemonicParsing="false" onAction="#cbx_showErrorGraphAction" prefWidth="208.0" text="Error Graph" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="1" />
-        <TextField id="txt_weightsUpdate" fx:id="txt_weightsInterval" onKeyReleased="#txt_weightsIntervalKey" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-        <TextField fx:id="txt_errorInterval" onKeyReleased="#txt_errorIntervalKey" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-        <Label text="Interval" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label text="Interval" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <CheckBox fx:id="cbx_showWeights" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_showWeightsAction" prefWidth="-1.0" text="Weights" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <CheckBox fx:id="cbx_showErrorGraph" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_showErrorGraphAction" prefWidth="-1.0" text="Error Graph" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        <TextField id="txt_weightsUpdate" fx:id="txt_weightsInterval" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_weightsIntervalKey" prefWidth="-1.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <TextField fx:id="txt_errorInterval" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_errorIntervalKey" prefWidth="-1.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Interval" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Interval" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

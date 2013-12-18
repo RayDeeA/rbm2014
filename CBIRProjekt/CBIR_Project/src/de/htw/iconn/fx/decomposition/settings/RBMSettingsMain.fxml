@@ -12,7 +12,7 @@
   <children>
     <GridPane hgap="10.0" layoutX="0.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0" AnchorPane.topAnchor="0.0">
       <children>
-        <ComboBox fx:id="cmb_rbmImplementation" onAction="#cmb_rbmImplementationAction" prefHeight="21.0" prefWidth="281.0" promptText="select RBM implementation" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+        <ComboBox fx:id="cmb_rbmImplementation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cmb_rbmImplementationAction" prefHeight="-1.0" prefWidth="-1.0" promptText="select RBM implementation" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
@@ -21,7 +21,7 @@
             </FXCollections>
           </items>
         </ComboBox>
-        <ComboBox fx:id="cmb_feature" onAction="#cmb_featureAction" prefHeight="21.0" prefWidth="281.0" promptText="select feature" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+        <ComboBox fx:id="cmb_feature" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cmb_featureAction" prefHeight="-1.0" prefWidth="-1.0" promptText="select feature" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
@@ -30,7 +30,7 @@
             </FXCollections>
           </items>
         </ComboBox>
-        <ComboBox fx:id="cmb_logisticFunction" onAction="#cmb_logisticFunctionAction" prefHeight="21.0" prefWidth="281.0" promptText="select logistic function" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+        <ComboBox fx:id="cmb_logisticFunction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cmb_logisticFunctionAction" prefHeight="-1.0" prefWidth="-1.0" promptText="select logistic function" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
@@ -39,9 +39,9 @@
             </FXCollections>
           </items>
         </ComboBox>
-        <Label text="Input Size" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label text="Output Size" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txt_outputSize" onKeyReleased="#txt_outputSizeKey" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Input Size" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Size" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+        <TextField fx:id="txt_outputSize" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_outputSizeKey" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
           <GridPane.margin>
             <Insets />
           </GridPane.margin>
