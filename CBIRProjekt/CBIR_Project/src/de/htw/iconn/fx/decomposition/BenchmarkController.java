@@ -138,6 +138,8 @@ public class BenchmarkController extends AController {
         try {
             this.daydreamController = (DaydreamController) new DaydreamController().loadController("DaydreamView.fxml");
             Parent root = (Parent) this.daydreamController.getView();
+            
+            this.daydreamController.setBenchmarkController(this);
 
             Scene scene = new Scene(root, 600, 400);
             this.daydreamStage = new Stage();

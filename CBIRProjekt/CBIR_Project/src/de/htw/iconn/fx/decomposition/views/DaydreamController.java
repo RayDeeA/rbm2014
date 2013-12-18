@@ -5,6 +5,7 @@
 package de.htw.iconn.fx.decomposition.views;
 
 import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.BenchmarkController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -66,7 +67,7 @@ public class DaydreamController extends AController implements EventHandler {
     
     @FXML
     private void btn_loadImageAction(ActionEvent event) {
-        Image image = this.model.loadImage();
+        Image image = this.model.loadImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight());
         if (!image.isError()) {
             this.imgv_Input.setImage(image);
         } else {
@@ -79,7 +80,7 @@ public class DaydreamController extends AController implements EventHandler {
 
     @FXML
     private void btn_generateImageAction(ActionEvent event) {
-        this.imgv_Input.setImage(this.model.generateImage());
+        this.imgv_Input.setImage(this.model.generateImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
         this.btn_daydream.setDisable(false);
         this.btn_stopDaydream.setDisable(true);
     }
@@ -114,6 +115,10 @@ public class DaydreamController extends AController implements EventHandler {
     @FXML
     private void btn_visibleStatesAction(ActionEvent event) {
         this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
+    }
+    
+    public void setBenchmarkController(BenchmarkController benchmarkController) {
+    	this.model.setBenchmarkController(benchmarkController);
     }
 
     public void stopDreaming() {
