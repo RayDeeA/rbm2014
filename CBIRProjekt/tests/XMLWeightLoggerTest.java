@@ -8,7 +8,6 @@ import de.htw.iconn.fx.decomposition.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.fx.decomposition.rbm.*;
 import de.htw.iconn.fx.decomposition.*;
 import de.htw.iconn.fx.decomposition.enhancement.IRBMEndTrainingEnhancement;
-import de.htw.iconn.fx.decomposition.enhancement.IRBMTrainingEnhancement;
 import de.htw.iconn.fx.decomposition.enhancement.RBMEnhancer;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import de.htw.iconn.fx.decomposition.enhancement.XMLWeightLoggerNew;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.xml.sax.SAXException;

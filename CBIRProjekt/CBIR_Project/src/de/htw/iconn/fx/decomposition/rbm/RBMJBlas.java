@@ -14,6 +14,8 @@ public class RBMJBlas implements IRBM {
     private double error;
 
     private DoubleMatrix weights;
+    
+    double[][] returnedWeights;
 
     public RBMJBlas(int inputSize, int outputSize, double learningRate, ILogistic logisticFunction, boolean useSeed, int seed, double[][] weights) {
         this.learnRate = learningRate;
@@ -28,7 +30,8 @@ public class RBMJBlas implements IRBM {
                         weightsTemp[v][h] = 0.1 * random.nextGaussian();
                     }
                 }
-
+                    
+                setOriginWeights(weights);
                 this.weights = new DoubleMatrix(weightsTemp);
             } else {
                 this.weights = DoubleMatrix.randn(inputSize, outputSize).mmul(0.1);
@@ -44,7 +47,16 @@ public class RBMJBlas implements IRBM {
 
         
     }
+        public double[][] setOriginWeights(double[][] weights) {
 
+            return weights;
+        } 
+        
+        public double[][] getOriginWeights(double[][] weights) {
+
+            return weights;
+        }   
+    
     @Override
     public double error(double[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
         DoubleMatrix data = new DoubleMatrix(trainingData);
