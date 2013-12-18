@@ -53,8 +53,8 @@ public class BenchmarkController extends AController {
     private Label lbl_imageSetSelected;
 
     private DaydreamController daydreamController;
-    
     private RBMTrainer rbmTrainer;
+
     
     private Stage daydreamStage;
     @FXML
@@ -80,8 +80,8 @@ public class BenchmarkController extends AController {
         }
 
         model = new BenchmarkModel(this, tmpController);
-        loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.rbmTrainer = new RBMTrainer();
+        loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
     }
 
@@ -126,7 +126,8 @@ public class BenchmarkController extends AController {
     @FXML
     private void btn_startmAPTestAction(ActionEvent event) {
         this.model.getPRTMAPController().show();
-        // make test        
+        //TODO: make test
+        //this.model.getPRTMAPController().addGraph(this.model.startMAPTest());
     }
 
     @FXML

@@ -5,6 +5,7 @@
  */
 package de.htw.iconn.fx.decomposition;
 
+import de.htw.iconn.fx.decomposition.rbm.IRBM;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsMainModel;
 import de.htw.iconn.fx.decomposition.tools.ImageManager;
@@ -31,6 +32,7 @@ public class BenchmarkModel {
     private boolean showImageViewer = false;
     private int selectedMAPTest = 0;
     private boolean isPRTMAPViewerVisible;
+        
 
     public int getSelectedMAPTest() {
         return selectedMAPTest;
@@ -44,7 +46,6 @@ public class BenchmarkModel {
         this.rbmSettingsList = new LinkedList<>();
         this.controller = controller;
         this.prtmapController = prtmapController;
-
     }
 
     public boolean add(RBMSettingsController rbmSettings) {
@@ -98,6 +99,11 @@ public class BenchmarkModel {
     public void createDaydreamViewer() {
 
     }
+    public void startMAPTest() {
+
+        // TODO: Where do we get the ARBMFEature to solve a mAP-Test 
+        //MAPTester mAPTester = new MAPTester( imageManager); 
+    }
 
     public ImageViewer getImageViewer() {
         return imageViewer;
@@ -117,5 +123,6 @@ public class BenchmarkModel {
     PRTMAPController getPRTMAPController() {
         return prtmapController;
     }
+    
 
 }

@@ -1,11 +1,10 @@
-package de.htw.iconn.fx;
+package de.htw.iconn.fx.decomposition;
 
-import de.htw.iconn.fx.decomposition.ForkSorterCalculations;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
 import de.htw.cbir.model.Pic;
-@Deprecated
+
 public abstract class ASorter {
 	
 	protected Pic[] images;
@@ -22,8 +21,8 @@ public abstract class ASorter {
 	}
 	
 	public void getFeatureVectors(Pic[] images) {
-//		ForkSorterCalculations fsc = new ForkSorterCalculations(this, images, 0, images.length);
-//		pool.invoke(fsc);
+		ForkSorterCalculations fsc = new ForkSorterCalculations(this, images, 0, images.length);
+		pool.invoke(fsc);
 	}
 	
 	/**
