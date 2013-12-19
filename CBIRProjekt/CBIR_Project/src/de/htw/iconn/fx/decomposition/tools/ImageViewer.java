@@ -6,6 +6,10 @@
 package de.htw.iconn.fx.decomposition.tools;
 
 import java.awt.image.BufferedImage;
+
+import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.IVisualizeObserver;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -29,7 +33,7 @@ import javafx.stage.WindowEvent;
  *
  * @author moritz
  */
-public class ImageViewer {
+public class ImageViewer  implements IVisualizeObserver { //extends AController implements IVisualizeObserver
 
     // letzter Zoomfaktor (zur Berechnung der Verschiebung des Bildes bei Zoomaenderung)
     private double zoomFactorLast = 1;
@@ -83,6 +87,15 @@ public class ImageViewer {
     public ImageViewer(Pic[] images) {
     	this.images = images;
     	
+    	initalize();
+    }
+    
+    public ImageViewer() {
+    	
+    }
+    
+    public void setImages(Pic[] images) {
+    	this.images = images;
     	initalize();
     }
 
@@ -400,5 +413,12 @@ public class ImageViewer {
             image.setyLen(yLen);
         }
     }
+
+	@Override
+	public void update(RBMInfoPackage info) {
+		double[][] weights = info.getWeights();
+		
+		
+	}
 
 }
