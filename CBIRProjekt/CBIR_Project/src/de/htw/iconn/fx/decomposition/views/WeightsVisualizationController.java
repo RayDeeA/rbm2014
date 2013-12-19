@@ -14,8 +14,11 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -31,6 +34,8 @@ public class WeightsVisualizationController extends AController implements IVisu
     private ImageView imgView;
 
     WeightsVisualizationModel model;
+    
+    private final Stage weightViewStage = new Stage();
 
     /**
      * Initializes the controller class.
@@ -41,6 +46,12 @@ public class WeightsVisualizationController extends AController implements IVisu
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new WeightsVisualizationModel(this);
+        
+        Parent root = (Parent) this.getView();
+        Scene scene = new Scene(root, 600, 400);
+        weightViewStage.setScene(scene);
+        // weightViewStage.setOnCloseRequest(this);
+        
     }
 
     public void setDimensions(int x, int y) {

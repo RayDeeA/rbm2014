@@ -24,6 +24,7 @@ public class RBMEnhancer implements IRBM {
 		boolean added = false;
 		
 		if(enhancement instanceof IRBMTrainingEnhancement) {
+                            
 			traningEnhancements.add((IRBMTrainingEnhancement) enhancement);
 			added = true;
 		}

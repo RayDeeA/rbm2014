@@ -20,13 +20,10 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -35,17 +32,16 @@ import javafx.stage.Stage;
  */
 public class RBMSettingsVisualizationsController extends AController {
 
-	private RBMSettingsVisualizationsModel model;
-	private ErrorViewController errorViewController;
-	private ImageViewer featuresView;
-	private WeightsVisualizationController weightsViewController;
-	@FXML
-	private TextField txt_weightsInterval;
-	@FXML
-	private TextField txt_errorInterval;
-	@FXML
-	private TextField txt_featuresInterval;
-	private Stage errorStage;
+    private RBMSettingsVisualizationsModel model;
+    private ErrorViewController errorViewController;
+    private ImageViewer featuresView;
+    private WeightsVisualizationController weightsViewController;
+    @FXML
+    private TextField txt_weightsInterval;
+    @FXML
+    private TextField txt_errorInterval;
+    @FXML
+    private TextField txt_featuresInterval;
 
     @FXML
     private AnchorPane view;
@@ -64,7 +60,14 @@ public class RBMSettingsVisualizationsController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new RBMSettingsVisualizationsModel(this);
+        ErrorViewController errorViewController = null;
+        try {
+            errorViewController = (ErrorViewController) loadController("../views/ErrorView.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        this.model = new RBMSettingsVisualizationsModel(this, errorViewController);
         this.update();
     }
 
@@ -77,34 +80,27 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private void cbx_showErrorGraphAction(ActionEvent event) {
         this.model.setShowErrorGraph(cbx_showErrorGraph.isSelected());
+        if(cbx_showErrorGraph.isSelected()) {
+            this.model.getErrorViewController().show();
+        }
+        else {
+            this.model.getErrorViewController().hide();
+        }
+    }
 
-        if (this.model.isShowErrorGraph()) {
-            initErrorView();
+    @FXML
+    private void cbx_showFeaturesAction(ActionEvent event) {
+        this.model.setShowFeatures(cbx_showFeatures.isSelected());
 
-            this.errorViewController.setDisplayDimensions();
-//			this.updateError();
+        if (this.model.isShowFeatures()) {
+            initFeaturesView();
 
-		} else {
-			if (this.errorStage != null) {
-				this.errorStage.close();
-			}
-		}
-		this.update();
-	}
-	
-	@FXML
-	private void cbx_showFeaturesAction(ActionEvent event) {
-		this.model.setShowFeatures(cbx_showFeatures.isSelected());
-		
-		if (this.model.isShowFeatures()) {
-			initFeaturesView();
-
-		} else {
-			if (this.featuresView != null) {
-				this.featuresView.close();
-			}
-		}
-		this.update();
+        } else {
+            if (this.featuresView != null) {
+                this.featuresView.close();
+            }
+        }
+        this.update();
     }
 
     @Override
@@ -135,15 +131,14 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
 
+    @FXML
+    private void txt_errorIntervalKey(KeyEvent event) {
+        try {
+            this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
+        } catch (NumberFormatException e) {
 
-	@FXML
-	private void txt_errorIntervalKey(KeyEvent event) {
-		try{
-			this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
-		}catch(NumberFormatException e){
-			
-		}
-	}
+        }
+    }
 
     @FXML
     private void txt_featuresIntervalKey(KeyEvent event) {
@@ -154,29 +149,10 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
 
-    private void initErrorView() {
-        try {
-            this.errorViewController = (ErrorViewController) loadController("../views/ErrorView.fxml");
-            Parent root = (Parent) this.errorViewController.getView();
-            Scene scene = new Scene(root, 600, 400);
 
-			this.errorStage = new Stage();
-			this.errorStage.setTitle("Error Viewer");
-			this.errorStage.setScene(scene);
-			this.errorStage.setY(42.0);;
-			this.errorStage.setX(42.0);
-			this.errorStage.setWidth(600.0);
-			this.errorStage.show();
-			this.model.setShowErrorGraph(true);
-//			this.update();
-		} catch (IOException ex) {
-			Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-	
-	private void initFeaturesView() {
-    	    this.featuresView = new ImageViewer(new ImageManager());
-    	    this.featuresView.show();
-	}
+    private void initFeaturesView() {
+        this.featuresView = new ImageViewer(new ImageManager());
+        this.featuresView.show();
+    }
 
 }
