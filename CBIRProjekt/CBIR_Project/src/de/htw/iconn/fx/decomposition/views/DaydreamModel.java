@@ -97,8 +97,8 @@ public class DaydreamModel {
         double[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkController, data, this.useHiddenStates, this.useVisibleStates);
         
         // Create hidden and visible daydream data, which is used for visualization
-        double[] hiddenDataForVis = trainer.getHiddenAllRBMs(this.benchmarkController, data, false);
-        double[] visibleDataForVis = trainer.getVisibleAllRBMs(this.benchmarkController, hiddenDataForVis, false);
+        double[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkController, data, false);
+        double[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkController, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
         int[] hiddenImagePixels = new int[hiddenDataForVis.length];

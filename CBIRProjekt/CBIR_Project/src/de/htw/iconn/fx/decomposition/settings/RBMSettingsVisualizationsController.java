@@ -6,7 +6,6 @@
 package de.htw.iconn.fx.decomposition.settings;
 
 import de.htw.iconn.fx.decomposition.AController;
-import de.htw.iconn.fx.decomposition.tools.ImageManager;
 import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
@@ -175,7 +174,7 @@ public class RBMSettingsVisualizationsController extends AController {
 	}
 	
 	private void initFeaturesView() {
-    	    this.featuresView = new ImageViewer(new ImageManager());
+    	    this.featuresView = new ImageViewer();
     	    this.featuresView.show();
 	}
 

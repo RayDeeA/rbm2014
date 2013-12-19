@@ -85,9 +85,8 @@ public class DaydreamController extends AController implements EventHandler {
 
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
-
         int delay = 0; // delay for 3 sec. 
-        int period = 50; // repeat every 5 sec. 
+        int period = 250; // repeat every 5 sec. 
         this.timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

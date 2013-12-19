@@ -27,6 +27,7 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsControlle
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
+import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.ErrorViewModel;
 
 /**
@@ -98,6 +99,7 @@ public class RBMTrainer {
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();
+        int featuresInterval = visualizationsModel.getFeaturesInterval();
 
         if (visualizationsModel.isShowWeights()) {
             rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
@@ -111,7 +113,8 @@ public class RBMTrainer {
         
         // TODO
         if (visualizationsModel.isShowFeatures()) {
-
+        	ImageViewer featuresViewer = visualizationsModel.getFeatureViewer();
+        	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
         }
 
         rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
@@ -127,7 +130,7 @@ public class RBMTrainer {
 		return getHiddenAllRBMs(benchmarkController, data, false, false);
 	}
 	
-	public double[] getHiddenAllRBMs(BenchmarkController benchmarkController, double[] data, boolean binarizeHidden){
+	public double[] getHiddenAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeHidden){
 		double[][] data2Dimensions = vectorToMatrix(data);
 		
 		double[][] hiddenData2Dimensions = getHiddenAllRBMs(benchmarkController, data2Dimensions, binarizeHidden, true);
@@ -203,7 +206,7 @@ public class RBMTrainer {
 		return getVisibleAllRBMs(benchmarkController, data, false, false);
 	}
 	
-	public double[] getVisibleAllRBMs(BenchmarkController benchmarkController, double[] data, boolean binarizeVisible){
+	public double[] getVisibleAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeVisible){
 		double[][] data2Dimensions = vectorToMatrix(data);
 		// TODO
 		double[][] visibleData2Dimensions = getVisibleAllRBMs(benchmarkController, data2Dimensions, binarizeVisible, true);
