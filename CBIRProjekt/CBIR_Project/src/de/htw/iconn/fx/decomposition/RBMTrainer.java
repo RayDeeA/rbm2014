@@ -99,7 +99,7 @@ public class RBMTrainer {
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();
-        int featuresInterval = visualizationsModel.getFeaturesInterval();
+        //int featuresInterval = visualizationsModel.getFeaturesInterval();
 
         if (visualizationsModel.isShowWeights()) {
             rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
@@ -112,10 +112,12 @@ public class RBMTrainer {
         }
         
         // TODO
+        /*
         if (visualizationsModel.isShowFeatures()) {
         	ImageViewer featuresViewer = visualizationsModel.getFeatureViewer();
         	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
         }
+        */
 
         rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
 

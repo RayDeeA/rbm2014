@@ -63,7 +63,7 @@ public class ControlCenterController extends AController {
         
         // standard innitializing
         //mnu_newRbmAction(null);
-        mnu_newRbmAction(null);
+        //mnu_newRbmAction(null);
     }
 
     @FXML

@@ -6,7 +6,6 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.decomposition.views.WeightsVisualizationController;
 
@@ -23,13 +22,9 @@ public class RBMSettingsVisualizationsModel{
     
     private final WeightsVisualizationController weightsVisualizationController;
     private final ErrorViewController errorViewController;
-    private final ImageViewer featureViewer;
     
     private int weightsInterval = 1000;
     private int errorInterval = 1000;
-	private int featuresInterval = 1000;
-
-	private boolean showFeatures;
 
     public int getWeightsInterval() {
         return weightsInterval;
@@ -46,19 +41,10 @@ public class RBMSettingsVisualizationsModel{
     public void setErrorInterval(int errorInterval) {
         this.errorInterval = errorInterval;
     }
-
-    public int getFeaturesInterval() {
-        return featuresInterval;
-    }
-    
-	public void setFeaturesInterval(int featuresInterval) {
-		this.featuresInterval = featuresInterval;
-	}
     
     public RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller) {
     	this.weightsVisualizationController = new WeightsVisualizationController();
     	this.errorViewController = new ErrorViewController();
-    	this.featureViewer = new ImageViewer();
         this.controller = controller;
     }
     
@@ -78,14 +64,6 @@ public class RBMSettingsVisualizationsModel{
         this.showErrorGraph = showErrorGraph;
     }
     
-	public void setShowFeatures(boolean showFeatures) {
-		this.showFeatures = showFeatures;
-	}
-	
-    public boolean isShowFeatures() {
-        return showFeatures;
-    }
-    
     public WeightsVisualizationController getWeightVisualizationController(){
         return this.weightsVisualizationController;  
     }
@@ -93,11 +71,4 @@ public class RBMSettingsVisualizationsModel{
     public ErrorViewController getErrorViewController(){
         return this.errorViewController;     
     }
-
-    public ImageViewer getFeatureViewer(){
-        return this.featureViewer;     
-    }
-
-
-
 }
