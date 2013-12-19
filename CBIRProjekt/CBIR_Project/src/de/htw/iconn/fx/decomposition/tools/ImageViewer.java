@@ -6,6 +6,10 @@
 package de.htw.iconn.fx.decomposition.tools;
 
 import java.awt.image.BufferedImage;
+
+import de.htw.iconn.fx.decomposition.AController;
+import de.htw.iconn.fx.decomposition.IVisualizeObserver;
+import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -15,6 +19,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -29,7 +35,7 @@ import javafx.stage.WindowEvent;
  *
  * @author moritz
  */
-public class ImageViewer {
+public class ImageViewer  implements IVisualizeObserver { //extends AController implements IVisualizeObserver
 
     // letzter Zoomfaktor (zur Berechnung der Verschiebung des Bildes bei Zoomaenderung)
     private double zoomFactorLast = 1;
@@ -83,6 +89,15 @@ public class ImageViewer {
     public ImageViewer(Pic[] images) {
     	this.images = images;
     	
+    	initalize();
+    }
+    
+    public ImageViewer() {
+    	
+    }
+    
+    public void setImages(Pic[] images) {
+    	this.images = images;
     	initalize();
     }
 
@@ -263,7 +278,7 @@ public class ImageViewer {
 
         if (images != null) {
             root.getChildren().clear();
-//             System.out.println(xMousePos + " " + yMousePos + "    " + xMouseMove + " " + yMouseMove);
+//          System.out.println(xMousePos + " " + yMousePos + "    " + xMouseMove + " " + yMouseMove);
             calculateDrawingPositions(xMousePos, yMousePos, xMouseMove, yMouseMove, zoomFactor);
             for (Pic image : images) {
                 BufferedImage bi = (drawFeatures) ? image.getFeatureImage() : image.getDisplayImage();
@@ -400,5 +415,60 @@ public class ImageViewer {
             image.setyLen(yLen);
         }
     }
+
+	@Override
+	public void update(RBMInfoPackage info) {
+		double[][] weights = info.getWeights();
+		
+		double min = Double.MAX_VALUE, max = 0; 
+		for(int o = 0; o < weights[0].length; o++) {
+			for(int i = 0; i < weights.length; i++) {
+				min = Math.min(min, weights[i][o]); 
+				max = Math.max(max, weights[i][o]); 
+			}
+		}
+
+		
+		Pic[] pics = new Pic[weights[0].length];
+		
+		for(int i = 0; i < weights[0].length; i++) {
+
+			int imageDimensions = weights.length;
+
+			int imageWidth = (int) Math.sqrt(imageDimensions), imageHeight = (int) Math.sqrt(imageDimensions);
+
+			WritableImage image = new WritableImage(imageWidth, imageHeight);
+			PixelWriter writer = image.getPixelWriter();
+
+			for (int y = 0, pos = 0; y < imageHeight; y++) {
+				for (int x = 0; x < imageWidth; x++, pos++) {
+					double value = (double) (weights[pos][i]);
+					double valueInterpolated = interpolate(min, max, value);
+					int valueArgb = (int) (valueInterpolated * 255);
+
+					Color color = Color.rgb(valueArgb, valueArgb, valueArgb);
+					writer.setColor(x, y, color);
+				}
+			}
+			
+			BufferedImage bi = null;
+			SwingFXUtils.fromFXImage(image, bi);
+			
+			Pic pic = new Pic();
+			pic.setDisplayImage(bi);
+			pics[i] = pic;
+		}
+		
+		this.setImages(pics);
+		
+	}
+		
+		private double interpolate(double min, double max, double value) {
+
+			double slope = 1.0 * (1.0 - 0.0) / (max - min);
+			double output = 0.0 + slope * (value - min);
+
+			return output;
+		}
 
 }

@@ -22,7 +22,8 @@ public class DaydreamModel {
     Random random = new Random();
 	
     BufferedImage calcImage;
-    BufferedImage visImage;
+    BufferedImage visibleImage;
+    BufferedImage hiddenImage;
 
     private boolean useHiddenStates;
 	private boolean useVisibleStates;
@@ -79,39 +80,78 @@ public class DaydreamModel {
         return image;
     }
 
-    public Image daydream(int visWidth, int visHeight) {
+    public void daydream() {
     	RBMTrainer trainer = new  RBMTrainer();
     	
     	int width = this.benchmarkController.getModel().getImageEdgeSize();
     	int height = this.benchmarkController.getModel().getImageEdgeSize();
     	
+    	// Get pixels from calculation image and convert it to normalized data  
     	double[] data = new double[this.calcImage.getWidth() * this.calcImage.getHeight()];
     	int[] calcImagePixels = this.calcImage.getRGB(0, 0, width, height, null, 0, width);
     	for(int i = 0; i < data.length; i++) {
     		data[i] = (calcImagePixels[i] & 0xff) / (double)255.0f;
     	}
     	
+    	// Create visible daydream data, which is used for the next calculation step 
         double[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkController, data, this.useHiddenStates, this.useVisibleStates);
-        double[] visibleDataForVis = trainer.daydreamAllRBMs(this.benchmarkController, data, false, false);
         
+        // Create hidden and visible daydream data, which is used for visualization
+        double[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkController, data, false);
+        double[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkController, hiddenDataForVis, false);
+        
+        // Convert hiddenData to pixels
+        int[] hiddenImagePixels = new int[hiddenDataForVis.length];
+        int hiddenImageWidth = 10;
+        int hiddenImageHeight = (int) Math.ceil(hiddenImagePixels.length / 10);
+        
+        int counter = 0;
+        for(int y = 0; y < hiddenImageHeight; y++) {
+        	for(int x = 0; x < hiddenImageWidth; x++) {
+        		if(counter <= hiddenImagePixels.length) {
+        			int pos = y*hiddenImageWidth+x;
+            		int hiddenValue = (int) Math.round(hiddenDataForVis[pos] * 255);
+            		hiddenImagePixels[pos] = (0xFF << 24) | (hiddenValue << 16) | (hiddenValue << 8) | hiddenValue;
+        		}
+        		counter++;
+        	}
+        }
+        
+        // Convert visibleData to pixels
         int[] visImagePixels = new int[width*height];
     	for(int i = 0; i < calcImagePixels.length; i++) {
     		int calcValue = (int) Math.round(visibleDataForCalc[i] * 255);
-    		int visValue = (int) Math.round(visibleDataForVis[i] * 255);
+    		int visibleValue = (int) Math.round(visibleDataForVis[i] * 255);
     		calcImagePixels[i] = (0xFF << 24) | (calcValue << 16) | (calcValue << 8) | calcValue;
-    		visImagePixels[i] = (0xFF << 24) | (visValue << 16) | (visValue << 8) | visValue;
+    		visImagePixels[i] = (0xFF << 24) | (visibleValue << 16) | (visibleValue << 8) | visibleValue;
     	}
     	
         this.calcImage.setRGB(0, 0, width, height, calcImagePixels, 0, width);
-        this.visImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        this.visImage.setRGB(0, 0, width, height, visImagePixels, 0, width);
-        
+        this.visibleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        this.visibleImage.setRGB(0, 0, width, height, visImagePixels, 0, width);
+        this.hiddenImage = new BufferedImage(hiddenImageWidth, hiddenImageHeight, BufferedImage.TYPE_INT_RGB);
+        this.hiddenImage.setRGB(0, 0, hiddenImageWidth, hiddenImageHeight, hiddenImagePixels, 0, hiddenImageWidth);
+    }
+    
+    public Image getVisibleImage(int visWidth, int visHeight) {
 		ImageScaler imageScaler = new ImageScaler();
 
-        WritableImage image = new WritableImage(visWidth, visHeight);
-        SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.visImage, visWidth, visHeight), image);
+        WritableImage visibleImage = new WritableImage(visWidth, visHeight);
+        SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.visibleImage, visWidth, visHeight), visibleImage);
+    	
+    	return visibleImage;
+    }
+    
+    public Image getHiddenImage() {
+		ImageScaler imageScaler = new ImageScaler();
+		
+		int visWidth = this.hiddenImage.getWidth() * 10;
+		int visHeight = this.hiddenImage.getHeight() * 10;
 
-        return image;
+        WritableImage hiddenImage = new WritableImage(visWidth, visHeight);
+        SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.hiddenImage, visWidth, visHeight), hiddenImage);
+    	
+    	return hiddenImage;
     }
 
     public void setUseHiddenStates(boolean useHiddenStates) {

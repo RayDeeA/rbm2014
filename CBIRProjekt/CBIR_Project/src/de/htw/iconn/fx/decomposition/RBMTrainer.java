@@ -27,6 +27,7 @@ import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsControlle
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsController;
 import de.htw.iconn.fx.decomposition.settings.RBMSettingsWeightsModel;
+import de.htw.iconn.fx.decomposition.tools.ImageViewer;
 import de.htw.iconn.fx.decomposition.views.ErrorViewModel;
 
 /**
@@ -98,6 +99,7 @@ public class RBMTrainer {
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();
+        //int featuresInterval = visualizationsModel.getFeaturesInterval();
 
 //        if (visualizationsModel.isShowWeights()) {
 //            rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
@@ -109,6 +111,14 @@ public class RBMTrainer {
             errorViewModel.clear();
             rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, errorViewModel));
         }
+        
+        // TODO
+        /*
+        if (visualizationsModel.isShowFeatures()) {
+        	ImageViewer featuresViewer = visualizationsModel.getFeatureViewer();
+        	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
+        }
+        */
 
         rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
 
@@ -121,6 +131,16 @@ public class RBMTrainer {
     
 	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data) {
 		return getHiddenAllRBMs(benchmarkController, data, false, false);
+	}
+	
+	public double[] getHiddenAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeHidden){
+		double[][] data2Dimensions = vectorToMatrix(data);
+		
+		double[][] hiddenData2Dimensions = getHiddenAllRBMs(benchmarkController, data2Dimensions, binarizeHidden, true);
+		
+		double hiddenData[] = matrixToVector(hiddenData2Dimensions);
+
+		return hiddenData;
 	}
 	
 	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden){
@@ -174,17 +194,11 @@ public class RBMTrainer {
     }
     
 	public double[] getHiddenSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeHidden) {
-		double[][] data2Dimensions = new double[1][data.length];
-		for (int i = 0; i < data.length; i++) {
-			data2Dimensions[0][i] = data[i];
-		}
+		double[][] data2Dimensions = vectorToMatrix(data);
 
 		double[][] hiddenData2Dimensions = getHiddenSingleRBM(controller, data2Dimensions, binarizeHidden);
 
-		double hiddenData[] = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			hiddenData[i] = hiddenData2Dimensions[0][i];
-		}
+		double hiddenData[] = matrixToVector(hiddenData2Dimensions);
 
 		return hiddenData;
 	}
@@ -193,6 +207,16 @@ public class RBMTrainer {
 	
 	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data) {
 		return getVisibleAllRBMs(benchmarkController, data, false, false);
+	}
+	
+	public double[] getVisibleAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeVisible){
+		double[][] data2Dimensions = vectorToMatrix(data);
+		// TODO
+		double[][] visibleData2Dimensions = getVisibleAllRBMs(benchmarkController, data2Dimensions, binarizeVisible, true);
+		
+		double visibleData[] = matrixToVector(visibleData2Dimensions);
+
+		return visibleData;
 	}
 	
 	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible){
@@ -238,17 +262,11 @@ public class RBMTrainer {
     }
     
     public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeVisible) {
-		double[][] data2Dimensions = new double[1][data.length];
-		for (int i = 0; i < data.length; i++) {
-			data2Dimensions[0][i] = data[i];
-		}
+		double[][] data2Dimensions = vectorToMatrix(data);
 
 		double[][] visibleData2Dimensions = getVisibleSingleRBM(controller, data2Dimensions, binarizeVisible);
 
-		double visibleData[] = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			visibleData[i] = visibleData2Dimensions[0][i];
-		}
+		double visibleData[] = matrixToVector(visibleData2Dimensions);
 
 		return visibleData;
     }
@@ -256,18 +274,12 @@ public class RBMTrainer {
     // DAYDREAM
     
     public double[] daydreamAllRBMs(BenchmarkController controller, double[] data, boolean binarizeHidden, boolean binarizeVisible) {
-		double[][] data2Dimensions = new double[1][data.length];
-		for (int i = 0; i < data.length; i++) {
-			data2Dimensions[0][i] = data[i];
-		}
+		double[][] data2Dimensions = vectorToMatrix(data);
 		
 		double[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, binarizeHidden);
-		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, binarizeHidden);
+		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, binarizeVisible);
 		
-		double visibleData[] = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			visibleData[i] = visibleData2Dimensions[0][i];
-		}
+		double visibleData[] = matrixToVector(visibleData2Dimensions);
     	
     	return visibleData;
     }
@@ -278,6 +290,22 @@ public class RBMTrainer {
     	double[] visibleData = this.getVisibleSingleRBM(controller, hiddenData, binarizeVisible);
     	
     	return visibleData;
+    }
+    
+    private double[] matrixToVector(double[][] matrix) {
+		double vector[] = new double[matrix[0].length];
+		for (int i = 0; i < matrix[0].length; i++) {
+			vector[i] = matrix[0][i];
+		}
+		return vector;
+    }
+    
+    private double[][] vectorToMatrix(double[] vector) {
+		double[][] matrix = new double[1][vector.length];
+		for (int i = 0; i < vector.length; i++) {
+			matrix[0][i] = vector[i];
+		}
+		return matrix;
     }
 
 }

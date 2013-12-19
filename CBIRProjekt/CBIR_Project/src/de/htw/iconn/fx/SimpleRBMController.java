@@ -490,7 +490,8 @@ public class SimpleRBMController implements Initializable, IFXController {
 		for(int i = 0; i < this.model.getOutputSize(); i++) {
 			double[] hiddenData = new double[this.model.getOutputSize()];  
 			hiddenData[i] = 1.0f;
-
+			
+			// TODO CHECK FOR NEGATIVE VALUES
 			double[] visibleData = this.model.getRbmFeature().getVisible(hiddenData, false);
 
 			int imageWidth = (int) Math.sqrt(visibleData.length), imageHeight = (int) Math.sqrt(visibleData.length);

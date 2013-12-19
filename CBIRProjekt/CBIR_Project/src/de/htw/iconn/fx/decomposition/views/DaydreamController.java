@@ -43,6 +43,8 @@ public class DaydreamController extends AController implements EventHandler {
     @FXML
     private ImageView imgv_Result;
     @FXML
+    private ImageView imgv_ResultHidden;
+    @FXML
     private ImageView imgv_Input;
     @FXML
     private AnchorPane view;
@@ -83,15 +85,19 @@ public class DaydreamController extends AController implements EventHandler {
 
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
-
         int delay = 0; // delay for 3 sec. 
-        int period = 50; // repeat every 5 sec. 
+        int period = 250; // repeat every 5 sec. 
         this.timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 System.out.println("Dream");
-                imgv_Result.setImage(model.daydream((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
+                model.daydream();
+                imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
+                Image hiddenImage = model.getHiddenImage();
+                imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
+                imgv_ResultHidden.setFitHeight(hiddenImage.getHeight());
+                imgv_ResultHidden.setImage(hiddenImage);
             }
         }, delay, period);
         this.btn_daydream.setDisable(true);
