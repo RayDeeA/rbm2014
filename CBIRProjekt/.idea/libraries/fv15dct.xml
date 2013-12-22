@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="fv15dct">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/domain/fv15dct.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

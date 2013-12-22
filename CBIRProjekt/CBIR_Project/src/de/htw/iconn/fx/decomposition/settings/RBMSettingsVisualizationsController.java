@@ -6,13 +6,16 @@
 
 package de.htw.iconn.fx.decomposition.settings;
 
-import de.htw.iconn.fx.ErrorViewController;
+import de.htw.iconn.fx.decomposition.views.ErrorViewController;
 import de.htw.iconn.fx.WeightsVisualizationController;
 import de.htw.iconn.fx.decomposition.AController;
 import de.htw.iconn.fx.decomposition.enhancement.RBMInfoPackage;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,9 +33,6 @@ import javafx.scene.layout.AnchorPane;
 public class RBMSettingsVisualizationsController extends AController {
 
     private RBMSettingsVisualizationsModel model;
-    private ErrorViewController errorViewController;
-    private ImageViewer featuresView;
-    private WeightsVisualizationController weightsViewController;
     @FXML
     private TextField txt_weightsInterval;
     @FXML
@@ -46,14 +46,7 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showWeights;
     @FXML
     private CheckBox cbx_showErrorGraph;
-    
-    private RBMSettingsVisualizationsModel model;
-    private ErrorViewController errorViewController;
-    private WeightsVisualizationController weightsViewController;
-    @FXML
-    private TextField txt_weightsInterval;
-    @FXML
-    private TextField txt_errorInterval;
+
 
     /**
      * Initializes the controller class.
@@ -92,16 +85,6 @@ public class RBMSettingsVisualizationsController extends AController {
 
     @FXML
     private void cbx_showFeaturesAction(ActionEvent event) {
-        this.model.setShowFeatures(cbx_showFeatures.isSelected());
-
-        if (this.model.isShowFeatures()) {
-            initFeaturesView();
-
-        } else {
-            if (this.featuresView != null) {
-                this.featuresView.close();
-            }
-        }
         this.update();
     }
 
@@ -123,14 +106,6 @@ public class RBMSettingsVisualizationsController extends AController {
         this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
     }
 
-    public void update(RBMInfoPackage pack) {
-    
-    	if(this.cbx_showErrorGraph.isSelected()){
-            this.errorViewController.update(pack.getError());
-        }
-    	
-    }
-
     @FXML
     private void txt_weightsIntervalKey(KeyEvent event) {
         try{
@@ -149,19 +124,10 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
 
-    @FXML
-    private void txt_errorIntervalKey(KeyEvent event) {
-        try{
-            this.model.setErrorInterval(Integer.parseInt(this.txt_errorInterval.getText()));
-        }catch(NumberFormatException e){
-            
-        }
-    }
-
 
     private void initFeaturesView() {
-        this.featuresView = new ImageViewer(new ImageManager());
-        this.featuresView.show();
+//        this.featuresView = new ImageViewer(new ImageManager());
+//        this.featuresView.show();
     }
 
 }
