@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.util.Random;
 
 
-public class RBMOriginal implements IRBM {
+public class RBMOriginalCorrect implements IRBM {
 	
    
     private int numHidden;
@@ -20,7 +20,7 @@ public class RBMOriginal implements IRBM {
     private double[][] weights;
     
     
-    public RBMOriginal(int numVisbible, int numHidden, double learningRate, double[][] weights) {
+    public RBMOriginalCorrect(int numVisbible, int numHidden, double learningRate, double[][] weights) {
     	
 		this.numHidden = numHidden;
 		this.numVisible = numVisbible;
@@ -37,7 +37,7 @@ public class RBMOriginal implements IRBM {
             setWeights(weights);
     }
     
-	public RBMOriginal(int numVisbible, int numHidden, double learningRate) {
+	public RBMOriginalCorrect(int numVisbible, int numHidden, double learningRate) {
 		this.numHidden = numHidden;
 		this.numVisible = numVisbible;
 		this.numHiddenWithBias = numHidden + 1;
@@ -180,12 +180,12 @@ public class RBMOriginal implements IRBM {
 		    	}
 		    }
 		    */
-                /*for(int r = 0; r < posHiddenProbs.length; r++) {
+                for(int r = 0; r < posHiddenProbs.length; r++) {
 		    	for(int c = 0; c < posHiddenProbs[0].length; c++) {
 		    		if(c==0) posHiddenProbs[r][c] = 1;
 		    	}
 		    }
-		    */
+		    
 		    double[][] dataWithBiasT = transposeMatrix(dataWithBias);
 		    
 		    double[][] posAssociations = multiplicar(dataWithBiasT, posHiddenProbs);
@@ -230,11 +230,14 @@ public class RBMOriginal implements IRBM {
 		    error = 0;
 		    for(int r = 0; r < negVisibleProbs.length; r++) {
 		    	for(int c = 0; c < negVisibleProbs[0].length; c++) {
-		    		error += (dataWithBias[r][c] - negVisibleProbs[r][c]) * (dataWithBias[r][c] - negVisibleProbs[r][c]);
+                            double tmp = dataWithBias[r][c] - negVisibleProbs[r][c];
+                            
+		    		error += Math.pow(tmp,2)/ trainingData.length / weights.length;
 		    	}
 		    }
 		    //System.out.println(error);
-
+                    
+                    error = Math.sqrt(error);
 	    }
 
 	}
@@ -383,7 +386,7 @@ public class RBMOriginal implements IRBM {
 
 
 	public static void main(String[] args) {
-		RBMOriginal rbm = new RBMOriginal(6, 2, 0.1f);
+		RBMOriginalCorrect rbm = new RBMOriginalCorrect(6, 2, 0.1f);
 
 		double data[][] = {
 						// Alice: (Harry Potter = 1, Avatar = 1, LOTR 3 = 1, Gladiator = 0, Titanic = 0, Glitter = 0). Big SF/fantasy fan.
