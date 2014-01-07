@@ -118,13 +118,17 @@ public class Persistor {
             Annotation[] annotations = field.getDeclaredAnnotations();
             
             for(int i = 0; i < annotations.length; ++i){
-                if(annotations[i].annotationType().equals(Conserve.class)){
-                    hasConserveAnnotation = true;
+                if(annotations[i].annotationType().equals(Conserve.class)){                   
                     field.setAccessible(true);
                     Class type = field.getType();
                     String name = field.getName();
                     String value = getFieldValue(field, model);
-                    createDataElement(type.toString(), name, value, modelElement, doc);
+                    if(value != null){
+                        hasConserveAnnotation = true;
+                        createDataElement(type.toString(), name, value, modelElement, doc);
+                    }else{
+                        System.err.println("Could not conserve field of type " + type.toString());
+                    }                   
                 }
             }         
         }
@@ -153,7 +157,9 @@ public class Persistor {
     private String getFieldValue(Field field, Object model){
         String result = null;
         try {
-            if(field.get(model) instanceof Integer){
+            if(field.get(model) instanceof String){
+                result = (String)field.get(model);
+            }else if(field.get(model) instanceof Integer){
                 result = its((int)field.get(model));
             }else if(field.get(model) instanceof Double){
                 result = dts((double)field.get(model));
