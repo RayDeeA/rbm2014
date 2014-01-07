@@ -11,6 +11,7 @@ import de.htw.iconn.logistic.LinearUnclippedMatrixFunction;
 import de.htw.iconn.logistic.RectifierMatrixFunction;
 import de.htw.iconn.logistic.SquareRootLogistic;
 import de.htw.iconn.logistic.TanHMatrixFunction;
+import de.htw.iconn.persistence.Conserve;
 
 /**
  *
@@ -54,7 +55,9 @@ public class RBMSettingsMainModel{
     private int selectedRbmImplementation = 0;
     private int selectedRbmFeature = 0;
     private int selectedLogisticFunction = 0;
+    @Conserve
     private int inputSize = 0;
+    @Conserve
     private int outputSize = 150;
 
     public int getSelectedRbmImplementation() {

@@ -7,10 +7,7 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.rbm.RBMTrainer;
-import de.htw.iconn.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.main.AController;
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.RBMJBlas;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +19,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -57,6 +53,8 @@ public class RBMSettingsController extends AController {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,12 +81,12 @@ public class RBMSettingsController extends AController {
         }; 
         
         AController[] controllers = new AController[]{
-            addSettings(settingsRBM, settingsMain, "settings/RBMSettingsMain.fxml"),
-            addSettings(settingsRBM, settingsWeights, "settings/RBMSettingsWeights.fxml"),
-            addSettings(settingsRBM, settingsStoppingCondition, "settings/RBMSettingsStoppingCondition.fxml"),
-            addSettings(settingsRBM, settingsLearningRate, "settings/RBMSettingsLearningRate.fxml"),
-            addSettings(settingsRBM, settingsVisualizations, "settings/RBMSettingsVisualizations.fxml"),
-            addSettings(settingsRBM, settingsLogger, "settings/RBMSettingsLogger.fxml")
+            addSettings(settingsRBM, settingsMain, "../settings/RBMSettingsMain.fxml"),
+            addSettings(settingsRBM, settingsWeights, "../settings/RBMSettingsWeights.fxml"),
+            addSettings(settingsRBM, settingsStoppingCondition, "../settings/RBMSettingsStoppingCondition.fxml"),
+            addSettings(settingsRBM, settingsLearningRate, "../settings/RBMSettingsLearningRate.fxml"),
+            addSettings(settingsRBM, settingsVisualizations, "../settings/RBMSettingsVisualizations.fxml"),
+            addSettings(settingsRBM, settingsLogger, "../settings/RBMSettingsLogger.fxml")
         };
         
         this.model = new RBMSettingsModel(items, controllers, this);

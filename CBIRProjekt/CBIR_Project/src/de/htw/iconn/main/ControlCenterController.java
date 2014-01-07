@@ -6,7 +6,7 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.settings.RBMSettingsController;
-import de.htw.iconn.persistence.ConfigurationSaver;
+import de.htw.iconn.persistence.Persistor;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +41,7 @@ public class ControlCenterController extends AController {
     @FXML
     private MenuItem mnu_loadConfiguration;
 
-    private ConfigurationSaver configurationSaver;
+    private Persistor persistor;
 
     /**
      * Initializes the controller class.
@@ -51,7 +51,7 @@ public class ControlCenterController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.configurationSaver = new ConfigurationSaver();
+        this.persistor = new Persistor();
 
         try {
             benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
@@ -72,7 +72,7 @@ public class ControlCenterController extends AController {
     private void mnu_newRbmAction(ActionEvent event) {
         try {
 
-            RBMSettingsController controller = (RBMSettingsController) loadController("RBMSettings.fxml");
+            RBMSettingsController controller = (RBMSettingsController) loadController("../settings/RBMSettings.fxml");
             AnchorPane rbmSettingsView = (AnchorPane)(controller.getView());       
             rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty().subtract(15));
             benchmarkController.getModel().add(controller);
@@ -91,7 +91,7 @@ public class ControlCenterController extends AController {
     @FXML
     private void mnu_saveConfigurationAction(ActionEvent event) {
         try {
-            configurationSaver.saveConfigurationToFile(this.benchmarkController.getModel());
+            persistor.save(this.benchmarkController);
         } catch (IOException | ParserConfigurationException | TransformerException ex) {
             System.err.println("ERROR: could not save configuration to file");
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
