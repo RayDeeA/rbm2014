@@ -14,6 +14,7 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -44,7 +45,6 @@ import org.w3c.dom.Element;
  * @author christoph
  */
 public class Persistor {
-    
     private final String baseFolder = "Persistor";
     
     public void save(BenchmarkController benchmarkController) throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException{
@@ -127,7 +127,7 @@ public class Persistor {
                         hasConserveAnnotation = true;
                         createDataElement(type.toString(), name, value, modelElement, doc);
                     }else{
-                        System.err.println("Could not conserve field of type " + type.toString());
+                        System.err.println("ERROR: Could not conserve field of type " + type.toString());
                     }                   
                 }
             }         
@@ -156,44 +156,79 @@ public class Persistor {
     
     private String getFieldValue(Field field, Object model){
         String result = null;
+        Object value = null;
         try {
-            if(field.get(model) instanceof String){
-                result = (String)field.get(model);
-            }else if(field.get(model) instanceof Integer){
-                result = its((int)field.get(model));
-            }else if(field.get(model) instanceof Double){
-                result = dts((double)field.get(model));
-            }else if(field.get(model) instanceof Float){
-                result = fts((float)field.get(model));
-            }else if(field.get(model) instanceof Boolean){
-                result = bts((boolean)field.get(model));
-            }
-            //TODO: toString methods for arrays
+            value = field.get(model);
         } catch (IllegalArgumentException | IllegalAccessException ex) {
+            System.err.println("ERROR: Could not get value from field");
             Logger.getLogger(Persistor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(value instanceof String){
+            result = (String)value;
+        }else if(value instanceof Boolean){
+            result = bts((Boolean)value);
+        }else if(value instanceof Number){
+            result = nts((Number)value);
+        }else if(value.getClass().isArray()){
+            int len1 = Array.getLength(value);
+            if(len1 > 0){
+                Object[] array1 = new Object[len1];
+                for (int i = 0; i < len1; ++i) {
+                    array1[i] = Array.get(value, i);
+                }
+                if(array1[0].getClass().isArray()){
+                    int len2 = Array.getLength(array1[0]);
+                    if(len2 > 0){
+                        Object[][] array2 = new Object[len1][len2];
+                        for(int i = 0; i < len1; ++i){
+                            for(int j = 0; j < len2; ++j){
+                                array2[i][j] = Array.get(array1[i], j);
+                            }
+                        }                  
+                        result = naats(array2);
+                    }
+                }else{
+                    result = nats(array1);
+                }
+            }
         }
         
         return result;
-    }
-    
+    }   
     // boolean to string
-    private String bts(boolean b){
-        if(b) return "true";
+    private String bts(Boolean b){
+        if(b == null) return null;
+        if(b.booleanValue()) return "true";
         return "false";
     }
-    
-    // int to string
-    private String its(int i){
-        return new Integer(i).toString();
+    // number to string
+    private String nts(Number n){
+        if(n == null) return null;
+        return n.toString();
     }
-    
-    // double to string
-    private String dts(double d){
-        return new Double(d).toString();
+    // number array to string
+    private String nats(Object[] n){
+        if(n == null || n.length == 0 || !(n[0] instanceof Number)) return null;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < n.length; ++i){
+            sb.append(n[i]);
+            if(i < n.length - 1){
+                sb.append(",");
+            }
+        }
+        return sb.toString();
     }
-    
-    // float to string
-    private String fts(float f){
-        return new Float(f).toString();
+    // two dimensional number array to string
+    private String naats(Object[][] n){
+        if(n == null || n.length == 0 || n[0].length == 0 
+                || !(n[0][0] instanceof Number)) return null;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < n.length; ++i){
+            sb.append(nats(n[i]));
+            if(i < n.length - 1){
+                sb.append(";");
+            }
+        }
+        return sb.toString();
     }
 }

@@ -6,6 +6,7 @@
 
 package de.htw.iconn.settings;
 
+import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.persistence.XMLWeightsLoader;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class RBMSettingsWeightsModel{
     private boolean binarizeVisible = false;
     private boolean useSeed = false;
     private int seed = 0;
-    private double[][] weights;
+    @Conserve
+    private double[][] weights = {{1, 2}, {3, 4}};
     private final XMLWeightsLoader loader;
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
