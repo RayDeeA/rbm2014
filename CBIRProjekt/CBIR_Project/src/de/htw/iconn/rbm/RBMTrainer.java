@@ -34,7 +34,7 @@ import de.htw.iconn.views.ErrorViewModel;
 
 /**
  *
- * @author christoph
+ * @author radek, christoph
  */
 public class RBMTrainer {
 	

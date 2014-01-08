@@ -5,7 +5,6 @@
  */
 package de.htw.iconn.main;
 
-import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.statistics.PrecisionRecallTester;
 import de.htw.iconn.statistics.PrecisionRecallTestResult;
@@ -31,6 +30,8 @@ public class BenchmarkModel {
     
     @Conserve
     private ImageManager imageManager = null;
+    @Conserve
+	private boolean binarizeImages;
     @Conserve
     private boolean showImageViewer = false;
     @Conserve
@@ -91,6 +92,10 @@ public class BenchmarkModel {
     public boolean isShowImageViewer() {
         return showImageViewer;
     }
+    
+	public void setBinarizeImages(boolean binarizeImages) {
+		this.binarizeImages = binarizeImages;
+	}
 
     public void setShowImageViewer(boolean showImageViewer) {
         this.showImageViewer = showImageViewer;
@@ -136,8 +141,8 @@ public class BenchmarkModel {
         return this.imageEdgeSize * this.imageEdgeSize;
     }
     
-    public float[][] getInputData(){
-        return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize);
+    public float[][] getInputData() {
+    	return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize, this.binarizeImages);
     }
 
     PRTMAPController getPRTMAPController() {

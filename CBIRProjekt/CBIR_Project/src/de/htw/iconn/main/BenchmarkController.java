@@ -48,8 +48,11 @@ public class BenchmarkController extends AController {
 
     private BenchmarkModel model;
     @FXML
-
     private CheckBox cbx_imageViewer;
+    
+    @FXML
+    private CheckBox cbx_Binarize;
+    
     @FXML
     private ComboBox<?> cmb_mAPTests;
     @FXML
@@ -106,6 +109,11 @@ public class BenchmarkController extends AController {
             this.update();
             this.rbmUpdate();
         }
+    }
+    
+    @FXML
+    private void cbx_BinarizeAction(ActionEvent event) {
+        this.model.setBinarizeImages(this.cbx_Binarize.isSelected());
     }
 
     @FXML
