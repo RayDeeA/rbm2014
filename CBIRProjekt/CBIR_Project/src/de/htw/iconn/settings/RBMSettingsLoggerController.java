@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -61,9 +60,7 @@ public class RBMSettingsLoggerController extends AController {
 
     @Override
     public void update() {
-//        this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
-//        this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
     }
 
 }

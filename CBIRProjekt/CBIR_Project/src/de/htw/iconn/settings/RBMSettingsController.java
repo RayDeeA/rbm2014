@@ -81,12 +81,12 @@ public class RBMSettingsController extends AController {
         }; 
         
         AController[] controllers = new AController[]{
-            addSettings(settingsRBM, settingsMain, "../settings/RBMSettingsMain.fxml"),
-            addSettings(settingsRBM, settingsWeights, "../settings/RBMSettingsWeights.fxml"),
-            addSettings(settingsRBM, settingsStoppingCondition, "../settings/RBMSettingsStoppingCondition.fxml"),
-            addSettings(settingsRBM, settingsLearningRate, "../settings/RBMSettingsLearningRate.fxml"),
-            addSettings(settingsRBM, settingsVisualizations, "../settings/RBMSettingsVisualizations.fxml"),
-            addSettings(settingsRBM, settingsLogger, "../settings/RBMSettingsLogger.fxml")
+            addSettings(settingsRBM, settingsMain, "RBMSettingsMain.fxml"),
+            addSettings(settingsRBM, settingsWeights, "RBMSettingsWeights.fxml"),
+            addSettings(settingsRBM, settingsStoppingCondition, "RBMSettingsStoppingCondition.fxml"),
+            addSettings(settingsRBM, settingsLearningRate, "RBMSettingsLearningRate.fxml"),
+            addSettings(settingsRBM, settingsVisualizations, "RBMSettingsVisualizations.fxml"),
+            addSettings(settingsRBM, settingsLogger, "RBMSettingsLogger.fxml")
         };
         
         this.model = new RBMSettingsModel(items, controllers, this);
