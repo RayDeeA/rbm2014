@@ -6,6 +6,7 @@
 
 package de.htw.iconn.settings;
 
+import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.main.AController;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -35,8 +37,6 @@ public class RBMSettingsVisualizationsController extends AController {
     private TextField txt_weightsInterval;
     @FXML
     private TextField txt_errorInterval;
-    @FXML
-    private TextField txt_featuresInterval;
 
     @FXML
     private AnchorPane view;
@@ -44,6 +44,10 @@ public class RBMSettingsVisualizationsController extends AController {
     private CheckBox cbx_showWeights;
     @FXML
     private CheckBox cbx_showErrorGraph;
+    @FXML
+    private Label lbl_weightsInterval;
+    @FXML
+    private Label lbl_errorInterval;
 
 
     /**
@@ -59,10 +63,13 @@ public class RBMSettingsVisualizationsController extends AController {
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        lbl_errorInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
+        lbl_weightsInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         this.model = new RBMSettingsVisualizationsModel(this, errorViewController);
+        
         this.update();
-    }    
+    }
+    
 
     @FXML
     private void cbx_showWeightsAction(ActionEvent event) {
@@ -81,8 +88,7 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
 
-    @FXML
-    private void cbx_showFeaturesAction(ActionEvent event) {
+        private void cbx_showFeaturesAction(ActionEvent event) {
         this.update();
     }
 

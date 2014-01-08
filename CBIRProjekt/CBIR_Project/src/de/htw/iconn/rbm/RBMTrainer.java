@@ -95,9 +95,6 @@ public class RBMTrainer {
             rbmEnhancer.addEnhancement(new XMLEndTrainingLogger());
         }
 
-        if (loggerModel.isContinuousLoggerOn()) {
-            rbmEnhancer.addEnhancement(new XMLTrainingLogger());
-        }
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();

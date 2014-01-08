@@ -9,6 +9,7 @@ public class RBMEnhancer implements IRBM {
 	private final LinkedList<IRBMTrainingEnhancement> traningEnhancements;
 	private final LinkedList<IRBMEndTrainingEnhancement> endEnhancements;
         private final RBMInfoPackage info;
+        public final static int BASE_INTERVAL = 100;
 	
 	public RBMEnhancer(IRBM rbm) {
 		super();
@@ -42,7 +43,7 @@ public class RBMEnhancer implements IRBM {
 		boolean updateModel;		
 		for (int i = 0; i < max_epochs; i++) {
 			updateModel = true;
-			rbm.train(trainingData, 1, useHiddenStates, useVisibleStates);
+			rbm.train(trainingData, BASE_INTERVAL, useHiddenStates, useVisibleStates);
 			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
 				if(i % enhancement.getUpdateInterval() == 0) {

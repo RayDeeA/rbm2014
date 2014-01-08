@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package de.htw.iconn.settings;
 
 import de.htw.iconn.main.AController;
@@ -22,20 +21,20 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author christoph
  */
-public class RBMSettingsLoggerController extends AController{
+public class RBMSettingsLoggerController extends AController {
+
     @FXML
     private AnchorPane view;
-    @FXML
-    private CheckBox cbx_continuousLogger;
+    //       private CheckBox cbx_continuousLogger;
     @FXML
     private CheckBox cbx_finalLogger;
-    @FXML
     private TextField txt_continuousInterval;
-    
-    private RBMSettingsLoggerModel model; 
+
+    private RBMSettingsLoggerModel model;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -43,11 +42,6 @@ public class RBMSettingsLoggerController extends AController{
     public void initialize(URL url, ResourceBundle rb) {
         this.model = new RBMSettingsLoggerModel(this);
         this.update();
-    }    
-
-    @FXML
-    private void cbx_continuousLoggerAction(ActionEvent event) {
-        this.model.setContinuousLoggerOn(cbx_continuousLogger.isSelected());
     }
 
     @FXML
@@ -59,25 +53,17 @@ public class RBMSettingsLoggerController extends AController{
     public Node getView() {
         return this.view;
     }
-    
+
     public RBMSettingsLoggerModel getModel() {
         return model;
     }
 
-    @FXML
-    private void txt_continuousIntervalKey(KeyEvent event) {
-        try {
-            this.model.setContinuousInterval(Integer.parseInt(this.txt_continuousInterval.getText()));
-        } catch(NumberFormatException e) {
-            
-        }
-    }
 
     @Override
     public void update() {
-        this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
+//        this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
         this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
     }
-    
+
 }
