@@ -5,7 +5,6 @@
  */
 package de.htw.iconn.main;
 
-import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.statistics.PrecisionRecallTester;
 import de.htw.iconn.statistics.PrecisionRecallTestResult;
@@ -15,8 +14,10 @@ import de.htw.iconn.settings.RBMSettingsMainModel;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.persistence.Conserve;
+import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.views.PRTMAPController;
 import java.util.LinkedList;
+
 
 /**
  *
@@ -28,6 +29,7 @@ public class BenchmarkModel {
     private ImageViewer imageViewer;
     private final PRTMAPController prtmapController;
     private final LinkedList<RBMSettingsController> rbmSettingsList;
+    private RBMTrainer rbmTrainer;
     
     @Conserve
     private ImageManager imageManager = null;
@@ -60,23 +62,12 @@ public class BenchmarkModel {
         this.rbmSettingsList = new LinkedList<>();
         this.controller = controller;
         this.prtmapController = prtmapController;
+        this.rbmTrainer = new RBMTrainer();
     }
 
-    public boolean add(RBMSettingsController rbmSettings) {
-
-        if (rbmSettingsList.size() == 0) {
-            if (this.rbmSettingsList.add(rbmSettings)) {
-                return true;
-            }
-        } else {
-            RBMSettingsController lastController = this.rbmSettingsList.getLast();
-            int lastOutputSize = lastController.getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
-            RBMSettingsMainModel mainModel = rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel();
-            mainModel.setInputSize(lastOutputSize);
-        }
-
-        return this.rbmSettingsList.add(rbmSettings);
-
+    public void add(RBMSettingsController rbmSettings) {
+        this.rbmSettingsList.add(rbmSettings);
+        this.globalUpdate();
     }
 
     public LinkedList<RBMSettingsController> getRbmSettingsList() {
@@ -86,6 +77,7 @@ public class BenchmarkModel {
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
         this.imageViewer = new ImageViewer(imageManager);
+        this.globalUpdate();
     }
 
     public boolean isShowImageViewer() {
@@ -114,7 +106,7 @@ public class BenchmarkModel {
 
     public void startMAPTest(String imageCategory) {
 
-        float[][] features = controller.getRbmTrainer().getHiddenAllRBMs(controller, null, showImageViewer);
+        float[][] features = this.rbmTrainer.getHiddenAllRBMs(controller, null, showImageViewer);
         PrecisionRecallTester prTester = new PrecisionRecallTester(features, imageManager);
 
         PrecisionRecallTestResult result;
@@ -142,6 +134,14 @@ public class BenchmarkModel {
 
     PRTMAPController getPRTMAPController() {
         return prtmapController;
+    }
+    
+    public void globalUpdate(){
+        this.rbmTrainer.updateRBMs(this);
+    }
+    
+    public void trainRBMs(){
+        this.rbmTrainer.trainAllRBMs(this);
     }
 
 }
