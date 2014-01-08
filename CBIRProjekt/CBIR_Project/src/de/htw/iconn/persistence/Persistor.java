@@ -6,6 +6,8 @@
 
 package de.htw.iconn.persistence;
 
+import de.htw.iconn.image.ImageManager;
+import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.main.BenchmarkModel;
@@ -39,6 +41,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 /**
  *
@@ -149,13 +152,11 @@ public class Persistor {
         nameAttr.setValue(name);
         dataElement.setAttributeNode(nameAttr);
         
-        Attr valueAttr = doc.createAttribute("value");
-        valueAttr.setValue(value);
-        dataElement.setAttributeNode(valueAttr);
+        Text valueText = doc.createTextNode(value);
+        dataElement.appendChild(valueText);
     }
     
     private String getFieldValue(Field field, Object model){
-        String result = null;
         Object value = null;
         try {
             value = field.get(model);
@@ -163,71 +164,61 @@ public class Persistor {
             System.err.println("ERROR: Could not get value from field");
             Logger.getLogger(Persistor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(value instanceof String){
-            result = (String)value;
-        }else if(value instanceof Boolean){
-            result = bts((Boolean)value);
-        }else if(value instanceof Number){
-            result = nts((Number)value);
-        }else if(value.getClass().isArray()){
+        if(value == null) return null;
+        if(value.getClass().isArray()){
             int len1 = Array.getLength(value);
             if(len1 > 0){
-                Object[] array1 = new Object[len1];
+                Object[] array1d = new Object[len1];
                 for (int i = 0; i < len1; ++i) {
-                    array1[i] = Array.get(value, i);
+                    array1d[i] = Array.get(value, i);
                 }
-                if(array1[0].getClass().isArray()){
-                    int len2 = Array.getLength(array1[0]);
+                if(array1d[0].getClass().isArray()){
+                    int len2 = Array.getLength(array1d[0]);
                     if(len2 > 0){
-                        Object[][] array2 = new Object[len1][len2];
+                        Object[][] array2d = new Object[len1][len2];
                         for(int i = 0; i < len1; ++i){
                             for(int j = 0; j < len2; ++j){
-                                array2[i][j] = Array.get(array1[i], j);
+                                array2d[i][j] = Array.get(array1d[i], j);
                             }
                         }                  
-                        result = naats(array2);
+                        return array2dToString(array2d, true);
                     }
-                }else{
-                    result = nats(array1);
                 }
+                return arrayToString(array1d, true);
             }
         }
-        
-        return result;
-    }   
-    // boolean to string
-    private String bts(Boolean b){
-        if(b == null) return null;
-        if(b.booleanValue()) return "true";
-        return "false";
+        return objectToString(value);
     }
-    // number to string
-    private String nts(Number n){
-        if(n == null) return null;
-        return n.toString();
+    // image viewer to string
+    private String imageManagerToString(ImageManager im){
+        return im.getImageSetName();
     }
-    // number array to string
-    private String nats(Object[] n){
-        if(n == null || n.length == 0 || !(n[0] instanceof Number)) return null;
+    // object to string
+    private String objectToString(Object o){
+        if(o instanceof ImageManager) return imageManagerToString((ImageManager)o);
+        return o.toString();
+    }
+    // array to string
+    private String arrayToString(Object[] n, boolean appendSizeInfo){
+        if(n.length == 0) return null;
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < n.length; ++i){
-            sb.append(n[i]);
-            if(i < n.length - 1){
-                sb.append(",");
-            }
+        if(appendSizeInfo) sb.append(n.length + ";");
+        sb.append(n[0]);
+        for(int i = 1; i < n.length; ++i){
+            sb.append(",");
+            sb.append(objectToString(n[i]));
         }
         return sb.toString();
     }
-    // two dimensional number array to string
-    private String naats(Object[][] n){
-        if(n == null || n.length == 0 || n[0].length == 0 
-                || !(n[0][0] instanceof Number)) return null;
+    // two dimensional array to string
+    private String array2dToString(Object[][] n, boolean appendSizeInfo){
+        if(n.length == 0 || n[0].length == 0) return null;
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < n.length; ++i){
-            sb.append(nats(n[i]));
-            if(i < n.length - 1){
-                sb.append(";");
-            }
+        if(appendSizeInfo) sb.append(n.length + "," + n[0].length + ";");
+        sb.append(arrayToString(n[0], false));
+        for(int i = 1; i < n.length; ++i){
+            sb.append(";");
+            sb.append(arrayToString(n[i], false));
         }
         return sb.toString();
     }

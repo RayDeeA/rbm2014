@@ -6,6 +6,8 @@
 
 package de.htw.iconn.settings;
 
+import de.htw.iconn.persistence.Conserve;
+
 /**
  *
  * @author moritz
@@ -13,7 +15,7 @@ package de.htw.iconn.settings;
 public class RBMSettingsLearningRateModel{
     
     private final RBMSettingsLearningRateController controller;
-    
+    @Conserve
     private double constantLearningRate = 0.1;
 
     public RBMSettingsLearningRateModel(RBMSettingsLearningRateController controller) {

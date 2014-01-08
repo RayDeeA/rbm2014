@@ -14,6 +14,7 @@ import de.htw.iconn.settings.RBMSettingsMainController;
 import de.htw.iconn.settings.RBMSettingsMainModel;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
+import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.views.PRTMAPController;
 import java.util.LinkedList;
 
@@ -24,14 +25,19 @@ import java.util.LinkedList;
 public class BenchmarkModel {
 
     private final BenchmarkController controller;
-
-    private final LinkedList<RBMSettingsController> rbmSettingsList;
-    private ImageManager imageManager = null;
     private ImageViewer imageViewer;
     private final PRTMAPController prtmapController;
+    private final LinkedList<RBMSettingsController> rbmSettingsList;
+    
+    @Conserve
+    private ImageManager imageManager = null;
+    @Conserve
     private boolean showImageViewer = false;
+    @Conserve
     private int selectedMAPTest = 0;
+    @Conserve
     private boolean isPRTMAPViewerVisible;
+    @Conserve
     private int imageEdgeSize = 28;
 
     public int getImageEdgeSize() {
@@ -60,7 +66,6 @@ public class BenchmarkModel {
 
         if (rbmSettingsList.size() == 0) {
             if (this.rbmSettingsList.add(rbmSettings)) {
-                this.setRBMImageSet();
                 return true;
             }
         } else {
@@ -80,7 +85,6 @@ public class BenchmarkModel {
 
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
-        this.setRBMImageSet();
         this.imageViewer = new ImageViewer(imageManager);
     }
 
@@ -127,15 +131,13 @@ public class BenchmarkModel {
     public ImageViewer getImageViewer() {
         return imageViewer;
     }
-
-    private void setRBMImageSet() {
-        if (this.getRbmSettingsList().size() > 0 && imageManager != null) {
-            // TODO: checkbox for shuffled input data
-            RBMSettingsModel firstModel = this.getRbmSettingsList().getFirst().getModel();
-            RBMSettingsMainModel firstMainModel = firstModel.getController(RBMSettingsMainController.class).getModel();
-            firstMainModel.setInputSize(this.imageEdgeSize * this.imageEdgeSize);
-            firstModel.setData(DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize));
-        }
+    
+    public int getInputSize(){
+        return this.imageEdgeSize * this.imageEdgeSize;
+    }
+    
+    public double[][] getInputData(){
+        return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize);
     }
 
     PRTMAPController getPRTMAPController() {

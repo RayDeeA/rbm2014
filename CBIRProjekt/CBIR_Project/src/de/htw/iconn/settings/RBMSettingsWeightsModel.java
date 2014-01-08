@@ -21,14 +21,18 @@ import org.xml.sax.SAXException;
  */
 public class RBMSettingsWeightsModel{
     private final RBMSettingsWeightsController controller;
+    private final XMLWeightsLoader loader;
     
+    @Conserve
     private boolean binarizeHidden = false;
+    @Conserve
     private boolean binarizeVisible = false;
+    @Conserve
     private boolean useSeed = false;
+    @Conserve
     private int seed = 0;
     @Conserve
-    private double[][] weights;
-    private final XMLWeightsLoader loader;
+    private double[][] weights; 
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
         this.loader = new XMLWeightsLoader();

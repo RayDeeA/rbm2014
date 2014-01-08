@@ -5,6 +5,7 @@
  */
 package de.htw.iconn.settings;
 
+import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.views.ErrorViewController;
 
 /**
@@ -14,16 +15,18 @@ import de.htw.iconn.views.ErrorViewController;
 public class RBMSettingsVisualizationsModel {
 
     private final RBMSettingsVisualizationsController controller;
-
-    private boolean showWeights = false;
-    private boolean showErrorGraph = false;
     private final ErrorViewController errorViewController;
-
+    
+    @Conserve
+    private boolean showWeights = false;
+    @Conserve
+    private boolean showErrorGraph = false;
+    @Conserve
     private int weightsInterval = 1000;
+    @Conserve
     private int errorInterval = 1000;
+    @Conserve
     private int featuresInterval = 1000;
-
-    private boolean showFeatures;
 
     RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, 
             ErrorViewController errorViewController) {
@@ -70,14 +73,6 @@ public class RBMSettingsVisualizationsModel {
 
     public void setShowErrorGraph(boolean showErrorGraph) {
         this.showErrorGraph = showErrorGraph;
-    }
-
-    public void setShowFeatures(boolean showFeatures) {
-        this.showFeatures = showFeatures;
-    }
-
-    public boolean isShowFeatures() {
-        return showFeatures;
     }
 
     public ErrorViewController getErrorViewController() {

@@ -1,7 +1,6 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.main.AController;
-import de.htw.iconn.rbm.ARBMAdapter;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -11,13 +10,10 @@ import javafx.scene.control.TreeItem;
 public class RBMSettingsModel {
     
     private final RBMSettingsController controller;
-
     private final AController[] controllers;
     private final TreeItem<String>[] items;
 
     private double[][] data;
-
-    private ARBMAdapter rbmFeature;
 
     public RBMSettingsModel(TreeItem<String>[] items, AController[] controllers, RBMSettingsController controller){
         this.controllers = controllers;
@@ -55,12 +51,4 @@ public class RBMSettingsModel {
     public void setData(double[][] data) {
         this.data = data;
     }
-
-    /**
-     * @return the rbmFeature
-     */
-    public ARBMAdapter getARBMFeature() {
-        return this.rbmFeature;
-    }
-
 }

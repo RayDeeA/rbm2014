@@ -10,11 +10,10 @@ import java.util.ListIterator;
 
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.enhancement.TrainingVisualizer;
+import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.persistence.XMLEndTrainingLogger;
 import de.htw.iconn.persistence.XMLTrainingLogger;
 import de.htw.iconn.logistic.ILogistic;
-import de.htw.iconn.rbm.IRBM;
-import de.htw.iconn.rbm.RBMJBlas;
 import de.htw.iconn.settings.RBMSettingsLearningRateController;
 import de.htw.iconn.settings.RBMSettingsLearningRateModel;
 import de.htw.iconn.settings.RBMSettingsLoggerController;
@@ -27,8 +26,8 @@ import de.htw.iconn.settings.RBMSettingsVisualizationsController;
 import de.htw.iconn.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.settings.RBMSettingsWeightsController;
 import de.htw.iconn.settings.RBMSettingsWeightsModel;
-import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.main.BenchmarkController;
+import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.views.ErrorViewModel;
@@ -309,6 +308,21 @@ public class RBMTrainer {
 			matrix[0][i] = vector[i];
 		}
 		return matrix;
+    }
+    
+    public void updateRBMs(BenchmarkController benchmarkController){
+        BenchmarkModel benchmarkModel = benchmarkController.getModel();
+        int inputSize = benchmarkModel.getInputSize();
+        double[][] data = benchmarkModel.getInputData();
+        LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
+        for(RBMSettingsController settingsController : rbmSettingsList){
+            RBMSettingsModel settingsModel = settingsController.getModel();
+            RBMSettingsMainModel mainModel = settingsModel.getController(RBMSettingsMainController.class).getModel();
+            settingsModel.setData(data);
+            mainModel.setInputSize(inputSize);
+            data = getHiddenSingleRBM(settingsController, data);
+            inputSize = mainModel.getOutputSize();
+        }
     }
 
 }

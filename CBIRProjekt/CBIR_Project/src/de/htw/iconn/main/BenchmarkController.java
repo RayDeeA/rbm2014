@@ -103,7 +103,8 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
             }
-            this.updateView();
+            this.update();
+            this.rbmUpdate();
         }
     }
 
@@ -169,6 +170,7 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
+        this.rbmUpdate();
         this.getRbmTrainer().trainAllRBMs(this);
     }
 
@@ -198,18 +200,19 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
-    private void updateView() {
+    public void update() {
+        this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
+        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
+        this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
         if (this.model.getImageManager() == null) {
             lbl_imageSetSelected.setText("no image set selected");
         } else {
             lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
         }
     }
-
-    public void update() {
-        this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
-        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
-        this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
+    
+    public void rbmUpdate(){
+        this.rbmTrainer.updateRBMs(this);
     }
 
     @FXML

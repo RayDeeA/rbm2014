@@ -6,6 +6,8 @@
 
 package de.htw.iconn.settings;
 
+import de.htw.iconn.persistence.Conserve;
+
 /**
  *
  * @author christoph
@@ -13,9 +15,13 @@ package de.htw.iconn.settings;
 public class RBMSettingsStoppingConditionModel {
     private final RBMSettingsStoppingConditionController controller;
     
+    @Conserve
     private boolean epochsOn = true;
+    @Conserve
     private boolean errorOn = false;
+    @Conserve
     private int epochs = 100;
+    @Conserve
     private double error = 0.1;
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {

@@ -52,8 +52,11 @@ public class RBMSettingsMainModel{
         new SquareRootLogistic()
     };
     
+    @Conserve
     private int selectedRbmImplementation = 0;
+    @Conserve
     private int selectedRbmFeature = 0;
+    @Conserve
     private int selectedLogisticFunction = 0;
     @Conserve
     private int inputSize = 0;

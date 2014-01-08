@@ -6,16 +6,19 @@
 
 package de.htw.iconn.settings;
 
+import de.htw.iconn.persistence.Conserve;
+
 /**
  *
  * @author moritz
  */
 public class RBMSettingsLoggerModel{
     private final RBMSettingsLoggerController controller;
-    
+    @Conserve
     private boolean continuousLoggerOn = false;
+    @Conserve
     private boolean finalLoggerOn = true;
-    
+    @Conserve
     private int continuousInterval = 1000;
 
     RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
