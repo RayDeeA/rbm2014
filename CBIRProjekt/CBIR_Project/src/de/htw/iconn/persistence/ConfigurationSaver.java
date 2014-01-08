@@ -198,7 +198,7 @@ public class ConfigurationSaver {
     }
     
     private void retrieveLoggerData(RBMSettingsLoggerModel model, Element parent, Document doc){
-        createDataElement("boolean", "continuousLoggerOn", bts(model.isContinuousLoggerOn()), parent, doc);
+//        createDataElement("boolean", "continuousLoggerOn", bts(model.isContinuousLoggerOn()), parent, doc);
         createDataElement("boolean", "finalLoggerOn", bts(model.isFinalLoggerOn()), parent, doc);
         createDataElement("int", "continuousInterval", its(model.getContinuousInterval()), parent, doc);
     }

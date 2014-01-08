@@ -10,7 +10,6 @@ import java.util.ListIterator;
 
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.enhancement.TrainingVisualizer;
-import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.persistence.XMLEndTrainingLogger;
 import de.htw.iconn.persistence.XMLTrainingLogger;
 import de.htw.iconn.logistic.ILogistic;
@@ -40,8 +39,9 @@ public class RBMTrainer {
 	
     // TRAINING
 
-    public void trainAllRBMs(BenchmarkController benchmarkController) {
-        LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
+    public void trainAllRBMs(BenchmarkModel benchmarkModel) {
+        this.updateRBMs(benchmarkModel);
+        LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         RBMSettingsController lastController = null;
 
         int counter = 1;
@@ -95,9 +95,6 @@ public class RBMTrainer {
             rbmEnhancer.addEnhancement(new XMLEndTrainingLogger());
         }
 
-        if (loggerModel.isContinuousLoggerOn()) {
-            rbmEnhancer.addEnhancement(new XMLTrainingLogger());
-        }
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();
@@ -121,8 +118,18 @@ public class RBMTrainer {
         	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
         }
         */
-
-        rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
+        StoppingCondition stop;
+        if(stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) { 
+            stop = new StoppingCondition(stoppingConditionModel.getEpochs(), stoppingConditionModel.getError());
+        } else if(!stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) {
+            stop = new StoppingCondition(stoppingConditionModel.getError()); 
+        } else if(stoppingConditionModel.isEpochsOn() && !stoppingConditionModel.isErrorOn()) {
+            stop = new StoppingCondition(stoppingConditionModel.getEpochs()); 
+        } else {
+            stop = new StoppingCondition();
+        }
+        
+        rbmEnhancer.train(model.getData(), stop, weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
 
         weightsModel.setWeights(rbmEnhancer.getWeights());
         
@@ -310,8 +317,7 @@ public class RBMTrainer {
 		return matrix;
     }
     
-    public void updateRBMs(BenchmarkController benchmarkController){
-        BenchmarkModel benchmarkModel = benchmarkController.getModel();
+    public void updateRBMs(BenchmarkModel benchmarkModel){
         int inputSize = benchmarkModel.getInputSize();
         float[][] data = benchmarkModel.getInputData();
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();

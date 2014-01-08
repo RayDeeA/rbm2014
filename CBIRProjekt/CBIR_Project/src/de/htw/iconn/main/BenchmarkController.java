@@ -8,6 +8,7 @@ package de.htw.iconn.main;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.tools.Chooser;
 import de.htw.iconn.image.ImageManager;
+import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.PRTMAPController;
 
@@ -59,7 +60,6 @@ public class BenchmarkController extends AController {
     private Label lbl_imageSetSelected;
 
     private DaydreamController daydreamController;
-    private RBMTrainer rbmTrainer;
 
     private Stage daydreamStage;
     @FXML
@@ -87,7 +87,7 @@ public class BenchmarkController extends AController {
         }
 
         model = new BenchmarkModel(this, tmpController);
-        this.rbmTrainer = new RBMTrainer();
+        
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
     }
@@ -106,8 +106,7 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
             }
-            this.update();
-            this.rbmUpdate();
+            this.globalUpdate();        
         }
     }
     
@@ -178,8 +177,7 @@ public class BenchmarkController extends AController {
 
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
-        this.rbmUpdate();
-        this.getRbmTrainer().trainAllRBMs(this);
+        this.model.trainRBMs();
     }
 
     @Override
@@ -219,8 +217,13 @@ public class BenchmarkController extends AController {
         }
     }
     
-    public void rbmUpdate(){
-        this.rbmTrainer.updateRBMs(this);
+    public void globalUpdate(){
+        
+        this.update();
+        LinkedList<RBMSettingsController> rbmSettingsList = this.model.getRbmSettingsList();
+        for(RBMSettingsController c : rbmSettingsList){
+            c.update();
+        }
     }
 
     @FXML
@@ -231,12 +234,4 @@ public class BenchmarkController extends AController {
 
         }
     }
-
-    /**
-     * @return the rbmTrainer
-     */
-    public RBMTrainer getRbmTrainer() {
-        return rbmTrainer;
-    }
-
 }

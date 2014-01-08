@@ -135,7 +135,7 @@ public class RBMOriginal implements IRBM {
 	}
 	
 	@Override
-	public void train(float[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
+	public void train(float[][] trainingData, StoppingCondition stop, boolean useHiddenStates, boolean useVisibleStates) {
 		
 		//Printer.printMatrix("weights", weights);
 		/*
@@ -163,7 +163,7 @@ public class RBMOriginal implements IRBM {
 	    
 	    //Printer.printMatrix("DataWithBias", dataWithBias);
 	    
-	    for (int i = 0; i < max_epochs; i++) {
+	    while(stop.isNotDone()) {
 	    	
 	    	// Clamp to the data and sample from the hidden units. 
 		    // (This is the "positive CD phase", aka the reality phase.)
@@ -233,6 +233,7 @@ public class RBMOriginal implements IRBM {
 		    		error += (dataWithBias[r][c] - negVisibleProbs[r][c]) * (dataWithBias[r][c] - negVisibleProbs[r][c]);
 		    	}
 		    }
+                    stop.update(error);
 		    //System.out.println(error);
 
 	    }
@@ -400,7 +401,7 @@ public class RBMOriginal implements IRBM {
 						{ 0, 0, 1, 1, 1, 0 },
 	    			   };
 
-		rbm.train(data, 1000, false, false);
+		rbm.train(data, new StoppingCondition(10000), false, false);
 		rbm.printMatrix("Weights", rbm.weights);
 		
 		float user[][] = {

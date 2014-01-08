@@ -1,6 +1,7 @@
 package de.htw.iconn.enhancement;
 
 import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.StoppingCondition;
 import java.util.LinkedList;
 
 public class RBMEnhancer implements IRBM {
@@ -9,6 +10,7 @@ public class RBMEnhancer implements IRBM {
 	private final LinkedList<IRBMTrainingEnhancement> traningEnhancements;
 	private final LinkedList<IRBMEndTrainingEnhancement> endEnhancements;
         private final RBMInfoPackage info;
+        public final static int BASE_INTERVAL = 100;
 	
 	public RBMEnhancer(IRBM rbm) {
 		super();
@@ -38,23 +40,35 @@ public class RBMEnhancer implements IRBM {
 	}
 	
 	@Override
-	public void train(float[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
+	public void train(float[][] trainingData, StoppingCondition stop, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel;		
-		for (int i = 0; i < max_epochs; i++) {
+		while(stop.isNotDone()) {
 			updateModel = true;
-			rbm.train(trainingData, 1, useHiddenStates, useVisibleStates);
+                        
+                        StoppingCondition intervalStop = new StoppingCondition(
+                                stop.isErrorDisabled(),
+                                false,
+                                stop.epochsLeft() > BASE_INTERVAL 
+                                        ? (stop.getCurrentEpochs() + BASE_INTERVAL) : stop.getMaxEpochs(),
+                                stop.getMinError(),
+                                stop.getCurrentEpochs(), 
+                                stop.getCurrentError());
+                        
+			rbm.train(trainingData, intervalStop, useHiddenStates, useVisibleStates);
 			
 			for (IRBMTrainingEnhancement enhancement : this.traningEnhancements) {
-				if(i % enhancement.getUpdateInterval() == 0) {
+				if(intervalStop.getCurrentEpochs() % enhancement.getUpdateInterval() == 0) {
 					if(updateModel) {
 						updateModel = false;
-                        setInfo(rbm, trainingData, i, useHiddenStates, useVisibleStates);
+                        setInfo(rbm, trainingData, intervalStop.getCurrentEpochs(), useHiddenStates, useVisibleStates);
 					}
 					enhancement.action(this.info);
 				}
 			}
+                        stop.setCurrentEpochs(intervalStop.getCurrentEpochs());
+                        stop.setCurrentError(intervalStop.getCurrentError());
 		}
-		setInfo(rbm, trainingData, max_epochs, useHiddenStates, useVisibleStates);
+		setInfo(rbm, trainingData, stop.getMaxEpochs(), useHiddenStates, useVisibleStates);
 		for (IRBMEndTrainingEnhancement enhancement : this.endEnhancements) {
 			enhancement.action(this.info);
 		}

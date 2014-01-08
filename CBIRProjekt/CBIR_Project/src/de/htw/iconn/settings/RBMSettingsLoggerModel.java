@@ -14,8 +14,7 @@ import de.htw.iconn.persistence.Conserve;
  */
 public class RBMSettingsLoggerModel{
     private final RBMSettingsLoggerController controller;
-    @Conserve
-    private boolean continuousLoggerOn = false;
+
     @Conserve
     private boolean finalLoggerOn = true;
     @Conserve
@@ -23,19 +22,6 @@ public class RBMSettingsLoggerModel{
 
     RBMSettingsLoggerModel(RBMSettingsLoggerController controller) {
         this.controller = controller;
-    }
-    /**
-     * @return the continuousLoggerOn
-     */
-    public boolean isContinuousLoggerOn() {
-        return continuousLoggerOn;
-    }
-
-    /**
-     * @param continuousLoggerOn the continuousLoggerOn to set
-     */
-    public void setContinuousLoggerOn(boolean continuousLoggerOn) {
-        this.continuousLoggerOn = continuousLoggerOn;
     }
 
     /**
