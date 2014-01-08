@@ -63,7 +63,7 @@ public class RBMSettingsLoggerController extends AController {
     public void update() {
 //        this.cbx_continuousLogger.setSelected(this.model.isContinuousLoggerOn());
         this.cbx_finalLogger.setSelected(this.model.isFinalLoggerOn());
-        this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
+//        this.txt_continuousInterval.setText(new Integer(this.model.getContinuousInterval()).toString());
     }
 
 }

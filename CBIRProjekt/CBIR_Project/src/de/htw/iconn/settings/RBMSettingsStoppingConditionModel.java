@@ -22,7 +22,7 @@ public class RBMSettingsStoppingConditionModel {
     @Conserve
     private int epochs = 100;
     @Conserve
-    private double error = 0.1;
+    private float error = 0.1f;
 
     public RBMSettingsStoppingConditionModel(RBMSettingsStoppingConditionController controller) {
         this.controller = controller;
@@ -51,11 +51,11 @@ public class RBMSettingsStoppingConditionModel {
         this.epochs = epochs;
     }
 
-    public double getError() {
+    public float getError() {
         return error;
     }
 
-    public void setError(double error) {
+    public void setError(float error) {
         this.error = error;
     }
 }

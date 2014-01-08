@@ -9,8 +9,8 @@ public abstract class ARBMAdapter implements IRBM{
 	}
 
         @Override
-	public void train(float[][] data, int maxEpoche, boolean binarizeHidden, boolean binarizeVisible) {
-		rbm.train(data, maxEpoche, binarizeHidden, binarizeVisible);
+	public void train(float[][] data, StoppingCondition stop, boolean binarizeHidden, boolean binarizeVisible) {
+		rbm.train(data, stop, binarizeHidden, binarizeVisible);
 	}
 
         @Override

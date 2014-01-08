@@ -14,6 +14,7 @@ import de.htw.iconn.enhancement.IRBMEndTrainingEnhancement;
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.enhancement.RBMInfoPackage;
 import de.htw.iconn.persistence.XMLWeightLogger;
+import de.htw.iconn.rbm.StoppingCondition;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -93,7 +94,7 @@ public class XMLWeightLoggerTest extends TestCase{
        //Train JBlas RBM
        RBMEnhancer enhanceJblas = new RBMEnhancer(jblasRBM);
        enhanceJblas.addEnhancement(endTrainingEnhancement);
-       enhanceJblas.train(trainingData, epochs, true, true);
+       enhanceJblas.train(trainingData, new StoppingCondition(epochs), true, true);
        
     }
     
