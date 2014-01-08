@@ -7,9 +7,12 @@ package de.htw.iconn.views;
 import de.htw.iconn.main.AController;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
@@ -24,6 +27,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -46,6 +50,9 @@ public class ErrorViewController extends AController implements EventHandler {
     private ErrorViewModel model;
 
     private final Stage errorViewStage = new Stage();
+    
+    private Timeline animation;
+    private int inc = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,7 +61,10 @@ public class ErrorViewController extends AController implements EventHandler {
         Scene scene = new Scene(root, 600, 400);
         errorViewStage.setScene(scene);
         errorViewStage.setOnCloseRequest(this);
-
+        chart_line.setAnimated(false);
+        chart_line.setLegendVisible(false);
+        
+        chart_line.setCreateSymbols(false);
         chart_line.setId("Error Chart");
         chart_line.setTitle("Error Chart");
         xaxis.setAutoRanging(true);
@@ -67,7 +77,14 @@ public class ErrorViewController extends AController implements EventHandler {
         chart_line.getData().add(series);
 
         model = new ErrorViewModel(this);
-        this.update();
+        animation = new Timeline();
+        animation.getKeyFrames().add(new KeyFrame(Duration.millis(1000/1), new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent actionEvent) {
+                update();
+            }
+        }));
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
     }
 
     @Override
@@ -81,33 +98,49 @@ public class ErrorViewController extends AController implements EventHandler {
     }
 
     public void setDisplayDimensions() {
-        // TODO Auto-generated method stub
 
     }
-
-    private void addDummyDataToErrorList() {
-        Random r = new Random();
-        for (int i = 0; i < 13; i++) {
-            this.getModel().getErrors().add(r.nextDouble() * 123);
-        }
-    }
-
     private void buildGraph() {
 
-        final LinkedList<Double> errors = this.getModel().getErrors();
-        final LinkedList<Integer> epochs = this.getModel().getEpochs();
-
-        if (errors.size() != 0) {
+        final Double[] errors = this.getModel().getErrors().toArray(new Double[0]);
+        final Integer[] epochs = this.getModel().getEpochs().toArray(new Integer[0]);
+        
+            series.getData().clear();
+        if(errors.length == 0) {
             
-          chart_line.getData().get(0).getData().add(new XYChart.Data<Number, Number>(
-                    epochs.getLast(), 
-                    errors.getLast()));
+            double[] doubles = new double[inc++];
+            for (int i = 0; i < doubles.length; i++) {
+                doubles[i] = Math.random();              
+            }
+            for (int i = 0; i < doubles.length; i++) {
+                series.getData().add(new XYChart.Data<Number, Number>(
+                      i, 
+                      doubles[i]));            
+            }
+            
+
+        } else {
+            for (int i = 0; i < epochs.length; i++) {
+                series.getData().add(new XYChart.Data<Number, Number>(
+                      epochs[i], 
+                      errors[i]));      
+            }
         }
+
+       
+
+//        if (errors.size() != 0) {
+//            
+//          series.getData().add(new XYChart.Data<Number, Number>(
+//                    epochs.getLast(), 
+//                    errors.getLast()));
+//        }
     }
 
     @Override
     public void update() {
         buildGraph();
+
     }
 
     /**
@@ -119,14 +152,21 @@ public class ErrorViewController extends AController implements EventHandler {
 
     public void hide() {
         errorViewStage.hide();
+        animation.pause();
     }
 
     public void show() {
         errorViewStage.show();
+        animation.play();
     }
 
     @Override
     public void handle(Event t) {
+    }
+    
+    public void clear() {
+        series.getData().clear();
+        
     }
 
 }

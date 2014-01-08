@@ -4,7 +4,6 @@ import de.htw.iconn.enhancement.IVisualizeObserver;
 import de.htw.iconn.enhancement.RBMInfoPackage;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 public class ErrorViewModel implements IVisualizeObserver {
 
     private final ErrorViewController controller;
@@ -35,6 +34,7 @@ public class ErrorViewModel implements IVisualizeObserver {
     public void clear() {
         getEpochs().clear();
         errors.clear();
+        controller.clear();
     }
 
     /**
