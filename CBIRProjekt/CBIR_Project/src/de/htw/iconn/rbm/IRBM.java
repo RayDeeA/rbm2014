@@ -2,11 +2,11 @@ package de.htw.iconn.rbm;
 
 public interface IRBM {
 
-	public void train(double[][] data, int maxEpochs, boolean binarizeHidden, boolean binarizeVisible);
-	public double error(double[][] data, boolean binarizeHidden, boolean binarizeVisible);
-	public double[][] getHidden(double[][] data, boolean binarizeHidden);
-	public double[][] getVisible(double[][] data, boolean binarizeVisible);
+	public void train(float[][] data, int maxEpochs, boolean binarizeHidden, boolean binarizeVisible);
+	public float error(float[][] data, boolean binarizeHidden, boolean binarizeVisible);
+	public float[][] getHidden(float[][] data, boolean binarizeHidden);
+	public float[][] getVisible(float[][] data, boolean binarizeVisible);
 	
-	public double[][] getWeights();
+	public float[][] getWeights();
 
 }

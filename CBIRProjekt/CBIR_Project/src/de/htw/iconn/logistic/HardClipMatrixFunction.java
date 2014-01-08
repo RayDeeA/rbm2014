@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class HardClipMatrixFunction extends MatrixFunctions implements
@@ -8,8 +8,8 @@ public class HardClipMatrixFunction extends MatrixFunctions implements
 
 	// x < 0 = 0 and x > 0 = 1
 
-	public DoubleMatrix function(DoubleMatrix m) {
-		double[][] duplicateM = m.dup().toArray2();
+	public FloatMatrix function(FloatMatrix m) {
+		float[][] duplicateM = m.dup().toArray2();
 		for (int y = 0; y < duplicateM.length; y++) {
 			for (int x = 0; x < duplicateM[y].length; x++) {
 				if (duplicateM[y][x] < 0)
@@ -18,7 +18,7 @@ public class HardClipMatrixFunction extends MatrixFunctions implements
 					duplicateM[y][x] = 1;
 			}
 		}
-		return new DoubleMatrix(duplicateM);
+		return new FloatMatrix(duplicateM);
 	}
 
 }

@@ -3,147 +3,147 @@ package de.htw.iconn.rbm;
 import de.htw.iconn.logistic.ILogistic;
 import java.util.Random;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class RBMJBlas implements IRBM {
 
-    private final double learnRate;
+    private final float learnRate;
     private final ILogistic logisticFunction;
 
-    private double error;
+    private float error;
 
-    private DoubleMatrix weights;
+    private FloatMatrix weights;
 
-    public RBMJBlas(int inputSize, int outputSize, double learningRate, ILogistic logisticFunction, boolean useSeed, int seed, double[][] weights) {
+    public RBMJBlas(int inputSize, int outputSize, float learningRate, ILogistic logisticFunction, boolean useSeed, int seed, float[][] weights) {
         this.learnRate = learningRate;
         this.logisticFunction = logisticFunction;
 
         if (weights == null) {
             if (useSeed) {
                 Random random = new Random(seed);
-                double[][] weightsTemp = new double[inputSize][outputSize];
+                float[][] weightsTemp = new float[inputSize][outputSize];
                 for (int v = 0; v < inputSize; v++) {
                     for (int h = 0; h < outputSize; h++) {
-                        weightsTemp[v][h] = 0.1 * random.nextGaussian();
+                        weightsTemp[v][h] = (float)(0.1f * random.nextGaussian());
                     }
                 }
-                this.weights = new DoubleMatrix(weightsTemp);
+                this.weights = new FloatMatrix(weightsTemp);
             } else {
-                this.weights = DoubleMatrix.randn(inputSize, outputSize).mmul(0.1);
+                this.weights = FloatMatrix.randn(inputSize, outputSize).mmul(0.1f);
             }
-            final DoubleMatrix oneVectorCol = DoubleMatrix.zeros(this.weights.getRows(), 1);
-            final DoubleMatrix oneVectorRow = DoubleMatrix.zeros(1, this.weights.getColumns() + 1);
+            final FloatMatrix oneVectorCol = FloatMatrix.zeros(this.weights.getRows(), 1);
+            final FloatMatrix oneVectorRow = FloatMatrix.zeros(1, this.weights.getColumns() + 1);
 
-            this.weights = DoubleMatrix.concatHorizontally(oneVectorCol, this.weights);
-            this.weights = DoubleMatrix.concatVertically(oneVectorRow, this.weights);
+            this.weights = FloatMatrix.concatHorizontally(oneVectorCol, this.weights);
+            this.weights = FloatMatrix.concatVertically(oneVectorRow, this.weights);
         } else {
-            this.weights = new DoubleMatrix(weights);
+            this.weights = new FloatMatrix(weights);
         }        
     }  
     
     @Override
-    public double error(double[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
-        DoubleMatrix data = new DoubleMatrix(trainingData);
+    public float error(float[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
+        FloatMatrix data = new FloatMatrix(trainingData);
 
-        final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
-        final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
+        final FloatMatrix oneVector = FloatMatrix.ones(data.getRows(), 1);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, data);
 
-        final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
+        final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 
-        DoubleMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
+        FloatMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
 
         if (binarizeHidden) {
-            double[][] randomMatrix = DoubleMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
+            float[][] randomMatrix = FloatMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
 
-            double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
+            float[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
             for (int y = 0; y < tmpHiddenStates.length; y++) {
                 for (int x = 0; x < tmpHiddenStates[y].length; x++) {
                     tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                 }
             }
-            posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
+            posHiddenNodes = new FloatMatrix(tmpHiddenStates);
         }
 
-        posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1));
+        posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
 
-        final DoubleMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
+        final FloatMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
 
-        DoubleMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
+        FloatMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
 
         if (binarizeVisible) {
-            double[][] randomMatrix = DoubleMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
+            float[][] randomMatrix = FloatMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
 
-            double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
+            float[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
             for (int y = 0; y < tmpVisibleStates.length; y++) {
                 for (int x = 0; x < tmpVisibleStates[y].length; x++) {
                     tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                 }
             }
-            negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
+            negVisibleNodes = new FloatMatrix(tmpVisibleStates);
         }
 
-        negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
+        negVisibleNodes.putColumn(0, FloatMatrix.ones(negVisibleNodes.getRows(), 1));
 
-        return Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0).sum() / trainingData.length / weights.getRows());
+        return (float) Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0f).sum() / trainingData.length / weights.getRows());
     }
 
     @Override
-    public void train(double[][] trainingData, int max_epochs, boolean binarizeHidden, boolean binarizeVisible) {
-        DoubleMatrix data = new DoubleMatrix(trainingData);
+    public void train(float[][] trainingData, int max_epochs, boolean binarizeHidden, boolean binarizeVisible) {
+        FloatMatrix data = new FloatMatrix(trainingData);
 
-        final DoubleMatrix oneVector = DoubleMatrix.ones(data.getRows(), 1);
-        final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, data);
+        final FloatMatrix oneVector = FloatMatrix.ones(data.getRows(), 1);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, data);
 
         for (int i = 0; i < max_epochs; i++) {
 
-            final DoubleMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
+            final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 
-            DoubleMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
+            FloatMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
 
             if (binarizeHidden) {
-                double[][] randomMatrix = DoubleMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
+                float[][] randomMatrix = FloatMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
 
-                double[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
+                float[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
                 for (int y = 0; y < tmpHiddenStates.length; y++) {
                     for (int x = 0; x < tmpHiddenStates[y].length; x++) {
                         tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                     }
                 }
-                posHiddenNodes = new DoubleMatrix(tmpHiddenStates);
+                posHiddenNodes = new FloatMatrix(tmpHiddenStates);
             }
 
-            posHiddenNodes.putColumn(0, DoubleMatrix.ones(posHiddenNodes.getRows(), 1));
+            posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
 
-            final DoubleMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenNodes);
+            final FloatMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenNodes);
 
-            final DoubleMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
+            final FloatMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
 
-            DoubleMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
+            FloatMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
 
             if (binarizeVisible) {
-                double[][] randomMatrix = DoubleMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
+                float[][] randomMatrix = FloatMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
 
-                double[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
+                float[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
                 for (int y = 0; y < tmpVisibleStates.length; y++) {
                     for (int x = 0; x < tmpVisibleStates[y].length; x++) {
                         tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                     }
                 }
-                negVisibleNodes = new DoubleMatrix(tmpVisibleStates);
+                negVisibleNodes = new FloatMatrix(tmpVisibleStates);
             }
 
-            negVisibleNodes.putColumn(0, DoubleMatrix.ones(negVisibleNodes.getRows(), 1));
+            negVisibleNodes.putColumn(0, FloatMatrix.ones(negVisibleNodes.getRows(), 1));
 
-            final DoubleMatrix negHiddenActivations = negVisibleNodes.mmul(this.weights);
+            final FloatMatrix negHiddenActivations = negVisibleNodes.mmul(this.weights);
 
-            final DoubleMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
+            final FloatMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
 
-            final DoubleMatrix negAssociations = negVisibleNodes.transpose().mmul(negHiddenProbs);
+            final FloatMatrix negAssociations = negVisibleNodes.transpose().mmul(negHiddenProbs);
 
             // Update weights
             this.weights.addi((posAssociations.sub(negAssociations)).mul(this.learnRate / data.getRows()));
-            error = Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0).sum() / trainingData.length / weights.getRows());
+            error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0f).sum() / trainingData.length / weights.getRows());
 
             //System.out.println(error);
         }
@@ -151,76 +151,76 @@ public class RBMJBlas implements IRBM {
     }
 
     @Override
-    public double[][] getHidden(double[][] data, boolean binarizeHidden) {
+    public float[][] getHidden(float[][] data, boolean binarizeHidden) {
 
-        DoubleMatrix dataMatrix = new DoubleMatrix(data);
+        FloatMatrix dataMatrix = new FloatMatrix(data);
 
         // Insert bias units of 1 into the first column of data.
-        final DoubleMatrix oneVector = DoubleMatrix.ones(dataMatrix.getRows(), 1);
-        final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, dataMatrix);
+        final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
 
         // Calculate the activations of the hidden units.
-        final DoubleMatrix hiddenActivations = dataWithBias.mmul(this.weights);
+        final FloatMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 
         // Calculate the probabilities of turning the hidden units on.
-        DoubleMatrix hiddenNodes = logisticFunction.function(hiddenActivations);
-	    //final DoubleMatrix hiddenProbs = hiddenActivations;
+        FloatMatrix hiddenNodes = logisticFunction.function(hiddenActivations);
+	    //final FloatMatrix hiddenProbs = hiddenActivations;
 
         if (binarizeHidden) {
-            double[][] randomMatrix = DoubleMatrix.rand(hiddenNodes.getRows(), hiddenNodes.getColumns()).toArray2();
+            float[][] randomMatrix = FloatMatrix.rand(hiddenNodes.getRows(), hiddenNodes.getColumns()).toArray2();
 
-            double[][] tmpHiddenStates = hiddenNodes.dup().toArray2();
+            float[][] tmpHiddenStates = hiddenNodes.dup().toArray2();
             for (int y = 0; y < tmpHiddenStates.length; y++) {
                 for (int x = 0; x < tmpHiddenStates[y].length; x++) {
                     tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                 }
             }
-            hiddenNodes = new DoubleMatrix(tmpHiddenStates);
+            hiddenNodes = new FloatMatrix(tmpHiddenStates);
         }
 
-        final DoubleMatrix hiddenNodesWithoutBias = hiddenNodes.getRange(0, hiddenNodes.getRows(), 1, hiddenNodes.getColumns());
+        final FloatMatrix hiddenNodesWithoutBias = hiddenNodes.getRange(0, hiddenNodes.getRows(), 1, hiddenNodes.getColumns());
 
         // Ignore the bias units.
         return hiddenNodesWithoutBias.toArray2();
     }
 
     @Override
-    public double[][] getVisible(double[][] data, boolean binarizeVisible) {
+    public float[][] getVisible(float[][] data, boolean binarizeVisible) {
 
-        DoubleMatrix dataMatrix = new DoubleMatrix(data);
+        FloatMatrix dataMatrix = new FloatMatrix(data);
 
         // Insert bias units of 1 into the first column of data.
-        final DoubleMatrix oneVector = DoubleMatrix.ones(dataMatrix.getRows(), 1);
-        final DoubleMatrix dataWithBias = DoubleMatrix.concatHorizontally(oneVector, dataMatrix);
+        final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
 
         // Calculate the activations of the visible units.
-        final DoubleMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
+        final FloatMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
 
         // Calculate the probabilities of turning the visible units on.
-        DoubleMatrix visibleNodes = logisticFunction.function(visibleActivations);
+        FloatMatrix visibleNodes = logisticFunction.function(visibleActivations);
 
         if (binarizeVisible) {
-            double[][] randomMatrix = DoubleMatrix.rand(visibleNodes.getRows(), visibleNodes.getColumns()).toArray2();
+            float[][] randomMatrix = FloatMatrix.rand(visibleNodes.getRows(), visibleNodes.getColumns()).toArray2();
 
-            double[][] tmpVisibleStates = visibleNodes.dup().toArray2();
+            float[][] tmpVisibleStates = visibleNodes.dup().toArray2();
             for (int y = 0; y < tmpVisibleStates.length; y++) {
                 for (int x = 0; x < tmpVisibleStates[0].length; x++) {
                     tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                 }
             }
 
-            visibleNodes = new DoubleMatrix(tmpVisibleStates);
+            visibleNodes = new FloatMatrix(tmpVisibleStates);
         }
 
         // Ignore bias
-        final DoubleMatrix visibleNodesWithoutBias = visibleNodes.getRange(0, visibleNodes.getRows(), 1, visibleNodes.getColumns());
+        final FloatMatrix visibleNodesWithoutBias = visibleNodes.getRange(0, visibleNodes.getRows(), 1, visibleNodes.getColumns());
 
         return visibleNodesWithoutBias.toArray2();
 
     }
 
     @Override
-    public double[][] getWeights() {
+    public float[][] getWeights() {
         return this.weights.toArray2();
     }
 

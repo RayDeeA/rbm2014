@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class LinearInterpolatedMatrixFunction extends MatrixFunctions implements
@@ -8,19 +8,19 @@ public class LinearInterpolatedMatrixFunction extends MatrixFunctions implements
 
 	// Interpolated between 0 and 1
 
-	public DoubleMatrix function(DoubleMatrix m) {
+	public FloatMatrix function(FloatMatrix m) {
 
-		double[][] duplicateM = m.dup().toArray2();
-		double max = m.max();
-		double min = m.min();
+		float[][] duplicateM = m.dup().toArray2();
+		float max = m.max();
+		float min = m.min();
 
-		double maxMinusMin = max - min;
+		float maxMinusMin = max - min;
 		for (int y = 0; y < duplicateM.length; y++) {
 			for (int x = 0; x < duplicateM[y].length; x++) {
 				duplicateM[y][x] = (duplicateM[y][x] - min) / maxMinusMin;
 			}
 		}
-		return new DoubleMatrix(duplicateM);
+		return new FloatMatrix(duplicateM);
 	}
 
 }

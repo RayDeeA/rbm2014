@@ -32,7 +32,7 @@ public class RBMSettingsWeightsModel{
     @Conserve
     private int seed = 0;
     @Conserve
-    private double[][] weights; 
+    private float[][] weights; 
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
         this.loader = new XMLWeightsLoader();
@@ -71,11 +71,11 @@ public class RBMSettingsWeightsModel{
         this.seed = seed;
     }
 
-    public double[][] getWeights() {
+    public float[][] getWeights() {
         return this.weights;
     }
 
-    public void setWeights(double[][] weights) {
+    public void setWeights(float[][] weights) {
         this.weights = weights;
     }
     

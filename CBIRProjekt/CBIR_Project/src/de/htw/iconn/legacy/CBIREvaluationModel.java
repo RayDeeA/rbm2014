@@ -4,14 +4,14 @@ import java.util.LinkedList;
 
 @Deprecated
 public class CBIREvaluationModel {
-	private double mAP;
-	private double error;
+	private float mAP;
+	private float error;
 	private int epochs;
 	private evaluationType type;
 	private int imageSetSize;
-	private double[][] weights;
-	private LinkedList<double[][]> collectedWeights;
-	private double[][] weights2d;
+	private float[][] weights;
+	private LinkedList<float[][]> collectedWeights;
+	private float[][] weights2d;
 	private int seed;
 	private boolean useSeed;
 	private IRBMLogger logger;
@@ -33,38 +33,38 @@ public class CBIREvaluationModel {
 	
 	public void reset(){
 		this.epochs = 0;
-		this.mAP = 0.0;
-		this.error = 0.0;
+		this.mAP = 0.0f;
+		this.error = 0.0f;
 		this.type = evaluationType.UNDEFINED;
 		this.weights = null;
 		this.logger = null;
 		this.useSeed = false;
 		this.seed = 0;
-		this.collectedWeights = new LinkedList<double[][]>();
+		this.collectedWeights = new LinkedList<float[][]>();
 	}
 	
 	public CBIREvaluationModel(){
 		this(0);
 	}	
 	public void resetCollectedWeights(){
-		collectedWeights = new LinkedList<double[][]>();
+		collectedWeights = new LinkedList<float[][]>();
 	}	
-	public void addToCollectedWeights(double[][] weights){
+	public void addToCollectedWeights(float[][] weights){
 		collectedWeights.add(weights);
 	}
-	public LinkedList<double[][]> getCollectedWeights(){
+	public LinkedList<float[][]> getCollectedWeights(){
 		return this.collectedWeights;
 	}
-	public double getMAP() {
+	public float getMAP() {
 		return mAP;
 	}
-	public void setMAP(double mAP) {
+	public void setMAP(float mAP) {
 		this.mAP = mAP;
 	}
-	public double getError() {
+	public float getError() {
 		return error;
 	}
-	public void setError(double error) {
+	public void setError(float error) {
 		this.error = error;
 	}
 	public int getEpochs() {
@@ -85,10 +85,10 @@ public class CBIREvaluationModel {
 	public void setImageSetSize(int imageSetSize) {
 		this.imageSetSize = imageSetSize;
 	}
-	public double[][] getWeights() {
+	public float[][] getWeights() {
 		return weights;
 	}
-	public void setWeights(double[][] weights) {
+	public void setWeights(float[][] weights) {
 		this.weights = weights;
 	}	
 	public boolean getUseSeed() {
@@ -115,10 +115,10 @@ public class CBIREvaluationModel {
 	public void setCsvOutputFrequency(int csvOutputFrequency) {
 		this.csvOutputFrequency = csvOutputFrequency;
 	}
-	public double[][] getWeights2d() {
+	public float[][] getWeights2d() {
 		return weights2d;
 	}
-	public void setWeights2d(double[][] weights2d) {
+	public void setWeights2d(float[][] weights2d) {
 		this.weights2d = weights2d;
 	}
 	public int getUpdateInterval() {

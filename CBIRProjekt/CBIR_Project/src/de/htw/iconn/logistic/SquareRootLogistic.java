@@ -1,18 +1,18 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 
 public class SquareRootLogistic implements ILogistic {
 
 	@Override
-	public DoubleMatrix function(DoubleMatrix m) {
+	public FloatMatrix function(FloatMatrix m) {
 		
-		DoubleMatrix md = m.dup();
-		double[] data = md.getData();
-		double x;
+		FloatMatrix md = m.dup();
+		float[] data = md.getData();
+		float x;
 		for (int i = 0; i < data.length; i++) {
-			x = data[i] * 0.5;
-			data[i] = x/Math.sqrt(x*x +1) * 0.5 + 0.5;
+			x = data[i] * 0.5f;
+			data[i] = x / (float)Math.sqrt(x*x + 1.0) * 0.5f + 0.5f;
 		}
 		return md;
 	}

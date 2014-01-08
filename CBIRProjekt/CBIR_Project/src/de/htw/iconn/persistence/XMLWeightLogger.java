@@ -30,9 +30,9 @@ public final class XMLWeightLogger {
 
     private String dateString;
     private final String baseFolder;
-    private double[][] weights;
-    private double[][] weights2d;
-    private LinkedList<double[][]> collectedWeights;
+    private float[][] weights;
+    private float[][] weights2d;
+    private LinkedList<float[][]> collectedWeights;
     
     public XMLWeightLogger() {
         this.dateString = "New";
@@ -143,9 +143,9 @@ public final class XMLWeightLogger {
             stepCount = rootElement.getElementsByTagName("step").getLength();
         }
 
-        Iterator<double[][]> it = collectedWeights.iterator();
+        Iterator<float[][]> it = collectedWeights.iterator();
         while (it.hasNext()) {
-            double[][] weights = it.next();
+            float[][] weights = it.next();
             Element step = doc.createElement("step");
             rootElement.appendChild(step);
 

@@ -146,7 +146,7 @@ public class ConfigurationSaver {
         Element weightsElement = doc.createElement("weights");
         parent.appendChild(weightsElement);
 
-        double[][] weights2d = rbm.getWeights();
+        float[][] weights2d = rbm.getWeights();
         StringBuffer rowSB;
         for(int i = 0; i < weights2d.length; ++i){
             rowSB = new StringBuffer();

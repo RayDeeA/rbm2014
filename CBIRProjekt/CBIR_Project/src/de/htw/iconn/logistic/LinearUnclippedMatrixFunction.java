@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class LinearUnclippedMatrixFunction extends MatrixFunctions implements
@@ -8,7 +8,7 @@ public class LinearUnclippedMatrixFunction extends MatrixFunctions implements
 
 	// linear and no clipping
 
-	public DoubleMatrix function(DoubleMatrix m) {
+	public FloatMatrix function(FloatMatrix m) {
 		return MatrixFunctions.abs(m);
 	}
 

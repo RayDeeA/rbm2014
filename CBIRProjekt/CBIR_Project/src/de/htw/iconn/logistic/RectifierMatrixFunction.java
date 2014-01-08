@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 
@@ -8,11 +8,11 @@ public class RectifierMatrixFunction extends MatrixFunctions implements ILogisti
 
 	// log(1 + e^x);
 	
-	public  DoubleMatrix function(DoubleMatrix m) {
+	public  FloatMatrix function(FloatMatrix m) {
 		
-		final DoubleMatrix ExpM = MatrixFunctions.exp(m);
-		final DoubleMatrix ExpPlus1M = ExpM.add(1.0);
-		final DoubleMatrix LogExpPlusOneM = MatrixFunctions.log10(ExpPlus1M); 
+		final FloatMatrix ExpM = MatrixFunctions.exp(m);
+		final FloatMatrix ExpPlus1M = ExpM.add(1.0f);
+		final FloatMatrix LogExpPlusOneM = MatrixFunctions.log10(ExpPlus1M); 
 		
 		return LogExpPlusOneM;
 	}

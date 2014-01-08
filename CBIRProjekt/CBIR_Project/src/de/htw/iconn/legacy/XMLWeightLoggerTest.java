@@ -37,20 +37,20 @@ public class XMLWeightLoggerTest extends TestCase{
     }  
     public RBMEnhanceTest(){}
     */
-    double errorOrigin = 0;
+    float errorOrigin = 0;
     IRBM irbm;
-    final double delta = 0.01;
-    final double learningRate = 0.1;
+    final float delta = 0.01f;
+    final float learningRate = 0.1f;
     final int numVisible = 3;
     final int numHidden = 2;
     final int epochs = 1;
     final int updateInter = 1;
     
-    double[][] trainingData = new double[][]
+    float[][] trainingData = new float[][]
         {{ 0, 0, 0},{1, 0, 1},{ 1, 1, 1}};
-    double[][] weights;
-    double[][] oldData;
-    double[][] newData;
+    float[][] weights;
+    float[][] oldData;
+    float[][] newData;
     int trainingEpochs = 0;
     
     XMLWeightLogger xmlLogger = new XMLWeightLogger();

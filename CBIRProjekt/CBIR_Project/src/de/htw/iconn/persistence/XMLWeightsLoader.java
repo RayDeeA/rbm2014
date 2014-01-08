@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLWeightsLoader {
     
-    public double[][] loadWeightsFromXML(File file) throws ParserConfigurationException, SAXException, IOException{
+    public float[][] loadWeightsFromXML(File file) throws ParserConfigurationException, SAXException, IOException{
         
         if(file == null){
             return null;
@@ -38,12 +38,12 @@ public class XMLWeightsLoader {
         int inputSize = rows.getLength();
         int outputSize = rows.item(0).getTextContent().split(",").length;
 
-        double[][] weights = new double[inputSize][outputSize];
+        float[][] weights = new float[inputSize][outputSize];
         
         for(int i = 0; i < weights.length; ++i){
             String[] weightRow = rows.item(i).getTextContent().split(",");
             for(int j = 0; j < weights[0].length; ++j){
-                weights[i][j] = Double.parseDouble(weightRow[j]);
+                weights[i][j] = Float.parseFloat(weightRow[j]);
             }
         }
         

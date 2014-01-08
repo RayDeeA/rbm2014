@@ -90,18 +90,18 @@ public class DaydreamModel {
     	int height = this.benchmarkController.getModel().getImageEdgeSize();
     	
     	// Get pixels from calculation image and convert it to normalized data  
-    	double[] data = new double[this.calcImage.getWidth() * this.calcImage.getHeight()];
+    	float[] data = new float[this.calcImage.getWidth() * this.calcImage.getHeight()];
     	int[] calcImagePixels = this.calcImage.getRGB(0, 0, width, height, null, 0, width);
     	for(int i = 0; i < data.length; i++) {
-    		data[i] = (calcImagePixels[i] & 0xff) / (double)255.0f;
+    		data[i] = (calcImagePixels[i] & 0xff) / 255.0f;
     	}
     	
     	// Create visible daydream data, which is used for the next calculation step 
-        double[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkController, data, this.useHiddenStates, this.useVisibleStates);
+        float[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkController, data, this.useHiddenStates, this.useVisibleStates);
         
         // Create hidden and visible daydream data, which is used for visualization
-        double[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkController, data, false);
-        double[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkController, hiddenDataForVis, false);
+        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkController, data, false);
+        float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkController, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
         int[] hiddenImagePixels = new int[hiddenDataForVis.length];

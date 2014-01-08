@@ -17,7 +17,7 @@ public class SorterRBMFeatures extends ASorter {
     @Override
     public BufferedImage getFeatureImage(Pic image) {
 
-        double[] fv = image.getFeatureVector();
+        float[] fv = image.getFeatureVector();
         int height = 256, width = fv.length;
         int[] pixels = new int[width * height];
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -25,7 +25,7 @@ public class SorterRBMFeatures extends ASorter {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int i = y * width + x;
-                double val = fv[x] * height;
+                float val = fv[x] * height;
                 pixels[i] = (val > height - 1 - y) ? 0xFFFFFFFF : 0xFF777777;
             }
         }
@@ -35,7 +35,7 @@ public class SorterRBMFeatures extends ASorter {
     }
 
     @Override
-    public double getDistance(double[] fv1, double[] fv2) {
+    public float getDistance(float[] fv1, float[] fv2) {
         return getL1Dist(fv1, fv2);
     }
 

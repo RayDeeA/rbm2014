@@ -31,23 +31,23 @@ public abstract class ASorter {
 	 * @param val2
 	 * @return
 	 */
-	public static double getEuclideanDist(double[] val1, double[] val2) {
-		double dist = 0;
+	public static float getEuclideanDist(float[] val1, float[] val2) {
+		float dist = 0;
 		for (int i = 0; i < val2.length; i++) {
-			double buff = val1[i] - val2[i];
+			float buff = val1[i] - val2[i];
 			dist += buff * buff;
 		}
 		return dist;
 	}	
 	
-	public static double getL1Dist(double[] val1, double[] val2) {
-		double dist = 0;
+	public static float getL1Dist(float[] val1, float[] val2) {
+		float dist = 0;
 		for (int i = 0; i < val2.length; i++)
 			dist += Math.abs(val1[i] - val2[i]);
 		return dist;
 	}	
 	
 	public abstract BufferedImage getFeatureImage(Pic image);
-	public abstract double getDistance(double[] fv1, double[] fv2); 
+	public abstract float getDistance(float[] fv1, float[] fv2); 
 	public abstract String getName();
 }

@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 
 public class DataConverter {
 
-    public static double[][] generatePixelIntensityData(Pic[] pics, int edgeLength) {
+    public static float[][] generatePixelIntensityData(Pic[] pics, int edgeLength) {
 
-        double[][] data = new double[pics.length][edgeLength * edgeLength];
+        float[][] data = new float[pics.length][edgeLength * edgeLength];
 
         for (int i = 0; i < pics.length; i++) {
             ImageScaler imageScaler = new ImageScaler(pics[i].getDisplayImage());
@@ -20,7 +20,7 @@ public class DataConverter {
                 int g = (argb >> 8) & 0xFF;
                 int b = (argb) & 0xFF;
 
-                double intensity = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0f;
+                float intensity = (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f;
 
                 data[i][p] = intensity;
             }
@@ -30,8 +30,8 @@ public class DataConverter {
         return data;
     }
 
-    public static double[][] binarizeGrayImageWithIsoData(double[][] data) {
-        double[][] binarized = new double[data.length][data[0].length];
+    public static float[][] binarizeGrayImageWithIsoData(float[][] data) {
+        float[][] binarized = new float[data.length][data[0].length];
         
         for(int i = 0; i < data.length; ++i){
             binarized[i] = binarizeGrayImageWithIsoData(data[i]);
@@ -40,10 +40,10 @@ public class DataConverter {
         return binarized;
     }
 
-    public static double[] binarizeGrayImageWithIsoData(double[] data) {
+    public static float[] binarizeGrayImageWithIsoData(float[] data) {
         final int safetyStop = 50;
         
-        double[] binarized = new double[data.length];
+        float[] binarized = new float[data.length];
 
         int tOld = 0;
         int tNew = -2;
@@ -87,7 +87,7 @@ public class DataConverter {
         int threshold = tNew;
 
         for(int i = 0; i < data.length; i++){
-            binarized[i] = data[i] < threshold ? 0.0 : 1.0;
+            binarized[i] = data[i] < threshold ? 0.0f : 1.0f;
         }    
         
         return binarized;

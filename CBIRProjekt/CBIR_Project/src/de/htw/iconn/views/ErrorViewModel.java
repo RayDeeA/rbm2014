@@ -8,7 +8,7 @@ public class ErrorViewModel implements IVisualizeObserver {
 
     private final ErrorViewController controller;
 
-    private final LinkedList<Double> errors;
+    private final LinkedList<Float> errors;
     private final LinkedList<Integer> epochs;
 
     public ErrorViewModel(ErrorViewController controller) {
@@ -27,7 +27,7 @@ public class ErrorViewModel implements IVisualizeObserver {
     /**
      * @return the errors
      */
-    public LinkedList<Double> getErrors() {
+    public LinkedList<Float> getErrors() {
         return errors;
     }
 

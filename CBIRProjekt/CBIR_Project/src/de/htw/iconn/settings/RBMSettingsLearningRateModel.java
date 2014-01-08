@@ -16,7 +16,7 @@ public class RBMSettingsLearningRateModel{
     
     private final RBMSettingsLearningRateController controller;
     @Conserve
-    private double constantLearningRate = 0.1;
+    private float constantLearningRate = 0.1f;
 
     public RBMSettingsLearningRateModel(RBMSettingsLearningRateController controller) {
         this.controller = controller;
@@ -26,14 +26,14 @@ public class RBMSettingsLearningRateModel{
     /**
      * @return the constantLearningRate
      */
-    public double getConstantLearningRate() {
+    public float getConstantLearningRate() {
         return constantLearningRate;
     }
 
     /**
      * @param constantLearningRate the constantLearningRate to set
      */
-    public void setConstantLearningRate(double constantLearningRate) {
+    public void setConstantLearningRate(float constantLearningRate) {
         this.constantLearningRate = constantLearningRate;
     }
 }
