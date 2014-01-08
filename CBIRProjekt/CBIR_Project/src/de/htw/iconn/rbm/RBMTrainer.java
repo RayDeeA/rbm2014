@@ -53,7 +53,7 @@ public class RBMTrainer {
                 RBMSettingsModel lastModel = lastController.getModel();
                 RBMSettingsWeightsModel lastWeightsModel = lastModel.getController(RBMSettingsWeightsController.class).getModel();
 
-                double[][] data = lastRBM.getHidden(lastModel.getData(), lastWeightsModel.isBinarizeHidden());
+                float[][] data = lastRBM.getHidden(lastModel.getData(), lastWeightsModel.isBinarizeHidden());
 
                 c.getModel().setData(data);
             }
@@ -72,10 +72,10 @@ public class RBMTrainer {
         int inputSize = mainModel.getInputSize();
         int outputSize = mainModel.getOutputSize();
         ILogistic logisticFunction = mainModel.getSelectedLogisticFunctionImplementation();
-        double learningRate = learningRateModel.getConstantLearningRate();
+        float learningRate = learningRateModel.getConstantLearningRate();
         int seed = weightsModel.getSeed();
         boolean useSeed = weightsModel.isUseSeed();
-        double[][] weights = weightsModel.getWeights();
+        float[][] weights = weightsModel.getWeights();
 
         return new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights);
     }
@@ -131,31 +131,31 @@ public class RBMTrainer {
     
     // GET HIDDEN
     
-	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data) {
+	public float[][] getHiddenAllRBMs(BenchmarkController benchmarkController, float[][] data) {
 		return getHiddenAllRBMs(benchmarkController, data, false, false);
 	}
 	
-	public double[] getHiddenAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeHidden){
-		double[][] data2Dimensions = vectorToMatrix(data);
+	public float[] getHiddenAllRBMs1D(BenchmarkController benchmarkController, float[] data, boolean binarizeHidden){
+		float[][] data2Dimensions = vectorToMatrix(data);
 		
-		double[][] hiddenData2Dimensions = getHiddenAllRBMs(benchmarkController, data2Dimensions, binarizeHidden, true);
+		float[][] hiddenData2Dimensions = getHiddenAllRBMs(benchmarkController, data2Dimensions, binarizeHidden, true);
 		
-		double hiddenData[] = matrixToVector(hiddenData2Dimensions);
+		float hiddenData[] = matrixToVector(hiddenData2Dimensions);
 
 		return hiddenData;
 	}
 	
-	public double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden){
+	public float[][] getHiddenAllRBMs(BenchmarkController benchmarkController, float[][] data, boolean binarizeHidden){
 		return getHiddenAllRBMs(benchmarkController, data, binarizeHidden, true);
 	}
     
-    private double[][] getHiddenAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeHidden, boolean useBinarizeOptionGiven) {
+    private float[][] getHiddenAllRBMs(BenchmarkController benchmarkController, float[][] data, boolean binarizeHidden, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
-        double[][] visibleData = data;
+        float[][] visibleData = data;
         
         for(RBMSettingsController rbmSettingsController : rbmSettingsList) {
-        	double[][] hiddenData;
+        	float[][] hiddenData;
         	if(useBinarizeOptionGiven) {
         		hiddenData = this.getHiddenSingleRBM(rbmSettingsController, visibleData, binarizeHidden);
         	} else {
@@ -164,17 +164,17 @@ public class RBMTrainer {
         	visibleData = hiddenData;
         }
         
-        double[][] hiddenDataFinal = visibleData;
+        float[][] hiddenDataFinal = visibleData;
         return hiddenDataFinal;
     }
     
-    public double[][] getHiddenSingleRBM(RBMSettingsController controller, double[][] data) {
+    public float[][] getHiddenSingleRBM(RBMSettingsController controller, float[][] data) {
     	boolean binarizeHidden = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeHidden();
     	return this.getHiddenSingleRBM(controller, data, binarizeHidden);
     }
     
-    public double[][] getHiddenSingleRBM(RBMSettingsController controller, double[][] data, boolean binarizeHidden) {
-    	double[][] hiddenData = null;
+    public float[][] getHiddenSingleRBM(RBMSettingsController controller, float[][] data, boolean binarizeHidden) {
+    	float[][] hiddenData = null;
     	
     	IRBM rbm = this.createRBMForTemporaryUse(controller);
     	
@@ -188,52 +188,52 @@ public class RBMTrainer {
     			"The data in the model was never set. "
     			+ "Not inside of the first RBMSettingsController "
     			+ "and is also not given inside of the methods "
-    			+ "parameter list (double[][] data)"
+    			+ "parameter list (float[][] data)"
     		);
     	}
     	
     	return hiddenData;
     }
     
-	public double[] getHiddenSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeHidden) {
-		double[][] data2Dimensions = vectorToMatrix(data);
+	public float[] getHiddenSingleRBM(RBMSettingsController controller, float[] data, boolean binarizeHidden) {
+		float[][] data2Dimensions = vectorToMatrix(data);
 
-		double[][] hiddenData2Dimensions = getHiddenSingleRBM(controller, data2Dimensions, binarizeHidden);
+		float[][] hiddenData2Dimensions = getHiddenSingleRBM(controller, data2Dimensions, binarizeHidden);
 
-		double hiddenData[] = matrixToVector(hiddenData2Dimensions);
+		float hiddenData[] = matrixToVector(hiddenData2Dimensions);
 
 		return hiddenData;
 	}
 	
     // GET VISIBLE
 	
-	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data) {
+	public float[][] getVisibleAllRBMs(BenchmarkController benchmarkController, float[][] data) {
 		return getVisibleAllRBMs(benchmarkController, data, false, false);
 	}
 	
-	public double[] getVisibleAllRBMs1D(BenchmarkController benchmarkController, double[] data, boolean binarizeVisible){
-		double[][] data2Dimensions = vectorToMatrix(data);
+	public float[] getVisibleAllRBMs1D(BenchmarkController benchmarkController, float[] data, boolean binarizeVisible){
+		float[][] data2Dimensions = vectorToMatrix(data);
 		// TODO
-		double[][] visibleData2Dimensions = getVisibleAllRBMs(benchmarkController, data2Dimensions, binarizeVisible, true);
+		float[][] visibleData2Dimensions = getVisibleAllRBMs(benchmarkController, data2Dimensions, binarizeVisible, true);
 		
-		double visibleData[] = matrixToVector(visibleData2Dimensions);
+		float visibleData[] = matrixToVector(visibleData2Dimensions);
 
 		return visibleData;
 	}
 	
-	public double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible){
+	public float[][] getVisibleAllRBMs(BenchmarkController benchmarkController, float[][] data, boolean binarizeVisible){
 		return getVisibleAllRBMs(benchmarkController, data, binarizeVisible, true);
 	}
     
-    private double[][] getVisibleAllRBMs(BenchmarkController benchmarkController, double[][] data, boolean binarizeVisible, boolean useBinarizeOptionGiven) {
+    private float[][] getVisibleAllRBMs(BenchmarkController benchmarkController, float[][] data, boolean binarizeVisible, boolean useBinarizeOptionGiven) {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkController.getModel().getRbmSettingsList();
 
-        double[][] hiddenData = data;
+        float[][] hiddenData = data;
         ListIterator<RBMSettingsController> rbmSettingsListIterator = rbmSettingsList.listIterator(rbmSettingsList.size());
         
         while(rbmSettingsListIterator.hasPrevious()) {
         	RBMSettingsController rbmSettingsController = rbmSettingsListIterator.previous();
-        	double[][] visibleData;
+        	float[][] visibleData;
         	if(useBinarizeOptionGiven) {
         		visibleData = this.getVisibleSingleRBM(rbmSettingsController, hiddenData, binarizeVisible);
         	} else {
@@ -243,67 +243,67 @@ public class RBMTrainer {
         	hiddenData = visibleData;
         }
         
-        double[][] visibleDataFinal = hiddenData;
+        float[][] visibleDataFinal = hiddenData;
         return visibleDataFinal;
     }
 
     
-    public double[][] getVisibleSingleRBM(RBMSettingsController controller, double[][] data, boolean binarizeVisible) {
+    public float[][] getVisibleSingleRBM(RBMSettingsController controller, float[][] data, boolean binarizeVisible) {
     	IRBM rbm = this.createRBMForTemporaryUse(controller);
     	return rbm.getVisible(data, binarizeVisible);
     }
     
-    public double[][] getVisibleSingleRBM(RBMSettingsController controller, double[][] data) {
+    public float[][] getVisibleSingleRBM(RBMSettingsController controller, float[][] data) {
     	boolean binarizeVisible = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeVisible();
     	return this.getVisibleSingleRBM(controller, data, binarizeVisible);
     }
     
-    public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data) {
+    public float[] getVisibleSingleRBM(RBMSettingsController controller, float[] data) {
     	boolean binarizeVisible = controller.getModel().getController(RBMSettingsWeightsController.class).getModel().isBinarizeVisible();
     	return this.getVisibleSingleRBM(controller, data, binarizeVisible);
     }
     
-    public double[] getVisibleSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeVisible) {
-		double[][] data2Dimensions = vectorToMatrix(data);
+    public float[] getVisibleSingleRBM(RBMSettingsController controller, float[] data, boolean binarizeVisible) {
+		float[][] data2Dimensions = vectorToMatrix(data);
 
-		double[][] visibleData2Dimensions = getVisibleSingleRBM(controller, data2Dimensions, binarizeVisible);
+		float[][] visibleData2Dimensions = getVisibleSingleRBM(controller, data2Dimensions, binarizeVisible);
 
-		double visibleData[] = matrixToVector(visibleData2Dimensions);
+		float visibleData[] = matrixToVector(visibleData2Dimensions);
 
 		return visibleData;
     }
     
     // DAYDREAM
     
-    public double[] daydreamAllRBMs(BenchmarkController controller, double[] data, boolean binarizeHidden, boolean binarizeVisible) {
-		double[][] data2Dimensions = vectorToMatrix(data);
+    public float[] daydreamAllRBMs(BenchmarkController controller, float[] data, boolean binarizeHidden, boolean binarizeVisible) {
+		float[][] data2Dimensions = vectorToMatrix(data);
 		
-		double[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, binarizeHidden);
-		double[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, binarizeVisible);
+		float[][] hiddenData2Dimensions = this.getHiddenAllRBMs(controller, data2Dimensions, binarizeHidden);
+		float[][] visibleData2Dimensions = this.getVisibleAllRBMs(controller, hiddenData2Dimensions, binarizeVisible);
 		
-		double visibleData[] = matrixToVector(visibleData2Dimensions);
+		float visibleData[] = matrixToVector(visibleData2Dimensions);
     	
     	return visibleData;
     }
     
-    public double[] daydreamSingleRBM(RBMSettingsController controller, double[] data, boolean binarizeHidden, boolean binarizeVisible) {
+    public float[] daydreamSingleRBM(RBMSettingsController controller, float[] data, boolean binarizeHidden, boolean binarizeVisible) {
     	
-    	double[] hiddenData = this.getHiddenSingleRBM(controller, data, binarizeHidden);
-    	double[] visibleData = this.getVisibleSingleRBM(controller, hiddenData, binarizeVisible);
+    	float[] hiddenData = this.getHiddenSingleRBM(controller, data, binarizeHidden);
+    	float[] visibleData = this.getVisibleSingleRBM(controller, hiddenData, binarizeVisible);
     	
     	return visibleData;
     }
     
-    private double[] matrixToVector(double[][] matrix) {
-		double vector[] = new double[matrix[0].length];
+    private float[] matrixToVector(float[][] matrix) {
+		float vector[] = new float[matrix[0].length];
 		for (int i = 0; i < matrix[0].length; i++) {
 			vector[i] = matrix[0][i];
 		}
 		return vector;
     }
     
-    private double[][] vectorToMatrix(double[] vector) {
-		double[][] matrix = new double[1][vector.length];
+    private float[][] vectorToMatrix(float[] vector) {
+		float[][] matrix = new float[1][vector.length];
 		for (int i = 0; i < vector.length; i++) {
 			matrix[0][i] = vector[i];
 		}
@@ -313,7 +313,7 @@ public class RBMTrainer {
     public void updateRBMs(BenchmarkController benchmarkController){
         BenchmarkModel benchmarkModel = benchmarkController.getModel();
         int inputSize = benchmarkModel.getInputSize();
-        double[][] data = benchmarkModel.getInputData();
+        float[][] data = benchmarkModel.getInputData();
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         for(RBMSettingsController settingsController : rbmSettingsList){
             RBMSettingsModel settingsModel = settingsController.getModel();

@@ -1,9 +1,9 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 
 public interface ILogistic {
 
-	public DoubleMatrix function(DoubleMatrix m);
+	public FloatMatrix function(FloatMatrix m);
 }
  

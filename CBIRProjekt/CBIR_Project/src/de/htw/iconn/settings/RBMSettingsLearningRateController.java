@@ -43,7 +43,7 @@ public class RBMSettingsLearningRateController extends AController {
     @FXML
     private void txt_learningRateKey(KeyEvent event) {
         try {
-            this.model.setConstantLearningRate(Double.parseDouble(txt_learningRate.getText()));
+            this.model.setConstantLearningRate(Float.parseFloat(txt_learningRate.getText()));
         } catch (NumberFormatException e) {
 
         }

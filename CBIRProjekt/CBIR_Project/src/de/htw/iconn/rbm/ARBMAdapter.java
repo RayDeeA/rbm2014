@@ -9,27 +9,27 @@ public abstract class ARBMAdapter implements IRBM{
 	}
 
         @Override
-	public void train(double[][] data, int maxEpoche, boolean binarizeHidden, boolean binarizeVisible) {
+	public void train(float[][] data, int maxEpoche, boolean binarizeHidden, boolean binarizeVisible) {
 		rbm.train(data, maxEpoche, binarizeHidden, binarizeVisible);
 	}
 
         @Override
-	public double error(double[][] data, boolean binarizeHidden, boolean binarizeVisible) {
+	public float error(float[][] data, boolean binarizeHidden, boolean binarizeVisible) {
 		return rbm.error(data, binarizeHidden, binarizeVisible);
 	}
         
         @Override
-	public double[][] getHidden(double[][] data, boolean binarizeHidden) {
+	public float[][] getHidden(float[][] data, boolean binarizeHidden) {
 		return rbm.getHidden(data, binarizeHidden);
 	}
 	
         @Override
-        public double[][] getVisible(double[][] data, boolean binarizeVisible) {
+        public float[][] getVisible(float[][] data, boolean binarizeVisible) {
             return rbm.getVisible(data, binarizeVisible);
         }
 
         @Override
-	public double[][] getWeights() {
+	public float[][] getWeights() {
 		return rbm.getWeights();
 	}
 }

@@ -13,7 +13,7 @@ public class RBMSettingsModel {
     private final AController[] controllers;
     private final TreeItem<String>[] items;
 
-    private double[][] data;
+    private float[][] data;
 
     public RBMSettingsModel(TreeItem<String>[] items, AController[] controllers, RBMSettingsController controller){
         this.controllers = controllers;
@@ -41,14 +41,14 @@ public class RBMSettingsModel {
     /**
      * @return the data
      */
-    public double[][] getData() {
+    public float[][] getData() {
         return data;
     }
 
     /**
      * @param data the data to set
      */
-    public void setData(double[][] data) {
+    public void setData(float[][] data) {
         this.data = data;
     }
 }

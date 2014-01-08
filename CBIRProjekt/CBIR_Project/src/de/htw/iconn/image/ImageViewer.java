@@ -418,7 +418,7 @@ public class ImageViewer  implements IVisualizeObserver { //extends AController 
 
 	@Override
 	public void update(RBMInfoPackage info) {
-		double[][] weights = info.getWeights();
+		float[][] weights = info.getWeights();
 		
 		double min = Double.MAX_VALUE, max = 0; 
 		for(int o = 0; o < weights[0].length; o++) {

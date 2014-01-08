@@ -13,7 +13,7 @@ import de.htw.iconn.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.logistic.TanHMatrixFunction;
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 
 /**
  *
@@ -28,27 +28,27 @@ public class TestLogistics extends TestCase {
     public TestLogistics() {
     }
 
-    double[][] testArray = new double[][]{{0, 0, 0}, {0.5, 0.5, 0.5}, {1, 1, 1}};
+    float[][] testArray = new float[][]{{0, 0, 0}, {0.5f, 0.5f, 0.5f}, {1, 1, 1}};
 
-    double[][] testArrayHardClipped = new double[][]{{2, 2, 2}, {-1.0, -1.0, -1.0}, {1, 1, 1}};
+    float[][] testArrayHardClipped = new float[][]{{2, 2, 2}, {-1, -1, -1}, {1, 1, 1}};
 
-    double delta = 0.000001;
+    float delta = 0.000001f;
 
-    DoubleMatrix testDoubleMatrix = new DoubleMatrix(testArray);
-    DoubleMatrix testDoubleMatrixHard = new DoubleMatrix(testArrayHardClipped);
+    FloatMatrix testFloatMatrix = new FloatMatrix(testArray);
+    FloatMatrix testFloatMatrixHard = new FloatMatrix(testArrayHardClipped);
 
     public void testDefaultLogistic() {
 
-        double[][] expectMatrix = new double[][]{
-            {0.5, 0.5, 0.5},
-            {0.622459, 0.622459, 0.622459},
-            {0.731059, 0.731059, 0.731059}};
+        float[][] expectMatrix = new float[][]{
+            {0.5f, 0.5f, 0.5f},
+            {0.622459f, 0.622459f, 0.622459f},
+            {0.731059f, 0.731059f, 0.731059f}};
 
         System.out.println("* testDefaultLogistic()");
         DefaultLogisticMatrixFunction x = new DefaultLogisticMatrixFunction();
-        DoubleMatrix result = x.function(testDoubleMatrix);
+        FloatMatrix result = x.function(testFloatMatrix);
 
-        double[][] resultArray = result.toArray2();
+        float[][] resultArray = result.toArray2();
 
         //System.out.println(result);
         for (int i = 0; i < expectMatrix.length; i++) {
@@ -60,16 +60,16 @@ public class TestLogistics extends TestCase {
 
     public void testTanhLogistic() {
 
-        double[][] expectMatrix = new double[][]{
-            {0.5, 0.5, 0.5},
-            {0.731059, 0.731059, 0.731059},
-            {0.880797, 0.880797, 0.880797}};
+        float[][] expectMatrix = new float[][]{
+            {0.5f, 0.5f, 0.5f},
+            {0.731059f, 0.731059f, 0.731059f},
+            {0.880797f, 0.880797f, 0.880797f}};
 
         System.out.println("* testTanhLogistic");
         TanHMatrixFunction x = new TanHMatrixFunction();
-        DoubleMatrix result = x.function(testDoubleMatrix);
+        FloatMatrix result = x.function(testFloatMatrix);
 
-        double[][] resultArray = result.toArray2();
+        float[][] resultArray = result.toArray2();
 
         //System.out.println(result);
         for (int i = 0; i < expectMatrix.length; i++) {
@@ -81,16 +81,16 @@ public class TestLogistics extends TestCase {
 
     public void testGaussLogistic() {
 
-        double[][] expectMatrix = new double[][]{
-            {1.0, 1.0, 1.0},
-            {0.778801, 0.778801, 0.778801},
-            {0.367879, 0.367879, 0.367879}};
+        float[][] expectMatrix = new float[][]{
+            {1.0f, 1.0f, 1.0f},
+            {0.778801f, 0.778801f, 0.778801f},
+            {0.367879f, 0.367879f, 0.367879f}};
 
         System.out.println("* testGaussLogistic");
         GaussMatrixFunction x = new GaussMatrixFunction();
-        DoubleMatrix result = x.function(testDoubleMatrix);
+        FloatMatrix result = x.function(testFloatMatrix);
 
-        double[][] resultArray = result.toArray2();
+        float[][] resultArray = result.toArray2();
 
         //System.out.println(result);
         for (int i = 0; i < expectMatrix.length; i++) {
@@ -102,16 +102,16 @@ public class TestLogistics extends TestCase {
 
     public void testHardClippedLogistic() {
 
-        double[][] expectMatrix = new double[][]{
+        float[][] expectMatrix = new float[][]{
             {1, 1, 1},
             {0, 0, 0},
             {1, 1, 1}};
 
         System.out.println("* testHardClippedLogistic");
         HardClipMatrixFunction x = new HardClipMatrixFunction();
-        DoubleMatrix result = x.function(testDoubleMatrixHard);
+        FloatMatrix result = x.function(testFloatMatrixHard);
 
-        double[][] resultArray = result.toArray2();
+        float[][] resultArray = result.toArray2();
 
         //System.out.println(result);
         for (int i = 0; i < expectMatrix.length; i++) {
@@ -123,16 +123,16 @@ public class TestLogistics extends TestCase {
 
     public void testRectifierLogistic() {
 
-        double[][] expectMatrix = new double[][]{
-            {0.693147, 0.693147, 0.693147},
-            {0.974077, 0.974077, 0.974077},
-            {1.313262, 1.313262, 1.313262}};
+        float[][] expectMatrix = new float[][]{
+            {0.693147f, 0.693147f, 0.693147f},
+            {0.974077f, 0.974077f, 0.974077f},
+            {1.313262f, 1.313262f, 1.313262f}};
 
         System.out.println("* testRectifierLogistic");
         RectifierMatrixFunction x = new RectifierMatrixFunction();
-        DoubleMatrix result = x.function(testDoubleMatrix);
+        FloatMatrix result = x.function(testFloatMatrix);
 
-        double[][] resultArray = result.toArray2();
+        float[][] resultArray = result.toArray2();
 
         //System.out.println(result);
         for (int i = 0; i < expectMatrix.length; i++) {

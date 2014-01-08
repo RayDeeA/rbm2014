@@ -38,7 +38,7 @@ public class RBMEnhancer implements IRBM {
 	}
 	
 	@Override
-	public void train(double[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
+	public void train(float[][] trainingData, int max_epochs, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel;		
 		for (int i = 0; i < max_epochs; i++) {
 			updateModel = true;
@@ -60,28 +60,28 @@ public class RBMEnhancer implements IRBM {
 		}
 	}
 
-        private void setInfo(IRBM rbm, double[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
+        private void setInfo(IRBM rbm, float[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
                 this.info.setError(rbm.error(trainingData, useHiddenStates, useVisibleStates));
                 this.info.setWeights(rbm.getWeights());
                 this.info.setEpochs(epochs);
         }
 	@Override
-	public double error(double[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
+	public float error(float[][] trainingData, boolean useHiddenStates, boolean useVisibleStates) {
 		return rbm.error(trainingData, useHiddenStates, useVisibleStates);
 	}
 
 	@Override
-	public double[][] getHidden(double[][] userData, boolean useHiddenStates) {
+	public float[][] getHidden(float[][] userData, boolean useHiddenStates) {
 		return rbm.getHidden(userData, useHiddenStates);
 	}
 
 	@Override
-	public double[][] getVisible(double[][] hiddenData, boolean useVisibleStates) {
+	public float[][] getVisible(float[][] hiddenData, boolean useVisibleStates) {
 		return rbm.getVisible(hiddenData, useVisibleStates);
 	}
 
 	@Override
-	public double[][] getWeights() {
+	public float[][] getWeights() {
 		return rbm.getWeights();
 	}
 

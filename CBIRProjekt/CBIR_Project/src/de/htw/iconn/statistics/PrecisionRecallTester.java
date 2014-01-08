@@ -23,12 +23,12 @@ public class PrecisionRecallTester {
     private final ASorter sorter;
     private final ImageManager imageManager;
     private final ForkJoinPool pool;
-    private double[][] recalls;
-    private double[][] precisions;
+    private float[][] recalls;
+    private float[][] precisions;
     private boolean isStarted;
     private int meanAveragePrecision;
 
-    public PrecisionRecallTester(double[][] featureVectors, ImageManager imageManager) {
+    public PrecisionRecallTester(float[][] featureVectors, ImageManager imageManager) {
         this.imageManager = imageManager;
         this.pool = new ForkJoinPool();
         Pic[] images = imageManager.getImages(true);
@@ -38,14 +38,14 @@ public class PrecisionRecallTester {
         sorter = new SorterRBMFeatures(images, pool);
     }
 
-    public double test(Pic queryImage, int num, TIntDoubleHashMap lookup) {
+    public float test(Pic queryImage, int num, TIntDoubleHashMap lookup) {
         Pic[] allImages = imageManager.getImages(true);
         ImagePair[] result = new ImagePair[allImages.length];
 
         // durchlaufe alle Bilder
         for (int i = 0; i < allImages.length; i++) {
             Pic searchImage = allImages[i];
-            double distance = readDistanceFor(queryImage.getId(), searchImage.getId(), lookup);
+            float distance = readDistanceFor(queryImage.getId(), searchImage.getId(), lookup);
             result[i] = new ImagePair(queryImage, searchImage, distance);
         }
 
@@ -66,11 +66,11 @@ public class PrecisionRecallTester {
 
         // Java 8: ohne Lambda Expression
         // paralle Berechnungen
-        double[] averagePrecisions = new double[images.length];
+        float[] averagePrecisions = new float[images.length];
         ForkTest ft = new ForkTest(this, lookup, images, 0, images.length, averagePrecisions);
         pool.invoke(ft);
 
-        double mAP = 0;
+        float mAP = 0;
         for (int i = 0; i < averagePrecisions.length; i++) {
             mAP += averagePrecisions[i];
         }
@@ -93,7 +93,7 @@ public class PrecisionRecallTester {
         start(queryImages.length);
 
         // berechne die Average Precision f��r jedes Bild aus
-        double mAP = 0;
+        float mAP = 0;
         for (int i = 0; i < queryImages.length; i++) {
             mAP += test(queryImages[i], i);
         }
@@ -102,7 +102,7 @@ public class PrecisionRecallTester {
         return new PrecisionRecallTestResult(mAP, sorter.getName(), imageGroup, generatePRTable());
     }
 
-    public double test(Pic queryImage) {
+    public float test(Pic queryImage) {
         return test(queryImage, 0);
     }
 
@@ -113,7 +113,7 @@ public class PrecisionRecallTester {
      * @param table
      * @return
      */
-    private double test(Pic queryImage, int num) {
+    private float test(Pic queryImage, int num) {
 
         // sortiere alle Bilder nach der ������hnlichkeit zum Querybild 
         ImagePair[] result = sortBySimilarity(queryImage);
@@ -123,8 +123,8 @@ public class PrecisionRecallTester {
     }
 
     public void start(int numTestRuns) {
-        this.recalls = new double[numTestRuns][];
-        this.precisions = new double[numTestRuns][];
+        this.recalls = new float[numTestRuns][];
+        this.precisions = new float[numTestRuns][];
         this.isStarted = true;
         this.meanAveragePrecision = 0;
     }
@@ -137,7 +137,7 @@ public class PrecisionRecallTester {
         for (int pic = 0; pic < numPics; pic++) {
 
             // zähle alle Testergebnisse zusammen
-            double avgPrecision = 0, avgRecall = 0;
+            float avgPrecision = 0, avgRecall = 0;
             for (int runs = 0; runs < numTestRun; runs++) {
                 avgPrecision += precisions[runs][pic];
                 avgRecall += recalls[runs][pic];
@@ -163,7 +163,7 @@ public class PrecisionRecallTester {
         // durchlaufe alle Bilder
         for (int i = 0; i < allImages.length; i++) {
             Pic searchImage = allImages[i];
-            double distance = sorter.getDistance(queryImage.getFeatureVector(), searchImage.getFeatureVector());
+            float distance = sorter.getDistance(queryImage.getFeatureVector(), searchImage.getFeatureVector());
             result[i] = new ImagePair(queryImage, searchImage, distance);
         }
 
@@ -181,14 +181,14 @@ public class PrecisionRecallTester {
      * @param lookup
      * @return
      */
-    private static double readDistanceFor(int id1, int id2, TIntDoubleHashMap lookup) {
+    private static float readDistanceFor(int id1, int id2, TIntDoubleHashMap lookup) {
         if (id1 == id2) {
             return 0;
         }
         if (id1 < id2) {
-            return lookup.get((id1 << 16) | id2);
+            return (float)lookup.get((id1 << 16) | id2);
         }
-        return lookup.get((id2 << 16) | id1);
+        return (float)lookup.get((id2 << 16) | id1);
     }
 
     /**
@@ -197,11 +197,11 @@ public class PrecisionRecallTester {
      * @param sortedArray
      * @return
      */
-    public double analyse(ImagePair[] sortedArray, int num) {
+    public float analyse(ImagePair[] sortedArray, int num) {
         return (true) ? complexAnalysis(sortedArray, num) : calcMeanAveragePrecision(sortedArray);
     }
 
-    private double complexAnalysis(ImagePair[] sortedArray, int num) {
+    private float complexAnalysis(ImagePair[] sortedArray, int num) {
 
         // existiert schon der passende Array
         if (isStarted == false) {
@@ -216,17 +216,17 @@ public class PrecisionRecallTester {
         }
 
         int numPics = sortedArray.length;
-        double[] precision = new double[numPics];
-        double[] recall = new double[numPics];
+        float[] precision = new float[numPics];
+        float[] recall = new float[numPics];
 
-        double precisionSum = 0;
+        float precisionSum = 0;
         int currRelevantRetrieved = 0;
 
         for (int pos = 0; pos < sortedArray.length; pos++) {
             ImagePair imagePair = sortedArray[pos];
             if (imagePair.isSameCategory()) {
                 currRelevantRetrieved++;
-                precisionSum += (double) currRelevantRetrieved / (pos + 1);
+                precisionSum += (float) currRelevantRetrieved / (pos + 1);
             }
 
             precision[pos] = (float) currRelevantRetrieved / (pos + 1);
@@ -241,8 +241,8 @@ public class PrecisionRecallTester {
         return precisionSum / currRelevantRetrieved;
     }
 
-    public static double calcMeanAveragePrecision(ImagePair[] sortedArray) {
-        double precisionSum = 0;
+    public static float calcMeanAveragePrecision(ImagePair[] sortedArray) {
+        float precisionSum = 0;
         int currRelevantRetrieved = 0;
 
         for (int pos = 0; pos < sortedArray.length; pos++) {
@@ -250,7 +250,7 @@ public class PrecisionRecallTester {
 
             if (imagePair.isSameCategory()) {
                 currRelevantRetrieved++;
-                precisionSum += (double) currRelevantRetrieved / (pos + 1);
+                precisionSum += (float) currRelevantRetrieved / (pos + 1);
             }
         }
 
@@ -273,7 +273,7 @@ public class PrecisionRecallTester {
             for (int j = i + 1; j < allImages.length; j++) {
                 Pic p2 = allImages[j];
                 int key = (p1.getId() << 16) | p2.getId();
-                double dist = sorter.getDistance(p1.getFeatureVector(), p2.getFeatureVector());
+                float dist = sorter.getDistance(p1.getFeatureVector(), p2.getFeatureVector());
                 map.put(key, dist);
             }
         }

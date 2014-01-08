@@ -14,23 +14,23 @@ import java.util.LinkedList;
  */
 public class RBMInfoPackage {
     
-    private double error;
-    private double[][] weights;
+    private float error;
+    private float[][] weights;
     private int epochs;
-    private final LinkedList<double[][]> collectedWeights;
+    private final LinkedList<float[][]> collectedWeights;
 
-    public RBMInfoPackage(double error, double[][] weights, int epochs) {
+    public RBMInfoPackage(float error, float[][] weights, int epochs) {
         this.error = error;
         this.weights = weights;
         this.epochs = epochs;
         this.collectedWeights = new LinkedList<>();
     }
 
-    public double getError() {
+    public float getError() {
         return error;
     }
 
-    public double[][] getWeights() {
+    public float[][] getWeights() {
         return weights;
     }
 
@@ -38,21 +38,21 @@ public class RBMInfoPackage {
         return epochs;
     }
 
-    public LinkedList<double[][]> getCollectedWeights() {
+    public LinkedList<float[][]> getCollectedWeights() {
         return collectedWeights;
     }
 
     /**
      * @param error the error to set
      */
-    public void setError(double error) {
+    public void setError(float error) {
         this.error = error;
     }
 
     /**
      * @param weights the weights to set
      */
-    public void setWeights(double[][] weights) {
+    public void setWeights(float[][] weights) {
         this.collectedWeights.add(weights);
         this.weights = weights;
     }

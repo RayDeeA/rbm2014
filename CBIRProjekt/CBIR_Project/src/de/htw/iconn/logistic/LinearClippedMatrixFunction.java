@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class LinearClippedMatrixFunction extends MatrixFunctions implements
@@ -8,8 +8,8 @@ public class LinearClippedMatrixFunction extends MatrixFunctions implements
 
 	// min(max(0, x), 1)
 
-	public DoubleMatrix function(DoubleMatrix m) {
-		double[][] duplicateM = m.dup().mul(0.125).add(0.5).toArray2();
+	public FloatMatrix function(FloatMatrix m) {
+		float[][] duplicateM = m.dup().mul(0.125f).add(0.5f).toArray2();
 		for (int y = 0; y < duplicateM.length; y++) {
 			for (int x = 0; x < duplicateM[y].length; x++) {
 				if (duplicateM[y][x] < 0)
@@ -19,7 +19,7 @@ public class LinearClippedMatrixFunction extends MatrixFunctions implements
 					duplicateM[y][x] = 1;
 			}
 		}
-		return new DoubleMatrix(duplicateM);
+		return new FloatMatrix(duplicateM);
 	}
 
 }

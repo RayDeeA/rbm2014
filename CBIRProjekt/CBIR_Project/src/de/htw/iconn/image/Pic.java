@@ -11,11 +11,11 @@ public class Pic extends Object{
 	
 	private boolean isSelected;
 	private int rank;                 	// Position bei sortierter 1D-Reihenfolge
-	private double distance;
+	private float distance;
 	private int typeOccurrence;
 	
-	private double[] data;	
-	private double[] featureVector;	
+	private float[] data;	
+	private float[] featureVector;	
 	
 	// Originalgröße des Bildes
 	private int origWidth; 
@@ -47,11 +47,11 @@ public class Pic extends Object{
 		this.typeOccurrence = typeOccurrence;
 	}
 
-	public double[] getFeatureVector() {
+	public float[] getFeatureVector() {
 		return featureVector;
 	}
 
-	public void setFeatureVector(double[] featureVector) {
+	public void setFeatureVector(float[] featureVector) {
 		this.featureVector = featureVector;
 	}
 
@@ -151,11 +151,11 @@ public class Pic extends Object{
 		this.featureImage = featureImage;
 	}
 
-	public double getDistance() {
+	public float getDistance() {
 		return distance;
 	}
 
-	public void setDistance(double distance) {
+	public void setDistance(float distance) {
 		this.distance = distance;
 	}
 	

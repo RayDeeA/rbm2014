@@ -1,6 +1,6 @@
 package de.htw.iconn.logistic;
 
-import org.jblas.DoubleMatrix;
+import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
 public class GeneralisedLogisticFunction extends MatrixFunctions implements ILogistic {
@@ -16,16 +16,16 @@ public class GeneralisedLogisticFunction extends MatrixFunctions implements ILog
 	*/
 	
 	@Override
-	public DoubleMatrix function(DoubleMatrix m) {
+	public FloatMatrix function(FloatMatrix m) {
 		return function(m, 0, 1, 1);
 	}
 	
-	public DoubleMatrix function(DoubleMatrix m, double A, double K, double B) {
-		final DoubleMatrix negM = m.neg().mmul(B);
-		final DoubleMatrix negExpM = MatrixFunctions.exp(negM);
-		final DoubleMatrix negExpPlus1M = negExpM.add(1.0);
+	public FloatMatrix function(FloatMatrix m, float A, float K, float B) {
+		final FloatMatrix negM = m.neg().mmul(B);
+		final FloatMatrix negExpM = MatrixFunctions.exp(negM);
+		final FloatMatrix negExpPlus1M = negExpM.add(1.0f);
 		
-		final DoubleMatrix oneDivideNegExpPlusOneM = MatrixFunctions.pow(negExpPlus1M, -1 * (A + (K-A))); 
+		final FloatMatrix oneDivideNegExpPlusOneM = MatrixFunctions.pow(negExpPlus1M, -1 * (A + (K-A))); 
 		
 		return oneDivideNegExpPlusOneM;
 	}

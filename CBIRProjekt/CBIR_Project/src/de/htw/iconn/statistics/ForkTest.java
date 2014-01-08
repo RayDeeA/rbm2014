@@ -14,11 +14,11 @@ public class ForkTest extends RecursiveAction {
     private final Pic[] images;
     private final int start;
     private final int length;
-    private final double[] MAPs;
+    private final float[] MAPs;
     private final PrecisionRecallTester mAPTester;
     private final TIntDoubleHashMap lookup;
 
-    public ForkTest(PrecisionRecallTester mAPTester, TIntDoubleHashMap lookup, Pic[] images, int start, int length, double[] MAPs) {
+    public ForkTest(PrecisionRecallTester mAPTester, TIntDoubleHashMap lookup, Pic[] images, int start, int length, float[] MAPs) {
         this.images = images;
         this.start = start;
         this.length = length;
@@ -30,7 +30,7 @@ public class ForkTest extends RecursiveAction {
     protected void computeDirectly() {
         for (int index = start; index < start + length; index++) {
             Pic image = images[index];
-            double map = mAPTester.test(image, index, lookup);
+            float map = mAPTester.test(image, index, lookup);
             MAPs[index] = map;
         }
     }

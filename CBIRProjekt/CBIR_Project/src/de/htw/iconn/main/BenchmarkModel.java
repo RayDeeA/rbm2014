@@ -114,7 +114,7 @@ public class BenchmarkModel {
 
     public void startMAPTest(String imageCategory) {
 
-        double[][] features = controller.getRbmTrainer().getHiddenAllRBMs(controller, null, showImageViewer);
+        float[][] features = controller.getRbmTrainer().getHiddenAllRBMs(controller, null, showImageViewer);
         PrecisionRecallTester prTester = new PrecisionRecallTester(features, imageManager);
 
         PrecisionRecallTestResult result;
@@ -136,7 +136,7 @@ public class BenchmarkModel {
         return this.imageEdgeSize * this.imageEdgeSize;
     }
     
-    public double[][] getInputData(){
+    public float[][] getInputData(){
         return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize);
     }
 
