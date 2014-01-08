@@ -93,9 +93,9 @@ public class DaydreamController extends AController implements EventHandler {
             @Override
             public void run() {
                 System.out.println("Dream");
-                model.daydream();
+                model.daydream(30);
                 imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
-                Image hiddenImage = model.getHiddenImage();
+                Image hiddenImage = model.getHiddenImage(10);
                 imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
                 imgv_ResultHidden.setFitHeight(hiddenImage.getHeight());
                 imgv_ResultHidden.setImage(hiddenImage);

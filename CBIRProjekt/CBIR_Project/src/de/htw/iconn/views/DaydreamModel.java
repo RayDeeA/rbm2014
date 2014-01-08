@@ -5,6 +5,9 @@ import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageScaler;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -80,7 +83,7 @@ public class DaydreamModel {
         return image;
     }
 
-    public void daydream() {
+    public void daydream(int maxHiddenImageWidth) {
     	RBMTrainer trainer = new  RBMTrainer();
     	
     	int width = this.benchmarkController.getModel().getImageEdgeSize();
@@ -102,8 +105,8 @@ public class DaydreamModel {
         
         // Convert hiddenData to pixels
         int[] hiddenImagePixels = new int[hiddenDataForVis.length];
-        int hiddenImageWidth = 10;
-        int hiddenImageHeight = (int) Math.ceil(hiddenImagePixels.length / 10);
+        int hiddenImageWidth = maxHiddenImageWidth;
+        int hiddenImageHeight = (int) Math.ceil(hiddenImagePixels.length / maxHiddenImageWidth);
         
         int counter = 0;
         for(int y = 0; y < hiddenImageHeight; y++) {
@@ -142,16 +145,38 @@ public class DaydreamModel {
     	return visibleImage;
     }
     
-    public Image getHiddenImage() {
+    public Image getHiddenImage(int scalingFactor) {
 		ImageScaler imageScaler = new ImageScaler();
 		
-		int visWidth = this.hiddenImage.getWidth() * 10;
-		int visHeight = this.hiddenImage.getHeight() * 10;
+		int width = this.hiddenImage.getWidth();
+		int height = this.hiddenImage.getHeight();
+		
+		int visWidth = this.hiddenImage.getWidth() * scalingFactor;
+		int visHeight = this.hiddenImage.getHeight() * scalingFactor;
 
         WritableImage hiddenImage = new WritableImage(visWidth, visHeight);
         SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.hiddenImage, visWidth, visHeight), hiddenImage);
     	
-    	return hiddenImage;
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(hiddenImage, null);
+        		
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.setColor(Color.BLACK);
+        BasicStroke bs = new BasicStroke(1);
+        g2d.setStroke(bs);
+        
+        for(int y = 0; y < height; y++) {
+        	if(y != 0) {
+        		g2d.drawLine(0, (y) * scalingFactor, visWidth, (y) * scalingFactor);
+        	}
+        }
+        
+    	for(int x = 0; x < width; x++) {
+    		if(x != 0) {
+    			g2d.drawLine((x) * scalingFactor, 0, (x) * scalingFactor, visHeight);
+    		}
+    	}
+        
+    	return SwingFXUtils.toFXImage(bufferedImage, null);
     }
 
     public void setUseHiddenStates(boolean useHiddenStates) {
