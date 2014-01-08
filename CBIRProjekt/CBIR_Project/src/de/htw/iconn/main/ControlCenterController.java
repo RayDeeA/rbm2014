@@ -5,8 +5,8 @@
  */
 package de.htw.iconn.main;
 
-import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.persistence.Persistor;
+import de.htw.iconn.settings.RBMSettingsController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,8 +64,7 @@ public class ControlCenterController extends AController {
         }
         
         // standard innitializing
-        //mnu_newRbmAction(null);
-        //mnu_newRbmAction(null);
+        // mnu_newRbmAction(null);
     }
 
     @FXML
