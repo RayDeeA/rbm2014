@@ -5,13 +5,17 @@
  */
 package de.htw.iconn.main;
 
+import de.htw.iconn.persistence.Creator;
 import de.htw.iconn.persistence.Persistor;
 import de.htw.iconn.settings.RBMSettingsController;
+import de.htw.iconn.tools.Chooser;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  * FXML Controller class
@@ -42,6 +47,7 @@ public class ControlCenterController extends AController {
     private MenuItem mnu_loadConfiguration;
 
     private Persistor persistor;
+    private Creator creator;
 
     /**
      * Initializes the controller class.
@@ -52,7 +58,11 @@ public class ControlCenterController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.persistor = new Persistor();
-
+        this.creator = new Creator();
+        this.createBenchmark();
+    }
+    
+    private void createBenchmark(){
         try {
             benchmarkController = (BenchmarkController) loadController("Benchmark.fxml");
             AnchorPane benchmarkView = (AnchorPane)(benchmarkController.getView());       
@@ -62,35 +72,41 @@ public class ControlCenterController extends AController {
         } catch (IOException ex) {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        // standard innitializing
-        // mnu_newRbmAction(null);
     }
-
-    @FXML
-    private void mnu_newRbmAction(ActionEvent event) {
+    
+    public RBMSettingsController createRBM(){
         try {
-
             RBMSettingsController controller = (RBMSettingsController) loadController("../settings/RBMSettings.fxml");
             AnchorPane rbmSettingsView = (AnchorPane)(controller.getView());       
             rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty().subtract(15));
             benchmarkController.getModel().add(controller);
             vbox.getChildren().add(rbmSettingsView);
+            return controller;
         } catch (IOException ex) {
-            System.out.println("Could not load controller");
+            System.err.println("ERROR: could not load RBMSettingsController");
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
+
+    @FXML
+    private void mnu_newRbmAction(ActionEvent event) {
+        this.createRBM();
     }
 
     @Override
     public Node getView() {
         return this.view;
     }
+    
+    public BenchmarkController getBenchmarkController(){
+        return benchmarkController;
+    }
 
     @FXML
     private void mnu_saveConfigurationAction(ActionEvent event) {
         try {
-            persistor.save(this.benchmarkController);
+            this.persistor.save(this.benchmarkController);
         } catch (IOException | ParserConfigurationException | TransformerException ex) {
             System.err.println("ERROR: could not save configuration to file");
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,8 +115,26 @@ public class ControlCenterController extends AController {
 
     @FXML
     private void mnu_loadConfigurationAction(ActionEvent event) {
+        this.reset();
+        File file = Chooser.openFileChooser("Persistor");
+        if(file != null){
+            try {
+                this.creator.load(this, file);
+            } catch (ParserConfigurationException | SAXException | IOException ex) {
+                System.err.println("ERROR: could not parse file");
+                Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            benchmarkController.getModel().updateAllViews();
+        }
+    }
+    
+    private void reset(){
+        ObservableList<Node> children = vbox.getChildren();
+        children.remove(0, children.size());
+        createBenchmark();
     }
 
+    @Override
     public void update() {
 
     }

@@ -37,7 +37,7 @@ public class BenchmarkModel {
     @Conserve
     private ImageManager imageManager = null;
     @Conserve
-	private boolean binarizeImages;
+    private boolean binarizeImages;
     @Conserve
     private boolean showImageViewer = false;
     @Conserve
@@ -167,6 +167,15 @@ public class BenchmarkModel {
     
     public void globalUpdate(){
         this.rbmTrainer.updateRBMs(this);
+    }
+    
+    public void updateAllViews(){
+        this.controller.update();
+        for(RBMSettingsController settingsController : rbmSettingsList){
+            for(AController c : settingsController.getModel().getControllers()){
+                c.update();
+            }
+        }
     }
     
     public void trainRBMs(){
