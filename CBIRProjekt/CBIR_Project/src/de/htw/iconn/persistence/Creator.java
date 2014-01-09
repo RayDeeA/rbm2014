@@ -165,10 +165,6 @@ public class Creator {
         if(type.equals("ImageManager")){
             String path = "CBIR_Project/images/" + value;
             File images = new File(path);
-            if(images == null){
-                System.err.println("ERROR: could not find image set in path " + path);
-                return null;
-            }
             return new ImageManager(images);
         }
         // no type found
