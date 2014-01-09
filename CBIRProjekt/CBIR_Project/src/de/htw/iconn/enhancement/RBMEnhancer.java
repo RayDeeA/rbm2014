@@ -48,7 +48,7 @@ public class RBMEnhancer implements IRBM {
                         StoppingCondition intervalStop = new StoppingCondition(
                                 stop.isErrorDisabled(),
                                 false,
-                                stop.epochsLeft() > BASE_INTERVAL 
+                                stop.epochsRemaining() > BASE_INTERVAL 
                                         ? (stop.getCurrentEpochs() + BASE_INTERVAL) : stop.getMaxEpochs(),
                                 stop.getMinError(),
                                 stop.getCurrentEpochs(), 
