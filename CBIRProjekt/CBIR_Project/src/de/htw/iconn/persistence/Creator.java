@@ -6,6 +6,7 @@
 
 package de.htw.iconn.persistence;
 
+import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.main.ControlCenterController;
@@ -34,9 +35,7 @@ import org.xml.sax.SAXException;
  * @author christoph
  */
 public class Creator {
-    public void load(ControlCenterController controller, File file) throws ParserConfigurationException, SAXException, IOException{
-        if(file == null) return;
-        
+    public void load(ControlCenterController controller, File file) throws ParserConfigurationException, SAXException, IOException{     
         System.out.println("Load Configuration");
         
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -164,7 +163,13 @@ public class Creator {
         if(type.equalsIgnoreCase("String")) return value;
         // parsing custom classes
         if(type.equals("ImageManager")){
-            
+            String path = "CBIR_Project/images/" + value;
+            File images = new File(path);
+            if(images == null){
+                System.err.println("ERROR: could not find image set in path " + path);
+                return null;
+            }
+            return new ImageManager(images);
         }
         // no type found
         return null;

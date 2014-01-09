@@ -117,12 +117,15 @@ public class ControlCenterController extends AController {
     private void mnu_loadConfigurationAction(ActionEvent event) {
         this.reset();
         File file = Chooser.openFileChooser("Persistor");
-        try {
-            this.creator.load(this, file);
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
+        if(file != null){
+            try {
+                this.creator.load(this, file);
+            } catch (ParserConfigurationException | SAXException | IOException ex) {
+                System.err.println("ERROR: could not parse file");
+                Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            benchmarkController.getModel().updateAllViews();
         }
-        benchmarkController.getModel().updateAllViews();
     }
     
     private void reset(){

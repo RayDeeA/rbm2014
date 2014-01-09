@@ -129,7 +129,7 @@ public class Persistor {
                     String value = getFieldValue(field, model);
                     if(value != null){
                         hasConserveAnnotation = true;
-                        createDataElement(type.getName(), name, value, modelElement, doc);
+                        createDataElement(type.getSimpleName(), name, value, modelElement, doc);
                     }else{
                         System.err.println("ERROR: Could not conserve field " + name + " of type " + type.getSimpleName());
                     }
