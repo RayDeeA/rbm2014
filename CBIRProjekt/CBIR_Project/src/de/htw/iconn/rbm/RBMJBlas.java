@@ -89,13 +89,13 @@ public class RBMJBlas implements IRBM {
     }
 
     @Override
-    public void train(float[][] trainingData, int max_epochs, boolean binarizeHidden, boolean binarizeVisible) {
+    public void train(float[][] trainingData, StoppingCondition stop, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
 
         final FloatMatrix oneVector = FloatMatrix.ones(data.getRows(), 1);
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, data);
 
-        for (int i = 0; i < max_epochs; i++) {
+        while(stop.isNotDone()) {
 
             final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 
@@ -145,6 +145,7 @@ public class RBMJBlas implements IRBM {
             this.weights.addi((posAssociations.sub(negAssociations)).mul(this.learnRate / data.getRows()));
             error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0f).sum() / trainingData.length / weights.getRows());
 
+            stop.update(error);
             //System.out.println(error);
         }
         System.out.println(error);

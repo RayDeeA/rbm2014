@@ -60,7 +60,7 @@ public class RBMSettingsStoppingConditionController extends AController{
     @FXML
     private void txt_errorKey(KeyEvent event) {
         try{
-            this.model.setError(Double.parseDouble(this.txt_error.getText()));
+            this.model.setError(Float.parseFloat(this.txt_error.getText()));
         }catch(NumberFormatException e){
             
         }

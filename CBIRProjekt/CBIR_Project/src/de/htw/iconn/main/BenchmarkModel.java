@@ -34,6 +34,8 @@ public class BenchmarkModel {
     @Conserve
     private ImageManager imageManager = null;
     @Conserve
+	private boolean binarizeImages;
+    @Conserve
     private boolean showImageViewer = false;
     @Conserve
     private int selectedMAPTest = 0;
@@ -83,6 +85,10 @@ public class BenchmarkModel {
     public boolean isShowImageViewer() {
         return showImageViewer;
     }
+    
+	public void setBinarizeImages(boolean binarizeImages) {
+		this.binarizeImages = binarizeImages;
+	}
 
     public void setShowImageViewer(boolean showImageViewer) {
         this.showImageViewer = showImageViewer;
@@ -128,8 +134,8 @@ public class BenchmarkModel {
         return this.imageEdgeSize * this.imageEdgeSize;
     }
     
-    public float[][] getInputData(){
-        return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize);
+    public float[][] getInputData() {
+    	return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize, this.binarizeImages);
     }
 
     PRTMAPController getPRTMAPController() {

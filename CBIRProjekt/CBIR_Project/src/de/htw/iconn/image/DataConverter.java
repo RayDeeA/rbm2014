@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class DataConverter {
 
-    public static float[][] generatePixelIntensityData(Pic[] pics, int edgeLength) {
+    public static float[][] generatePixelIntensityData(Pic[] pics, int edgeLength, boolean binarize) {
 
         float[][] data = new float[pics.length][edgeLength * edgeLength];
 
@@ -20,76 +20,81 @@ public class DataConverter {
                 int g = (argb >> 8) & 0xFF;
                 int b = (argb) & 0xFF;
 
-                float intensity = (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f;
+                float intensity = Math.max(0, Math.min(255, (float)(0.299 * r + 0.587 * g + 0.114 * b))) / 255.0f;
 
                 data[i][p] = intensity;
             }
-
+            if(binarize) {
+            	binarizeImage(data[i]);
+            }
         }
 
         return data;
     }
-
-    public static float[][] binarizeGrayImageWithIsoData(float[][] data) {
-        float[][] binarized = new float[data.length][data[0].length];
-        
-        for(int i = 0; i < data.length; ++i){
-            binarized[i] = binarizeGrayImageWithIsoData(data[i]);
-        }
-        
-        return binarized;
+    
+    private static void binarizeImage(float[] data) {
+    	float threshold = findOptimalThreshold(data);
+    	for(int i = 0; i < data.length; i++) {
+    		float value = data[i];
+    		data[i] = value < threshold ? 0.0f : 1.0f;
+    	}
     }
+    
+    private static float findOptimalThreshold(float pixels[]) {
+    	
+    	float[] hist = new float[256];
+    	
+    	for(int i = 0; i < pixels.length; i++) {
+    		int gray = (int)(Math.round(pixels[i] * 255));
+    		hist[gray] += 1.0f/pixels.length;
+    	}
+    	
+    	int median = 0;
+    	float medianValue = 0;
+    	for(int i = 0; i < hist.length; i++) {
+    		medianValue += hist[i];
+    		if(medianValue >= 0.5) {
+    			median = i;
+    			break;
+    		}
+    	}
+    	
+    	int t = median;
+    	int t_last = 0;
+    	
+    	while (t != t_last) {
 
-    public static float[] binarizeGrayImageWithIsoData(float[] data) {
-        final int safetyStop = 50;
-        
-        float[] binarized = new float[data.length];
+    		t_last = t;
 
-        int tOld = 0;
-        int tNew = -2;
-        int sum = 0;
+	    	float[] hist1 = new float[t];
+	    	float[] hist2 = new float[256 - t];
 
-        //initial threshold is mean gray value
-        for (int i = 0; i < data.length; i++) {
-            sum += data[i];
-        }
+	    	System.arraycopy(hist, 0, hist1, 0, hist1.length);
+	    	System.arraycopy(hist, hist1.length, hist2, 0, hist2.length);
 
-        tOld = sum / data.length;
+	    	float u1 = isoData(hist1, 0);
+	    	float u2 = isoData(hist2, t);
 
-        int smallerSum = 0;
-        int biggerSum = 0;
-        int smallerNumber = 0;
-        int biggerNumber = 0;
+    		t = (int) ((u1 + u2) / 2);
+    	}
 
-        for (int j = 0; Math.abs(tOld - tNew) > 1 && j < safetyStop; j++) {
-            tOld = tNew;
-            for (int i = 0; i < data.length; i++) {
-
-                if (data[i] < tOld) {
-                    smallerSum += data[i];
-                    smallerNumber++;
-                } else {
-                    biggerSum += data[i];
-                    biggerNumber++;
-                }
-            }
-            //check if one side has no color values
-            if (smallerNumber == 0) {
-                tNew = biggerSum / biggerNumber;
-            } else if (biggerNumber == 0) {
-                tNew = smallerSum / smallerNumber;
-            } else {
-                tNew = (smallerSum / smallerNumber + biggerSum / biggerNumber) / 2;
-            }
-            smallerSum = biggerSum = smallerNumber = biggerNumber = 0;
-        }
-
-        int threshold = tNew;
-
-        for(int i = 0; i < data.length; i++){
-            binarized[i] = data[i] < threshold ? 0.0f : 1.0f;
-        }    
-        
-        return binarized;
+    	return t / 255.0f;
+    }
+    
+    private static float isoData(float[] hist, int offset) {
+    	float P = 0;
+    	
+    	for(int i = 0; i < hist.length; i++) {
+    		P += hist[i];
+    	}
+    	
+    	float u = 0;
+    	
+    	for(int i = 0; i < hist.length; i++) {
+    		u += hist[i] * (i + offset);
+    	}
+    	u /= P;
+    	
+    	return u;
     }
 }

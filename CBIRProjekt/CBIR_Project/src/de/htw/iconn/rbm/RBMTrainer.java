@@ -33,7 +33,7 @@ import de.htw.iconn.views.ErrorViewModel;
 
 /**
  *
- * @author christoph
+ * @author radek, christoph
  */
 public class RBMTrainer {
 	
@@ -118,8 +118,18 @@ public class RBMTrainer {
         	rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
         }
         */
-
-        rbmEnhancer.train(model.getData(), stoppingConditionModel.getEpochs(), weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
+        StoppingCondition stop;
+        if(stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) { 
+            stop = new StoppingCondition(stoppingConditionModel.getEpochs(), stoppingConditionModel.getError());
+        } else if(!stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) {
+            stop = new StoppingCondition(stoppingConditionModel.getError()); 
+        } else if(stoppingConditionModel.isEpochsOn() && !stoppingConditionModel.isErrorOn()) {
+            stop = new StoppingCondition(stoppingConditionModel.getEpochs()); 
+        } else {
+            stop = new StoppingCondition();
+        }
+        
+        rbmEnhancer.train(model.getData(), stop, weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
 
         weightsModel.setWeights(rbmEnhancer.getWeights());
         
