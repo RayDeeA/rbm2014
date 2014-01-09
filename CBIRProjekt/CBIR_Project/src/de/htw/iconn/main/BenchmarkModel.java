@@ -140,6 +140,15 @@ public class BenchmarkModel {
         this.rbmTrainer.updateRBMs(this);
     }
     
+    public void updateAllViews(){
+        this.controller.update();
+        for(RBMSettingsController settingsController : rbmSettingsList){
+            for(AController c : settingsController.getModel().getControllers()){
+                c.update();
+            }
+        }
+    }
+    
     public void trainRBMs(){
         this.rbmTrainer.trainAllRBMs(this);
     }

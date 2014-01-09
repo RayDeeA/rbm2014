@@ -7,7 +7,6 @@
 package de.htw.iconn.persistence;
 
 import de.htw.iconn.image.ImageManager;
-import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.main.BenchmarkModel;
@@ -51,6 +50,8 @@ public class Persistor {
     private final String baseFolder = "Persistor";
     
     public void save(BenchmarkController benchmarkController) throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException{
+        System.out.println("Save Configuration");
+        
         BenchmarkModel benchmarkModel = benchmarkController.getModel();
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         
@@ -128,10 +129,11 @@ public class Persistor {
                     String value = getFieldValue(field, model);
                     if(value != null){
                         hasConserveAnnotation = true;
-                        createDataElement(type.toString(), name, value, modelElement, doc);
+                        createDataElement(type.getName(), name, value, modelElement, doc);
                     }else{
-                        System.err.println("ERROR: Could not conserve field of type " + type.toString());
-                    }                   
+                        System.err.println("ERROR: Could not conserve field " + name + " of type " + type.getSimpleName());
+                    }
+                    break;
                 }
             }         
         }
