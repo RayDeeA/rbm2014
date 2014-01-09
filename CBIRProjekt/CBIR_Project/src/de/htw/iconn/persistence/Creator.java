@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -34,6 +35,8 @@ import org.xml.sax.SAXException;
  */
 public class Creator {
     public void load(ControlCenterController controller, File file) throws ParserConfigurationException, SAXException, IOException{
+        if(file == null) return;
+        
         System.out.println("Load Configuration");
         
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -92,7 +95,7 @@ public class Creator {
             
             for(int j = 0; j < annotations.length; ++j){
                 if(annotations[j].annotationType().equals(Conserve.class)){
-                    String type = field.getType().getName();
+                    String type = field.getType().getSimpleName();
                     String name = field.getName();
                     
                     //Find data set belonging to field
@@ -118,9 +121,12 @@ public class Creator {
     
     private void writeDataToField(String value, Field field, Object model){
         field.setAccessible(true);
-        String type = field.getType().getName();
+        String type = field.getType().getSimpleName();
         if(field.getType().isArray()){
             System.out.println("Array");
+            System.out.println(type);
+            type = cropArrayTypeName(type);
+            System.out.println(type);
         }else {
             Object o = parseString(type, value);
             if(o != null){
@@ -129,15 +135,38 @@ public class Creator {
                 } catch (IllegalArgumentException | IllegalAccessException ex) {
                     Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }else{
+                System.err.println("ERROR: could not parse field of type " + type);
             }
         }
     }
     
+    private String cropArrayTypeName(String type){
+        int end = 0;
+        char[] chars = type.toCharArray();
+        for(; end < chars.length; ++end){
+            if(chars[end] == '[') break;
+        }
+        return new String(Arrays.copyOf(chars, end));
+    }
+    
     private Object parseString(String type, String value){
+        // Number classes
         if(type.equals("int")) return new Integer(value);
         if(type.equals("float")) return new Float(value);
-        if(type.equals("double")) return new Double(value);
-        if(type.equals("boolean")) return new Boolean(value);
+        if(type.equals("double")) return new Double(value);       
+        if(type.equals("long")) return new Long(value);
+        if(type.equals("byte")) return new Byte(value);
+        if(type.equals("short")) return new Short(value);
+        // other basic types
+        if(type.equals("boolean")) return Boolean.valueOf(value);
+        if(type.equals("char") && value.length() == 1) return new Character(value.charAt(0));
+        if(type.equalsIgnoreCase("String")) return value;
+        // parsing custom classes
+        if(type.equals("ImageManager")){
+            
+        }
+        // no type found
         return null;
     }
     
