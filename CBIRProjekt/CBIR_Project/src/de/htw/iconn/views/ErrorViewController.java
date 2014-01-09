@@ -102,7 +102,7 @@ public class ErrorViewController extends AController implements EventHandler {
     }
     private void buildGraph() {
 
-        final Double[] errors = this.getModel().getErrors().toArray(new Double[0]);
+        final Float[] errors = this.getModel().getErrors().toArray(new Float[0]);
         final Integer[] epochs = this.getModel().getEpochs().toArray(new Integer[0]);
         
             series.getData().clear();

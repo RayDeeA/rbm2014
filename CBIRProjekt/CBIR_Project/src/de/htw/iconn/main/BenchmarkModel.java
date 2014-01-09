@@ -15,7 +15,9 @@ import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
+
 import java.util.LinkedList;
 
 
@@ -27,6 +29,7 @@ public class BenchmarkModel {
 
     private final BenchmarkController controller;
     private ImageViewer imageViewer;
+	private FeatureViewer featureViewer;
     private final PRTMAPController prtmapController;
     private final LinkedList<RBMSettingsController> rbmSettingsList;
     private RBMTrainer rbmTrainer;
@@ -38,11 +41,15 @@ public class BenchmarkModel {
     @Conserve
     private boolean showImageViewer = false;
     @Conserve
+	private boolean showFeatureViewer = false;
+    @Conserve
     private int selectedMAPTest = 0;
     @Conserve
     private boolean isPRTMAPViewerVisible;
     @Conserve
     private int imageEdgeSize = 28;
+    @Conserve
+	private boolean sorted = true;
 
     public int getImageEdgeSize() {
         return imageEdgeSize;
@@ -78,13 +85,17 @@ public class BenchmarkModel {
 
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
-        this.imageViewer = new ImageViewer(imageManager);
+        this.imageViewer = new ImageViewer(imageManager, this.sorted);
         this.globalUpdate();
     }
 
     public boolean isShowImageViewer() {
-        return showImageViewer;
+        return this.showImageViewer;
     }
+    
+	public boolean isShowFeatureViewer() {
+		return this.showFeatureViewer;
+	}
     
 	public void setBinarizeImages(boolean binarizeImages) {
 		this.binarizeImages = binarizeImages;
@@ -93,6 +104,10 @@ public class BenchmarkModel {
     public void setShowImageViewer(boolean showImageViewer) {
         this.showImageViewer = showImageViewer;
     }
+    
+	public void setShowFeatureViewer(boolean showFeatureViewer) {
+		this.showFeatureViewer = showFeatureViewer;
+	}
 
     public void setVisibilityPRTMAPViewer(boolean b) {
         this.isPRTMAPViewerVisible = b;
@@ -127,15 +142,23 @@ public class BenchmarkModel {
     }
 
     public ImageViewer getImageViewer() {
-        return imageViewer;
+        return this.imageViewer;
     }
+    
+    public void initFeatureViewer(BenchmarkController benchmarkController) {
+    	this.featureViewer = new FeatureViewer(benchmarkController);
+    }
+    
+	public FeatureViewer getFeatureViewer() {
+		return this.featureViewer;
+	}
     
     public int getInputSize(){
         return this.imageEdgeSize * this.imageEdgeSize;
     }
     
     public float[][] getInputData() {
-    	return DataConverter.generatePixelIntensityData(imageManager.getImages(false), this.imageEdgeSize, this.binarizeImages);
+    	return DataConverter.generatePixelIntensityData(imageManager.getImages(this.sorted), this.imageEdgeSize, this.binarizeImages);
     }
 
     PRTMAPController getPRTMAPController() {
@@ -149,5 +172,9 @@ public class BenchmarkModel {
     public void trainRBMs(){
         this.rbmTrainer.trainAllRBMs(this);
     }
+
+	public void setShuffleImages(boolean shuffled) {
+		this.sorted  = !shuffled;
+	}
 
 }
