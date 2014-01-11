@@ -127,7 +127,7 @@ public class BenchmarkModel {
 
     public void startMAPTest(String imageCategory) {
 
-        float[][] features = this.rbmTrainer.getHiddenAllRBMs(controller, null, showImageViewer);
+        float[][] features = this.rbmTrainer.getHiddenAllRBMs(controller.getModel(), null, showImageViewer);
         PrecisionRecallTester prTester = new PrecisionRecallTester(features, imageManager);
 
         PrecisionRecallTestResult result;
@@ -181,6 +181,11 @@ public class BenchmarkModel {
     public void trainRBMs(){
         this.rbmTrainer.trainAllRBMs(this);
     }
+    
+    public void trainDeep(){
+        this.rbmTrainer.trainAllRBMsDeepBelieve(this);
+    }
+
 
 	public void setShuffleImages(boolean shuffled) {
 		this.sorted  = !shuffled;

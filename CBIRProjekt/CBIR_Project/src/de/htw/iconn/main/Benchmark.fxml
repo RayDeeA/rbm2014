@@ -39,9 +39,10 @@
             <TextField fx:id="txt_imageEdgeSize" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_imageEdgeSizeKey" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
             <CheckBox fx:id="cbx_Binarize" mnemonicParsing="false" onAction="#cbx_BinarizeAction" prefWidth="86.0" text="Binarize" GridPane.columnIndex="2" GridPane.rowIndex="0" />
             <CheckBox fx:id="cbx_imageViewer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cbx_imageViewerAction" text="Image Viewer" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-            <CheckBox id="cbx_Shuffle" fx:id="cbx_Shuffle" mnemonicParsing="false" onAction="#cbx_ShuffleAction" text="Shuffle" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <CheckBox id="cbx_FeatureViewer" fx:id="cbx_FeatureViewer" mnemonicParsing="false" onAction="#cbx_FeatureViewerAction" text="Feature Viewer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <CheckBox fx:id="cbx_Shuffle" mnemonicParsing="false" onAction="#cbx_ShuffleAction" text="Shuffle" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <CheckBox fx:id="cbx_FeatureViewer" mnemonicParsing="false" onAction="#cbx_FeatureViewerAction" text="Feature Viewer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <Button fx:id="btn_Update" mnemonicParsing="false" onAction="#btn_UpdateAction" prefWidth="93.0" text="Update" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Button fx:id="btn_TrainDeep" mnemonicParsing="false" onAction="#btn_TrainDeepAction" prefWidth="100.0" text="Train Deep" GridPane.columnIndex="1" GridPane.rowIndex="4" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

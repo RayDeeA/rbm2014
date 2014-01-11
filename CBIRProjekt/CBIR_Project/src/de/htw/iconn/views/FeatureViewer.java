@@ -43,7 +43,7 @@ public class FeatureViewer extends ImageViewer implements IVisualizeObserver {
 			float[] hiddenData = new float[outputSize];  
 			hiddenData[i] = 1.0f;
 			
-			float[] visibleData = rbmTrainer.getVisibleAllRBMs1D(benchmarkController, hiddenData, false);
+			float[] visibleData = rbmTrainer.getVisibleAllRBMs1D(benchmarkController.getModel(), hiddenData, false);
 
 			int imageWidth = (int) Math.sqrt(visibleData.length), imageHeight = (int) Math.sqrt(visibleData.length);
 

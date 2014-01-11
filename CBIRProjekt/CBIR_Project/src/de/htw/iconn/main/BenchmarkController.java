@@ -75,6 +75,8 @@ public class BenchmarkController extends AController {
     @FXML
     private Button btn_trainAll;
     @FXML
+    private Button btn_TrainDeep;    
+    @FXML
     private TextField txt_imageEdgeSize;
     
     @FXML  
@@ -210,6 +212,11 @@ public class BenchmarkController extends AController {
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
         this.model.trainRBMs();
+    }
+    
+    @FXML
+    private void btn_TrainDeepAction(ActionEvent event) {
+        this.model.trainDeep();
     }
     
     @FXML
