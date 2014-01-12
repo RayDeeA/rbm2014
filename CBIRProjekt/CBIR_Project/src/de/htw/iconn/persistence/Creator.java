@@ -15,11 +15,9 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -47,13 +45,13 @@ public class Creator {
         Node benchmarkNode = benchmarkList.item(0);
         NodeList rbmList = doc.getElementsByTagName("rbm");
         
-        
         loadBenchmark(controller, benchmarkNode);
         loadRBMs(controller, rbmList);
     }
     
     private void loadBenchmark(ControlCenterController controller, Node benchmark){
         BenchmarkModel benchmarkModel = controller.getBenchmarkController().getModel();
+        create(benchmarkModel, (Element)benchmark);
     }
     
     private void loadRBMs(ControlCenterController controller, NodeList rbmNodes){
@@ -95,6 +93,7 @@ public class Creator {
             
             for(int j = 0; j < annotations.length; ++j){
                 if(annotations[j].annotationType().equals(Conserve.class)){
+                    fieldFound[i] = true;
                     String type = field.getType().getSimpleName();
                     String name = field.getName();
                     
@@ -102,19 +101,32 @@ public class Creator {
                     for(int k = 0; k < data.length; ++k){
                         //correct data set is equivalent in name and type
                         if(data[k][0].equals(name) && data[k][1].equals(type)){
-                            dataFound[k] = true;
-                            
                             writeDataToField(field, model, data[k][2]);
                             
-                            break;
-                        }else{
+                            dataFound[k] = true;
                             fieldFound[i] = false;
+                            break;
                         }
                     }
                     break;
-                }else{
-                    fieldFound[i] = true;
-                }              
+                }           
+            }
+        }
+        // Check if the same fields exist in model and data
+        for(int i = 0; i < dataFound.length; ++i){
+            if(!dataFound[i]){
+                System.err.println("Found data which is not existent in the model anymore:");
+                System.err.println("Class: " + model.getClass().getSimpleName()
+                + ", Name: " + data[i][0]
+                + ", Type: " + data[i][1]);
+            }
+        }
+        for(int i = 0; i < fieldFound.length; ++i){
+            if(fieldFound[i]){
+                System.err.println("Found field which is not existent in the data:");
+                System.err.println("Class: " + model.getClass().getSimpleName()
+                + ", Name: " + fields[i].getName()
+                + ", Type: " + fields[i].getType().getSimpleName());
             }
         }
     }
@@ -138,21 +150,11 @@ public class Creator {
         }
     }
     
-    private String cropArrayTypeName(Field field){
-        String typeName = field.getType().getSimpleName();
-        int end = 0;
-        char[] chars = typeName.toCharArray();
-        for(; end < chars.length; ++end){
-            if(chars[end] == '[') break;
-        }
-        return new String(Arrays.copyOf(chars, end));
-    }
-    
     private void parseArray(Field field, String value, Object model){
         String typeName = field.getType().getSimpleName();
         if(typeName.equals("float[][]")){
             try {
-                field.set(model, parseFloatArray(field, value));
+                field.set(model, parseFloatArray(value));
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -161,17 +163,7 @@ public class Creator {
         }
     }
     
-    public int getArrayDimensionFromType(Field field){
-        String typeName = field.getType().getSimpleName();
-        int result = 0;
-        char[] chars = typeName.toCharArray();
-        for(int i = 0; i < chars.length; ++i){
-            if(chars[i] == '[') ++result;
-        }
-        return result;
-    }
-    
-    private float[][] parseFloatArray(Field field, String value){
+    private float[][] parseFloatArray(String value){
         String[] banana = value.split(";");
         int firstDimensionSize = banana.length;
         int secondDimensionSize = banana[0].split(",").length;
@@ -186,8 +178,7 @@ public class Creator {
     }
     
     private Object parseString(Field field, String value){
-        String typeName = cropArrayTypeName(field);
-        
+        String typeName = field.getType().getSimpleName();
         // Number classes
         if(typeName.equals("int")) return new Integer(value);
         if(typeName.equals("float")) return new Float(value);
