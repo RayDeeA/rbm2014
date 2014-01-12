@@ -128,7 +128,7 @@ public class StoppingCondition {
         return epochsDisabled;
     }
     
-    public int epochsLeft() {
+    public int epochsRemaining() {
     
         return maxEpochs - currentEpochs;
     }

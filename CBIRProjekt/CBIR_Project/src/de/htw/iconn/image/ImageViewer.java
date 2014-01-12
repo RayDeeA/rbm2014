@@ -35,7 +35,7 @@ import javafx.stage.WindowEvent;
  *
  * @author moritz
  */
-public class ImageViewer  implements IVisualizeObserver { //extends AController implements IVisualizeObserver
+public class ImageViewer { //extends AController implements IVisualizeObserver
 
     // letzter Zoomfaktor (zur Berechnung der Verschiebung des Bildes bei Zoomaenderung)
     private double zoomFactorLast = 1;
@@ -79,21 +79,15 @@ public class ImageViewer  implements IVisualizeObserver { //extends AController 
         return stage.getX();
     }
 
-    public ImageViewer(ImageManager imageManager) {
+    public ImageViewer(ImageManager imageManager, boolean sorted) {
         this.imageManager = imageManager;
-        this.images = imageManager.getImages(true);
+        this.images = imageManager.getImages(sorted);
         
         initalize();
     }
     
-    public ImageViewer(Pic[] images) {
-    	this.images = images;
-    	
-    	initalize();
-    }
-    
     public ImageViewer() {
-    	
+    	initalize();
     }
     
     public void setImages(Pic[] images) {
@@ -253,7 +247,7 @@ public class ImageViewer  implements IVisualizeObserver { //extends AController 
 	}
 
 	/**
-     * Liefert das Bild zur��ck dass sich an einer bestimmten // Mausposition
+     * Liefert das Bild zur������ck dass sich an einer bestimmten // Mausposition
      * befindet. Null bedeutet dass unter der Maus kein Bild ist
      *
      * @param xMouse
@@ -416,59 +410,7 @@ public class ImageViewer  implements IVisualizeObserver { //extends AController 
         }
     }
 
-	@Override
-	public void update(RBMInfoPackage info) {
-		float[][] weights = info.getWeights();
 		
-		double min = Double.MAX_VALUE, max = 0; 
-		for(int o = 0; o < weights[0].length; o++) {
-			for(int i = 0; i < weights.length; i++) {
-				min = Math.min(min, weights[i][o]); 
-				max = Math.max(max, weights[i][o]); 
-			}
-		}
 
-		
-		Pic[] pics = new Pic[weights[0].length];
-		
-		for(int i = 0; i < weights[0].length; i++) {
-
-			int imageDimensions = weights.length;
-
-			int imageWidth = (int) Math.sqrt(imageDimensions), imageHeight = (int) Math.sqrt(imageDimensions);
-
-			WritableImage image = new WritableImage(imageWidth, imageHeight);
-			PixelWriter writer = image.getPixelWriter();
-
-			for (int y = 0, pos = 0; y < imageHeight; y++) {
-				for (int x = 0; x < imageWidth; x++, pos++) {
-					double value = (double) (weights[pos][i]);
-					double valueInterpolated = interpolate(min, max, value);
-					int valueArgb = (int) (valueInterpolated * 255);
-
-					Color color = Color.rgb(valueArgb, valueArgb, valueArgb);
-					writer.setColor(x, y, color);
-				}
-			}
-			
-			BufferedImage bi = null;
-			SwingFXUtils.fromFXImage(image, bi);
-			
-			Pic pic = new Pic();
-			pic.setDisplayImage(bi);
-			pics[i] = pic;
-		}
-		
-		this.setImages(pics);
-		
-	}
-		
-		private double interpolate(double min, double max, double value) {
-
-			double slope = 1.0 * (1.0 - 0.0) / (max - min);
-			double output = 0.0 + slope * (value - min);
-
-			return output;
-		}
 
 }

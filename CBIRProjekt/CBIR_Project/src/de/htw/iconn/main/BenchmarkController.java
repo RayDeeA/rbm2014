@@ -5,11 +5,11 @@
  */
 package de.htw.iconn.main;
 
-import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.tools.Chooser;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
+import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
 
 import java.io.File;
@@ -48,12 +48,18 @@ public class BenchmarkController extends AController {
     private AnchorPane view;
 
     private BenchmarkModel model;
-    @FXML
-    private CheckBox cbx_imageViewer;
-    
-    @FXML
+
+    @FXML  
     private CheckBox cbx_Binarize;
     
+    @FXML
+    private CheckBox cbx_Shuffle;
+    @FXML
+    private CheckBox cbx_imageViewer;  
+    @FXML
+    private CheckBox cbx_FeatureViewer;  
+
+
     @FXML
     private ComboBox<?> cmb_mAPTests;
     @FXML
@@ -69,7 +75,12 @@ public class BenchmarkController extends AController {
     @FXML
     private Button btn_trainAll;
     @FXML
+    private Button btn_TrainDeep;    
+    @FXML
     private TextField txt_imageEdgeSize;
+    
+    @FXML  
+    private Button btn_Update;
 
     /**
      * Initializes the controller class.
@@ -114,6 +125,11 @@ public class BenchmarkController extends AController {
     private void cbx_BinarizeAction(ActionEvent event) {
         this.model.setBinarizeImages(this.cbx_Binarize.isSelected());
     }
+    
+    @FXML
+    private void cbx_ShuffleAction(ActionEvent event) {
+    	this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
+    }
 
     @FXML
     private void cbx_imageViewerAction(ActionEvent event) {
@@ -126,9 +142,27 @@ public class BenchmarkController extends AController {
             }
         }
     }
+    
+    @FXML
+    private void cbx_FeatureViewerAction(ActionEvent event) {
+    	// TODO
+        this.model.setShowFeatureViewer(this.cbx_FeatureViewer.isSelected());
+        
+        if(this.model.getFeatureViewer() == null) {
+    		this.model.initFeatureViewer(this);
+        }
+        
+        if (this.model.isShowFeatureViewer()) {
+        	this.model.getFeatureViewer().update();
+            this.model.getFeatureViewer().show();
+        } else {
+            this.model.getFeatureViewer().close();
+        }
+    }
 
     @FXML
     private void btn_testFeaturesAction(ActionEvent event) {
+    	// TODO
     }
 
     @FXML
@@ -179,6 +213,16 @@ public class BenchmarkController extends AController {
     private void btn_trainAllAction(ActionEvent event) {
         this.model.trainRBMs();
     }
+    
+    @FXML
+    private void btn_TrainDeepAction(ActionEvent event) {
+        this.model.trainDeep();
+    }
+    
+    @FXML
+    private void btn_UpdateAction(ActionEvent event) {
+    	this.globalUpdate();
+    }
 
     @Override
     public Node getView() {
@@ -218,7 +262,6 @@ public class BenchmarkController extends AController {
     }
     
     public void globalUpdate(){
-        
         this.update();
         LinkedList<RBMSettingsController> rbmSettingsList = this.model.getRbmSettingsList();
         for(RBMSettingsController c : rbmSettingsList){
