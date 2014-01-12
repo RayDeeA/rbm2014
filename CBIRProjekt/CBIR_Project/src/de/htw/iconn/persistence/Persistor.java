@@ -183,10 +183,10 @@ public class Persistor {
                                 array2d[i][j] = Array.get(array1d[i], j);
                             }
                         }                  
-                        return array2dToString(array2d, true);
+                        return array2dToString(array2d);
                     }
                 }
-                return arrayToString(array1d, true);
+                return arrayToString(array1d);
             }
         }
         return objectToString(value);
@@ -201,10 +201,9 @@ public class Persistor {
         return o.toString();
     }
     // array to string
-    private String arrayToString(Object[] n, boolean appendSizeInfo){
+    private String arrayToString(Object[] n){
         if(n.length == 0) return null;
         StringBuilder sb = new StringBuilder();
-        if(appendSizeInfo) sb.append(n.length + ";");
         sb.append(n[0]);
         for(int i = 1; i < n.length; ++i){
             sb.append(",");
@@ -213,14 +212,13 @@ public class Persistor {
         return sb.toString();
     }
     // two dimensional array to string
-    private String array2dToString(Object[][] n, boolean appendSizeInfo){
+    private String array2dToString(Object[][] n){
         if(n.length == 0 || n[0].length == 0) return null;
         StringBuilder sb = new StringBuilder();
-        if(appendSizeInfo) sb.append(n.length + "," + n[0].length + ";");
-        sb.append(arrayToString(n[0], false));
+        sb.append(arrayToString(n[0]));
         for(int i = 1; i < n.length; ++i){
             sb.append(";");
-            sb.append(arrayToString(n[i], false));
+            sb.append(arrayToString(n[i]));
         }
         return sb.toString();
     }

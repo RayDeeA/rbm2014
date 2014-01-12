@@ -15,6 +15,7 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -103,7 +104,7 @@ public class Creator {
                         if(data[k][0].equals(name) && data[k][1].equals(type)){
                             dataFound[k] = true;
                             
-                            writeDataToField(data[k][2], field, model);
+                            writeDataToField(field, model, data[k][2]);
                             
                             break;
                         }else{
@@ -118,16 +119,13 @@ public class Creator {
         }
     }
     
-    private void writeDataToField(String value, Field field, Object model){
+    private void writeDataToField(Field field, Object model, String value){
         field.setAccessible(true);
-        String type = field.getType().getSimpleName();
-        if(field.getType().isArray()){
-            System.out.println("Array");
-            System.out.println(type);
-            type = cropArrayTypeName(type);
-            System.out.println(type);
+        Class type = field.getType();
+        if(type.isArray()){
+            parseArray(field, value, model);
         }else {
-            Object o = parseString(type, value);
+            Object o = parseString(field, value);
             if(o != null){
                 try {
                     field.set(model, o);
@@ -135,34 +133,74 @@ public class Creator {
                     Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else{
-                System.err.println("ERROR: could not parse field of type " + type);
+                System.err.println("ERROR: could not parse field of type " + type.getSimpleName());
             }
         }
     }
     
-    private String cropArrayTypeName(String type){
+    private String cropArrayTypeName(Field field){
+        String typeName = field.getType().getSimpleName();
         int end = 0;
-        char[] chars = type.toCharArray();
+        char[] chars = typeName.toCharArray();
         for(; end < chars.length; ++end){
             if(chars[end] == '[') break;
         }
         return new String(Arrays.copyOf(chars, end));
     }
     
-    private Object parseString(String type, String value){
+    private void parseArray(Field field, String value, Object model){
+        String typeName = field.getType().getSimpleName();
+        if(typeName.equals("float[][]")){
+            try {
+                field.set(model, parseFloatArray(field, value));
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            System.err.println("ERROR: can't parse array of type " + typeName);
+        }
+    }
+    
+    public int getArrayDimensionFromType(Field field){
+        String typeName = field.getType().getSimpleName();
+        int result = 0;
+        char[] chars = typeName.toCharArray();
+        for(int i = 0; i < chars.length; ++i){
+            if(chars[i] == '[') ++result;
+        }
+        return result;
+    }
+    
+    private float[][] parseFloatArray(Field field, String value){
+        String[] banana = value.split(";");
+        int firstDimensionSize = banana.length;
+        int secondDimensionSize = banana[0].split(",").length;
+        float[][] result = new float[firstDimensionSize][secondDimensionSize];
+        for(int i = 0; i < firstDimensionSize; ++i){
+            String[] bananasplit = banana[i].split(",");
+            for(int j = 0; j < secondDimensionSize; ++j){
+                result[i][j] = new Float(bananasplit[j]);
+            }
+        }      
+        return result;
+    }
+    
+    private Object parseString(Field field, String value){
+        String typeName = cropArrayTypeName(field);
+        
         // Number classes
-        if(type.equals("int")) return new Integer(value);
-        if(type.equals("float")) return new Float(value);
-        if(type.equals("double")) return new Double(value);       
-        if(type.equals("long")) return new Long(value);
-        if(type.equals("byte")) return new Byte(value);
-        if(type.equals("short")) return new Short(value);
+        if(typeName.equals("int")) return new Integer(value);
+        if(typeName.equals("float")) return new Float(value);
+        if(typeName.equals("double")) return new Double(value);       
+        if(typeName.equals("long")) return new Long(value);
+        if(typeName.equals("byte")) return new Byte(value);
+        if(typeName.equals("short")) return new Short(value);
         // other basic types
-        if(type.equals("boolean")) return Boolean.valueOf(value);
-        if(type.equals("char") && value.length() == 1) return new Character(value.charAt(0));
-        if(type.equalsIgnoreCase("String")) return value;
+        if(typeName.equals("boolean")) return Boolean.valueOf(value);
+        if(typeName.equals("char") && value.length() == 1) return new Character(value.charAt(0));
+        if(typeName.equalsIgnoreCase("String")) return value;
         // parsing custom classes
-        if(type.equals("ImageManager")){
+        if(typeName.equals("ImageManager")){
             String path = "CBIR_Project/images/" + value;
             File images = new File(path);
             return new ImageManager(images);
