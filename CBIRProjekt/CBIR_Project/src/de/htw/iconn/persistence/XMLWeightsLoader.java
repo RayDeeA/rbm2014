@@ -24,10 +24,6 @@ public class XMLWeightsLoader {
     
     public float[][] loadWeightsFromXML(File file) throws ParserConfigurationException, SAXException, IOException{
         
-        if(file == null){
-            return null;
-        }
-        
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 

@@ -19,7 +19,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -44,10 +43,18 @@ public class Creator {
         Document doc = dBuilder.parse(file);
         
         NodeList benchmarkList = doc.getElementsByTagName("BenchmarkModel");
-        Node benchmarkNode = benchmarkList.item(0);
         NodeList rbmList = doc.getElementsByTagName("rbm");
         
-        loadBenchmark(controller, benchmarkNode);
+        if(benchmarkList.getLength() == 1){
+            loadBenchmark(controller, benchmarkList.item(0));
+        }else{
+            if(benchmarkList.getLength() > 1){
+                System.err.println("ERROR: too many benchmarks defined in data");
+            }else{
+                System.err.println("ERROR: no benchmark defined in data");
+            }
+        }
+             
         loadRBMs(controller, rbmList);
     }
     

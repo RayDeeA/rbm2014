@@ -17,11 +17,11 @@ import org.xml.sax.SAXException;
  */
 public class XMLEndTrainingLogger implements IRBMEndTrainingEnhancement  {
     
-    private final XMLWeightLogger logger;
+    private final XMLWeightsSaver logger;
 
 
     public XMLEndTrainingLogger() {
-        this.logger = new XMLWeightLogger();
+        this.logger = new XMLWeightsSaver();
     }
 
 
