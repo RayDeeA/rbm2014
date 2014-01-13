@@ -99,25 +99,28 @@ public class RBMJBlas implements IRBM {
 
             final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
 
-            FloatMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
+            FloatMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
+            FloatMatrix posHiddenStates;
 
             if (binarizeHidden) {
-                float[][] randomMatrix = FloatMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
+                float[][] randomMatrix = FloatMatrix.rand(posHiddenProbs.getRows(), posHiddenProbs.getColumns()).toArray2();
 
-                float[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
+                float[][] tmpHiddenStates = posHiddenProbs.dup().toArray2();
                 for (int y = 0; y < tmpHiddenStates.length; y++) {
                     for (int x = 0; x < tmpHiddenStates[y].length; x++) {
                         tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
                     }
                 }
-                posHiddenNodes = new FloatMatrix(tmpHiddenStates);
+                posHiddenStates = new FloatMatrix(tmpHiddenStates);
+            } else {
+            	posHiddenStates = posHiddenProbs;
             }
 
-            posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
+            //posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
 
-            final FloatMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenNodes);
+            final FloatMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
 
-            final FloatMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
+            final FloatMatrix negVisibleActivations = posHiddenStates.mmul(this.weights.transpose());
 
             FloatMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
 

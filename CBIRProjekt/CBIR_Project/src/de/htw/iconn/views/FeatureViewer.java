@@ -52,7 +52,8 @@ public class FeatureViewer extends ImageViewer implements IVisualizeObserver {
 
 			for (int y = 0; y < imageHeight; y++) {
 				for (int x = 0; x < imageWidth; x++) {
-					int value = (int) Math.max(Math.min(255, (visibleData[y * imageWidth + x] * 255)), 0);
+					int value = 255 - (int) Math.max(Math.min(255, (visibleData[y * imageWidth + x] * 255)), 0);
+					//System.out.println(value);
 					Color color = Color.rgb(value, value, value);
 					writer.setColor(x, y, color);
 				}

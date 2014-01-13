@@ -53,7 +53,7 @@ public class RBMTrainer {
         
         RBMSettingsController firstSettingsController = rbmSettingsList.getFirst();
 
-        int epochs = 100;
+        int epochs = 50;
         for(int i = 0; i < epochs; i++) {
         	RBMSettingsController lastController = null;
             for (RBMSettingsController c : rbmSettingsList) {
@@ -64,9 +64,9 @@ public class RBMTrainer {
                 this.trainSingleRBM(c);
                 lastController = c;
             }
-            //float[][] hiddenData = getHiddenAllRBMs(benchmarkModel, firstSettingsController.getModel().getData(), false);
-            //float[][] visibleData = getVisibleAllRBMs(benchmarkModel, hiddenData, false);
-            //firstSettingsController.getModel().setData(visibleData);
+            float[][] hiddenData = getHiddenAllRBMs(benchmarkModel, firstSettingsController.getModel().getData(), false);
+            float[][] visibleData = getVisibleAllRBMs(benchmarkModel, hiddenData, false);
+            firstSettingsController.getModel().setData(visibleData);
         }
     }
 
