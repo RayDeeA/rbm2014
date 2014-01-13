@@ -8,6 +8,7 @@ package de.htw.iconn.settings;
 
 import de.htw.iconn.main.AController;
 import de.htw.iconn.tools.Chooser;
+import java.io.File;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -57,13 +58,13 @@ public class RBMSettingsWeightsController extends AController {
 
     @FXML
     private void btn_loadWeightsAction(ActionEvent event) {
-        this.model.loadWeights(Chooser.openFileChooser("RBMLogs"));
+        File file = Chooser.openFileChooser("RBMLogs");
+        if(file != null) this.model.loadWeights(file);
     }
 
     @FXML
     private void btn_saveCurrentWeightsAction(ActionEvent event) {
-        // TODO Implement that shit
-    	throw new UnsupportedOperationException();
+        this.model.saveWeights();
     }
 
     @Override

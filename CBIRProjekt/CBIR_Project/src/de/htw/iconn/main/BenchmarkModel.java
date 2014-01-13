@@ -9,8 +9,6 @@ import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.statistics.PrecisionRecallTester;
 import de.htw.iconn.statistics.PrecisionRecallTestResult;
 import de.htw.iconn.image.DataConverter;
-import de.htw.iconn.settings.RBMSettingsMainController;
-import de.htw.iconn.settings.RBMSettingsMainModel;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.persistence.Conserve;
@@ -29,10 +27,10 @@ public class BenchmarkModel {
 
     private final BenchmarkController controller;
     private ImageViewer imageViewer;
-	private FeatureViewer featureViewer;
+    private FeatureViewer featureViewer;
     private final PRTMAPController prtmapController;
     private final LinkedList<RBMSettingsController> rbmSettingsList;
-    private RBMTrainer rbmTrainer;
+    private final RBMTrainer rbmTrainer;
     
     @Conserve
     private ImageManager imageManager = null;
@@ -41,7 +39,7 @@ public class BenchmarkModel {
     @Conserve
     private boolean showImageViewer = false;
     @Conserve
-	private boolean showFeatureViewer = false;
+    private boolean showFeatureViewer = false;
     @Conserve
     private int selectedMAPTest = 0;
     @Conserve
@@ -49,7 +47,7 @@ public class BenchmarkModel {
     @Conserve
     private int imageEdgeSize = 28;
     @Conserve
-	private boolean sorted = true;
+    private boolean sorted = true;
 
     public int getImageEdgeSize() {
         return imageEdgeSize;

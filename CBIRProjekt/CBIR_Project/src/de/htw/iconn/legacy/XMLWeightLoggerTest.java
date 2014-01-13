@@ -13,7 +13,7 @@ import de.htw.iconn.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.enhancement.IRBMEndTrainingEnhancement;
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.enhancement.RBMInfoPackage;
-import de.htw.iconn.persistence.XMLWeightLogger;
+import de.htw.iconn.persistence.XMLWeightsSaver;
 import de.htw.iconn.rbm.StoppingCondition;
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class XMLWeightLoggerTest extends TestCase{
     float[][] newData;
     int trainingEpochs = 0;
     
-    XMLWeightLogger xmlLogger = new XMLWeightLogger();
+    XMLWeightsSaver xmlLogger = new XMLWeightsSaver();
     
     XMLWeightsLoader xmlLoader = new XMLWeightsLoader();
     

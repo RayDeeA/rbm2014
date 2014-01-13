@@ -15,10 +15,10 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -43,16 +43,24 @@ public class Creator {
         Document doc = dBuilder.parse(file);
         
         NodeList benchmarkList = doc.getElementsByTagName("BenchmarkModel");
-        Node benchmarkNode = benchmarkList.item(0);
         NodeList rbmList = doc.getElementsByTagName("rbm");
         
-        
-        loadBenchmark(controller, benchmarkNode);
+        if(benchmarkList.getLength() == 1){
+            loadBenchmark(controller, benchmarkList.item(0));
+        }else{
+            if(benchmarkList.getLength() > 1){
+                System.err.println("ERROR: too many benchmarks defined in data");
+            }else{
+                System.err.println("ERROR: no benchmark defined in data");
+            }
+        }
+             
         loadRBMs(controller, rbmList);
     }
     
     private void loadBenchmark(ControlCenterController controller, Node benchmark){
         BenchmarkModel benchmarkModel = controller.getBenchmarkController().getModel();
+        create(benchmarkModel, (Element)benchmark);
     }
     
     private void loadRBMs(ControlCenterController controller, NodeList rbmNodes){
@@ -94,6 +102,7 @@ public class Creator {
             
             for(int j = 0; j < annotations.length; ++j){
                 if(annotations[j].annotationType().equals(Conserve.class)){
+                    fieldFound[i] = true;
                     String type = field.getType().getSimpleName();
                     String name = field.getName();
                     
@@ -101,33 +110,43 @@ public class Creator {
                     for(int k = 0; k < data.length; ++k){
                         //correct data set is equivalent in name and type
                         if(data[k][0].equals(name) && data[k][1].equals(type)){
+                            writeDataToField(field, model, data[k][2]);
+                            
                             dataFound[k] = true;
-                            
-                            writeDataToField(data[k][2], field, model);
-                            
-                            break;
-                        }else{
                             fieldFound[i] = false;
+                            break;
                         }
                     }
                     break;
-                }else{
-                    fieldFound[i] = true;
-                }              
+                }           
+            }
+        }
+        // Check if the same fields exist in model and data
+        for(int i = 0; i < dataFound.length; ++i){
+            if(!dataFound[i]){
+                System.err.println("Found data which is not existent in the model anymore:");
+                System.err.println("Class: " + model.getClass().getSimpleName()
+                + ", Name: " + data[i][0]
+                + ", Type: " + data[i][1]);
+            }
+        }
+        for(int i = 0; i < fieldFound.length; ++i){
+            if(fieldFound[i]){
+                System.err.println("Found field which is not existent in the data:");
+                System.err.println("Class: " + model.getClass().getSimpleName()
+                + ", Name: " + fields[i].getName()
+                + ", Type: " + fields[i].getType().getSimpleName());
             }
         }
     }
     
-    private void writeDataToField(String value, Field field, Object model){
+    private void writeDataToField(Field field, Object model, String value){
         field.setAccessible(true);
-        String type = field.getType().getSimpleName();
-        if(field.getType().isArray()){
-            System.out.println("Array");
-            System.out.println(type);
-            type = cropArrayTypeName(type);
-            System.out.println(type);
+        Class type = field.getType();
+        if(type.isArray()){
+            parseArray(field, value, model);
         }else {
-            Object o = parseString(type, value);
+            Object o = parseString(field, value);
             if(o != null){
                 try {
                     field.set(model, o);
@@ -135,34 +154,119 @@ public class Creator {
                     Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else{
-                System.err.println("ERROR: could not parse field of type " + type);
+                System.err.println("ERROR: could not parse field of type " + type.getSimpleName());
             }
         }
     }
     
-    private String cropArrayTypeName(String type){
-        int end = 0;
-        char[] chars = type.toCharArray();
-        for(; end < chars.length; ++end){
-            if(chars[end] == '[') break;
+    private void parseArray(Field field, String value, Object model){
+        int numOfDimensions = getArrayDimensionsFromType(field);
+        try {
+            Object o = null;
+            if(numOfDimensions == 1){
+                o = parseGenericArray1d(field, value);      
+            }else if(numOfDimensions == 2){
+                o = parseGenericArray2d(field, value);
+            }
+            if(o != null){
+                field.set(model, o);
+            }else{
+                System.err.println("ERROR: can't parse array of type " + field.getType().getSimpleName());
+            }
+        } catch (IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new String(Arrays.copyOf(chars, end));
     }
     
-    private Object parseString(String type, String value){
+    private int getArrayDimensionsFromType(Field field){
+        int result = 0;
+        char[] typeName = field.getType().getSimpleName().toCharArray();
+        for(int i = 0; i < typeName.length; ++i){
+            if(typeName[i] == '['){
+                ++result;
+            }
+        }
+        return result;
+    }
+    
+    private String cropArrayTypeName(Field field){
+        char[] typeName = field.getType().getSimpleName().toCharArray();
+        int i = 0;
+        for(; i < typeName.length; ++i){
+            if(typeName[i] == '[') break;
+        }
+        return new String(typeName, 0, i);
+    }
+    
+    private Object parseGenericArray1d(Field field, String value){
+        String[] split = value.split(",");
+        int size = split.length;
+        Class clazz = getClassFromName(field);
+        if(clazz == null) return null;
+        Object result = (Object) Array.newInstance(clazz, size);
+        for(int i = 0; i < Array.getLength(result); ++i){
+            Array.set(result, i, parseString(field, split[i]));
+        }
+        return result;
+    }
+    
+    private Object parseGenericArray2d(Field field, String value){
+        String[] split = value.split(";");
+        int size = split.length;
+        Class clazz = getClassFromName(field);
+        Class arrayClazz = Array.newInstance(clazz, 0).getClass();
+        Object result = Array.newInstance(arrayClazz, size);
+        for(int i = 0; i < Array.getLength(result); ++i){
+            Array.set(result, i, parseGenericArray1d(field, split[i]));
+        }
+        return result;
+    }
+    
+    
+    // not used anymore because of the generic parsing methods
+    private float[][] parseFloatArray2d(String value){
+        String[] banan = value.split(";");
+        int firstDimensionSize = banan.length;
+        int secondDimensionSize = banan[0].split(",").length;
+        float[][] result = new float[firstDimensionSize][secondDimensionSize];
+        for(int a = 0; a < firstDimensionSize; ++a){
+            String[] bananasplit = banan[a].split(","); //haha, banan[a].split
+            for(int b = 0; b < secondDimensionSize; ++b){
+                result[a][b] = new Float(bananasplit[b]);
+            }
+        }      
+        return result;
+    }
+    
+    private Class getClassFromName(Field field){
+        String typeName = cropArrayTypeName(field);
+        if(typeName.equals("int")) return int.class;
+        if(typeName.equals("float")) return float.class;
+        if(typeName.equals("double")) return double.class;       
+        if(typeName.equals("long")) return long.class;
+        if(typeName.equals("byte")) return byte.class;
+        if(typeName.equals("short")) return short.class;
+        if(typeName.equals("boolean")) return boolean.class;
+        if(typeName.equals("char")) return char.class;
+        if(typeName.equals("String")) return String.class;
+        return null;
+    }
+    
+    private Object parseString(Field field, String value){
+        String typeName = cropArrayTypeName(field);
         // Number classes
-        if(type.equals("int")) return new Integer(value);
-        if(type.equals("float")) return new Float(value);
-        if(type.equals("double")) return new Double(value);       
-        if(type.equals("long")) return new Long(value);
-        if(type.equals("byte")) return new Byte(value);
-        if(type.equals("short")) return new Short(value);
+        if(typeName.equals("int")) return new Integer(value);
+        if(typeName.equals("float")) return new Float(value);
+        if(typeName.equals("double")) return new Double(value);       
+        if(typeName.equals("long")) return new Long(value);
+        if(typeName.equals("byte")) return new Byte(value);
+        if(typeName.equals("short")) return new Short(value);
         // other basic types
-        if(type.equals("boolean")) return Boolean.valueOf(value);
-        if(type.equals("char") && value.length() == 1) return new Character(value.charAt(0));
-        if(type.equalsIgnoreCase("String")) return value;
+        if(typeName.equals("boolean")) return Boolean.valueOf(value);
+        if(typeName.equals("char") && value.length() == 1) return new Character(value.charAt(0));
+        if(typeName.equalsIgnoreCase("String")) return value;
         // parsing custom classes
-        if(type.equals("ImageManager")){
+        if(typeName.equals("ImageManager")){
             String path = "CBIR_Project/images/" + value;
             File images = new File(path);
             return new ImageManager(images);

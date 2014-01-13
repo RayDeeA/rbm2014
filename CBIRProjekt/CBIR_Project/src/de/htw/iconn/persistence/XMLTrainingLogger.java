@@ -4,12 +4,6 @@ package de.htw.iconn.persistence;
 
 import de.htw.iconn.enhancement.IRBMTrainingEnhancement;
 import de.htw.iconn.enhancement.RBMInfoPackage;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -18,10 +12,10 @@ import org.xml.sax.SAXException;
 public class XMLTrainingLogger implements IRBMTrainingEnhancement {
 
     private final int updateIntervall;
-    private final XMLWeightLogger logger;
+    private final XMLWeightsSaver logger;
     public XMLTrainingLogger(int updateIntervall) {
         this.updateIntervall = updateIntervall;
-        this.logger = new XMLWeightLogger();
+        this.logger = new XMLWeightsSaver();
     }
 
     public XMLTrainingLogger() {
@@ -36,11 +30,7 @@ public class XMLTrainingLogger implements IRBMTrainingEnhancement {
 
     @Override
     public void action(RBMInfoPackage info) {
-        try {
-            logger.stepXmlLogTraining(info);
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
-            Logger.getLogger(XMLTrainingLogger.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("XMLTrainingLogger does nothing");
     }
     
     

@@ -9,7 +9,6 @@ import de.htw.iconn.tools.Chooser;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
-import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
 
 import java.io.File;

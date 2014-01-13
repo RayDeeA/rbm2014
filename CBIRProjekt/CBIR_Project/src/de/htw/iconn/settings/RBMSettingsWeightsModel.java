@@ -8,11 +8,13 @@ package de.htw.iconn.settings;
 
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.persistence.XMLWeightsLoader;
+import de.htw.iconn.persistence.XMLWeightsSaver;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
@@ -22,6 +24,7 @@ import org.xml.sax.SAXException;
 public class RBMSettingsWeightsModel{
     private final RBMSettingsWeightsController controller;
     private final XMLWeightsLoader loader;
+    private final XMLWeightsSaver saver;
     
     @Conserve
     private boolean binarizeHidden = false;
@@ -36,6 +39,7 @@ public class RBMSettingsWeightsModel{
 
     public RBMSettingsWeightsModel(RBMSettingsWeightsController controller) {
         this.loader = new XMLWeightsLoader();
+        this.saver = new XMLWeightsSaver();
         this.controller = controller;
     }
 
@@ -82,7 +86,17 @@ public class RBMSettingsWeightsModel{
     public void loadWeights(File file) {
         try {
             weights = this.loader.loadWeightsFromXML(file);
+            System.out.println("Load Weights");
         } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(RBMSettingsWeightsModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void saveWeights() {
+        try {
+            this.saver.singleWeights(this.weights);
+            System.out.println("Save Weights");
+        } catch (IOException | ParserConfigurationException | TransformerException ex) {
             Logger.getLogger(RBMSettingsWeightsModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

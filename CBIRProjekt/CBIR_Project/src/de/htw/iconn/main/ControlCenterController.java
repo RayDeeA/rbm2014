@@ -120,11 +120,14 @@ public class ControlCenterController extends AController {
         if(file != null){
             try {
                 this.creator.load(this, file);
+                BenchmarkModel benchmarkModel = benchmarkController.getModel();
+                benchmarkModel.setImageManager(benchmarkModel.getImageManager());
+                benchmarkModel.updateAllViews();
+                
             } catch (ParserConfigurationException | SAXException | IOException ex) {
                 System.err.println("ERROR: could not parse file");
                 Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            benchmarkController.getModel().updateAllViews();
+            }          
         }
     }
     
