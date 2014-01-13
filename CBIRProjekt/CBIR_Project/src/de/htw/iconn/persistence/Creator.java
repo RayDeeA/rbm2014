@@ -15,9 +15,11 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -151,34 +153,100 @@ public class Creator {
     }
     
     private void parseArray(Field field, String value, Object model){
-        String typeName = field.getType().getSimpleName();
-        if(typeName.equals("float[][]")){
-            try {
-                field.set(model, parseFloatArray(value));
-            } catch (IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
+        int numOfDimensions = getArrayDimensionsFromType(field);
+        try {
+            Object o = null;
+            if(numOfDimensions == 1){
+                o = parseGenericArray1d(field, value);      
+            }else if(numOfDimensions == 2){
+                o = parseGenericArray2d(field, value);
             }
-        }else{
-            System.err.println("ERROR: can't parse array of type " + typeName);
+            if(o != null){
+                field.set(model, o);
+            }else{
+                System.err.println("ERROR: can't parse array of type " + field.getType().getSimpleName());
+            }
+        } catch (IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(Creator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private float[][] parseFloatArray(String value){
-        String[] banana = value.split(";");
-        int firstDimensionSize = banana.length;
-        int secondDimensionSize = banana[0].split(",").length;
+    private int getArrayDimensionsFromType(Field field){
+        int result = 0;
+        char[] typeName = field.getType().getSimpleName().toCharArray();
+        for(int i = 0; i < typeName.length; ++i){
+            if(typeName[i] == '['){
+                ++result;
+            }
+        }
+        return result;
+    }
+    
+    private String cropArrayTypeName(Field field){
+        char[] typeName = field.getType().getSimpleName().toCharArray();
+        int i = 0;
+        for(; i < typeName.length; ++i){
+            if(typeName[i] == '[') break;
+        }
+        return new String(typeName, 0, i);
+    }
+    
+    private Object parseGenericArray1d(Field field, String value){
+        String[] split = value.split(",");
+        int size = split.length;
+        Class clazz = getClassFromName(field);
+        if(clazz == null) return null;
+        Object result = (Object) Array.newInstance(clazz, size);
+        for(int i = 0; i < Array.getLength(result); ++i){
+            Array.set(result, i, parseString(field, split[i]));
+        }
+        return result;
+    }
+    
+    private Object parseGenericArray2d(Field field, String value){
+        String[] split = value.split(";");
+        int size = split.length;
+        Class clazz = getClassFromName(field);
+        Class arrayClazz = Array.newInstance(clazz, 0).getClass();
+        Object result = Array.newInstance(arrayClazz, size);
+        for(int i = 0; i < Array.getLength(result); ++i){
+            Array.set(result, i, parseGenericArray1d(field, split[i]));
+        }
+        return result;
+    }
+    
+    
+    // not used anymore because of the generic parsing methods
+    private float[][] parseFloatArray2d(String value){
+        String[] banan = value.split(";");
+        int firstDimensionSize = banan.length;
+        int secondDimensionSize = banan[0].split(",").length;
         float[][] result = new float[firstDimensionSize][secondDimensionSize];
-        for(int i = 0; i < firstDimensionSize; ++i){
-            String[] bananasplit = banana[i].split(",");
-            for(int j = 0; j < secondDimensionSize; ++j){
-                result[i][j] = new Float(bananasplit[j]);
+        for(int a = 0; a < firstDimensionSize; ++a){
+            String[] bananasplit = banan[a].split(","); //haha, banan[a].split
+            for(int b = 0; b < secondDimensionSize; ++b){
+                result[a][b] = new Float(bananasplit[b]);
             }
         }      
         return result;
     }
     
+    private Class getClassFromName(Field field){
+        String typeName = cropArrayTypeName(field);
+        if(typeName.equals("int")) return int.class;
+        if(typeName.equals("float")) return float.class;
+        if(typeName.equals("double")) return double.class;       
+        if(typeName.equals("long")) return long.class;
+        if(typeName.equals("byte")) return byte.class;
+        if(typeName.equals("short")) return short.class;
+        if(typeName.equals("boolean")) return boolean.class;
+        if(typeName.equals("char")) return char.class;
+        if(typeName.equals("String")) return String.class;
+        return null;
+    }
+    
     private Object parseString(Field field, String value){
-        String typeName = field.getType().getSimpleName();
+        String typeName = cropArrayTypeName(field);
         // Number classes
         if(typeName.equals("int")) return new Integer(value);
         if(typeName.equals("float")) return new Float(value);
