@@ -25,7 +25,7 @@ public class RBMJBlas implements IRBM {
                 float[][] weightsTemp = new float[inputSize][outputSize];
                 for (int v = 0; v < inputSize; v++) {
                     for (int h = 0; h < outputSize; h++) {
-                        weightsTemp[v][h] = (float)(0.1f * random.nextGaussian());
+                        weightsTemp[v][h] = (float)(0.01f * random.nextGaussian());
                     }
                 }
                 this.weights = new FloatMatrix(weightsTemp);
