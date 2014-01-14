@@ -42,6 +42,7 @@ public class RBMEnhancer implements IRBM {
 	@Override
 	public void train(float[][] trainingData, StoppingCondition stop, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel;
+                long start = System.currentTimeMillis();
 		while(stop.isNotDone()) {
 			updateModel = true;
                         
@@ -72,6 +73,7 @@ public class RBMEnhancer implements IRBM {
 		for (IRBMEndTrainingEnhancement enhancement : this.endEnhancements) {
 			enhancement.action(this.info);
 		}
+                System.out.println("Elapsed time:" + (System.currentTimeMillis() - start));
 	}
 
         private void setInfo(IRBM rbm, float[][] trainingData, int epochs, boolean useHiddenStates, boolean useVisibleStates) {
