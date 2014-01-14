@@ -31,6 +31,10 @@ public final class FloatMatrix {
             }
         }
     }
+    
+    public FloatMatrix(int rows, int columns){
+        this.m = new float[rows][columns];
+    }
 
     public FloatMatrix(float[][] m) {
         this(m, Bias.NONE);
@@ -97,7 +101,40 @@ public final class FloatMatrix {
     public void transposei(FloatMatrix result) {
         for (int i = 0; i < m.length; ++i) {
             for (int j = 0; j < m[0].length; j++) {
-                result.m[i][j] = m[j][i];
+                result.m[j][i] = m[i][j];
+            }
+        }
+    }
+    
+    public void gti(FloatMatrix other){
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                if(m[i][j] > other.m[i][j]) m[i][j] = 1.f;
+                else m[i][j] = 0.f;
+            }
+        }
+    }
+    
+    public void subi(FloatMatrix other){
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                m[i][j] -= other.m[i][j];
+            }
+        }
+    }
+    
+    public void addi(FloatMatrix other){
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                m[i][j] -= other.m[i][j];
+            }
+        }
+    }
+    
+    public void muli(float f){
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                m[i][j] *= f;
             }
         }
     }
@@ -111,6 +148,14 @@ public final class FloatMatrix {
         for (int i = 0; i < m[0].length; i++) {
             m[0][i] = 1.0f;
         }
+    }
+    
+    public int getRows(){
+        return m.length;
+    }
+    
+    public int getColumns(){
+        return m[0].length;
     }
 
     public float[][] getData() {

@@ -11,7 +11,6 @@ import java.util.ListIterator;
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.enhancement.TrainingVisualizer;
 import de.htw.iconn.persistence.XMLEndTrainingLogger;
-import de.htw.iconn.persistence.XMLTrainingLogger;
 import de.htw.iconn.logistic.ILogistic;
 import de.htw.iconn.settings.RBMSettingsLearningRateController;
 import de.htw.iconn.settings.RBMSettingsLearningRateModel;
@@ -25,7 +24,6 @@ import de.htw.iconn.settings.RBMSettingsVisualizationsController;
 import de.htw.iconn.settings.RBMSettingsVisualizationsModel;
 import de.htw.iconn.settings.RBMSettingsWeightsController;
 import de.htw.iconn.settings.RBMSettingsWeightsModel;
-import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.settings.RBMSettingsModel;
@@ -102,7 +100,7 @@ public class RBMTrainer {
         boolean useSeed = weightsModel.isUseSeed();
         float[][] weights = weightsModel.getWeights();
 
-        return new RBMJBlas(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights);
+        return new RBMOpti(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights);
     }
 
     public void trainSingleRBM(RBMSettingsController controller) {
@@ -154,8 +152,10 @@ public class RBMTrainer {
             stop = new StoppingCondition();
         }
         
+        long startTime = System.currentTimeMillis();
         rbmEnhancer.train(model.getData(), stop, weightsModel.isBinarizeHidden(), weightsModel.isBinarizeVisible());
-
+        System.out.println("Training finished in " + (System.currentTimeMillis() - startTime) + "ms");
+        
         weightsModel.setWeights(rbmEnhancer.getWeights());
         
         System.out.println("Training finished");

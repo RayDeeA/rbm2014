@@ -41,7 +41,7 @@ public class RBMEnhancer implements IRBM {
 	
 	@Override
 	public void train(float[][] trainingData, StoppingCondition stop, boolean useHiddenStates, boolean useVisibleStates) {
-		boolean updateModel;		
+		boolean updateModel;
 		while(stop.isNotDone()) {
 			updateModel = true;
                         
