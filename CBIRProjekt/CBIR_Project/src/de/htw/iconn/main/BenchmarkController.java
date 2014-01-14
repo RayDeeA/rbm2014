@@ -50,7 +50,8 @@ public class BenchmarkController extends AController {
 
     @FXML  
     private CheckBox cbx_Binarize;
-    
+    @FXML 
+    private CheckBox cbx_Invert;
     @FXML
     private CheckBox cbx_Shuffle;
     @FXML
@@ -109,7 +110,7 @@ public class BenchmarkController extends AController {
 
     private void loadImageSet(File file) {
         if (file != null) {
-            this.model.setImageManager(new ImageManager(file));
+            this.model.setImageManager(file);
 
             this.initCmbImageManager();
             
@@ -123,6 +124,11 @@ public class BenchmarkController extends AController {
     @FXML
     private void cbx_BinarizeAction(ActionEvent event) {
         this.model.setBinarizeImages(this.cbx_Binarize.isSelected());
+    }
+    
+    @FXML
+    private void cbx_InvertAction(ActionEvent event) {
+    	this.model.setInvertImages(this.cbx_Invert.isSelected());
     }
     
     @FXML
@@ -250,7 +256,11 @@ public class BenchmarkController extends AController {
     }
 
     public void update() {
+    	this.cbx_Binarize.setSelected(this.model.isBinarizeImages());
+    	this.cbx_Invert.setSelected(this.model.isInvertImages());
+    	this.cbx_Shuffle.setSelected(!this.model.isSorted());
         this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
+        this.cbx_FeatureViewer.setSelected(this.model.isShowFeatureViewer());
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
         this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
         if (this.model.getImageManager() == null) {

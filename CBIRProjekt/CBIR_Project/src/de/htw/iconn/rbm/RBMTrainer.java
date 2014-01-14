@@ -343,6 +343,7 @@ public class RBMTrainer {
     }
     
     public void updateRBMs(BenchmarkModel benchmarkModel){
+
         int inputSize = benchmarkModel.getInputSize();
         float[][] data = benchmarkModel.getInputData();
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();

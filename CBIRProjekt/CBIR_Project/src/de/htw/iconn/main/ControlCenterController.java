@@ -5,16 +5,19 @@
  */
 package de.htw.iconn.main;
 
+import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.persistence.Creator;
 import de.htw.iconn.persistence.Persistor;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.tools.Chooser;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +25,10 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
 import org.xml.sax.SAXException;
 
 /**
@@ -121,7 +126,11 @@ public class ControlCenterController extends AController {
             try {
                 this.creator.load(this, file);
                 BenchmarkModel benchmarkModel = benchmarkController.getModel();
-                benchmarkModel.setImageManager(benchmarkModel.getImageManager());
+                
+                ImageManager imageManager = benchmarkModel.getImageManager();
+                String path = imageManager.getImageSetName();
+
+                benchmarkModel.setImageManager(new File("CBIR_Project/images/" + path));
                 benchmarkModel.updateAllViews();
                 
             } catch (ParserConfigurationException | SAXException | IOException ex) {

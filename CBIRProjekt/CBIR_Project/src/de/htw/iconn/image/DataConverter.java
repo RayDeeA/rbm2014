@@ -2,14 +2,18 @@ package de.htw.iconn.image;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * DataConverter
+ *
+ * @author Radek
+ */
 public class DataConverter {
 
-    public static float[][] generatePixelIntensityData(Pic[] pics, int edgeLength, boolean binarize) {
+    public static float[] generatePixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert) {
 
-        float[][] data = new float[pics.length][edgeLength * edgeLength];
+        float[] data = new float[edgeLength * edgeLength];
 
-        for (int i = 0; i < pics.length; i++) {
-            ImageScaler imageScaler = new ImageScaler(pics[i].getDisplayImage());
+            ImageScaler imageScaler = new ImageScaler(image);
             BufferedImage scaledImage = imageScaler.scale(edgeLength);
             int[] pixels = scaledImage.getRGB(0, 0, edgeLength, edgeLength, null, 0, edgeLength);
 
@@ -19,15 +23,18 @@ public class DataConverter {
                 int r = (argb >> 16) & 0xFF;
                 int g = (argb >> 8) & 0xFF;
                 int b = (argb) & 0xFF;
+                
+                float intensity = Math.max(0, Math.min(1.0f, (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f));
+                
+                if(invert) {
+                	intensity = 1.0f - intensity;
+                }
 
-                float intensity = Math.max(0, Math.min(255, (float)(0.299 * r + 0.587 * g + 0.114 * b))) / 255.0f;
-
-                data[i][p] = intensity;
+                data[p] = intensity;
             }
             if(binarize) {
-            	binarizeImage(data[i]);
+            	binarizeImage(data);
             }
-        }
 
         return data;
     }
@@ -59,7 +66,7 @@ public class DataConverter {
     		}
     	}
     	
-    	int t = median;
+    	int t = (median == 0) ? 128 : median;
     	int t_last = 0;
     	
     	while (t != t_last) {
