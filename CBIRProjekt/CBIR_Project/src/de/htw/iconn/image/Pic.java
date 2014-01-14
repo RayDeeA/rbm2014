@@ -17,7 +17,7 @@ public class Pic extends Object{
 	private float[] data;	
 	private float[] featureVector;	
 	
-	// Originalgröße des Bildes
+	// Originalgr����e des Bildes
 	private int origWidth; 
 	private int origHeight;
 	
@@ -158,6 +158,13 @@ public class Pic extends Object{
 	public void setDistance(float distance) {
 		this.distance = distance;
 	}
+
+	public void setData(float[] data) {
+		this.data = data;
+	}
 	
+	public float[] getData() {
+		return this.data;
+	}
 	
 }

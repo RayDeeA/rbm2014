@@ -2,6 +2,7 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageScaler;
 
@@ -11,6 +12,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -34,9 +37,9 @@ public class DaydreamModel {
 	private BenchmarkController benchmarkController;
     
 	public DaydreamModel(DaydreamController controller) {
-            this.useHiddenStates = false;
-            this.useVisibleStates = false;
-            this.controller = controller;
+        this.useHiddenStates = false;
+        this.useVisibleStates = false;
+        this.controller = controller;
 	}
     
     public Image loadImage(int visWidth, int visHeight) {
@@ -46,8 +49,7 @@ public class DaydreamModel {
 
         File file = fileChooser.showOpenDialog(fileChooserStage);
         if (file != null) {
-            ImageManager imageManager = new ImageManager();
-            this.calcImage = imageManager.loadImage(file).getDisplayImage();
+            this.calcImage = ImageHelper.loadImage(file);
 
             ImageScaler imageScaler = new ImageScaler();
             

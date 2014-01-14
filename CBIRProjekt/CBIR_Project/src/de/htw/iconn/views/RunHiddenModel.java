@@ -7,8 +7,10 @@
 package de.htw.iconn.views;
 
 import de.htw.iconn.rbm.ARBMAdapter;
+import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.Pic;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -97,10 +99,7 @@ public class RunHiddenModel {
         
         File file = fileChooser.showOpenDialog(fileChooserStage);
         if(file != null) {
-            ImageManager imageManager = new ImageManager();
-            this.pic = imageManager.loadImage(file);
-            
-            BufferedImage bufferedImage = this.pic.getDisplayImage();
+            BufferedImage bufferedImage = ImageHelper.loadImage(file);
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
             

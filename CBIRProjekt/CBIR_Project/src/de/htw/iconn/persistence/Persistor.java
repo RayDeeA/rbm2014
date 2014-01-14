@@ -197,7 +197,9 @@ public class Persistor {
     }
     // object to string
     private String objectToString(Object o){
-        if(o instanceof ImageManager) return imageManagerToString((ImageManager)o);
+        if(o instanceof ImageManager) {
+        	return imageManagerToString((ImageManager)o);
+        }
         return o.toString();
     }
     // array to string

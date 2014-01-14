@@ -78,15 +78,14 @@ public class ImageViewer { //extends AController implements IVisualizeObserver
     public double getX() {
         return stage.getX();
     }
-
-    public ImageViewer(ImageManager imageManager, boolean sorted) {
-        this.imageManager = imageManager;
-        this.images = imageManager.getImages(sorted);
-        
-        initalize();
-    }
     
     public ImageViewer() {
+    	initalize();
+    }
+    
+    public ImageViewer(ImageManager imageManager) {
+    	this.imageManager = imageManager;
+    	this.images = imageManager.getImages();
     	initalize();
     }
     
@@ -269,7 +268,7 @@ public class ImageViewer { //extends AController implements IVisualizeObserver
     }
 
     public void show() {
-
+System.out.println();
         if (images != null) {
             root.getChildren().clear();
 //          System.out.println(xMousePos + " " + yMousePos + "    " + xMouseMove + " " + yMouseMove);
