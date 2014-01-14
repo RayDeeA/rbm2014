@@ -11,6 +11,7 @@ import de.htw.iconn.statistics.PrecisionRecallTestResult;
 import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
+import de.htw.iconn.imageViewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.views.FeatureViewer;
@@ -27,6 +28,7 @@ public class BenchmarkModel {
 
     private final BenchmarkController controller;
     private ImageViewer imageViewer;
+    private ImageViewerController imageViewerController;
     private FeatureViewer featureViewer;
     private final PRTMAPController prtmapController;
     private final LinkedList<RBMSettingsController> rbmSettingsList;
@@ -65,10 +67,11 @@ public class BenchmarkModel {
         this.selectedMAPTest = selectedMAPTest;
     }
 
-    public BenchmarkModel(BenchmarkController controller, PRTMAPController prtmapController) {
+    public BenchmarkModel(BenchmarkController controller, PRTMAPController prtmapController, ImageViewerController ivc) {
         this.rbmSettingsList = new LinkedList<>();
         this.controller = controller;
         this.prtmapController = prtmapController;
+        this.imageViewerController = ivc;
         this.rbmTrainer = new RBMTrainer();
     }
 
