@@ -48,6 +48,6 @@ public class Paper {
 	}
 
 	public Vector2 getSize() {
-		return size;
+		return size.cpy();
 	}
 }

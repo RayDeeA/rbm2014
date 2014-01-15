@@ -1,190 +1,197 @@
 package de.htw.iconn.views;
 
-import de.htw.iconn.rbm.ARBMAdapter;
-import de.htw.iconn.image.Pic;
-import java.awt.image.BufferedImage;
-import java.util.Random;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
+import de.htw.iconn.enhancement.IVisualizeObserver;
+import de.htw.iconn.enhancement.RBMInfoPackage;
+
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public class WeightsVisualizationModel {
-    private final WeightsVisualizationController controller;
-	
-    Random random = new Random();
-	
-    ARBMAdapter rbmFeature;
-    Pic pic;
-    Image vizImage;
-    Random rand = new Random();
-    Random r1 = new Random();
-    Random r2 = new Random();
-    
-    int input;
-    int output;
-    double height;
-    double width;
-    
-    double[][] weights;
+public final class WeightsVisualizationModel implements IVisualizeObserver {
 
-    public WeightsVisualizationModel(WeightsVisualizationController controller) {
+    private final WeightsVisualizationController controller;
+
+    private int weightsWidth = 10;
+    private int weightsHeight = 10;
+    private int viewWidth = 400;
+    private int viewHeight = 300;
+
+    private int[] picWeights;
+
+    private WritableImage image;
+
+    public WeightsVisualizationModel(WeightsVisualizationController controller,
+            int width, int height) {
+
+        this.viewWidth = width;
+        this.viewHeight = height;
+        clear();
         this.controller = controller;
     }
-      
-    public void setRbmFeature(ARBMAdapter rbmFeature) {
-        this.rbmFeature = rbmFeature;
-    } 
-    
-    public void setDCT(int i, int o) {
-        this.input = i;
-        this.output = o;
-    }
-    
-    public void setDisplayDimensions(double w, double h) {
-        this.width = w;
-        this.height = h;
-    }
-    
-     public void setWeights(double[][] w) {
-    	this.weights = w;
-    }
-     
-    public int[] resizePixels(int[] pixels,int w1,int h1,int w2,int h2) {
-    
-    int[] temp = new int[w2*h2] ;
-    double x_ratio = w1/(double)w2 ;
-    double y_ratio = h1/(double)h2 ;
-    double px, py ; 
-    
-        for (int i=0;i<h2;i++) {
-            for (int j=0;j<w2;j++) {
-                px = Math.floor(j*x_ratio) ;
-                py = Math.floor(i*y_ratio) ;
-                temp[(i*w2)+j] = pixels[(int)((py*w1)+px)] ;
+
+    public int[] resizePixels(int[] pixels, int w1, int h1, int w2, int h2) {
+
+        int[] temp = new int[w2 * h2];
+        double x_ratio = w1 / (double) w2;
+        double y_ratio = h1 / (double) h2;
+        double px, py;
+
+        for (int i = 0; i < h2; i++) {
+            for (int j = 0; j < w2; j++) {
+                px = Math.floor(j * x_ratio);
+                py = Math.floor(i * y_ratio);
+                temp[(i * w2) + j] = pixels[(int) ((py * w1) + px)];
             }
         }
-        
-    return temp ;
-}
-    
-    public int getIntFromColor(int Red, int Green, int Blue){
-        
-        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
-        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
-        Blue = Blue & 0x000000FF; //Mask out anything not blue.
 
-        return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+        return temp;
     }
-    
-     public Image generateRandomImage() {
-        
-        int[] pixelsImage = new int[input * output];
-        
-        WritableImage image = new WritableImage(input, output);
-        PixelWriter writer = image.getPixelWriter();
+
+    public int getIntFromColor(int Red, int Green, int Blue) {
+
+        Red = (Red << 16) & 0x00FF0000; 
+        Green = (Green << 8) & 0x0000FF00; 
+        Blue = Blue & 0x000000FF; 
+
+        return 0xFF000000 | Red | Green | Blue;
+    }
+
+    public int[] generateImage(float[][] weights) {
+        int[] pixels;
+        int input;
+        int output;
+        input = weights.length;
+        output = weights[0].length;
+
+        pixels = new int[input * output];
+
+        float start = -10;
+        float end = 10;
+
+
+        //float[][] rWeights = relativateWeights(weights);
+
+        float rc, gc, bc;
 
         for (int y = 0; y < output; y++) {
             for (int x = 0; x < input; x++) {
-                
-                int pos  = y * input + x;
-            	
-                int r = rand.nextInt(255) ;
-                int g = rand.nextInt(255) ;
-                int b = rand.nextInt(0) ;
-                
-                pixelsImage[pos] = getIntFromColor(r, g, b);
-                
+
+                int pos = y * input + x;
+
+                float current = weights[x][y];
+                if (current > 0) {
+                    rc = 1.0f - current;
+                    gc = 1.0f;
+                    bc = 1.0f - current;
+                } else {
+                    current = 1 + current;
+                    rc = 1.0f;
+                    gc = current;
+                    bc = current;
+                }
+                rc *= 255;
+                gc *= 255;
+                bc *= 255;
+                pixels[pos] = getIntFromColor((int) rc, (int) gc, (int) bc);
+
             }
         }
-
-        int[] resizedPic = resizePixels(pixelsImage, input, output, (int)width, (int)height);
-        Image tmpImage   =  getImageFromArray(resizedPic, (int) width, (int)height);
-      
-        return tmpImage;
-     }
-        
-    public Image generateImage() {
-        
-        int[] pixelsImage = new int[input * output];
-        
-        double start = -10;
-        double end = 10;
-        
-        weights = new double[input][output];
-        
-        //DUMMY Data
-        for (int y = 0; y < output; y++) {
-            for (int x = 0; x < input; x++) {
-                double randomValue = start + (end - start) * r1.nextDouble();
-                weights[x][y] = randomValue;
-            }
-        }
-        
-        if(weights != null) {
-			double[][] weights = relativateWeights(this.weights);
-			
-			float rc, gc, bc;
-
-			for (int y = 0; y < output; y++) {
-				for (int x = 0; x < input; x++) {
-                                    
-                                    int pos  = y * input + x;
-            	
-                                    float  current = (float)weights[x][y];
-					if(current > 0) {
-						rc = 1.0f - current;
-						gc = 1.0f;
-						bc = 1.0f - current;		
-					}
-					else {
-						current = 1 + current;
-						rc = 1.0f;
-						gc = current;
-						bc = current;
-					}
-					rc*= 255;
-                                        gc*= 255;
-                                        bc*= 255;
-                                        
-                                        pixelsImage[pos] = getIntFromColor((int) rc, (int) gc,(int) bc);
-                                       	
-				}
-			} 
-		} 
-        //INPUT  = X 
-        //OUTPUT = Y
-        int[] resizedPic =  resizePixels(pixelsImage, input, output, (int)width, (int)height);
-        Image tmpImage   =  getImageFromArray(resizedPic, (int) width, (int)height);
-      
-        return tmpImage;
+        return pixels;
     }
-    
-    private double[][] relativateWeights(double[][] weights) {
-		final double[][] result = new double[weights.length][weights[0].length];
-		double max = 0;
-		for (int i = 0; i < result.length; i++) {
-			for (int j = 0; j < result[0].length; j++) {
-				final double currentAbs = Math.abs(weights[i][j]);
-				if(currentAbs > max) {
-					max = currentAbs;
-				}
-			}
-		}
-		for (int i = 0; i < result.length; i++) {
-			for (int j = 0; j < result[0].length; j++) {
-				result[i][j] = Math.max(-1, Math.min(1, (weights[i][j] / 5.0f)));
-			}
-		}
-		return result;
-	}
-    
-    public static Image getImageFromArray(int[] pixels, int width, int height) {
-         
-            BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            bufferedImage.setRGB(0, 0, width, height, pixels, 0, width);
-        
-            return SwingFXUtils.toFXImage(bufferedImage, null);
+
+    private float[][] relativateWeights(float[][] weights) {
+        final float[][] result = new float[weights.length][weights[0].length];
+        double max = 0;
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                final double currentAbs = Math.abs(weights[i][j]);
+                if (currentAbs > max) {
+                    max = currentAbs;
+                }
+            }
         }
+        
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                result[i][j] = Math.max(-1, Math.min(1, (weights[i][j] / 5.0f)));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void update(RBMInfoPackage pack) {
+        
+        if (pack != null) {
+            float[][] weights = pack.getWeights();
+            this.weightsWidth = weights.length;
+            this.weightsHeight = weights[0].length;
+
+            picWeights = generateImage(pack.getWeights());
+
+        }
+        WritableImage newImage = new WritableImage(this.viewWidth, this.viewHeight);
+        int[] resizedWeights = resizePixels(
+                picWeights,
+                weightsWidth, weightsHeight,
+                viewWidth, viewHeight);
+        PixelWriter writer = newImage.getPixelWriter();
+        for (int y = 0; y < this.viewHeight; y++) {
+            for (int x = 0; x < this.viewWidth; x++) {
+                writer.setArgb(x, y, resizedWeights[y * this.viewWidth + x]);
+            }
+        }
+//        WritableImage newImage = new WritableImage(this.getWeightsWidth(), this.getWeightsHeight());
+//        PixelWriter writer = newImage.getPixelWriter();
+//        for (int y = 0; y < this.getWeightsHeight(); y++) {
+//            for (int x = 0; x < this.getWeightsWidth(); x++) {
+//                writer.setArgb(x, y, picWeights[y * this.getWeightsWidth() + x]);
+//            }
+//        }
+        this.image = newImage;
+
+        controller.update();
+    }
+
+    public final void clear() {
+        this.image = new WritableImage(viewWidth, viewHeight);
+        this.picWeights = new int[getWeightsWidth() * getWeightsWidth()];
+    }
+
+    /**
+     * @return the image
+     */
+    public WritableImage getImage() {
+        return image;
+    }
+
+    /**
+     * @param viewHeight the viewHeight to set
+     */
+    public void setViewHeight(int viewHeight) {
+        this.viewHeight = viewHeight;
+        update(null);
+    }
+
+    /**
+     * @param viewWidth the viewWidth to set
+     */
+    public void setViewWidth(int viewWidth) {
+        this.viewWidth = viewWidth;
+        update(null);
+    }
+
+    /**
+     * @return the weightsHeight
+     */
+    public int getWeightsHeight() {
+        return weightsHeight;
+    }
+
+    /**
+     * @return the weightsWidth
+     */
+    public int getWeightsWidth() {
+        return weightsWidth;
+    }
 
 }

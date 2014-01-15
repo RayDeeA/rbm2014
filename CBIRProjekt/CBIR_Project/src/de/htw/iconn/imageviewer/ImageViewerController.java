@@ -54,8 +54,10 @@ public class ImageViewerController extends AController implements EventHandler {
 			@Override
 			public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
 
-				ImageViewerController.this.model.setSize(new Vector2((float) ImageViewerController.this.scene.widthProperty()
-						.get(), (float) ImageViewerController.this.scene.heightProperty().get()));
+				ImageViewerController.this.model.setSize(
+						new Vector2((float) ImageViewerController.this.scene.widthProperty().get(), 
+						(float) ImageViewerController.this.scene.heightProperty().get())
+				);
 				ImageViewerController.this.model.draw();
 			}
 		};

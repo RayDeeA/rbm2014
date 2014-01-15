@@ -9,6 +9,7 @@ package de.htw.iconn.settings;
 import de.htw.iconn.enhancement.RBMEnhancer;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.main.AController;
+import de.htw.iconn.views.WeightsVisualizationController;
 import java.io.IOException;
 
 import java.net.URL;
@@ -63,9 +64,17 @@ public class RBMSettingsVisualizationsController extends AController {
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        WeightsVisualizationController weightsVisualizationController = null;
+        try {
+            weightsVisualizationController = (WeightsVisualizationController) 
+                    loadController("../views/WeightsVisualization.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lbl_errorInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         lbl_weightsInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
-        this.model = new RBMSettingsVisualizationsModel(this, errorViewController);
+        this.model = new RBMSettingsVisualizationsModel(this, errorViewController, 
+                weightsVisualizationController);
         
         this.update();
     }
@@ -73,7 +82,15 @@ public class RBMSettingsVisualizationsController extends AController {
 
     @FXML
     private void cbx_showWeightsAction(ActionEvent event) {
-        this.model.setShowWeights(cbx_showWeights.isSelected()); 
+        this.model.setShowWeights(cbx_showWeights.isSelected());
+        final WeightsVisualizationController weightsVisualizationController = 
+                this.model.getWeightsVisualizationController();
+        if(cbx_showWeights.isSelected()) {
+            weightsVisualizationController.show();
+        } else {
+            
+            weightsVisualizationController.hide();
+        }
         
     }
     
