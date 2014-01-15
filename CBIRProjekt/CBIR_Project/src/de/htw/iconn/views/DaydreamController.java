@@ -28,7 +28,7 @@ import javafx.scene.layout.AnchorPane;
 /**
  * FXML Controller class
  *
- * @author dvarul
+ * @author Radek
  */
 public class DaydreamController extends AController {
 	

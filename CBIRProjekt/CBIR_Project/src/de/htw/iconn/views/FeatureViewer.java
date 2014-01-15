@@ -9,6 +9,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import de.htw.iconn.enhancement.IVisualizeObserver;
 import de.htw.iconn.enhancement.RBMInfoPackage;
+import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.image.Pic;
 import de.htw.iconn.main.BenchmarkController;
@@ -32,7 +33,6 @@ public class FeatureViewer extends ImageViewer implements IVisualizeObserver {
 	public void update() {
 		List<RBMSettingsController> rbmSettingsControllers = this.benchmarkController.getModel().getRbmSettingsList();
 		
-		int inputSize = ((RBMSettingsMainController)(rbmSettingsControllers.get(0).getModel().getController(RBMSettingsMainController.class))).getModel().getInputSize();
 		int outputSize = ((RBMSettingsMainController)(rbmSettingsControllers.get(rbmSettingsControllers.size() - 1).getModel().getController(RBMSettingsMainController.class))).getModel().getOutputSize();
 		
 		RBMTrainer rbmTrainer = new RBMTrainer();
@@ -45,26 +45,12 @@ public class FeatureViewer extends ImageViewer implements IVisualizeObserver {
 			
 			float[] visibleData = rbmTrainer.getVisibleAllRBMs1D(benchmarkController.getModel(), hiddenData, false);
 
-			int imageWidth = (int) Math.sqrt(visibleData.length), imageHeight = (int) Math.sqrt(visibleData.length);
-
-			WritableImage image = new WritableImage(imageWidth, imageHeight);
-			PixelWriter writer = image.getPixelWriter();
-
-			for (int y = 0; y < imageHeight; y++) {
-				for (int x = 0; x < imageWidth; x++) {
-					int value = 255 - (int) Math.max(Math.min(255, (visibleData[y * imageWidth + x] * 255)), 0);
-					//System.out.println(value);
-					Color color = Color.rgb(value, value, value);
-					writer.setColor(x, y, color);
-				}
-			}
-			
-			BufferedImage bi = SwingFXUtils.fromFXImage(image, null);
+			BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0);
 			
 			Pic pic = new Pic();
-			pic.setDisplayImage(bi);
-			pic.setOrigWidth(bi.getWidth());
-			pic.setOrigHeight(bi.getHeight());
+			pic.setDisplayImage(image);
+			pic.setOrigWidth(image.getWidth());
+			pic.setOrigHeight(image.getHeight());
 			pic.setRank(i);
 			pics[i] = pic;
 		}

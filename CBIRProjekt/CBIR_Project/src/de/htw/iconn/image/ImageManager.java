@@ -143,7 +143,7 @@ public class ImageManager {
     private Pic loadImage(File imageFile, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
         float[] imageData = null;
         try {
-        	imageData = DataConverter.generatePixelIntensityData(ImageIO.read(imageFile), edgeLength, binarize, invert, minData, maxData);
+        	imageData = DataConverter.processPixelIntensityData(ImageIO.read(imageFile), edgeLength, binarize, invert, minData, maxData);
         } catch (Exception e) {
             System.out.println("Could not load: " + imageFile.getAbsolutePath());
             e.printStackTrace();

@@ -8,8 +8,25 @@ import java.awt.image.BufferedImage;
  * @author Radek
  */
 public class DataConverter {
+	
+	public static BufferedImage pixelIntensityDataToImage(float[] data, float minData) {
+		int edgeLength = (int)Math.sqrt(data.length);
+		BufferedImage image = new BufferedImage(edgeLength, edgeLength, BufferedImage.TYPE_INT_RGB);
+		
+		int[] rgb = new int[data.length];
+        for (int i = 0; i < rgb.length; i++) {
+        	int value = (int)((data[i] + Math.abs(minData)) * 255);
+        	rgb[i] = (0xFF << 24) | (value << 16) | (value << 8) | value;
+        	
+        	System.out.println(data[i] + Math.abs(minData));
+        }
+		
+        image.setRGB(0, 0, edgeLength, edgeLength, rgb, 0, edgeLength);
+        
+		return image;
+	}
 
-    public static float[] generatePixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+    public static float[] processPixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
 
         float[] data = new float[edgeLength * edgeLength];
 
