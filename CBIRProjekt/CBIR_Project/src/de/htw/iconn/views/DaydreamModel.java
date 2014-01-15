@@ -1,6 +1,7 @@
 package de.htw.iconn.views;
 
 import de.htw.iconn.main.BenchmarkController;
+import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageManager;
@@ -34,7 +35,7 @@ public class DaydreamModel {
     private boolean useHiddenStates;
 	private boolean useVisibleStates;
 
-	private BenchmarkController benchmarkController;
+	private BenchmarkModel benchmarkModel;
     
 	public DaydreamModel(DaydreamController controller) {
         this.useHiddenStates = false;
@@ -63,8 +64,8 @@ public class DaydreamModel {
     }
 
     public Image generateImage(int visWidth, int visHeight) {
-        int width = this.benchmarkController.getModel().getImageEdgeSize();
-        int height = this.benchmarkController.getModel().getImageEdgeSize();
+        int width = this.benchmarkModel.getImageEdgeSize();
+        int height = this.benchmarkModel.getImageEdgeSize();
         
         int[] imagePixels = new int[width * height]; 
         for (int y = 0, pos = 0; y < height; y++) {
@@ -88,8 +89,8 @@ public class DaydreamModel {
     public void daydream(int maxHiddenImageWidth) {
     	RBMTrainer trainer = new  RBMTrainer();
     	
-    	int width = this.benchmarkController.getModel().getImageEdgeSize();
-    	int height = this.benchmarkController.getModel().getImageEdgeSize();
+    	int width = this.benchmarkModel.getImageEdgeSize();
+    	int height = this.benchmarkModel.getImageEdgeSize();
     	
     	// Get pixels from calculation image and convert it to normalized data  
     	float[] data = new float[this.calcImage.getWidth() * this.calcImage.getHeight()];
@@ -99,11 +100,11 @@ public class DaydreamModel {
     	}
     	
     	// Create visible daydream data, which is used for the next calculation step 
-        float[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkController.getModel(), data, this.useHiddenStates, this.useVisibleStates);
+        float[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkModel, data, this.useHiddenStates, this.useVisibleStates);
         
         // Create hidden and visible daydream data, which is used for visualization
-        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkController.getModel(), data, false);
-        float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkController.getModel(), hiddenDataForVis, false);
+        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkModel, data, false);
+        float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
         int[] hiddenImagePixels = new int[hiddenDataForVis.length];
@@ -189,8 +190,8 @@ public class DaydreamModel {
         this.useVisibleStates = useVisibleStates;
     }
 
-	public void setBenchmarkController(BenchmarkController benchmarkController) {
-		this.benchmarkController = benchmarkController;
+	public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
+		this.benchmarkModel = benchmarkModel;
 	}
 
 }

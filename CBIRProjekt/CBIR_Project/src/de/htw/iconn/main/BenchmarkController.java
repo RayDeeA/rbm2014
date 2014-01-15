@@ -6,10 +6,10 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.tools.Chooser;
-import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.PRTMAPController;
+import de.htw.iconn.views.RunHiddenController;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,18 +23,20 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -43,11 +45,18 @@ import javafx.stage.Stage;
  */
 public class BenchmarkController extends AController {
 
+	private BenchmarkModel model;
+	
     @FXML
     private AnchorPane view;
-
-    private BenchmarkModel model;
-
+	
+	// Loading
+    @FXML
+    private ToggleButton btn_OpenShowImages; 
+    @FXML
+    private Label lbl_imageSetSelected;
+	
+	// Preprocessing
     @FXML  
     private CheckBox cbx_Binarize;
     @FXML 
@@ -55,32 +64,30 @@ public class BenchmarkController extends AController {
     @FXML
     private CheckBox cbx_Shuffle;
     @FXML
-    private CheckBox cbx_imageViewer;  
+    private TextField txt_imageEdgeSize;
+	
+	// Functions
     @FXML
-    private CheckBox cbx_FeatureViewer;  
+    private ToggleButton btn_OpenDaydream;
+    private DaydreamController daydreamController;
+    private Stage daydreamStage;
 
-
+    @FXML
+    private ToggleButton btn_OpenRunHidden;
+    private RunHiddenController runHiddenController;
+    private Stage runHiddenStage;
+    
+    @FXML
+    private ToggleButton btn_OpenTestFeatures;
+    
+    @FXML
+    private ToggleButton btn_OpenShowFeatures; 
+	
+	// Evaluation
     @FXML
     private ComboBox<?> cmb_mAPTests;
-    @FXML
-    private Label lbl_imageSetSelected;
-
-    private DaydreamController daydreamController;
-
-    private Stage daydreamStage;
-    @FXML
-    private Button btn_openDaydream;
-    @FXML
-    private Button btn_openRunHidden;
-    @FXML
-    private Button btn_trainAll;
-    @FXML
-    private Button btn_TrainDeep;    
-    @FXML
-    private TextField txt_imageEdgeSize;
-    
-    @FXML  
-    private Button btn_Update;
+	
+	// Training
 
     /**
      * Initializes the controller class.
@@ -102,6 +109,9 @@ public class BenchmarkController extends AController {
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
     }
+    
+    
+	// Loading
 
     @FXML
     private void btn_loadImageSetAction(ActionEvent event) {
@@ -122,6 +132,21 @@ public class BenchmarkController extends AController {
     }
     
     @FXML
+    private void btn_OpenShowImagesAction(ActionEvent event) {
+        this.model.setShowImageViewer(this.btn_OpenShowImages.isSelected());
+        if (this.model.getImageViewer() != null) {
+            if (this.model.isShowImageViewer()) {
+                this.model.getImageViewer().show();
+            } else {
+                this.model.getImageViewer().close();
+            }
+        }
+    }
+    
+    
+    // Preprocessing
+    
+    @FXML
     private void cbx_BinarizeAction(ActionEvent event) {
         this.model.setBinarizeImages(this.cbx_Binarize.isSelected());
     }
@@ -135,23 +160,82 @@ public class BenchmarkController extends AController {
     private void cbx_ShuffleAction(ActionEvent event) {
     	this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
     }
-
+    
     @FXML
-    private void cbx_imageViewerAction(ActionEvent event) {
-        this.model.setShowImageViewer(this.cbx_imageViewer.isSelected());
-        if (this.model.getImageViewer() != null) {
-            if (this.model.isShowImageViewer()) {
-                this.model.getImageViewer().show();
-            } else {
-                this.model.getImageViewer().close();
-            }
+    private void txt_imageEdgeSizeKey(KeyEvent event) {
+        try {
+            this.model.setImageEdgeSize(Integer.parseInt(this.txt_imageEdgeSize.getText()));
+        } catch (NumberFormatException ex) {
+        	ex.printStackTrace();
         }
     }
     
     @FXML
-    private void cbx_FeatureViewerAction(ActionEvent event) {
+    private void txt_MinDataKey(KeyEvent event) {
+        try {
+            this.model.minData(Float.parseFloat(this.txt_imageEdgeSize.getText()));
+        } catch (NumberFormatException ex) {
+        	ex.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void txt_MaxDataKey(KeyEvent event) {
+        try {
+            this.model.maxData(Float.parseFloat(this.txt_imageEdgeSize.getText()));
+        } catch (NumberFormatException ex) {
+        	ex.printStackTrace();
+        }
+    }
+
+    // Functions
+    
+    @FXML
+    private void btn_OpenDaydreamAction(ActionEvent event) {
+        try {
+        	if(!btn_OpenDaydream.isSelected()) {
+        		 this.daydreamStage.close();
+        		 return;
+        	}
+        	
+            this.daydreamController = (DaydreamController) new DaydreamController().loadController("../views/DaydreamView.fxml");
+            Parent root = (Parent) this.daydreamController.getView();
+
+            this.daydreamController.setBenchmarkModel(this.getModel());
+
+            Scene scene = new Scene(root, 600, 400);
+            this.daydreamStage = new Stage();
+            this.daydreamStage.setTitle("Daydream");
+            this.daydreamStage.setScene(scene);
+            
+            if(btn_OpenDaydream.isSelected()) this.daydreamStage.show();
+            
+            daydreamStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    btn_OpenDaydream.setSelected(false);
+                    daydreamStage.close();
+                }
+            });
+        } catch (IOException ex) {
+        	ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void btn_OpenRunHiddenAction(ActionEvent event) {
+        //TODO
+        throw new UnsupportedOperationException();
+    }
+    
+    @FXML
+    private void btn_OpenTestFeaturesAction(ActionEvent event) {
     	// TODO
-        this.model.setShowFeatureViewer(this.cbx_FeatureViewer.isSelected());
+    }
+    
+    @FXML
+    private void btn_OpenShowFeaturesAction(ActionEvent event) {
+    	// TODO
+        this.model.setShowFeatureViewer(this.btn_OpenShowFeatures.isSelected());
         
         if(this.model.getFeatureViewer() == null) {
     		this.model.initFeatureViewer(this);
@@ -164,10 +248,21 @@ public class BenchmarkController extends AController {
             this.model.getFeatureViewer().close();
         }
     }
-
-    @FXML
-    private void btn_testFeaturesAction(ActionEvent event) {
-    	// TODO
+    
+    
+    // Evaluation
+    private void initCmbImageManager() {
+        List<String> mapTest;
+        if (this.model.getImageManager() != null) {
+            mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
+            mapTest.add(0, "All");
+        } else {
+            mapTest = new LinkedList<>();
+        }
+        ObservableList mapTestObs = FXCollections.observableList(mapTest);
+        this.cmb_mAPTests.setItems(mapTestObs);
+        this.model.setSelectedMAPTest(0);
+        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
     }
 
     @FXML
@@ -185,35 +280,8 @@ public class BenchmarkController extends AController {
         this.model.getPRTMAPController().show();
     }
 
-    @FXML
-    private void btn_openDaydreamAction(ActionEvent event) {
-        try {
-            this.daydreamController = (DaydreamController) new DaydreamController().loadController("../views/DaydreamView.fxml");
-            Parent root = (Parent) this.daydreamController.getView();
-
-            this.daydreamController.setBenchmarkController(this);
-
-            Scene scene = new Scene(root, 600, 400);
-            this.daydreamStage = new Stage();
-            this.daydreamStage.setTitle("Daydream");
-            this.daydreamStage.setScene(scene);
-            // this.daydreamController.setRbmStack(this.model.getRbmStack());
-
-            daydreamStage.setOnCloseRequest(daydreamController);
-
-            this.daydreamStage.show();
-
-        } catch (IOException ex) {
-
-        }
-    }
-
-    @FXML
-    private void btn_openRunHiddenAction(ActionEvent event) {
-        //TODO
-        throw new UnsupportedOperationException();
-    }
-
+    // Training
+    
     @FXML
     private void btn_trainAllAction(ActionEvent event) {
         this.model.trainRBMs();
@@ -241,26 +309,12 @@ public class BenchmarkController extends AController {
         return model;
     }
 
-    private void initCmbImageManager() {
-        List<String> mapTest;
-        if (this.model.getImageManager() != null) {
-            mapTest = new LinkedList<>(this.model.getImageManager().getGroupNames());
-            mapTest.add(0, "All");
-        } else {
-            mapTest = new LinkedList<>();
-        }
-        ObservableList mapTestObs = FXCollections.observableList(mapTest);
-        this.cmb_mAPTests.setItems(mapTestObs);
-        this.model.setSelectedMAPTest(0);
-        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
-    }
-
     public void update() {
     	this.cbx_Binarize.setSelected(this.model.isBinarizeImages());
     	this.cbx_Invert.setSelected(this.model.isInvertImages());
     	this.cbx_Shuffle.setSelected(!this.model.isSorted());
-        this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
-        this.cbx_FeatureViewer.setSelected(this.model.isShowFeatureViewer());
+        this.btn_OpenShowImages.setSelected(this.model.isShowImageViewer());
+        this.btn_OpenShowFeatures.setSelected(this.model.isShowFeatureViewer());
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
         this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
         if (this.model.getImageManager() == null) {
@@ -278,12 +332,4 @@ public class BenchmarkController extends AController {
         }
     }
 
-    @FXML
-    private void txt_imageEdgeSizeKey(KeyEvent event) {
-        try {
-            this.model.setImageEdgeSize(Integer.parseInt(this.txt_imageEdgeSize.getText()));
-        } catch (NumberFormatException e) {
-
-        }
-    }
 }

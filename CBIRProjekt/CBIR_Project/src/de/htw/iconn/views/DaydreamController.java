@@ -7,6 +7,7 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.main.AController;
 import de.htw.iconn.main.BenchmarkController;
+import de.htw.iconn.main.BenchmarkModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,8 +30,9 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author dvarul
  */
-public class DaydreamController extends AController implements EventHandler {
-
+public class DaydreamController extends AController {
+	
+	
     @FXML
     private Button btn_generateImage;
     @FXML
@@ -120,8 +122,8 @@ public class DaydreamController extends AController implements EventHandler {
         this.model.setUseVisibleStates(this.btn_visibleStates.isSelected());
     }
     
-    public void setBenchmarkController(BenchmarkController benchmarkController) {
-    	this.model.setBenchmarkController(benchmarkController);
+    public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
+    	this.model.setBenchmarkModel(benchmarkModel);
     }
 
     public void stopDreaming() {
@@ -136,11 +138,6 @@ public class DaydreamController extends AController implements EventHandler {
     @Override
     public Node getView() {
         return this.view;
-    }
-
-    @Override
-    public void handle(Event arg0) {
-        stopDreaming();
     }
 
     @Override

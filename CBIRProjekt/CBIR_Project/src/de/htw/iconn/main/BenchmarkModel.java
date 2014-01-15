@@ -46,11 +46,15 @@ public class BenchmarkModel {
     @Conserve
     private boolean isPRTMAPViewerVisible;
     @Conserve
-    private int imageEdgeSize = 28;
-    @Conserve
     private boolean sorted = true;
     @Conserve
 	private boolean invertImages = false;
+    @Conserve
+	private float minData;
+    @Conserve
+	private float maxData;
+    @Conserve
+    private int imageEdgeSize = 28;
 
     public boolean isBinarizeImages() {
 		return binarizeImages;
@@ -117,6 +121,18 @@ public class BenchmarkModel {
 	public void setBinarizeImages(boolean binarizeImages) {
 		this.binarizeImages = binarizeImages;
 	}
+	
+	public void setShuffleImages(boolean shuffled) {
+		this.sorted  = !shuffled;
+	}
+
+	public void minData(float minData) {
+		this.minData = minData;
+	}
+
+	public void maxData(float maxData) {
+		this.maxData = maxData;
+	}
 
     public void setShowImageViewer(boolean showImageViewer) {
         this.showImageViewer = showImageViewer;
@@ -136,10 +152,6 @@ public class BenchmarkModel {
 
     public ImageManager getImageManager() {
         return imageManager;
-    }
-
-    public void createDaydreamViewer() {
-
     }
 
     public void startMAPTest(String imageCategory) {
@@ -202,10 +214,5 @@ public class BenchmarkModel {
     public void trainDeep(){
         this.rbmTrainer.trainAllRBMsDeepBelieve(this);
     }
-
-
-	public void setShuffleImages(boolean shuffled) {
-		this.sorted  = !shuffled;
-	}
 
 }
