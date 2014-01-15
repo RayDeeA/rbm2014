@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Camera {
   private final Vector2  pos        = new Vector2(0, 0);
 
-  private double zoomFactor = 1.0;
+  private float zoomFactor = 1.0f;
   private Paper  paper;
 
   Camera(Paper p) {
@@ -32,11 +32,11 @@ public class Camera {
     return getPos().mul((float) getZoomFactor());
   }
 
-  public double getZoomFactor() {
+  public float getZoomFactor() {
     return zoomFactor;
   }
 
-  public void setZoomFactor(double zoomFactor) {
+  public void setZoomFactor(float zoomFactor) {
     this.zoomFactor = zoomFactor;
   }
 

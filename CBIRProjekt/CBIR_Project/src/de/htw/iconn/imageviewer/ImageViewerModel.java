@@ -19,25 +19,22 @@ public class ImageViewerModel {
 	Camera camera;
 
 	Vector2 mPos = new Vector2(0, 0);
-	Vector2 size = new Vector2(0, 0);
 	Vector2 pos = new Vector2(0, 0);
 
 	Canvas canvas;
 	GraphicsContext gc;
 
-	private boolean isDown;
-
 	private Vector2 lastMousePosition = new Vector2(0, 0);
 
 	ImageViewerModel(ImageViewerController controller) {
 		this.controller = controller;
-		size.set(600, 500);
+		canvas = controller.canvas;
+		setSize(new Vector2(600, 400));
+		
 		Paper paper = new Paper();
 		paper.addDrawable(new Image(new Pic()));
 
 		camera = new Camera(paper);
-
-		canvas = controller.canvas;
 		gc = canvas.getGraphicsContext2D();
 		draw();
 	}
@@ -48,7 +45,7 @@ public class ImageViewerModel {
 		w = getSize().x / camera.getPaper().getSize().x;
 		h = getSize().y / camera.getPaper().getSize().y;
 
-		camera.setZoomFactor(factor * Math.min(w, h));
+		camera.setZoomFactor((float) (factor * Math.min(w, h)));
 	}
 
 	void onKeyPressed(KeyEvent e) {
@@ -76,31 +73,23 @@ public class ImageViewerModel {
 		System.out.println(mpos);
 		Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera.getZoomFactor()));
 
-		if (e.getDeltaY() < 0)
-			camera.setZoomFactor(camera.getZoomFactor() * 1.1);
+		if (e.getDeltaY() > 0)
+			camera.setZoomFactor(camera.getZoomFactor() * 1.1f);
 		else
-			camera.setZoomFactor(camera.getZoomFactor() / 1.1);
+			camera.setZoomFactor(camera.getZoomFactor() / 1.1f);
 
 		Vector2 newPos = (a.mul((float) camera.getZoomFactor())).sub(getMousePos(e));
 		camera.setRelPos(newPos);
 	}
 
 	void onMouseDown(MouseEvent e) {
-		isDown = true;
 		lastMousePosition.set(getMousePos(e));
 	}
 
-	void onMouseMove(MouseEvent e) {
-		if (isDown) {
-			Vector2 offset = lastMousePosition.sub(getMousePos(e));
-			camera.setPos(camera.getPos().add(offset.mul((float) (1 / camera.getZoomFactor()))));
-			lastMousePosition.set(getMousePos(e));
-		}
-	}
-
-	void onMouseUp(MouseEvent e) {
-		System.out.println("sdfsdf");
-		isDown = false;
+	void onMouseDragging(MouseEvent e) {
+		Vector2 offset = lastMousePosition.sub(getMousePos(e));
+		camera.setPos(camera.getPos().add(offset.mul((float) (1 / camera.getZoomFactor()))));
+		lastMousePosition.set(getMousePos(e));
 	}
 
 	void centerCamera() {
@@ -110,17 +99,19 @@ public class ImageViewerModel {
 
 	void draw() {
 
+		gc.fillRect(0, 0, getSize().x, getSize().y);
 		for (ADrawable d : camera.getPaper().getDrawables()) {
 			d.draw(gc, camera.getPos(), camera.getZoomFactor());
 		}
 	}
 
 	void setSize(Vector2 s) {
-		size.set(s);
+		canvas.setWidth(s.x);
+		canvas.setHeight(s.x);
 	}
 
 	Vector2 getSize() {
-		return size;
+		return new Vector2((float) canvas.getWidth(), (float) canvas.getHeight());
 	}
 
 	void setPos(Vector2 p) {
