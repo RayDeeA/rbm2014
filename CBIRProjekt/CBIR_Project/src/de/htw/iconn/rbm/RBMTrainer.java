@@ -123,12 +123,12 @@ public class RBMTrainer {
         int errorInterval = visualizationsModel.getErrorInterval();
         //int featuresInterval = visualizationsModel.getFeaturesInterval();
 
-//        if (visualizationsModel.isShowWeights()) {
-//            rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, visualizationsModel.getWeightVisualizationController()));
-//        }
+        if (visualizationsModel.isShowWeights()) {
+            rbmEnhancer.addEnhancement(new TrainingVisualizer(weightsInterval, 
+                    visualizationsModel.getWeightsVisualizationController().getModel()));
+        }
 
         if (visualizationsModel.isShowErrorGraph()) {
-            System.out.println("add visu");
             ErrorViewModel errorViewModel = visualizationsModel.getErrorViewController().getModel();
             errorViewModel.clear();
             rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, errorViewModel));

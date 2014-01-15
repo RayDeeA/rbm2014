@@ -11,27 +11,34 @@ import de.htw.iconn.rbm.ARBMAdapter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author dvarul
+ * @author Moritz
  */
-public class WeightsVisualizationController extends AController implements IVisualizeObserver {
+public class WeightsVisualizationController extends AController implements EventHandler {
 
     @FXML
     private AnchorPane view;
 
-    @FXML
-    private ImageView imgView;
+    private Canvas canvas;
 
     WeightsVisualizationModel model;
     
@@ -45,35 +52,52 @@ public class WeightsVisualizationController extends AController implements IVisu
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = new WeightsVisualizationModel(this);
         
         Parent root = (Parent) this.getView();
-        Scene scene = new Scene(root, 600, 400);
+        final int width = 600;
+        final int height = 400;
+        Scene scene = new Scene(root, width, height);
+        this.canvas = new Canvas(width, height);
+        view.getChildren().add(canvas);
         weightViewStage.setScene(scene);
-        // weightViewStage.setOnCloseRequest(this);
         
-    }
-
-    public void setDimensions(int x, int y) {
-        this.model.setDCT(x, y);
-    }
-
-    public void setDisplayDimensions() {
-        this.model.setDisplayDimensions(view.getWidth(), view.getHeight());
-    }
-
-    public void setRBMFeature(ARBMAdapter rbmFeature) {
-        this.model.setRbmFeature(rbmFeature);
-    }
-
-    public void setWeights(double[][] w) {
-        this.model.setWeights(w);
+        this.model = new WeightsVisualizationModel(this, width, height);
+        
         update();
+        
+        weightViewStage.setOnCloseRequest(this);
+        
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                canvas.setWidth(t.doubleValue());
+                model.setViewWidth(t.intValue());
+            }
+        
+        });
+        
+        scene.heightProperty().addListener(new ChangeListener<Number>(){
+
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                canvas.setHeight(t.doubleValue());
+                model.setViewHeight(t.intValue());
+
+            }
+        });      
     }
+
 
     @Override
     public void update() {
-        imgView.setImage(this.model.generateImage());
+        GraphicsContext g = canvas.getGraphicsContext2D();
+        g.setFill(Color.WHITE);
+        final double width = canvas.getWidth();
+        final double height = canvas.getHeight();
+        
+        g.fillRect(0, 0, width, height);
+        g.drawImage(model.getImage(), 0, 0);
     }
 
     @Override
@@ -85,10 +109,17 @@ public class WeightsVisualizationController extends AController implements IVisu
         return this.model;
     }
 
-    @Override
-    public void update(RBMInfoPackage pack) {
-		// TODO Auto-generated method stub
+    public void show() {
+        weightViewStage.show();
+    }
 
+    public void hide() {
+        weightViewStage.hide();
+    }
+
+    @Override
+    public void handle(Event t) {
+        hide();
     }
 
 }

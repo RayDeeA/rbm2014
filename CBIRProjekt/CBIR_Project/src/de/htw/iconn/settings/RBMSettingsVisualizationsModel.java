@@ -7,6 +7,7 @@ package de.htw.iconn.settings;
 
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.views.ErrorViewController;
+import de.htw.iconn.views.WeightsVisualizationController;
 
 /**
  *
@@ -16,6 +17,7 @@ public class RBMSettingsVisualizationsModel {
 
     private final RBMSettingsVisualizationsController controller;
     private final ErrorViewController errorViewController;
+    private final WeightsVisualizationController weightsVisualizationController;
     
     @Conserve
     private boolean showWeights = false;
@@ -29,8 +31,9 @@ public class RBMSettingsVisualizationsModel {
     private int featuresInterval = 1000;
 
     RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, 
-            ErrorViewController errorViewController) {
-
+            ErrorViewController errorViewController,
+            WeightsVisualizationController weightsVisualizationController) {
+        this.weightsVisualizationController = weightsVisualizationController;
         this.errorViewController = errorViewController;
         this.controller = controller;    
     }
@@ -77,6 +80,13 @@ public class RBMSettingsVisualizationsModel {
 
     public ErrorViewController getErrorViewController() {
         return this.errorViewController;
+    }
+
+    /**
+     * @return the weightsVisualizationController
+     */
+    public WeightsVisualizationController getWeightsVisualizationController() {
+        return weightsVisualizationController;
     }
 
 }

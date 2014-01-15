@@ -8,8 +8,4 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="view" focusTraversable="false" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.views.WeightsVisualizationController">
-  <children>
-    <ImageView fx:id="imgView" fitHeight="400.0" fitWidth="656.185802400421" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
-  </children>
-</AnchorPane>
+<AnchorPane fx:id="view" focusTraversable="false" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.views.WeightsVisualizationController" />
