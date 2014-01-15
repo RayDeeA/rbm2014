@@ -353,7 +353,7 @@ public class RBMTrainer {
             mainModel.setInputSize(inputSize);
             float[][] weights = weightsModel.getWeights();
             if(weights != null){
-                if(weights.length != inputSize || weights[0].length != mainModel.getOutputSize()){
+                if(weights.length != inputSize + 1 || weights[0].length != mainModel.getOutputSize() + 1){
                     weightsModel.setWeights(null);
                 }
             }

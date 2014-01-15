@@ -63,7 +63,7 @@ public class DaydreamModel {
         int width = this.benchmarkModel.getImageEdgeSize();
         int height = this.benchmarkModel.getImageEdgeSize();
         
-        int[] imagePixels = new int[width * height]; 
+        int[] imagePixels = new int[width * height];
         for (int y = 0, pos = 0; y < height; y++) {
             for (int x = 0; x < width; x++, pos++) {
             	int value = random.nextInt(256);
