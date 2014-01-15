@@ -67,7 +67,6 @@ public class DaydreamController extends AController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new DaydreamModel(this);
-        this.btn_daydream.setDisable(false);
         this.update();
     }
     
@@ -79,6 +78,7 @@ public class DaydreamController extends AController {
         } else {
             System.out.println("error");
         }
+        this.btn_daydream.setDisable(false);
     }
 
     @FXML

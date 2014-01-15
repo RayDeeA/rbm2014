@@ -7,8 +7,12 @@
 package de.htw.iconn.views;
 
 import de.htw.iconn.main.AController;
+import de.htw.iconn.main.BenchmarkModel;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.htw.iconn.rbm.ARBMAdapter;
 import javafx.event.ActionEvent;
@@ -27,9 +31,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Radek
  */
-public class RunHiddenController extends AController implements EventHandler {
-    @FXML
-    private Button btn_loadNewTestImage;
+public class RunHiddenController extends AController {
     @FXML
     private Button btn_runHidden;
     @FXML
@@ -38,6 +40,8 @@ public class RunHiddenController extends AController implements EventHandler {
     private ToggleButton btn_visibleStates;
     @FXML
     private ImageView imgv_Result;
+    @FXML
+    private ImageView imgv_ResultHidden;
     @FXML
     private ImageView imgv_Input;
     @FXML
@@ -55,20 +59,16 @@ public class RunHiddenController extends AController implements EventHandler {
         this.model = new RunHiddenModel(this);
         this.update();
     }
-    
-    public void setRBMFeature(ARBMAdapter rbmFeature) {
-    	this.model.setRbmFeature(rbmFeature);
-    }
 
     @FXML
-    private void btn_loadNewTestImageAction(ActionEvent event) {
-        Image image = this.model.openFile4();
-        if(!image.isError()) {
+    private void btn_loadImageAction(ActionEvent event) {
+        Image image = this.model.loadImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight());
+        if (!image.isError()) {
             this.imgv_Input.setImage(image);
-            btn_runHidden.setDisable(false);
         } else {
             System.out.println("error");
         }
+        this.btn_runHidden.setDisable(false);
     }
     
     @FXML
@@ -83,22 +83,27 @@ public class RunHiddenController extends AController implements EventHandler {
 
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
-        this.imgv_Result.setImage(this.model.runHidden());
+        System.out.println("Dream");
+        model.runHidden(30);
+        imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
+        Image hiddenImage = model.getHiddenImage(10);
+        imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
+        imgv_ResultHidden.setFitHeight(hiddenImage.getHeight());
+        imgv_ResultHidden.setImage(hiddenImage);
     }
 
     @Override
     public Node getView() {
-            return this.view;
-    }
-
-    @Override
-    public void handle(Event arg0) {
-            // TODO Auto-generated method stub
-
+        return this.view;
     }
     
     @Override
     public void update(){
         
     }
+
+	public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
+		this.model.setBenchmarkModel(benchmarkModel);
+	}
+
 }
