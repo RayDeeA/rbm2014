@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author christoph
+ * @author Radek
  */
 public class Chooser {
     

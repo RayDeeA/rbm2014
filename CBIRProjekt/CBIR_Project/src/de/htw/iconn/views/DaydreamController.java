@@ -32,7 +32,6 @@ import javafx.scene.layout.AnchorPane;
  */
 public class DaydreamController extends AController {
 	
-	
     @FXML
     private Button btn_generateImage;
     @FXML

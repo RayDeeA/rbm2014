@@ -136,6 +136,7 @@ public class BenchmarkController extends AController {
     private void loadImageSet(File file) {
         if (file != null) {
             this.model.setImageManager(file);
+            this.lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
 
             this.initCmbImageManager();
             
