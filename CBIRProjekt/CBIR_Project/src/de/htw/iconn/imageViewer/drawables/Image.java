@@ -12,7 +12,7 @@ public class Image extends ADrawable {
   public Image(Pic i) {
     // image = i;
     
-    image = new javafx.scene.image.Image("http://i.imgur.com/1tSDOXM.png");
+    image = new javafx.scene.image.Image("http://i.imgur.com/n0yfX0B.png");
     
     size = new Vector2(image.widthProperty().floatValue(), image.heightProperty().floatValue());
     pos = new Vector2(0, 0);    
