@@ -87,7 +87,7 @@ public class RBMOpti implements IRBM {
             posAssociations.muli(this.learnRate / trainingData.length);
             localWeights.addi(posAssociations);
             
-            //System.out.println(error);
+            stop.update(error);
         }
         System.out.println(error);
     }

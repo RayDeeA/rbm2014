@@ -101,12 +101,13 @@ public class RBMJBlasOpti implements IRBM {
         final FloatMatrix negAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
         final FloatMatrix resetBiasHidden = FloatMatrix.ones(hidden.getRows(), 1);
         final FloatMatrix resetBiasVisible = FloatMatrix.ones(visible.getRows(), 1);
-
+        final ForkBlas forkBlas = new ForkBlas();
         while(stop.isNotDone()) {
 
             //final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
-            dataWithBias.mmuli(localWeights, hidden);
-
+            //dataWithBias.mmuli(localWeights, hidden);
+            forkBlas.pmmuli(dataWithBias, localWeights, hidden);
+            
             //FloatMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
             logisticFunction.function(hidden);
 
@@ -118,25 +119,27 @@ public class RBMJBlasOpti implements IRBM {
             hidden.putColumn(0, resetBiasHidden);
 
             //final FloatMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
-            dataWithBiasTrans.mmuli(hidden, posAssociations);
+            //dataWithBiasTrans.mmuli(hidden, posAssociations);
+            forkBlas.pmmuli(dataWithBiasTrans, hidden, posAssociations);
            
             //final FloatMatrix negVisibleActivations = posHiddenStates.mmul(this.weights.transpose());
-            hidden.mmuli(localWeights.transpose(), visible);
-
+            //hidden.mmuli(localWeights.transpose(), visible);
+            forkBlas.pmmuli(hidden, localWeights.transpose(), visible);
             //final FloatMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
             logisticFunction.function(visible);
 
             //negVisibleProbs.putColumn(0, FloatMatrix.ones(negVisibleProbs.getRows(), 1));
             visible.putColumn(0, resetBiasVisible);
-
+            
             //final FloatMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);
-            visible.mmuli(localWeights, hidden);
-
+            //visible.mmuli(localWeights, hidden);
+            forkBlas.pmmuli(visible, localWeights, hidden);
             //final FloatMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
             logisticFunction.function(hidden);
 
             //final FloatMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);
-            visible.transpose().mmuli(hidden, negAssociations);
+            //visible.transpose().mmuli(hidden, negAssociations);
+            forkBlas.pmmuli(visible.transpose(), hidden, negAssociations);
 
             // Update weights
             localWeights.addi((posAssociations.sub(negAssociations)).mul(this.learnRate / data.getRows()));

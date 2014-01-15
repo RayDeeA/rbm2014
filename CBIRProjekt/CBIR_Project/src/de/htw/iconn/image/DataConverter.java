@@ -40,7 +40,6 @@ public class DataConverter {
         	for(int i = 0; i < data.length; i++) {
         		float value = data[i];
         		data[i] = minData + value * scale;
-        		System.out.println(data[i]);
         	}
 
         return data;

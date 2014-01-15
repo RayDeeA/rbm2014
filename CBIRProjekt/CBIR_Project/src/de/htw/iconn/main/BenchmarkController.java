@@ -6,6 +6,7 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.tools.Chooser;
+import de.htw.iconn.imageViewer.ImageViewerController;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.PRTMAPController;
@@ -101,14 +102,20 @@ public class BenchmarkController extends AController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        PRTMAPController tmpController = null;
+        PRTMAPController prtmapController = null;
         try {
-            tmpController = (PRTMAPController) loadController("../views/PRTMAP.fxml");
+            prtmapController = (PRTMAPController) loadController("../views/PRTMAP.fxml");
         } catch (IOException ex) {
             Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        model = new BenchmarkModel(this, tmpController);
+        ImageViewerController imageViewerController = null;
+        try {
+          imageViewerController = (ImageViewerController) loadController("../views/ImageViewer.fxml");
+        } catch (IOException ex) {
+          Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        model = new BenchmarkModel(this, prtmapController, imageViewerController);
         
         loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
         this.update();
@@ -157,12 +164,12 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void cbx_InvertAction(ActionEvent event) {
-    	this.model.setInvertImages(this.cbx_Invert.isSelected());
+      this.model.setInvertImages(this.cbx_Invert.isSelected());
     }
     
     @FXML
     private void cbx_ShuffleAction(ActionEvent event) {
-    	this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
+      this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
     }
     
     @FXML
@@ -244,17 +251,17 @@ public class BenchmarkController extends AController {
         this.model.setShowFeatureViewer(this.btn_OpenShowFeatures.isSelected());
         
         if(this.model.getFeatureViewer() == null) {
-    		this.model.initFeatureViewer(this);
+        this.model.initFeatureViewer(this);
         }
         
         if (this.model.isShowFeatureViewer()) {
-        	this.model.getFeatureViewer().update();
+          this.model.getFeatureViewer().update();
             this.model.getFeatureViewer().show();
         } else {
             this.model.getFeatureViewer().close();
         }
     }
-    
+
     
     // Evaluation
     private void initCmbImageManager() {
@@ -269,6 +276,7 @@ public class BenchmarkController extends AController {
         this.cmb_mAPTests.setItems(mapTestObs);
         this.model.setSelectedMAPTest(0);
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
+
     }
 
     @FXML
@@ -300,7 +308,7 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void btn_UpdateAction(ActionEvent event) {
-    	this.globalUpdate();
+      this.globalUpdate();
     }
 
     @Override
