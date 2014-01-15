@@ -22,10 +22,10 @@ public class ImageManager {
     private File imageDirectory;
     private HashMap<String, List<Pic>> imageGroups;
 
-    public ImageManager(File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert) {
+    public ImageManager(File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
     	this.imageDirectory = imageDirectory;
         this.imageGroups = new HashMap<String, List<Pic>>();
-        this.loadImages(imageDirectory, sorted, edgeLength, binarize, invert);
+        this.loadImages(imageDirectory, sorted, edgeLength, binarize, invert, minData, maxData);
     }
     
     public ImageManager(File imageDirectory) {
@@ -53,7 +53,7 @@ public class ImageManager {
      *
      * @param imageDirectory
      */
-    public void loadImages(final File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert) {
+    public void loadImages(final File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
         this.imageDirectory = imageDirectory;
 
         // besorge alle gültige Bilddateien aus dem Verzeichnis
@@ -74,7 +74,7 @@ public class ImageManager {
         // lade alle Bilder
         List<Pic> list = new ArrayList<Pic>();
         for (int i = 0; i < imageCount; i++) {
-            Pic image = loadImage(imageFiles[i], edgeLength, binarize, invert);
+            Pic image = loadImage(imageFiles[i], edgeLength, binarize, invert, minData, maxData);
             if (image != null) {
                 image.setId(i);
                 list.add(image);
@@ -140,10 +140,10 @@ public class ImageManager {
      * @param imageFile
      * @return
      */
-    private Pic loadImage(File imageFile, int edgeLength, boolean binarize, boolean invert) {
+    private Pic loadImage(File imageFile, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
         float[] imageData = null;
         try {
-        	imageData = DataConverter.generatePixelIntensityData(ImageIO.read(imageFile), edgeLength, binarize, invert);
+        	imageData = DataConverter.generatePixelIntensityData(ImageIO.read(imageFile), edgeLength, binarize, invert, minData, maxData);
         } catch (Exception e) {
             System.out.println("Could not load: " + imageFile.getAbsolutePath());
             e.printStackTrace();

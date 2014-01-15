@@ -65,6 +65,10 @@ public class BenchmarkController extends AController {
     private CheckBox cbx_Shuffle;
     @FXML
     private TextField txt_imageEdgeSize;
+    @FXML
+    private TextField txt_MinData;
+    @FXML
+    private TextField txt_MaxData;
 	
 	// Functions
     @FXML
@@ -173,18 +177,20 @@ public class BenchmarkController extends AController {
     @FXML
     private void txt_MinDataKey(KeyEvent event) {
         try {
-            this.model.minData(Float.parseFloat(this.txt_imageEdgeSize.getText()));
+            this.model.setMinData(Float.parseFloat(this.txt_MinData.getText()));
         } catch (NumberFormatException ex) {
         	ex.printStackTrace();
+        	this.model.setMinData(0.0f);
         }
     }
     
     @FXML
     private void txt_MaxDataKey(KeyEvent event) {
         try {
-            this.model.maxData(Float.parseFloat(this.txt_imageEdgeSize.getText()));
+            this.model.setMaxData(Float.parseFloat(this.txt_MaxData.getText()));
         } catch (NumberFormatException ex) {
         	ex.printStackTrace();
+        	this.model.setMaxData(1.0f);
         }
     }
 
@@ -317,6 +323,8 @@ public class BenchmarkController extends AController {
         this.btn_OpenShowFeatures.setSelected(this.model.isShowFeatureViewer());
         this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
         this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
+        this.txt_MinData.setText(new Float(this.model.getMinData()).toString());
+        this.txt_MaxData.setText(new Float(this.model.getMaxData()).toString());
         if (this.model.getImageManager() == null) {
             lbl_imageSetSelected.setText("no image set selected");
         } else {

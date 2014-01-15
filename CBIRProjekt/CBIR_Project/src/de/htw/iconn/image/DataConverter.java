@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public class DataConverter {
 
-    public static float[] generatePixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert) {
+    public static float[] generatePixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
 
         float[] data = new float[edgeLength * edgeLength];
 
@@ -35,6 +35,13 @@ public class DataConverter {
             if(binarize) {
             	binarizeImage(data);
             }
+            
+            float scale = maxData - minData;
+        	for(int i = 0; i < data.length; i++) {
+        		float value = data[i];
+        		data[i] = minData + value * scale;
+        		System.out.println(data[i]);
+        	}
 
         return data;
     }

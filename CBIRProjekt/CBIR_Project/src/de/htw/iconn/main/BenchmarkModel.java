@@ -50,9 +50,9 @@ public class BenchmarkModel {
     @Conserve
 	private boolean invertImages = false;
     @Conserve
-	private float minData;
+	private float minData = 0.0f;
     @Conserve
-	private float maxData;
+	private float maxData = 1.0f;
     @Conserve
     private int imageEdgeSize = 28;
 
@@ -62,6 +62,14 @@ public class BenchmarkModel {
 
 	public int getImageEdgeSize() {
 		return imageEdgeSize;
+	}
+
+	public float getMinData() {
+		return minData;
+	}
+
+	public float getMaxData() {
+		return maxData;
 	}
 
 	public boolean isSorted() {
@@ -100,7 +108,7 @@ public class BenchmarkModel {
     }
 
     public void setImageManager(File file) {
-        this.imageManager = new ImageManager(file, sorted, this.imageEdgeSize, this.binarizeImages, this.invertImages );
+        this.imageManager = new ImageManager(file, sorted, this.imageEdgeSize, this.binarizeImages, this.invertImages, this.minData, this.maxData);
         this.imageViewer = new ImageViewer(imageManager);
         this.rbmTrainer = new RBMTrainer();
         this.globalUpdate();
@@ -126,11 +134,11 @@ public class BenchmarkModel {
 		this.sorted  = !shuffled;
 	}
 
-	public void minData(float minData) {
+	public void setMinData(float minData) {
 		this.minData = minData;
 	}
 
-	public void maxData(float maxData) {
+	public void setMaxData(float maxData) {
 		this.maxData = maxData;
 	}
 
