@@ -84,9 +84,13 @@ public class BenchmarkController extends AController {
     
     @FXML
     private ToggleButton btn_OpenTestFeatures;
+    private RunHiddenController testFeaturesController;
+    private Stage testFeaturesStage;
     
     @FXML
     private ToggleButton btn_OpenShowFeatures; 
+    private RunHiddenController showFeaturesController;
+    private Stage showFeaturesStage;
 	
 	// Evaluation
     @FXML
@@ -226,6 +230,7 @@ public class BenchmarkController extends AController {
             daydreamStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 public void handle(WindowEvent we) {
                     btn_OpenDaydream.setSelected(false);
+                    daydreamController.stopDreaming();
                     daydreamStage.close();
                 }
             });
@@ -233,11 +238,36 @@ public class BenchmarkController extends AController {
         	ex.printStackTrace();
         }
     }
-
+    
     @FXML
     private void btn_OpenRunHiddenAction(ActionEvent event) {
-        //TODO
-        throw new UnsupportedOperationException();
+        try {
+        	if(!btn_OpenRunHidden.isSelected()) {
+        		 this.runHiddenStage.close();
+        		 return;
+        	}
+        	
+            this.runHiddenController = (RunHiddenController) new DaydreamController().loadController("../views/RunHiddenView.fxml");
+            Parent root = (Parent) this.runHiddenController.getView();
+
+            this.runHiddenController.setBenchmarkModel(this.getModel());
+
+            Scene scene = new Scene(root, 600, 400);
+            this.runHiddenStage = new Stage();
+            this.runHiddenStage.setTitle("Run Hidden");
+            this.runHiddenStage.setScene(scene);
+            
+            if(btn_OpenRunHidden.isSelected()) this.runHiddenStage.show();
+            
+            runHiddenStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    btn_OpenRunHidden.setSelected(false);
+                    runHiddenStage.close();
+                }
+            });
+        } catch (IOException ex) {
+        	ex.printStackTrace();
+        }
     }
     
     @FXML
@@ -247,6 +277,12 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void btn_OpenShowFeaturesAction(ActionEvent event) {
+    	
+    	if(!btn_OpenShowFeatures.isSelected()) {
+    		this.showFeaturesStage.close();
+   		 	return;
+    	}
+    	
     	// TODO
         this.model.setShowFeatureViewer(this.btn_OpenShowFeatures.isSelected());
         

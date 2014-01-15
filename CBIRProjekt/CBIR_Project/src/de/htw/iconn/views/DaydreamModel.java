@@ -1,10 +1,8 @@
 package de.htw.iconn.views;
 
-import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.image.ImageHelper;
-import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageScaler;
 
 import java.awt.BasicStroke;
@@ -13,8 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
