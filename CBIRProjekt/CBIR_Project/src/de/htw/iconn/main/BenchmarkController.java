@@ -6,7 +6,7 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.tools.Chooser;
-import de.htw.iconn.imageViewer.ImageViewerController;
+import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.PRTMAPController;

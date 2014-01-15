@@ -10,7 +10,7 @@ import de.htw.iconn.statistics.PrecisionRecallTester;
 import de.htw.iconn.statistics.PrecisionRecallTestResult;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
-import de.htw.iconn.imageViewer.ImageViewerController;
+import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.views.FeatureViewer;
