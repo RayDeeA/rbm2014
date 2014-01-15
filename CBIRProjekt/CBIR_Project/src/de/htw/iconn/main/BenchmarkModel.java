@@ -40,13 +40,10 @@ public class BenchmarkModel {
     private ImageManager imageManager = null;
     @Conserve
     private boolean binarizeImages;
-    @Conserve
     private boolean showImageViewer = false;
-    @Conserve
     private boolean showFeatureViewer = false;
     @Conserve
     private int selectedMAPTest = 0;
-    @Conserve
     private boolean isPRTMAPViewerVisible;
     @Conserve
     private boolean sorted = true;
