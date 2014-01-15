@@ -268,8 +268,8 @@ public class Creator {
         // parsing custom classes
         if(typeName.equals("ImageManager")){
             String path = "CBIR_Project/images/" + value;
-            File images = new File(path);
-            return new ImageManager(images);
+            File imageFile = new File(path);
+            return new ImageManager(imageFile);
         }
         // no type found
         return null;

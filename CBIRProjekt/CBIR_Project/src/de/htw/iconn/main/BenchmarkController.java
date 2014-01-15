@@ -48,8 +48,16 @@ public class BenchmarkController extends AController {
 
   private BenchmarkModel     model;
 
-  @FXML
-  private CheckBox           cbx_Binarize;
+    @FXML  
+    private CheckBox cbx_Binarize;
+    @FXML 
+    private CheckBox cbx_Invert;
+    @FXML
+    private CheckBox cbx_Shuffle;
+    @FXML
+    private CheckBox cbx_imageViewer;  
+    @FXML
+    private CheckBox cbx_FeatureViewer;  
 
   @FXML
   private CheckBox           cbx_Shuffle;
@@ -102,7 +110,9 @@ public class BenchmarkController extends AController {
       Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    model = new BenchmarkModel(this, prtmapController, imageViewerController);
+    private void loadImageSet(File file) {
+        if (file != null) {
+            this.model.setImageManager(file);
 
     loadImageSet(new File("CBIR_Project/images/Test_10x5/"));
     this.update();
@@ -124,7 +134,21 @@ public class BenchmarkController extends AController {
       }
       this.globalUpdate();
     }
-  }
+    
+    @FXML
+    private void cbx_BinarizeAction(ActionEvent event) {
+        this.model.setBinarizeImages(this.cbx_Binarize.isSelected());
+    }
+    
+    @FXML
+    private void cbx_InvertAction(ActionEvent event) {
+    	this.model.setInvertImages(this.cbx_Invert.isSelected());
+    }
+    
+    @FXML
+    private void cbx_ShuffleAction(ActionEvent event) {
+    	this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
+    }
 
   @FXML
   private void cbx_BinarizeAction(ActionEvent event) {
@@ -266,11 +290,19 @@ public class BenchmarkController extends AController {
     }
   }
 
-  public void globalUpdate() {
-    this.update();
-    LinkedList<RBMSettingsController> rbmSettingsList = this.model.getRbmSettingsList();
-    for (RBMSettingsController c : rbmSettingsList) {
-      c.update();
+    public void update() {
+    	this.cbx_Binarize.setSelected(this.model.isBinarizeImages());
+    	this.cbx_Invert.setSelected(this.model.isInvertImages());
+    	this.cbx_Shuffle.setSelected(!this.model.isSorted());
+        this.cbx_imageViewer.setSelected(this.model.isShowImageViewer());
+        this.cbx_FeatureViewer.setSelected(this.model.isShowFeatureViewer());
+        this.cmb_mAPTests.getSelectionModel().select(this.model.getSelectedMAPTest());
+        this.txt_imageEdgeSize.setText(new Integer(this.model.getImageEdgeSize()).toString());
+        if (this.model.getImageManager() == null) {
+            lbl_imageSetSelected.setText("no image set selected");
+        } else {
+            lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
+        }
     }
   }
 

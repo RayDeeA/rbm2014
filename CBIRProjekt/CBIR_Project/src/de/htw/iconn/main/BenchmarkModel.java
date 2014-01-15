@@ -17,6 +17,7 @@ import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
 
+import java.io.File;
 import java.util.LinkedList;
 
 
@@ -32,7 +33,7 @@ public class BenchmarkModel {
     private FeatureViewer featureViewer;
     private final PRTMAPController prtmapController;
     private final LinkedList<RBMSettingsController> rbmSettingsList;
-    private final RBMTrainer rbmTrainer;
+    private RBMTrainer rbmTrainer;
     
     @Conserve
     private ImageManager imageManager = null;
@@ -50,12 +51,26 @@ public class BenchmarkModel {
     private int imageEdgeSize = 28;
     @Conserve
     private boolean sorted = true;
+    @Conserve
+	private boolean invertImages = false;
 
-    public int getImageEdgeSize() {
-        return imageEdgeSize;
-    }
+    public boolean isBinarizeImages() {
+		return binarizeImages;
+	}
 
-    public void setImageEdgeSize(int imageEdgeSize) {
+	public int getImageEdgeSize() {
+		return imageEdgeSize;
+	}
+
+	public boolean isSorted() {
+		return sorted;
+	}
+
+	public boolean isInvertImages() {
+		return invertImages;
+	}
+
+	public void setImageEdgeSize(int imageEdgeSize) {
         this.imageEdgeSize = imageEdgeSize;
     }
 
@@ -84,9 +99,10 @@ public class BenchmarkModel {
         return rbmSettingsList;
     }
 
-    public void setImageManager(ImageManager imageManager) {
-        this.imageManager = imageManager;
-        this.imageViewer = new ImageViewer(imageManager, this.sorted);
+    public void setImageManager(File file) {
+        this.imageManager = new ImageManager(file, sorted, this.imageEdgeSize, this.binarizeImages, this.invertImages );
+        this.imageViewer = new ImageViewer(imageManager);
+        this.rbmTrainer = new RBMTrainer();
         this.globalUpdate();
     }
 
@@ -96,6 +112,10 @@ public class BenchmarkModel {
     
 	public boolean isShowFeatureViewer() {
 		return this.showFeatureViewer;
+	}
+	
+	public void setInvertImages(boolean invertImages) {
+		this.invertImages = invertImages;
 	}
     
 	public void setBinarizeImages(boolean binarizeImages) {
@@ -159,7 +179,7 @@ public class BenchmarkModel {
     }
     
     public float[][] getInputData() {
-    	return DataConverter.generatePixelIntensityData(imageManager.getImages(this.sorted), this.imageEdgeSize, this.binarizeImages);
+    	return imageManager.getImageData();
     }
 
     PRTMAPController getPRTMAPController() {

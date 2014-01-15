@@ -31,7 +31,7 @@ public class PrecisionRecallTester {
     public PrecisionRecallTester(float[][] featureVectors, ImageManager imageManager) {
         this.imageManager = imageManager;
         this.pool = new ForkJoinPool();
-        Pic[] images = imageManager.getImages(true);
+        Pic[] images = imageManager.getImages();
         for (int i = 0; i < images.length; i++) {
             images[i].setFeatureVector(featureVectors[i]);
         }
@@ -39,7 +39,7 @@ public class PrecisionRecallTester {
     }
 
     public float test(Pic queryImage, int num, TIntDoubleHashMap lookup) {
-        Pic[] allImages = imageManager.getImages(true);
+        Pic[] allImages = imageManager.getImages();
         ImagePair[] result = new ImagePair[allImages.length];
 
         // durchlaufe alle Bilder
@@ -59,7 +59,7 @@ public class PrecisionRecallTester {
     public PrecisionRecallTestResult testAll() {
         final TIntDoubleHashMap lookup = createDistanceLookupTable();
 
-        Pic[] images = imageManager.getImages(true);
+        Pic[] images = imageManager.getImages();
 
         // starte die komplexe Analyse 
         start(images.length);
@@ -80,7 +80,7 @@ public class PrecisionRecallTester {
     }
 
     /**
-     * Ermittle die Mean Average Precision f��r alle angegebenen Bilder
+     * Ermittle die Mean Average Precision f������r alle angegebenen Bilder
      *
      * @param imageGroup
      * @param queryImages
@@ -92,7 +92,7 @@ public class PrecisionRecallTester {
         // starte die komplexe Analyse 
         start(queryImages.length);
 
-        // berechne die Average Precision f��r jedes Bild aus
+        // berechne die Average Precision f������r jedes Bild aus
         float mAP = 0;
         for (int i = 0; i < queryImages.length; i++) {
             mAP += test(queryImages[i], i);
@@ -115,7 +115,7 @@ public class PrecisionRecallTester {
      */
     private float test(Pic queryImage, int num) {
 
-        // sortiere alle Bilder nach der ������hnlichkeit zum Querybild 
+        // sortiere alle Bilder nach der ������������������hnlichkeit zum Querybild 
         ImagePair[] result = sortBySimilarity(queryImage);
 
         // berechne die eigentliche Average Precision
@@ -136,7 +136,7 @@ public class PrecisionRecallTester {
         float[][] prTable = new float[4][numPics];
         for (int pic = 0; pic < numPics; pic++) {
 
-            // zähle alle Testergebnisse zusammen
+            // z��hle alle Testergebnisse zusammen
             float avgPrecision = 0, avgRecall = 0;
             for (int runs = 0; runs < numTestRun; runs++) {
                 avgPrecision += precisions[runs][pic];
@@ -150,14 +150,14 @@ public class PrecisionRecallTester {
     }
 
     /**
-     * Liefert eine Liste aller Bilder sorter nach deren ��hnlichkeit zum
+     * Liefert eine Liste aller Bilder sorter nach deren ������hnlichkeit zum
      * Querybild
      *
      * @param queryImage
      * @return
      */
     public ImagePair[] sortBySimilarity(Pic queryImage) {
-        Pic[] allImages = imageManager.getImages(true);
+        Pic[] allImages = imageManager.getImages();
         ImagePair[] result = new ImagePair[allImages.length];
 
         // durchlaufe alle Bilder
@@ -174,7 +174,7 @@ public class PrecisionRecallTester {
     }
 
     /**
-     * besorgt aus der Lookup Tabelle die Distanz f��r die beiden Ids
+     * besorgt aus der Lookup Tabelle die Distanz f������r die beiden Ids
      *
      * @param id1
      * @param id2
@@ -192,7 +192,7 @@ public class PrecisionRecallTester {
     }
 
     /**
-     * Analysiert und liefert die Average Precision zurück
+     * Analysiert und liefert die Average Precision zur��ck
      *
      * @param sortedArray
      * @return
@@ -209,7 +209,7 @@ public class PrecisionRecallTester {
             return 0;
         }
 
-        // wurde die Anzahl an Testruns noch nicht überschritten
+        // wurde die Anzahl an Testruns noch nicht ��berschritten
         if (num > precisions.length) {
             System.out.println("Reached the maximum amount of analysis for this table.");
             return 0;
@@ -258,13 +258,13 @@ public class PrecisionRecallTester {
     }
 
     /**
-     * Erzeuge eine Lookup Tabelle f��r alle Distanzen. So das diese nur einmal
-     * berechnet werden m��ssen.
+     * Erzeuge eine Lookup Tabelle f������r alle Distanzen. So das diese nur einmal
+     * berechnet werden m������ssen.
      *
      * @return
      */
     private TIntDoubleHashMap createDistanceLookupTable() {
-        Pic[] allImages = imageManager.getImages(true);
+        Pic[] allImages = imageManager.getImages();
         int initialCapacity = (allImages.length - 1) * allImages.length / 2;
         TIntDoubleHashMap map = new TIntDoubleHashMap(initialCapacity);
 
