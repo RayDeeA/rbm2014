@@ -50,6 +50,7 @@ public class ImageViewerController extends AController implements EventHandler {
     ChangeListener<Number> onResize = new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
+        ImageViewerController.this.model.getProjector().draw();
       }
     };
 
@@ -60,6 +61,7 @@ public class ImageViewerController extends AController implements EventHandler {
       @Override
       public void handle(MouseEvent mouse) {
         ImageViewerController.this.model.getProjector().onMouseDown(mouse);
+        ImageViewerController.this.model.getProjector().draw();
       }
     });
 
@@ -67,6 +69,7 @@ public class ImageViewerController extends AController implements EventHandler {
       @Override
       public void handle(MouseEvent mouse) {
         ImageViewerController.this.model.getProjector().onMouseUp(mouse);
+        ImageViewerController.this.model.getProjector().draw();
       }
     });
 
@@ -80,6 +83,7 @@ public class ImageViewerController extends AController implements EventHandler {
       @Override
       public void handle(MouseEvent mouse) {
         ImageViewerController.this.model.getProjector().onMouseMove(mouse);
+        ImageViewerController.this.model.getProjector().draw();
       }
     });
     scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -92,6 +96,7 @@ public class ImageViewerController extends AController implements EventHandler {
       @Override
       public void handle(ScrollEvent scroll) {
         ImageViewerController.this.model.getProjector().onMouseWheel(scroll);
+        ImageViewerController.this.model.getProjector().draw();
       }
     });
 
@@ -99,6 +104,7 @@ public class ImageViewerController extends AController implements EventHandler {
       @Override
       public void handle(KeyEvent k) {
         ImageViewerController.this.model.getProjector().onKeyPressed(k);
+        ImageViewerController.this.model.getProjector().draw();
       }
     });
 

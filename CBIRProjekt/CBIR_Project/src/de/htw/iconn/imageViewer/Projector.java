@@ -62,6 +62,7 @@ public class Projector {
 
   void onMouseWheel(ScrollEvent e) {
     Vector2 mpos = getMousePos(e);
+    System.out.println(mpos);
     Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera.getZoomFactor()));
 
     if (e.getDeltaY() < 0)
@@ -87,6 +88,7 @@ public class Projector {
   }
 
   void onMouseUp(MouseEvent e) {
+    System.out.println("sdfsdf");
     isDown = false;
   }
 
