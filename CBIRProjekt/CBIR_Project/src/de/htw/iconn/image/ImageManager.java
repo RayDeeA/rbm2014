@@ -164,8 +164,6 @@ public class ImageManager {
         int nw = (int) (iw * scale);
         int nh = (int) (ih * scale);
 
-
-
         String filename = imageFile.getName().toLowerCase();
         Pic currPic = new Pic();
         currPic.setName(filename);
@@ -174,14 +172,7 @@ public class ImageManager {
         currPic.setOrigHeight(ih);
         currPic.setData(imageData);
         
-        BufferedImage image = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_RGB);
-        int rgb[] = new int[iw * ih];
-        for(int i = 0; i < imageData.length; i++) {
-        	int value = (int) (255 * imageData[i]);
-        	rgb[i] =  (0xFF << 24) | (value << 16) | (value << 8) | value;
-        }
-        
-        image.setRGB(0, 0, iw, ih, rgb, 0, iw);
+        BufferedImage image = DataConverter.pixelIntensityDataToImage(imageData, minData);
         
         // Bild verkleinern
         BufferedImage currBi = new BufferedImage(nw, nh, BufferedImage.TYPE_INT_ARGB);

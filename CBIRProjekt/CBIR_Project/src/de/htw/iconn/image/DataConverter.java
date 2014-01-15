@@ -17,8 +17,6 @@ public class DataConverter {
         for (int i = 0; i < rgb.length; i++) {
         	int value = (int)((data[i] + Math.abs(minData)) * 255);
         	rgb[i] = (0xFF << 24) | (value << 16) | (value << 8) | value;
-        	
-        	System.out.println(data[i] + Math.abs(minData));
         }
 		
         image.setRGB(0, 0, edgeLength, edgeLength, rgb, 0, edgeLength);
