@@ -2,20 +2,21 @@ package de.htw.iconn.imageViewer;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.math.Vector2;
+
 import de.htw.iconn.imageViewer.drawables.ADrawable;
-import math.geom2d.Vector2D;
 
 public class Paper {
 
-  private Vector2D size = new Vector2D();
+  private Vector2 size = new Vector2();
   private final ArrayList<ADrawable> drawables = new ArrayList<ADrawable>();
   
   Paper() {
     
   }
   
-  public void setSize(Vector2D s) {
-    size = s;
+  public void setSize(Vector2 s) {
+    size.set(s);
   }
 
   public void addDrawable(ADrawable d){
@@ -26,7 +27,7 @@ public class Paper {
     return drawables;
   }
   
-  public Vector2D getSize() {
+  public Vector2 getSize() {
     return size;
   }  
 }

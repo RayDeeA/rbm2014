@@ -6,8 +6,9 @@
 	<classpathentry kind="lib" path="libs/domain/fv15dct.jar"/>
 	<classpathentry kind="lib" path="libs/performance/trove4j-3.0.3.jar"/>
 	<classpathentry kind="lib" path="libs/jaRBM_v1.1.jar"/>
-	<classpathentry kind="lib" path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfxrt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.7.0_45/jre/lib/jfxrt.jar"/>
 	<classpathentry kind="lib" path="libs/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="libs/jblas-1.2.3.jar"/>
+	<classpathentry kind="lib" path="E:/RootWorkspace/Java/virrbm/CBIRProjekt/libs/gdx-0.52.jar"/>
 	<classpathentry kind="output" path="cma/bin"/>
 </classpath>

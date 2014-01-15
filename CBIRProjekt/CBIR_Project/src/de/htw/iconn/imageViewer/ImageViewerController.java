@@ -23,48 +23,33 @@ import de.htw.iconn.main.AController;
 
 public class ImageViewerController extends AController implements EventHandler {
 
-  private final Stage viewStage = new Stage();
+  private final Stage      viewStage = new Stage();
 
   private ImageViewerModel model;
-  
+
   @FXML
-  private AnchorPane  view;
+  private AnchorPane       view;
+  Canvas                   canvas;
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-//    Parent root = (Parent) this.getView();
-//    Scene scene = new Scene(root, 600, 400);
 
-    System.out.println("suuuup");
     Group root = new Group();
-    Canvas canvas = new Canvas(600, 400);
-    GraphicsContext gc = canvas.getGraphicsContext2D();    
-    gc.setFill(Color.GREEN);
-    gc.setStroke(Color.BLUE);
-    gc.setLineWidth(5);
-    gc.strokeLine(40, 10, 10, 40);
-    gc.fillOval(10, 60, 30, 30);
-    gc.strokeOval(60, 60, 30, 30);
-    gc.fillRoundRect(110, 60, 30, 30, 10, 10);
-    
+    canvas = new Canvas(600, 400);
+
     root.getChildren().add(canvas);
     Scene scene = new Scene(root, 600, 400);
 
     viewStage.setScene(scene);
     viewStage.show();
     viewStage.setOnCloseRequest(this);
-    
+
     model = new ImageViewerModel(this);
-    
-    
-    
-    
-    
+
     // add event listener:
     ChangeListener<Number> onResize = new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
-
       }
     };
 
@@ -74,24 +59,27 @@ public class ImageViewerController extends AController implements EventHandler {
     scene.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
+        ImageViewerController.this.model.getProjector().onMouseDown(mouse);
       }
     });
-    
+
     scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
+        ImageViewerController.this.model.getProjector().onMouseUp(mouse);
       }
     });
-    
+
     scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
       }
     });
-    
+
     scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
+        ImageViewerController.this.model.getProjector().onMouseMove(mouse);
       }
     });
     scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -103,13 +91,14 @@ public class ImageViewerController extends AController implements EventHandler {
     scene.setOnScroll(new EventHandler<ScrollEvent>() {
       @Override
       public void handle(ScrollEvent scroll) {
-        double delta = scroll.getDeltaY();
+        ImageViewerController.this.model.getProjector().onMouseWheel(scroll);
       }
     });
-    
+
     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override
-      public void handle(KeyEvent t) {
+      public void handle(KeyEvent k) {
+        ImageViewerController.this.model.getProjector().onKeyPressed(k);
       }
     });
 

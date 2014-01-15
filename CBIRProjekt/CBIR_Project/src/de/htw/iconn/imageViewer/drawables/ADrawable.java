@@ -1,11 +1,12 @@
 package de.htw.iconn.imageViewer.drawables;
 
-import math.geom2d.Vector2D;
+import javafx.scene.canvas.GraphicsContext;
+
+import com.badlogic.gdx.math.Vector2;
 
 public abstract class ADrawable {
 
-  private final Vector2D pos = new Vector2D();
-  private final Vector2D size = new Vector2D();
-  public abstract void draw(Vector2D offset, double zoom);
-//  draw(CanvasRenderingContext2D ctx, Vector2D offset, double zoom);
+  private final Vector2 pos = new Vector2();
+  private final Vector2 size = new Vector2();
+  public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
 }
