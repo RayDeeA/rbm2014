@@ -49,10 +49,9 @@ import org.w3c.dom.Text;
 public class Persistor {
     private final String baseFolder = "Persistor";
     
-    public void save(BenchmarkController benchmarkController) throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException{
-        System.out.println("Save Configuration");
-        
+    public void save(BenchmarkController benchmarkController) throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException{     
         BenchmarkModel benchmarkModel = benchmarkController.getModel();
+        benchmarkModel.globalUpdate();
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         
         String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());		
@@ -95,6 +94,7 @@ public class Persistor {
         DOMSource source = new DOMSource(doc);
 
         transformer.transform(source, result);
+        System.out.println("Save Configuration");
     }
     
     private void saveSettings(RBMSettingsController settingsController, Element parent, Document doc){

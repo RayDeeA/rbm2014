@@ -14,17 +14,22 @@ import de.htw.iconn.tools.Chooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.WindowEvent;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -49,8 +54,10 @@ public class ControlCenterController extends AController {
     @FXML
     private MenuItem mnu_saveConfiguration;
     @FXML
-    private MenuItem mnu_loadConfiguration;
-
+    private MenuItem mnu_loadConfiguration; 
+    @FXML
+    private Menu mnu_removeRBM;
+    
     private Persistor persistor;
     private Creator creator;
 
@@ -79,6 +86,23 @@ public class ControlCenterController extends AController {
         }
     }
     
+    
+    
+    private void addRemover(){
+        ObservableList<MenuItem> items = mnu_removeRBM.getItems();
+        int rbmIndex = items.size();
+        MenuItem mnu = new MenuItem("RBM " + rbmIndex);
+        mnu.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                MenuItem item = (MenuItem) t.getSource();
+                removeRBM(item);
+            }
+            
+        });  
+        items.add(mnu);
+    }
+    
     public RBMSettingsController createRBM(){
         try {
             RBMSettingsController controller = (RBMSettingsController) loadController("../settings/RBMSettings.fxml");
@@ -86,6 +110,7 @@ public class ControlCenterController extends AController {
             rbmSettingsView.prefWidthProperty().bind(this.view.widthProperty().subtract(15));
             benchmarkController.getModel().add(controller);
             vbox.getChildren().add(rbmSettingsView);
+            addRemover();
             return controller;
         } catch (IOException ex) {
             System.err.println("ERROR: could not load RBMSettingsController");
@@ -144,6 +169,27 @@ public class ControlCenterController extends AController {
         ObservableList<Node> children = vbox.getChildren();
         children.remove(0, children.size());
         createBenchmark();
+    }
+    
+    private void removeRBM(MenuItem menuItem){
+        BenchmarkModel benchmarkModel = benchmarkController.getModel();
+        ObservableList<MenuItem> items = mnu_removeRBM.getItems();
+        int i = 0;
+        for(MenuItem item : items){
+            if(menuItem == item){
+                System.out.println(i);
+                benchmarkModel.remove(i);
+                vbox.getChildren().remove(i+1);
+                items.remove(i);
+                break;
+            }
+            ++i;
+        }
+        i = 0;
+        for(MenuItem item : items){
+            item.setText("RBM " + (i++));
+        }
+        benchmarkModel.globalUpdate();
     }
 
     @Override

@@ -73,7 +73,7 @@ public class RBMTrainer {
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         RBMSettingsController lastController = null;
 
-        int counter = 1;
+        int counter = 0;
         for (RBMSettingsController c : rbmSettingsList) {
             System.out.println("RBM " + counter++);
             if (lastController != null) {
@@ -157,8 +157,6 @@ public class RBMTrainer {
         System.out.println("Training finished in " + (System.currentTimeMillis() - startTime) + "ms");
         
         weightsModel.setWeights(rbmEnhancer.getWeights());
-        
-        System.out.println("Training finished");
     }
     
     // GET HIDDEN
@@ -350,8 +348,15 @@ public class RBMTrainer {
         for(RBMSettingsController settingsController : rbmSettingsList){
             RBMSettingsModel settingsModel = settingsController.getModel();
             RBMSettingsMainModel mainModel = settingsModel.getController(RBMSettingsMainController.class).getModel();
+            RBMSettingsWeightsModel weightsModel = settingsModel.getController(RBMSettingsWeightsController.class).getModel();
             settingsModel.setData(data);
             mainModel.setInputSize(inputSize);
+            float[][] weights = weightsModel.getWeights();
+            if(weights != null){
+                if(weights.length != inputSize || weights[0].length != mainModel.getOutputSize()){
+                    weightsModel.setWeights(null);
+                }
+            }
             data = getHiddenSingleRBM(settingsController, data);
             inputSize = mainModel.getOutputSize();
         }

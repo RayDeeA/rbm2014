@@ -108,6 +108,7 @@ public class RBMSettingsMainController extends AController {
 
     @Override
     public void update() {
+        System.out.println("update view RBMSettingsMain");
         this.cmb_logisticFunction.getSelectionModel().select(this.model.getSelectedLogisticFunction());
         this.cmb_feature.getSelectionModel().select(this.model.getSelectedRbmFeature());
         this.cmb_rbmImplementation.getSelectionModel().select(this.model.getSelectedRbmImplementation());

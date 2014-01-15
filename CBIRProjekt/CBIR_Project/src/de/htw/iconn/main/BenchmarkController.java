@@ -138,7 +138,7 @@ public class BenchmarkController extends AController {
             if (this.model.isShowImageViewer()) {
                 this.model.getImageViewer().show();
             }
-            this.globalUpdate();        
+            this.model.globalUpdate();        
         }
     }
     
@@ -308,7 +308,8 @@ public class BenchmarkController extends AController {
     
     @FXML
     private void btn_UpdateAction(ActionEvent event) {
-      this.globalUpdate();
+        System.out.println("update action");
+        this.model.globalUpdate();
     }
 
     @Override
@@ -339,13 +340,4 @@ public class BenchmarkController extends AController {
             lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
         }
     }
-    
-    public void globalUpdate(){
-        this.update();
-        LinkedList<RBMSettingsController> rbmSettingsList = this.model.getRbmSettingsList();
-        for(RBMSettingsController c : rbmSettingsList){
-            c.update();
-        }
-    }
-
 }
