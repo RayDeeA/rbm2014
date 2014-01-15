@@ -37,11 +37,11 @@ public class ImageViewerController extends AController implements EventHandler {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		Group root = new Group();
 		canvas = new Canvas(600, 400);
-
+		
+		Group root = new Group();
 		root.getChildren().add(canvas);
-		scene = new Scene(root, 600, 400);
+		scene = new Scene(root);
 
 		viewStage.setScene(scene);
 		viewStage.show();
