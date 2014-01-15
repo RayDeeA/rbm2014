@@ -50,7 +50,7 @@ public class ImageViewerController extends AController implements EventHandler {
     ChangeListener<Number> onResize = new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newHeight) {
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.draw();
       }
     };
 
@@ -60,16 +60,16 @@ public class ImageViewerController extends AController implements EventHandler {
     scene.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
-        ImageViewerController.this.model.getProjector().onMouseDown(mouse);
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.onMouseDown(mouse);
+        ImageViewerController.this.model.draw();
       }
     });
 
     scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
-        ImageViewerController.this.model.getProjector().onMouseUp(mouse);
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.onMouseUp(mouse);
+        ImageViewerController.this.model.draw();
       }
     });
 
@@ -82,8 +82,8 @@ public class ImageViewerController extends AController implements EventHandler {
     scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent mouse) {
-        ImageViewerController.this.model.getProjector().onMouseMove(mouse);
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.onMouseMove(mouse);
+        ImageViewerController.this.model.draw();
       }
     });
     scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -95,16 +95,16 @@ public class ImageViewerController extends AController implements EventHandler {
     scene.setOnScroll(new EventHandler<ScrollEvent>() {
       @Override
       public void handle(ScrollEvent scroll) {
-        ImageViewerController.this.model.getProjector().onMouseWheel(scroll);
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.onMouseWheel(scroll);
+        ImageViewerController.this.model.draw();
       }
     });
 
     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override
       public void handle(KeyEvent k) {
-        ImageViewerController.this.model.getProjector().onKeyPressed(k);
-        ImageViewerController.this.model.getProjector().draw();
+        ImageViewerController.this.model.onKeyPressed(k);
+        ImageViewerController.this.model.draw();
       }
     });
 
