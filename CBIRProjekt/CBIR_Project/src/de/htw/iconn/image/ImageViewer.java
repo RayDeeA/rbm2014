@@ -86,7 +86,6 @@ public class ImageViewer { //extends AController implements IVisualizeObserver
     public ImageViewer(ImageManager imageManager) {
     	this.imageManager = imageManager;
     	this.images = imageManager.getImages();
-    	initalize();
     }
     
     public void setImages(Pic[] images) {

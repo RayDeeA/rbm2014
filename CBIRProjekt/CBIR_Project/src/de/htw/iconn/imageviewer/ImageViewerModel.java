@@ -17,6 +17,7 @@ public class ImageViewerModel {
 	private final ImageViewerController controller;
 
 	Camera camera;
+	Paper paper;
 
 	Vector2 mPos = new Vector2(0, 0);
 	Vector2 pos = new Vector2(0, 0);
@@ -30,11 +31,14 @@ public class ImageViewerModel {
 		this.controller = controller;
 		canvas = controller.canvas;
 		setSize(new Vector2(600, 400));
-		
-		Paper paper = new Paper();
-		paper.addDrawable(new Image(new Pic()));
 
-		camera = new Camera(paper);
+		paper = new Paper();
+		paper.addDrawable(new Image(new Pic()));
+		paper.autoSize();
+
+		camera = new Camera();
+		zoomFitCamera(.9f);
+		centerCamera();
 		gc = canvas.getGraphicsContext2D();
 		draw();
 	}
@@ -42,8 +46,8 @@ public class ImageViewerModel {
 	void zoomFitCamera(double factor) {
 		float w, h;
 
-		w = getSize().x / camera.getPaper().getSize().x;
-		h = getSize().y / camera.getPaper().getSize().y;
+		w = getSize().x / paper.getSize().x;
+		h = getSize().y / paper.getSize().y;
 
 		camera.setZoomFactor((float) (factor * Math.min(w, h)));
 	}
@@ -70,7 +74,6 @@ public class ImageViewerModel {
 
 	void onMouseWheel(ScrollEvent e) {
 		Vector2 mpos = getMousePos(e);
-		System.out.println(mpos);
 		Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera.getZoomFactor()));
 
 		if (e.getDeltaY() > 0)
@@ -78,7 +81,7 @@ public class ImageViewerModel {
 		else
 			camera.setZoomFactor(camera.getZoomFactor() / 1.1f);
 
-		Vector2 newPos = (a.mul((float) camera.getZoomFactor())).sub(getMousePos(e));
+		Vector2 newPos = (a.mul(camera.getZoomFactor())).sub(getMousePos(e));
 		camera.setRelPos(newPos);
 	}
 
@@ -88,19 +91,19 @@ public class ImageViewerModel {
 
 	void onMouseDragging(MouseEvent e) {
 		Vector2 offset = lastMousePosition.sub(getMousePos(e));
-		camera.setPos(camera.getPos().add(offset.mul((float) (1 / camera.getZoomFactor()))));
+		camera.setPos(camera.getPos().add(offset.mul(1 / camera.getZoomFactor())));
 		lastMousePosition.set(getMousePos(e));
 	}
 
 	void centerCamera() {
-		Vector2 tmp = getSize().sub(camera.getPaper().getSize().mul((float) camera.getZoomFactor()));
-		camera.getPos().set(tmp.mul(-1.0f).mul((float) (1 / (2 * camera.getZoomFactor()))));
+		Vector2 tmp = getSize().sub(paper.getSize().mul(camera.getZoomFactor()));
+		camera.getPos().set(tmp.mul(-1.0f).mul(1 / (2 * camera.getZoomFactor())));
 	}
 
 	void draw() {
 
 		gc.fillRect(0, 0, getSize().x, getSize().y);
-		for (ADrawable d : camera.getPaper().getDrawables()) {
+		for (ADrawable d : paper.getDrawables()) {
 			d.draw(gc, camera.getPos(), camera.getZoomFactor());
 		}
 	}

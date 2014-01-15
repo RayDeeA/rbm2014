@@ -6,15 +6,6 @@ public class Camera {
   private final Vector2  pos        = new Vector2(0, 0);
 
   private float zoomFactor = 1.0f;
-  private Paper  paper;
-
-  Camera(Paper p) {
-    setPaper(p);
-  }
-
-  void setPaper(Paper p) {
-    paper = p;
-  }
 
   void move(Vector2 offset) {
     setPos(getPos().sub(offset));
@@ -38,10 +29,6 @@ public class Camera {
 
   public void setZoomFactor(float zoomFactor) {
     this.zoomFactor = zoomFactor;
-  }
-
-  public Paper getPaper() {
-    return paper;
   }
 
   public Vector2 getPos() {
