@@ -12,10 +12,10 @@ public abstract class ADrawable {
 	public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
 
 	public Vector2 getPos() {
-		return pos;
+		return pos.cpy();
 	}
 
 	public Vector2 getSize() {
-		return size;
+		return size.cpy();
 	}
 }

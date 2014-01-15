@@ -268,7 +268,6 @@ public class ImageViewer { //extends AController implements IVisualizeObserver
     }
 
     public void show() {
-System.out.println();
         if (images != null) {
             root.getChildren().clear();
 //          System.out.println(xMousePos + " " + yMousePos + "    " + xMouseMove + " " + yMouseMove);
@@ -347,7 +346,6 @@ System.out.println();
         int xMaxPos = (int) (xMinPos + mapPlacesX * scaledThumbSizeX);
         int yMinPos = (int) (h2 - ym * scaledThumbSizeY);
         int yMaxPos = (int) (yMinPos + mapPlacesY * scaledThumbSizeY);
-        System.out.println(xMinPos + " " + yMinPos);
 
         // disallow to move out of the map by dragging
         if (xMinPos > 0 || xMaxPos < wCanvas - 1) {

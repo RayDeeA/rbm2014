@@ -19,7 +19,6 @@ public class ImageViewerModel {
 	Camera camera;
 	Paper paper;
 
-	Vector2 mPos = new Vector2(0, 0);
 	Vector2 pos = new Vector2(0, 0);
 
 	Canvas canvas;
@@ -30,7 +29,10 @@ public class ImageViewerModel {
 	ImageViewerModel(ImageViewerController controller) {
 		this.controller = controller;
 		canvas = controller.canvas;
+
 		setSize(new Vector2(600, 400));
+
+		gc = canvas.getGraphicsContext2D();
 
 		paper = new Paper();
 		paper.addDrawable(new Image(new Pic()));
@@ -39,7 +41,7 @@ public class ImageViewerModel {
 		camera = new Camera();
 		zoomFitCamera(.9f);
 		centerCamera();
-		gc = canvas.getGraphicsContext2D();
+
 		draw();
 	}
 
@@ -96,13 +98,14 @@ public class ImageViewerModel {
 	}
 
 	void centerCamera() {
-		Vector2 tmp = getSize().sub(paper.getSize().mul(camera.getZoomFactor()));
-		camera.getPos().set(tmp.mul(-1.0f).mul(1 / (2 * camera.getZoomFactor())));
+		Vector2 desiredPaperSize = paper.getSize().mul(camera.getZoomFactor());
+		Vector2 tmp = desiredPaperSize.sub(getSize());
+		camera.setPos(tmp.mul(1 / (2 * camera.getZoomFactor())));
 	}
 
 	void draw() {
-
 		gc.fillRect(0, 0, getSize().x, getSize().y);
+
 		for (ADrawable d : paper.getDrawables()) {
 			d.draw(gc, camera.getPos(), camera.getZoomFactor());
 		}
@@ -110,7 +113,7 @@ public class ImageViewerModel {
 
 	void setSize(Vector2 s) {
 		canvas.setWidth(s.x);
-		canvas.setHeight(s.x);
+		canvas.setHeight(s.y);
 	}
 
 	Vector2 getSize() {
