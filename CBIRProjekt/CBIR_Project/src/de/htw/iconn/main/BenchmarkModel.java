@@ -101,7 +101,12 @@ public class BenchmarkModel {
     }
 
     public void add(RBMSettingsController rbmSettings) {
-        this.rbmSettingsList.add(rbmSettings);
+        int inputSize = this.getInputSize();
+        if(rbmSettingsList.size() > 0){
+            inputSize = rbmSettingsList.getLast().getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize();
+        }
+        rbmSettings.getModel().getController(RBMSettingsMainController.class).getModel().setInputSize(inputSize);
+        this.rbmSettingsList.add(rbmSettings);     
     }
     
     public void remove(int rbm){
