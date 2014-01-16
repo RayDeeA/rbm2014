@@ -44,7 +44,7 @@ public class ImageViewerController extends AController implements EventHandler {
 		scene = new Scene(root);
 
 		viewStage.setScene(scene);
-		viewStage.show();
+		//viewStage.show();
 		viewStage.setOnCloseRequest(this);
 
 		model = new ImageViewerModel(this);

@@ -24,11 +24,9 @@ public class RBMSettingsVisualizationsModel {
     @Conserve
     private boolean showErrorGraph = false;
     @Conserve
-    private int weightsInterval = 1000;
+    private int weightsInterval = 1;
     @Conserve
-    private int errorInterval = 1000;
-    @Conserve
-    private int featuresInterval = 1000;
+    private int errorInterval = 1;
 
     RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, 
             ErrorViewController errorViewController,
@@ -52,14 +50,6 @@ public class RBMSettingsVisualizationsModel {
 
     public void setErrorInterval(int errorInterval) {
         this.errorInterval = errorInterval;
-    }
-
-    public int getFeaturesInterval() {
-        return featuresInterval;
-    }
-
-    public void setFeaturesInterval(int featuresInterval) {
-        this.featuresInterval = featuresInterval;
     }
 
     public boolean isShowWeights() {
