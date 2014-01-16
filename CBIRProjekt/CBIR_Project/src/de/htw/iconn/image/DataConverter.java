@@ -24,38 +24,63 @@ public class DataConverter {
 		return image;
 	}
 
-    public static float[] processPixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+	public static float[] processPixelIntensityData(float[] imageData, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+    	float[] data = new float[edgeLength * edgeLength];
 
-        float[] data = new float[edgeLength * edgeLength];
-
-            ImageScaler imageScaler = new ImageScaler(image);
-            BufferedImage scaledImage = imageScaler.scale(edgeLength);
-            int[] pixels = scaledImage.getRGB(0, 0, edgeLength, edgeLength, null, 0, edgeLength);
-
-            for (int p = 0; p < pixels.length; p++) {
-                int argb = pixels[p];
-
-                int r = (argb >> 16) & 0xFF;
-                int g = (argb >> 8) & 0xFF;
-                int b = (argb) & 0xFF;
-                
-                float intensity = Math.max(0, Math.min(1.0f, (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f));
-                
-                if(invert) {
-                	intensity = 1.0f - intensity;
-                }
-
-                data[p] = intensity;
-            }
-            if(binarize) {
-            	binarizeImage(data);
-            }
+        for (int i = 0; i < imageData.length; i++) {
             
-            float scale = maxData - minData;
-        	for(int i = 0; i < data.length; i++) {
-        		float value = data[i];
-        		data[i] = minData + value * scale;
-        	}
+            float intensity = imageData[i];
+            
+            if(invert) {
+            	intensity = 1.0f - intensity;
+            }
+
+            data[i] = intensity;
+        }
+        if(binarize) {
+        	binarizeImage(data);
+        }
+        
+        float scale = maxData - minData;
+    	for(int i = 0; i < data.length; i++) {
+    		float value = data[i];
+    		data[i] = minData + value * scale;
+    	}
+
+    	return data;
+	}
+	
+    public static float[] processPixelIntensityData(BufferedImage image, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+    	float[] data = new float[edgeLength * edgeLength];
+
+        ImageScaler imageScaler = new ImageScaler(image);
+        BufferedImage scaledImage = imageScaler.scale(edgeLength);
+        int[] pixels = scaledImage.getRGB(0, 0, edgeLength, edgeLength, null, 0, edgeLength);
+
+        for (int p = 0; p < pixels.length; p++) {
+            int argb = pixels[p];
+
+            int r = (argb >> 16) & 0xFF;
+            int g = (argb >> 8) & 0xFF;
+            int b = (argb) & 0xFF;
+            
+            float intensity = Math.max(0, Math.min(1.0f, (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f));
+            
+            if(invert) {
+            	intensity = 1.0f - intensity;
+            }
+
+            data[p] = intensity;
+        }
+        if(binarize) {
+        	binarizeImage(data);
+        }
+        
+        float scale = maxData - minData;
+    	for(int i = 0; i < data.length; i++) {
+    		float value = data[i];
+    		data[i] = minData + value * scale;
+    	}
 
         return data;
     }

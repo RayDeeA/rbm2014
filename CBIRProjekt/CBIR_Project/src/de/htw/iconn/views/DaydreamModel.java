@@ -2,6 +2,7 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageScaler;
 
@@ -24,7 +25,7 @@ public class DaydreamModel {
 
     Random random = new Random();
 	
-    BufferedImage calcImage;
+    float[] calcImageData;
     BufferedImage visibleImage;
     BufferedImage hiddenImage;
 
@@ -46,12 +47,11 @@ public class DaydreamModel {
 
         File file = fileChooser.showOpenDialog(fileChooserStage);
         if (file != null) {
-            this.calcImage = ImageHelper.loadImage(file);
+            this.calcImageData = DataConverter.processPixelIntensityData(ImageHelper.loadImage(file), this.benchmarkModel.getImageEdgeSize(), this.benchmarkModel.isBinarizeImages(), this.benchmarkModel.isInvertImages(), this.benchmarkModel.getMinData(), this.benchmarkModel.getMaxData());
 
             ImageScaler imageScaler = new ImageScaler();
             
-            WritableImage image = new WritableImage(visWidth, visHeight);
-            SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.calcImage, visWidth, visHeight), image);
+            WritableImage image = SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(DataConverter.pixelIntensityDataToImage(this.calcImageData, this.benchmarkModel.getMinData()), visWidth, visHeight), null);
 
             return image;
         } else {
@@ -63,21 +63,15 @@ public class DaydreamModel {
         int width = this.benchmarkModel.getImageEdgeSize();
         int height = this.benchmarkModel.getImageEdgeSize();
         
-        int[] imagePixels = new int[width * height];
-        for (int y = 0, pos = 0; y < height; y++) {
-            for (int x = 0; x < width; x++, pos++) {
-            	int value = random.nextInt(256);
-            	imagePixels[pos] = (0xFF << 24) | (value << 16) | (value << 8) | value;
-            }
+        float[] imageData = new float[width * height];
+        for (int i = 0; i < imageData.length; i++) {
+        	imageData[i] = random.nextFloat();
         }
         
-        this.calcImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        this.calcImage.setRGB(0, 0, width, height, imagePixels, 0, width);
+        this.calcImageData = DataConverter.processPixelIntensityData(imageData, this.benchmarkModel.getImageEdgeSize(), this.benchmarkModel.isBinarizeImages(), this.benchmarkModel.isInvertImages(), this.benchmarkModel.getMinData(), this.benchmarkModel.getMaxData());
 		
 		ImageScaler imageScaler = new ImageScaler();
-
-        WritableImage image = new WritableImage(visWidth, visHeight);
-        SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.calcImage, visWidth, visHeight), image);
+        WritableImage image = SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(DataConverter.pixelIntensityDataToImage(this.calcImageData, this.benchmarkModel.getMinData()), visWidth, visHeight), null);
 
         return image;
     }
@@ -85,21 +79,11 @@ public class DaydreamModel {
     public void daydream(int maxHiddenImageWidth) {
     	RBMTrainer trainer = new  RBMTrainer();
     	
-    	int width = this.benchmarkModel.getImageEdgeSize();
-    	int height = this.benchmarkModel.getImageEdgeSize();
-    	
-    	// Get pixels from calculation image and convert it to normalized data  
-    	float[] data = new float[this.calcImage.getWidth() * this.calcImage.getHeight()];
-    	int[] calcImagePixels = this.calcImage.getRGB(0, 0, width, height, null, 0, width);
-    	for(int i = 0; i < data.length; i++) {
-    		data[i] = (calcImagePixels[i] & 0xff) / 255.0f;
-    	}
-    	
     	// Create visible daydream data, which is used for the next calculation step 
-        float[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkModel, data, this.useHiddenStates, this.useVisibleStates);
+        float[] visibleDataForCalc = trainer.daydreamAllRBMs(this.benchmarkModel, this.calcImageData, this.useHiddenStates, this.useVisibleStates);
         
         // Create hidden and visible daydream data, which is used for visualization
-        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkModel, data, false);
+        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkModel, this.calcImageData, this.useHiddenStates);
         float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
@@ -114,25 +98,15 @@ public class DaydreamModel {
         			int pos = y*hiddenImageWidth+x;
             		int hiddenValue = (int) Math.round(hiddenDataForVis[pos] * 255);
             		hiddenImagePixels[pos] = (0xFF << 24) | (hiddenValue << 16) | (hiddenValue << 8) | hiddenValue;
+            		System.out.println(hiddenDataForVis[pos]);
         		}
         		counter++;
         	}
         }
         
-        // Convert visibleData to pixels
-        int[] visImagePixels = new int[width*height];
-    	for(int i = 0; i < calcImagePixels.length; i++) {
-    		int calcValue = (int) Math.round(visibleDataForCalc[i] * 255);
-    		int visibleValue = (int) Math.round(visibleDataForVis[i] * 255);
-    		calcImagePixels[i] = (0xFF << 24) | (calcValue << 16) | (calcValue << 8) | calcValue;
-    		visImagePixels[i] = (0xFF << 24) | (visibleValue << 16) | (visibleValue << 8) | visibleValue;
-    	}
-    	
-        this.calcImage.setRGB(0, 0, width, height, calcImagePixels, 0, width);
-        this.visibleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        this.visibleImage.setRGB(0, 0, width, height, visImagePixels, 0, width);
-        this.hiddenImage = new BufferedImage(hiddenImageWidth, hiddenImageHeight, BufferedImage.TYPE_INT_RGB);
-        this.hiddenImage.setRGB(0, 0, hiddenImageWidth, hiddenImageHeight, hiddenImagePixels, 0, hiddenImageWidth);
+        this.calcImageData = visibleDataForCalc;
+        this.visibleImage = DataConverter.pixelIntensityDataToImage(visibleDataForCalc, this.benchmarkModel.getMinData());
+        this.hiddenImage = DataConverter.pixelIntensityDataToImage(hiddenDataForVis, 0.0f);
     }
     
     public Image getVisibleImage(int visWidth, int visHeight) {

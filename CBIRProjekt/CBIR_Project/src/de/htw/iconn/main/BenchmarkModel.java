@@ -39,7 +39,7 @@ public class BenchmarkModel {
     @Conserve
     private ImageManager imageManager = null;
     @Conserve
-    private boolean binarizeImages;
+    private boolean binarizeImages = false;
     private boolean showImageViewer = false;
     private boolean showFeatureViewer = false;
     @Conserve

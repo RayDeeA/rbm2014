@@ -8,6 +8,7 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.rbm.ARBMAdapter;
 import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageScaler;
@@ -40,7 +41,7 @@ public class RunHiddenModel {
     
     private final RunHiddenController controller;
     
-    BufferedImage calcImage;
+    float[] calcImageData;
     BufferedImage visibleImage;
     BufferedImage hiddenImage;
 
@@ -62,33 +63,10 @@ public class RunHiddenModel {
 
         File file = fileChooser.showOpenDialog(fileChooserStage);
         if (file != null) {
-            this.calcImage = ImageHelper.loadImage(file);
+            this.calcImageData = DataConverter.processPixelIntensityData(ImageHelper.loadImage(file), this.benchmarkModel.getImageEdgeSize(), this.benchmarkModel.isBinarizeImages(), this.benchmarkModel.isInvertImages(), this.benchmarkModel.getMinData(), this.benchmarkModel.getMaxData());
 
             ImageScaler imageScaler = new ImageScaler();
-            
-            WritableImage image = new WritableImage(visWidth, visHeight);
-            SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.calcImage, visWidth, visHeight), image);
-
-            return image;
-        } else {
-            return null;
-        }
-    }
-
-    
-    public Image openFile(int visWidth, int visHeight) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("CBIR_Project/images"));
-        Stage fileChooserStage = new Stage();
-
-        File file = fileChooser.showOpenDialog(fileChooserStage);
-        if (file != null) {
-            this.calcImage = ImageHelper.loadImage(file);
-
-            ImageScaler imageScaler = new ImageScaler();
-            
-            WritableImage image = new WritableImage(visWidth, visHeight);
-            SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(this.calcImage, visWidth, visHeight), image);
+            WritableImage image = SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(DataConverter.pixelIntensityDataToImage(this.calcImageData, this.benchmarkModel.getMinData()), visWidth, visHeight), null);
 
             return image;
         } else {
@@ -101,16 +79,9 @@ public class RunHiddenModel {
     	
     	int width = this.benchmarkModel.getImageEdgeSize();
     	int height = this.benchmarkModel.getImageEdgeSize();
-    	
-    	// Get pixels from calculation image and convert it to normalized data  
-    	float[] data = new float[this.calcImage.getWidth() * this.calcImage.getHeight()];
-    	int[] calcImagePixels = this.calcImage.getRGB(0, 0, width, height, null, 0, width);
-    	for(int i = 0; i < data.length; i++) {
-    		data[i] = (calcImagePixels[i] & 0xff) / 255.0f;
-    	}
         
         // Create hidden and visible daydream data, which is used for visualization
-        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkModel, data, false);
+        float[] hiddenDataForVis = trainer.getHiddenAllRBMs1D(this.benchmarkModel, this.calcImageData, false);
         float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
@@ -129,18 +100,9 @@ public class RunHiddenModel {
         		counter++;
         	}
         }
-        
-        // Convert visibleData to pixels
-        int[] visImagePixels = new int[width*height];
-    	for(int i = 0; i < calcImagePixels.length; i++) {
-    		int visibleValue = (int) Math.round(visibleDataForVis[i] * 255);
-    		visImagePixels[i] = (0xFF << 24) | (visibleValue << 16) | (visibleValue << 8) | visibleValue;
-    	}
     	
-        this.visibleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        this.visibleImage.setRGB(0, 0, width, height, visImagePixels, 0, width);
-        this.hiddenImage = new BufferedImage(hiddenImageWidth, hiddenImageHeight, BufferedImage.TYPE_INT_RGB);
-        this.hiddenImage.setRGB(0, 0, hiddenImageWidth, hiddenImageHeight, hiddenImagePixels, 0, hiddenImageWidth);
+        this.visibleImage = DataConverter.pixelIntensityDataToImage(visibleDataForVis, this.benchmarkModel.getMinData());
+        this.hiddenImage = DataConverter.pixelIntensityDataToImage(hiddenDataForVis, 0.0f);
     }
     
     public Image getVisibleImage(int visWidth, int visHeight) {
