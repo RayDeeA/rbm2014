@@ -20,10 +20,12 @@
         <ToggleButton fx:id="btn_visibleStates" mnemonicParsing="false" onAction="#btn_visibleStatesAction" text="VisibleStates" />
       </items>
     </ToolBar>
-    <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Result" />
-    <ImageView fx:id="imgv_Result" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="270.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
-    <Label layoutX="270.0" layoutY="183.0" text="Hidden States" />
-    <ImageView id="imgv_" fx:id="imgv_ResultHidden" fitHeight="1.0" fitWidth="1.0" layoutX="270.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
+    <Label alignment="TOP_LEFT" layoutX="210.0" layoutY="41.0" text="Result" />
+    <ImageView fx:id="imgv_Result" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="210.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
+    <Label layoutX="210.0" layoutY="183.0" text="Hidden States" />
+    <ImageView id="imgv_" fx:id="imgv_ResultHidden" fitHeight="1.0" fitWidth="1.0" layoutX="210.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
     <Label fx:id="lbl_MSE" alignment="TOP_LEFT" layoutX="10.0" layoutY="183.0" text="MSE:" />
+    <Label alignment="TOP_LEFT" layoutX="410.0" layoutY="41.0" text="Selected Feature" />
+    <ImageView id="imgv_Result" fx:id="imgv_SelectedFeature" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="410.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
   </children>
 </AnchorPane>

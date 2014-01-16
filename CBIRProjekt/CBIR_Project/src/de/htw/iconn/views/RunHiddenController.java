@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -40,6 +41,8 @@ public class RunHiddenController extends AController {
     private ImageView imgv_ResultHidden;
     @FXML
     private ImageView imgv_Input;
+    @FXML
+    private ImageView imgv_SelectedFeature;
     @FXML
     private Label lbl_MSE;
     @FXML
