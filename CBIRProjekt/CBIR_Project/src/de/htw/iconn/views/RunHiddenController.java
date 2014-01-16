@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -104,5 +105,10 @@ public class RunHiddenController extends AController {
 	public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
 		this.model.setBenchmarkModel(benchmarkModel);
 	}
+
+    @FXML
+    private void imgv_ResultHiddenClicked(MouseEvent event) {
+        System.out.println("clicked");
+    }
 
 }

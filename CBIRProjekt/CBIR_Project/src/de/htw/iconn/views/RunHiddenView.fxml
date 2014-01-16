@@ -23,7 +23,7 @@
     <Label alignment="TOP_LEFT" layoutX="270.0" layoutY="41.0" text="Result" />
     <ImageView fx:id="imgv_Result" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="270.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
     <Label layoutX="270.0" layoutY="183.0" text="Hidden States" />
-    <ImageView id="imgv_" fx:id="imgv_ResultHidden" fitHeight="1.0" fitWidth="1.0" layoutX="270.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView id="imgv_" fx:id="imgv_ResultHidden" fitHeight="1.0" fitWidth="1.0" layoutX="270.0" layoutY="203.0" onMouseClicked="#imgv_ResultHiddenClicked" pickOnBounds="true" preserveRatio="true" />
     <Label fx:id="lbl_MSE" alignment="TOP_LEFT" layoutX="10.0" layoutY="183.0" text="MSE:" />
   </children>
 </AnchorPane>
