@@ -99,22 +99,33 @@ public final class WeightsVisualizationModel implements IVisualizeObserver {
     }
 
     private float[][] relativateWeights(float[][] weights) {
+//        final float[][] result = new float[weights.length][weights[0].length];
+//        double max = 0;
+//        for (int i = 0; i < result.length; i++) {
+//            for (int j = 0; j < result[0].length; j++) {
+//                final double currentAbs = Math.abs(weights[i][j]);
+//                if (currentAbs > max) {
+//                    max = currentAbs;
+//                }
+//            }
+//        }
+//        
+//        for (int i = 0; i < result.length; i++) {
+//            for (int j = 0; j < result[0].length; j++) {
+//                result[i][j] = Math.max(-1, Math.min(1, (weights[i][j] / 5.0f)));
+//            }
+//        }
+//        return result;
         final float[][] result = new float[weights.length][weights[0].length];
-        double max = 0;
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[0].length; j++) {
-                final double currentAbs = Math.abs(weights[i][j]);
-                if (currentAbs > max) {
-                    max = currentAbs;
+                    result[i][j] = weights[i][j] * 0.2f;
+                    if(result[i][j] > 1) 
+                        result[i][j] = 1;
+                    if(result[i][j] < -1) 
+                        result[i][j] = -1;
                 }
             }
-        }
-        
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[0].length; j++) {
-                result[i][j] = Math.max(-1, Math.min(1, (weights[i][j] / 5.0f)));
-            }
-        }
         return result;
     }
 
@@ -126,7 +137,7 @@ public final class WeightsVisualizationModel implements IVisualizeObserver {
             this.weightsWidth = weights.length;
             this.weightsHeight = weights[0].length;
 
-            picWeights = generateImage(pack.getWeights());
+            picWeights = generateImage(relativateWeights(pack.getWeights()));
 
         }
         WritableImage newImage = new WritableImage(this.viewWidth, this.viewHeight);
@@ -140,13 +151,6 @@ public final class WeightsVisualizationModel implements IVisualizeObserver {
                 writer.setArgb(x, y, resizedWeights[y * this.viewWidth + x]);
             }
         }
-//        WritableImage newImage = new WritableImage(this.getWeightsWidth(), this.getWeightsHeight());
-//        PixelWriter writer = newImage.getPixelWriter();
-//        for (int y = 0; y < this.getWeightsHeight(); y++) {
-//            for (int x = 0; x < this.getWeightsWidth(); x++) {
-//                writer.setArgb(x, y, picWeights[y * this.getWeightsWidth() + x]);
-//            }
-//        }
         this.image = newImage;
 
         controller.update();

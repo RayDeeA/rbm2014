@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: lib/trove4j-3.0.3.jar lib/fv15dct.jar
-Sealed: true
-
-
