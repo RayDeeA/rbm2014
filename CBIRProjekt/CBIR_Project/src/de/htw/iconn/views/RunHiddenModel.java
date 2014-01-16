@@ -44,7 +44,8 @@ public class RunHiddenModel {
     float[] calcImageData;
     BufferedImage visibleImage;
     BufferedImage hiddenImage;
-
+	private float mse = 0;
+    
     private boolean useHiddenStates;
 	private boolean useVisibleStates;
 
@@ -74,7 +75,7 @@ public class RunHiddenModel {
         }
     }
     
-    public void runHidden(int maxHiddenImageWidth) {
+    public void runHidden() {
     	RBMTrainer trainer = new  RBMTrainer();
     	
     	int width = this.benchmarkModel.getImageEdgeSize();
@@ -85,24 +86,39 @@ public class RunHiddenModel {
         float[] visibleDataForVis = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenDataForVis, false);
         
         // Convert hiddenData to pixels
-        int[] hiddenImagePixels = new int[hiddenDataForVis.length];
-        int hiddenImageWidth = maxHiddenImageWidth;
-        int hiddenImageHeight = (int) Math.ceil(hiddenImagePixels.length / maxHiddenImageWidth);
+        int hiddenImageEdgeLength = (int)Math.sqrt(hiddenDataForVis.length);
+        int[] hiddenImagePixels = new int[hiddenImageEdgeLength * (hiddenImageEdgeLength + 1)];
         
         int counter = 0;
-        for(int y = 0; y < hiddenImageHeight; y++) {
-        	for(int x = 0; x < hiddenImageWidth; x++) {
-        		if(counter <= hiddenImagePixels.length) {
-        			int pos = y*hiddenImageWidth+x;
+        for(int y = 0; y < hiddenImageEdgeLength + 1; y++) {
+        	for(int x = 0; x < hiddenImageEdgeLength; x++) {
+        		int pos = y*hiddenImageEdgeLength+x;
+        		if(counter < hiddenDataForVis.length) {
             		int hiddenValue = (int) Math.round(hiddenDataForVis[pos] * 255);
             		hiddenImagePixels[pos] = (0xFF << 24) | (hiddenValue << 16) | (hiddenValue << 8) | hiddenValue;
+        		} else {
+            		hiddenImagePixels[pos] = (0xFF << 24) | (255 << 16) | (0 << 8) | 0;        			
         		}
         		counter++;
         	}
         }
-    	
-        this.visibleImage = DataConverter.pixelIntensityDataToImage(visibleDataForVis, this.benchmarkModel.getMinData());
-        this.hiddenImage = DataConverter.pixelIntensityDataToImage(hiddenDataForVis, 0.0f);
+        
+        this.mse = calcMSE(this.calcImageData, visibleDataForVis);
+        this.visibleImage = DataConverter.pixelIntensityDataToImage(visibleDataForVis, 0.0f);
+        BufferedImage hiddenImage = new BufferedImage(hiddenImageEdgeLength, hiddenImageEdgeLength + 1, BufferedImage.TYPE_INT_RGB);
+        hiddenImage.setRGB(0, 0, hiddenImageEdgeLength, hiddenImageEdgeLength + 1, hiddenImagePixels, 0, hiddenImageEdgeLength);
+        this.hiddenImage = hiddenImage;
+    }
+    
+    private float calcMSE(float[] data1, float[] data2) {
+    	float mse = 0;
+    	int n = this.calcImageData.length;
+    	for(int i = 0; i < n; i++) {
+    		float error = data1[i] - data2[i];
+    		mse += error * error;
+    	}
+    	mse /= (float)n;
+    	return mse;
     }
     
     public Image getVisibleImage(int visWidth, int visHeight) {
@@ -148,7 +164,11 @@ public class RunHiddenModel {
     	return SwingFXUtils.toFXImage(bufferedImage, null);
     }
     
-    public void setUseHiddenStates(boolean useHiddenStates) {
+    public float getMSE() {
+		return mse;
+	}
+
+	public void setUseHiddenStates(boolean useHiddenStates) {
 		this.useHiddenStates = useHiddenStates;
 	}
 

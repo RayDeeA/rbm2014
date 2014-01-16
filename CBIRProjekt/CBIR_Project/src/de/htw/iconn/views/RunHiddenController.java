@@ -11,16 +11,12 @@ import de.htw.iconn.main.BenchmarkModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import de.htw.iconn.rbm.ARBMAdapter;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +40,8 @@ public class RunHiddenController extends AController {
     private ImageView imgv_ResultHidden;
     @FXML
     private ImageView imgv_Input;
+    @FXML
+    private Label lbl_MSE;
     @FXML
     private AnchorPane view;
     
@@ -84,12 +82,13 @@ public class RunHiddenController extends AController {
     @FXML
     private void btn_runHiddenAction(ActionEvent event) {
         System.out.println("Dream");
-        model.runHidden(30);
+        model.runHidden();
         imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
         Image hiddenImage = model.getHiddenImage(10);
         imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
         imgv_ResultHidden.setFitHeight(hiddenImage.getHeight());
         imgv_ResultHidden.setImage(hiddenImage);
+        lbl_MSE.setText("MSE: " + model.getMSE());
     }
 
     @Override
