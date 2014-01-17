@@ -14,7 +14,10 @@ import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.settings.RBMSettingsMainController;
+import de.htw.iconn.settings.RBMSettingsMainModel;
+import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.settings.RBMSettingsWeightsController;
+import de.htw.iconn.settings.RBMSettingsWeightsModel;
 import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
 
@@ -234,5 +237,13 @@ public class BenchmarkModel {
     public void trainRBMs(){
         this.rbmTrainer.trainAllRBMs(this);
     }
+
+	public void resetWeights() {
+        for(RBMSettingsController settingsController : rbmSettingsList){
+            RBMSettingsModel settingsModel = settingsController.getModel();
+            RBMSettingsWeightsModel weightsModel = settingsModel.getController(RBMSettingsWeightsController.class).getModel();
+            weightsModel.setWeights(null);
+        }
+	}
 
 }

@@ -55,6 +55,7 @@
             <ToggleButton fx:id="btn_OpenDaydream" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_OpenDaydreamAction" text="Daydream" GridPane.columnIndex="0" GridPane.rowIndex="6" />
             <ToggleButton fx:id="btn_OpenRunHidden" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_OpenRunHiddenAction" text="Run Hidden" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <ToggleButton fx:id="btn_OpenTestFeatures" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_OpenTestFeaturesAction" text="Test Features" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_ResetWeightsAction" text="Reset Weights" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
