@@ -34,39 +34,6 @@ import de.htw.iconn.views.ErrorViewModel;
  * @author radek, christoph
  */
 public class RBMTrainer {
-	
-    // TRAINING
-	
-    public void trainAllRBMsDeepBelieve(BenchmarkModel benchmarkModel) {
-        this.updateRBMs(benchmarkModel);
-        
-        LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
-        
-        for(RBMSettingsController c : rbmSettingsList) {
-        	 RBMSettingsStoppingConditionModel stoppingConditionModel = c.getModel().getController(RBMSettingsStoppingConditionController.class).getModel();
-        	 stoppingConditionModel.setEpochsOn(true);
-        	 stoppingConditionModel.setEpochs(1);
-        	 stoppingConditionModel.setErrorOn(false);
-        }
-        
-        RBMSettingsController firstSettingsController = rbmSettingsList.getFirst();
-
-        int epochs = 50;
-        for(int i = 0; i < epochs; i++) {
-        	RBMSettingsController lastController = null;
-            for (RBMSettingsController c : rbmSettingsList) {
-                if (lastController != null) {
-                    float[][] data = getHiddenSingleRBM(lastController, lastController.getModel().getData());
-                    c.getModel().setData(data);
-                }
-                this.trainSingleRBM(c);
-                lastController = c;
-            }
-            float[][] hiddenData = getHiddenAllRBMs(benchmarkModel, firstSettingsController.getModel().getData(), false);
-            float[][] visibleData = getVisibleAllRBMs(benchmarkModel, hiddenData, false);
-            firstSettingsController.getModel().setData(visibleData);
-        }
-    }
 
     public void trainAllRBMs(BenchmarkModel benchmarkModel) {
         this.updateRBMs(benchmarkModel);

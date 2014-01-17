@@ -234,9 +234,5 @@ public class BenchmarkModel {
     public void trainRBMs(){
         this.rbmTrainer.trainAllRBMs(this);
     }
-    
-    public void trainDeep(){
-        this.rbmTrainer.trainAllRBMsDeepBelieve(this);
-    }
 
 }

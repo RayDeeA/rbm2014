@@ -35,7 +35,6 @@
             <Button id="btn_startTest" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_startmAPTestAction" prefWidth="-1.0" text="Start mAP Test" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
             <Label font="$x1" text="Training" GridPane.columnIndex="0" GridPane.rowIndex="9" />
             <Button id="btn_trainAll" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_trainAllAction" prefWidth="-1.0" text="Train All" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" />
-            <Button id="btn_TrainDeep" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_TrainDeepAction" prefWidth="-1.0" text="Train Deep" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <Button id="btn_Update" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_UpdateAction" prefWidth="-1.0" text="Update" GridPane.columnIndex="3" GridPane.rowIndex="10" />
             <Button id="btn_loadImageSet" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btn_loadImageSetAction" prefWidth="-1.0" text="Load Image Set" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0">
               <GridPane.margin>
