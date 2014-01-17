@@ -58,10 +58,6 @@ public class StoppingCondition {
         this.minError = 0;
     }
     
-     
-     
-     
-     
      public boolean isNotDone() {
          return (isErrorDisabled() ? true : getCurrentError() > getMinError()) &&
                  (isEpochsDisabled() ? true : getCurrentEpochs() < getMaxEpochs());

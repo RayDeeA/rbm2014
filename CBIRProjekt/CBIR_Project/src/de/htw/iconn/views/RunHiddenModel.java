@@ -8,6 +8,8 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.rbm.ARBMAdapter;
 import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.settings.RBMSettingsMainController;
+import de.htw.iconn.settings.RBMSettingsWeightsController;
 import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageHelper;
 import de.htw.iconn.image.ImageManager;
@@ -178,5 +180,22 @@ public class RunHiddenModel {
 
 	public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
 		this.benchmarkModel = benchmarkModel;
+	}
+
+	public Image getStateImage(int index, int visWidth, int visHeight) {
+		float[] hiddenData = new float[this.benchmarkModel.getRbmSettingsList().getLast().getModel().getController(RBMSettingsMainController.class).getModel().getOutputSize()];  
+		hiddenData[index] = 1.0f;
+		
+		RBMTrainer trainer = new  RBMTrainer();
+		float[] visibleData = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenData, false);
+
+		BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0);
+		
+		ImageScaler imageScaler = new ImageScaler();
+
+        WritableImage visibleImage = new WritableImage(visWidth, visHeight);
+        SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(image, visWidth, visHeight), visibleImage);
+	
+        return visibleImage;
 	}
 }

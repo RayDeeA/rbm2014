@@ -50,8 +50,7 @@ public class DataConverter {
         
         float scale = maxData - minData;
     	for(int i = 0; i < data.length; i++) {
-    		float value = data[i];
-    		data[i] = minData + value * scale;
+    		data[i] = minData + data[i] * scale;
     	}
 
     	return data;

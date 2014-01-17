@@ -12,7 +12,7 @@ public class GeneralisedLogisticFunction extends MatrixFunctions implements ILog
 	A: the lower asymptote;
 	K: the upper asymptote. If A=0 then K is called the carrying capacity;
 	B: the growth rate;
-	ν>0 : affects near which asymptote maximum growth occurs.
+	m>0 : affects near which asymptote maximum growth occurs.
 	*/
 	
 	@Override

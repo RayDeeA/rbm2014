@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -21,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -107,5 +107,17 @@ public class RunHiddenController extends AController {
 	public void setBenchmarkModel(BenchmarkModel benchmarkModel) {
 		this.model.setBenchmarkModel(benchmarkModel);
 	}
+
+    @FXML
+    private void imgv_ResultHiddenClicked(MouseEvent event) {
+        double x = event.getX();
+        double y = event.getY();
+        
+        int xState = (int)(x / 10);
+        int yState = (int)(y / 10);
+        
+        int index = (int)(yState * (imgv_ResultHidden.getFitWidth() / 10) + xState);
+        imgv_SelectedFeature.setImage(this.model.getStateImage(index, (int)imgv_SelectedFeature.getFitWidth(), (int)imgv_SelectedFeature.getFitHeight()));
+    }
 
 }

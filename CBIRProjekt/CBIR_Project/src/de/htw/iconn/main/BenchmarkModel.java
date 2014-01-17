@@ -221,7 +221,7 @@ public class BenchmarkModel {
     public void globalUpdate(){
         this.rbmTrainer.updateRBMs(this);
     }
-    
+      
     public void updateAllViews(){
         this.controller.update();
         for(RBMSettingsController settingsController : rbmSettingsList){
