@@ -238,12 +238,4 @@ public class BenchmarkModel {
         this.rbmTrainer.trainAllRBMs(this);
     }
 
-	public void resetWeights() {
-        for(RBMSettingsController settingsController : rbmSettingsList){
-            RBMSettingsModel settingsModel = settingsController.getModel();
-            RBMSettingsWeightsModel weightsModel = settingsModel.getController(RBMSettingsWeightsController.class).getModel();
-            weightsModel.setWeights(null);
-        }
-	}
-
 }

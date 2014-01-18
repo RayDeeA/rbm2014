@@ -339,11 +339,6 @@ public class BenchmarkController extends AController {
     }
     
     @FXML
-    private void btn_ResetWeightsAction(ActionEvent event) {
-        this.model.resetWeights();
-    }
-    
-    @FXML
     private void btn_UpdateAction(ActionEvent event) {
         System.out.println("update action");
         this.model.globalUpdate();
