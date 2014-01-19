@@ -212,6 +212,7 @@ public class BenchmarkController extends AController {
     private void btn_OpenDaydreamAction(ActionEvent event) {
         try {
         	if(!btn_OpenDaydream.isSelected()) {
+        		 this.daydreamController.stopDreaming();
         		 this.daydreamStage.close();
         		 return;
         	}

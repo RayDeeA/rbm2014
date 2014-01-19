@@ -53,8 +53,6 @@ public class DaydreamController extends AController {
     DaydreamModel model;
 
     Timer timer;
-    int maxDreams = 60;
-    int currentDream = 0;
 
     /**
      * Initializes the controller class.
@@ -90,7 +88,7 @@ public class DaydreamController extends AController {
     @FXML
     private void btn_daydreamAction(ActionEvent event) {
         int delay = 0; // delay for 3 sec. 
-        int period = 100;
+        int period = 50;
         this.timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
