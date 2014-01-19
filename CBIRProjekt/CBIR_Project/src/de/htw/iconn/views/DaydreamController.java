@@ -36,6 +36,8 @@ public class DaydreamController extends AController {
     @FXML
     private Button btn_stopDaydream;
     @FXML
+    private Button btn_Next;
+    @FXML
     private ToggleButton btn_hiddenStates;
     @FXML
     private ToggleButton btn_visibleStates;
@@ -75,12 +77,14 @@ public class DaydreamController extends AController {
             System.out.println("error");
         }
         this.btn_daydream.setDisable(false);
+        this.btn_Next.setDisable(false);
     }
 
     @FXML
     private void btn_generateImageAction(ActionEvent event) {
         this.imgv_Input.setImage(this.model.generateImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
         this.btn_daydream.setDisable(false);
+        this.btn_Next.setDisable(false);
     }
 
     @FXML
@@ -92,7 +96,7 @@ public class DaydreamController extends AController {
             @Override
             public void run() {
                 System.out.println("Dream");
-                model.daydream(30);
+                model.daydream();
                 imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
                 Image hiddenImage = model.getHiddenImage(10);
                 imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
@@ -102,6 +106,16 @@ public class DaydreamController extends AController {
         }, delay, period);
         this.btn_daydream.setDisable(true);
         this.btn_stopDaydream.setDisable(false);
+    }
+    
+    @FXML
+    private void btn_NextAction(ActionEvent event) {
+    	model.daydream();
+    	imgv_Result.setImage(model.getVisibleImage((int)imgv_Result.getFitWidth(), (int)imgv_Result.getFitHeight()));
+        Image hiddenImage = model.getHiddenImage(10);
+        imgv_ResultHidden.setFitWidth(hiddenImage.getWidth());
+        imgv_ResultHidden.setFitHeight(hiddenImage.getHeight());
+        imgv_ResultHidden.setImage(hiddenImage);
     }
 
     @FXML

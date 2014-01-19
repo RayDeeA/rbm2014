@@ -8,7 +8,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="view" cache="true" cacheHint="QUALITY" depthTest="ENABLE" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.views.DaydreamController">
+<AnchorPane id="AnchorPane" fx:id="view" cache="true" cacheHint="QUALITY" depthTest="ENABLE" pickOnBounds="false" prefHeight="400.0" prefWidth="612.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.htw.iconn.views.DaydreamController">
   <children>
     <ImageView fx:id="imgv_Input" cache="false" fitHeight="112.0" fitWidth="112.0" layoutX="10.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
     <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="41.0" text="Input" />
@@ -18,6 +18,7 @@
         <Button fx:id="btn_generateImage" mnemonicParsing="false" onAction="#btn_generateImageAction" text="Generate" />
         <Button fx:id="btn_daydream" disable="true" mnemonicParsing="false" onAction="#btn_daydreamAction" text="Daydream" />
         <Button fx:id="btn_stopDaydream" disable="true" mnemonicParsing="false" onAction="#btn_stopDaydreamAction" text="Wake Up" />
+        <Button fx:id="btn_Next" disable="true" mnemonicParsing="false" onAction="#btn_NextAction" text="Next" />
         <ToggleButton fx:id="btn_hiddenStates" mnemonicParsing="false" onAction="#btn_hiddenStatesAction" text="HiddenStates" />
         <ToggleButton fx:id="btn_visibleStates" mnemonicParsing="false" onAction="#btn_visibleStatesAction" text="VisibleStates" />
       </items>

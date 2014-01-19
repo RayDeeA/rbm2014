@@ -76,7 +76,7 @@ public class DaydreamModel {
         return image;
     }
 
-    public void daydream(int maxHiddenImageWidth) {
+    public void daydream() {
     	RBMTrainer trainer = new  RBMTrainer();
     	
     	// Create visible daydream data, which is used for the next calculation step 
