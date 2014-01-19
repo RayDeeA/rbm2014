@@ -30,7 +30,7 @@ public class RBMJBlas implements IRBM {
                 }
                 this.weights = new FloatMatrix(weightsTemp);
             } else {
-                this.weights = FloatMatrix.randn(inputSize, outputSize).mmul(0.1f);
+                this.weights = FloatMatrix.randn(inputSize, outputSize).mmul(0.01f);
             }
             final FloatMatrix oneVectorCol = FloatMatrix.zeros(this.weights.getRows(), 1);
             final FloatMatrix oneVectorRow = FloatMatrix.zeros(1, this.weights.getColumns() + 1);

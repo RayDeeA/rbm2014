@@ -51,7 +51,6 @@ public class ForkBlas {
                 final int aMiddle = aStart + (aEnd - aStart) / 2;
                 final int bMiddle = bStart + (bEnd - bStart) / 2;
 
-
                 invokeAll(
                         new MulitplyPartly(a, b, result, aStart, aMiddle, bStart, bMiddle),
                         new MulitplyPartly(a, b, result, aMiddle, aEnd, bMiddle, bEnd),

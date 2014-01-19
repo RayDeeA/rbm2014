@@ -46,46 +46,54 @@ public class RBMJBlasOpti implements IRBM {
     public float error(float[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
 
-        final FloatMatrix oneVector = FloatMatrix.ones(data.getRows(), 1);
-        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, data);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
+        final FloatMatrix dataWithBiasTrans = dataWithBias.transpose();
+        final FloatMatrix localWeights = this.weights;
+        final FloatMatrix hidden = new FloatMatrix(dataWithBias.rows, localWeights.columns);
+        FloatMatrix hiddenStates = new FloatMatrix(dataWithBias.rows, localWeights.columns);
+        final FloatMatrix visible = new FloatMatrix(hidden.rows, localWeights.rows);
+        final FloatMatrix posAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
+        final FloatMatrix negAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
+        final FloatMatrix resetBiasHidden = FloatMatrix.ones(hidden.getRows(), 1);
+        final FloatMatrix resetBiasVisible = FloatMatrix.ones(visible.getRows(), 1);
+        final ForkBlas forkBlas = new ForkBlas();
 
-        final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
+        // pos_hidden_activations
+        forkBlas.pmmuli(dataWithBias, localWeights, hidden);
+        
+        // pos_hidden_probs
+        logisticFunction.function(hidden);
 
-        FloatMatrix posHiddenNodes = logisticFunction.function(posHiddenActivations);
-
+        // pos_hidden_states
         if (binarizeHidden) {
-            float[][] randomMatrix = FloatMatrix.rand(posHiddenNodes.getRows(), posHiddenNodes.getColumns()).toArray2();
-
-            float[][] tmpHiddenStates = posHiddenNodes.dup().toArray2();
-            for (int y = 0; y < tmpHiddenStates.length; y++) {
-                for (int x = 0; x < tmpHiddenStates[y].length; x++) {
-                    tmpHiddenStates[y][x] = (tmpHiddenStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
-                }
-            }
-            posHiddenNodes = new FloatMatrix(tmpHiddenStates);
+        	hiddenStates = hidden.dup();
+        	hiddenStates.gti(FloatMatrix.rand(hidden.getRows(), hidden.getColumns()));
+        } else {
+        	hiddenStates = hidden;
         }
 
-        posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
+        // pos_associations
+        forkBlas.pmmuli(dataWithBiasTrans, hidden, posAssociations);
+       
+        // neg_visible_activations
+        forkBlas.pmmuli(hiddenStates, localWeights.transpose(), visible);
+        
+        // neg_visible_probs
+        logisticFunction.function(visible);
 
-        final FloatMatrix negVisibleActivations = posHiddenNodes.mmul(this.weights.transpose());
+        // Fix Bias
+        visible.putColumn(0, resetBiasVisible);
+        
+        // neg_hidden_activations
+        forkBlas.pmmuli(visible, localWeights, hidden);
 
-        FloatMatrix negVisibleNodes = logisticFunction.function(negVisibleActivations);
+        // neg_hidden_probs
+        logisticFunction.function(hidden);
 
-        if (binarizeVisible) {
-            float[][] randomMatrix = FloatMatrix.rand(negVisibleNodes.getRows(), negVisibleNodes.getColumns()).toArray2();
+        // neg_associations
+        forkBlas.pmmuli(visible.transpose(), hidden, negAssociations);
 
-            float[][] tmpVisibleStates = negVisibleNodes.dup().toArray2();
-            for (int y = 0; y < tmpVisibleStates.length; y++) {
-                for (int x = 0; x < tmpVisibleStates[y].length; x++) {
-                    tmpVisibleStates[y][x] = (tmpVisibleStates[y][x] > randomMatrix[y][x]) ? 1 : 0;
-                }
-            }
-            negVisibleNodes = new FloatMatrix(tmpVisibleStates);
-        }
-
-        negVisibleNodes.putColumn(0, FloatMatrix.ones(negVisibleNodes.getRows(), 1));
-
-        return (float) Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(negVisibleNodes), 2.0f).sum() / trainingData.length / weights.getRows());
+        return (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(visible), 2.0f).sum() / trainingData.length / localWeights.getRows());
     }
 
     @Override
@@ -96,6 +104,7 @@ public class RBMJBlasOpti implements IRBM {
         final FloatMatrix dataWithBiasTrans = dataWithBias.transpose();
         final FloatMatrix localWeights = this.weights;
         final FloatMatrix hidden = new FloatMatrix(dataWithBias.rows, localWeights.columns);
+        FloatMatrix hiddenStates = new FloatMatrix(dataWithBias.rows, localWeights.columns);
         final FloatMatrix visible = new FloatMatrix(hidden.rows, localWeights.rows);
         final FloatMatrix posAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
         final FloatMatrix negAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
@@ -104,49 +113,46 @@ public class RBMJBlasOpti implements IRBM {
         final ForkBlas forkBlas = new ForkBlas();
         while(stop.isNotDone()) {
 
-            //final FloatMatrix posHiddenActivations = dataWithBias.mmul(this.weights);
-            //dataWithBias.mmuli(localWeights, hidden);
+            // pos_hidden_activations
             forkBlas.pmmuli(dataWithBias, localWeights, hidden);
             
-            //FloatMatrix posHiddenProbs = logisticFunction.function(posHiddenActivations);
+            // pos_hidden_probs
             logisticFunction.function(hidden);
 
-            if (binarizeHidden) {            
-                hidden.gti(FloatMatrix.rand(hidden.getRows(), hidden.getColumns()));
+            // pos_hidden_states
+            if (binarizeHidden) {
+            	hiddenStates = hidden.dup();
+            	hiddenStates.gti(FloatMatrix.rand(hidden.getRows(), hidden.getColumns()));
+            } else {
+            	hiddenStates = hidden;
             }
 
-            //posHiddenNodes.putColumn(0, FloatMatrix.ones(posHiddenNodes.getRows(), 1));
-            hidden.putColumn(0, resetBiasHidden);
-
-            //final FloatMatrix posAssociations = dataWithBias.transpose().mmul(posHiddenProbs);
-            //dataWithBiasTrans.mmuli(hidden, posAssociations);
+            // pos_associations
             forkBlas.pmmuli(dataWithBiasTrans, hidden, posAssociations);
            
-            //final FloatMatrix negVisibleActivations = posHiddenStates.mmul(this.weights.transpose());
-            //hidden.mmuli(localWeights.transpose(), visible);
-            forkBlas.pmmuli(hidden, localWeights.transpose(), visible);
-            //final FloatMatrix negVisibleProbs = logisticFunction.function(negVisibleActivations);
+            // neg_visible_activations
+            forkBlas.pmmuli(hiddenStates, localWeights.transpose(), visible);
+            
+            // neg_visible_probs
             logisticFunction.function(visible);
 
-            //negVisibleProbs.putColumn(0, FloatMatrix.ones(negVisibleProbs.getRows(), 1));
+            // Fix Bias
             visible.putColumn(0, resetBiasVisible);
             
-            //final FloatMatrix negHiddenActivations = negVisibleProbs.mmul(this.weights);
-            //visible.mmuli(localWeights, hidden);
+            // neg_hidden_activations
             forkBlas.pmmuli(visible, localWeights, hidden);
-            //final FloatMatrix negHiddenProbs = logisticFunction.function(negHiddenActivations);
+
+            // neg_hidden_probs
             logisticFunction.function(hidden);
 
-            //final FloatMatrix negAssociations = negVisibleProbs.transpose().mmul(negHiddenProbs);
-            //visible.transpose().mmuli(hidden, negAssociations);
+            // neg_associations
             forkBlas.pmmuli(visible.transpose(), hidden, negAssociations);
 
             // Update weights
-            localWeights.addi((posAssociations.sub(negAssociations)).mul(this.learnRate / data.getRows()));
+            localWeights.addi((posAssociations.sub(negAssociations)).div(data.getRows()).mul(this.learnRate));
             error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(visible), 2.0f).sum() / trainingData.length / localWeights.getRows());
 
             stop.update(error);
-            //System.out.println(error);
         }
         System.out.println(error);
     }
