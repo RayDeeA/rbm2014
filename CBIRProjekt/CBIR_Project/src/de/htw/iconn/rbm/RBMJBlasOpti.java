@@ -115,8 +115,8 @@ public class RBMJBlasOpti implements IRBM {
         
         FloatMatrix avg = new FloatMatrix(avgVector);
         
-        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(avg, data);
-        // final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
+        // final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(avg, data);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
         
         
         final FloatMatrix dataWithBiasTrans = dataWithBias.transpose();
