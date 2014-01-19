@@ -6,7 +6,6 @@
 package de.htw.iconn.views;
 
 import de.htw.iconn.main.AController;
-import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.main.BenchmarkModel;
 
 import java.net.URL;
@@ -15,8 +14,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -83,6 +80,7 @@ public class DaydreamController extends AController {
     @FXML
     private void btn_generateImageAction(ActionEvent event) {
         this.imgv_Input.setImage(this.model.generateImage((int) imgv_Result.getFitWidth(), (int) imgv_Result.getFitHeight()));
+        this.btn_daydream.setDisable(false);
     }
 
     @FXML
