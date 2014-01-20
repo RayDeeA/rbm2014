@@ -20,8 +20,20 @@ public class FlowGroup extends ADrawable {
 
   @Override
   public void draw(GraphicsContext gc, Vector2 offset, double zoom) {
-    for (ADrawable d : elements) {
-      d.draw(gc, offset, zoom);
+    
+    int pCount = elements.size();
+    double r = paper.getSize().x / paper.getSize().y;
+    int yCount = (int) Math.ceil(Math.sqrt(pCount / r));
+    int xCount = (int) Math.ceil(r * yCount);
+    
+    for (int i = 0; i < yCount; i++) {
+      for (int j = 0; j < xCount; j++) {
+        
+        int index = i * yCount + j;
+        Vector2 tmpSize = new Vector2(paper.getSize().x / xCount, paper.getSize().x / xCount);
+        
+        elements.get(index).draw(gc, offset, zoom, tmpSize);
+      }
     }
   }
 
@@ -31,5 +43,10 @@ public class FlowGroup extends ADrawable {
 
   public Vector2 getSize() {
     return paper.getSize().cpy();
+  }
+
+  @Override
+  public void draw(GraphicsContext gc, Vector2 offset, double zoom, Vector2 newSize) {
+    
   }
 }

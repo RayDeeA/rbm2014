@@ -9,7 +9,8 @@ public abstract class ADrawable {
 //	protected final Vector2 pos = new Vector2();
 //	protected final Vector2 size = new Vector2();
 
-	public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
+  public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
+  public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom, Vector2 newSize);
 
 	public abstract Vector2 getPos();
 
