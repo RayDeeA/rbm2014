@@ -34,7 +34,7 @@ public class FlowGroup extends ADrawable {
         int index = i * xCount + j;
 
         float width = (float) (canvas.getWidth() / xCount);
-        Vector2 tmpSize = new Vector2(width, width);
+        Vector2 tmpSize = new Vector2(width - 5, width - 5);
 
         if (index < pCount) {
           elements.get(index).setPos(new Vector2(j * width, i * width));
@@ -60,6 +60,5 @@ public class FlowGroup extends ADrawable {
   @Override
   public void setPos(Vector2 p) {
     // TODO Auto-generated method stub
-
   }
 }

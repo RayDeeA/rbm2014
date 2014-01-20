@@ -30,20 +30,6 @@ public class ImageViewerModel {
 
   private Vector2                     lastMousePosition = new Vector2(0, 0);
 
-  public void setImages(Pic[] images) {
-
-    ArrayList<ADrawable> elements = new ArrayList<>();
-    for (Pic p : images) {
-      elements.add(new Image(p));
-    }
-    paper.addDrawable(new FlowGroup(elements, canvas));
-    paper.autoSize();
-
-    zoomFitCamera(.9f);
-    centerCamera();
-
-    draw();
-  }
 
   ImageViewerModel(ImageViewerController controller) {
     this.controller = controller;
@@ -64,6 +50,20 @@ public class ImageViewerModel {
     draw();
   }
 
+  public void setImages(Pic[] images) {
+
+    ArrayList<ADrawable> elements = new ArrayList<>();
+    for (Pic p : images) {
+      elements.add(new Image(p));
+    }
+    paper.addDrawable(new FlowGroup(elements, canvas));
+    paper.autoSize();
+
+    zoomFitCamera(.9f);
+    centerCamera();
+
+    draw();
+  }
   void zoomFitCamera(double factor) {
     float w, h;
 
@@ -94,6 +94,7 @@ public class ImageViewerModel {
   }
 
   void onMouseWheel(ScrollEvent e) {
+    
     Vector2 mpos = getMousePos(e);
     Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera.getZoomFactor()));
 
@@ -103,6 +104,7 @@ public class ImageViewerModel {
       camera.setZoomFactor(camera.getZoomFactor() / 1.1f);
 
     Vector2 newPos = (a.mul(camera.getZoomFactor())).sub(getMousePos(e));
+    
     camera.setRelPos(newPos);
   }
 
