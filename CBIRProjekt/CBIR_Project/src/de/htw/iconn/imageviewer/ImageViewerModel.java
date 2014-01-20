@@ -1,5 +1,7 @@
 package de.htw.iconn.imageviewer;
 
+import java.util.ArrayList;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
@@ -8,8 +10,10 @@ import javafx.scene.input.ScrollEvent;
 
 import com.badlogic.gdx.math.Vector2;
 
+import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.Pic;
 import de.htw.iconn.imageviewer.drawables.ADrawable;
+import de.htw.iconn.imageviewer.drawables.FlowGroup;
 import de.htw.iconn.imageviewer.drawables.Image;
 
 public class ImageViewerModel {
@@ -25,7 +29,21 @@ public class ImageViewerModel {
 	GraphicsContext gc;
 
 	private Vector2 lastMousePosition = new Vector2(0, 0);
-
+  
+  public void setImages(Pic[] images) {
+    
+    
+    ArrayList<ADrawable> elements = new ArrayList<>();
+    for(Pic p : images) {
+//      paper.addDrawable(new Image(p));
+      elements.add(new Image(p));
+    }
+    paper.addDrawable(new FlowGroup(elements, paper));
+    paper.autoSize();
+    
+    
+  }
+  
 	ImageViewerModel(ImageViewerController controller) {
 		this.controller = controller;
 		canvas = controller.canvas;

@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import de.htw.iconn.main.AController;
+import de.htw.iconn.views.PRTMAPModel;
 
 public class ImageViewerController extends AController implements EventHandler {
 
@@ -44,7 +45,7 @@ public class ImageViewerController extends AController implements EventHandler {
 		scene = new Scene(root);
 
 		viewStage.setScene(scene);
-		//viewStage.show();
+		viewStage.show();
 		viewStage.setOnCloseRequest(this);
 
 		model = new ImageViewerModel(this);
@@ -106,6 +107,9 @@ public class ImageViewerController extends AController implements EventHandler {
 
 	}
 
+  public ImageViewerModel getModel() {
+      return this.model;
+  }
 	@Override
 	public Node getView() {
 		return view;
