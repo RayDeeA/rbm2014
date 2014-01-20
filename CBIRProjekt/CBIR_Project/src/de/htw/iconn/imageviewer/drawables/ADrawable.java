@@ -15,4 +15,5 @@ public abstract class ADrawable {
 	public abstract Vector2 getPos();
 
 	public abstract Vector2 getSize();
+  public abstract void setPos(Vector2 p) ;
 }

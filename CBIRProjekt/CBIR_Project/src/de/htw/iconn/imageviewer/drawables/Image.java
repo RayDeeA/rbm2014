@@ -7,36 +7,41 @@ import javafx.scene.canvas.GraphicsContext;
 import de.htw.iconn.image.Pic;
 
 public class Image extends ADrawable {
-	javafx.scene.image.Image image;
-	Vector2 pos, size;
+  javafx.scene.image.Image image;
+  Vector2                  pos, size;
 
-	public Image(Pic i) {
+  public Image(Pic i) {
 
-	  // from Pic
-	  image = SwingFXUtils.toFXImage(i.getDisplayImage(), null);
-	  
-	  // from internet
-//    image = new javafx.scene.image.Image("http://i.imgur.com/n0yfX0B.png");
-	  
-	  // local
-//    image = new javafx.scene.image.Image(getClass().getResourceAsStream("./logo.png"));
+    // from Pic
+    image = SwingFXUtils.toFXImage(i.getDisplayImage(), null);
 
-		size = new Vector2((float) image.getWidth(), (float) image.getHeight());
-		pos = new Vector2(0, 0);
-	}
+    // from internet
+    // image = new javafx.scene.image.Image("http://i.imgur.com/n0yfX0B.png");
 
-	@Override
-	public void draw(GraphicsContext gc, Vector2 offset, double zoom) {
-		gc.drawImage(image, (pos.x - offset.x) * zoom, zoom * (pos.y - offset.y), size.x * zoom, size.y * zoom);
-	}
+    // local
+    // image = new
+    // javafx.scene.image.Image(getClass().getResourceAsStream("./logo.png"));
 
-	public Vector2 getPos() {
-		return pos.cpy();
-	}
+    size = new Vector2((float) image.getWidth(), (float) image.getHeight());
+    pos = new Vector2(0, 0);
+  }
 
-	public Vector2 getSize() {
-		return size.cpy();
-	}
+  @Override
+  public void draw(GraphicsContext gc, Vector2 offset, double zoom) {
+    gc.drawImage(image, (pos.x - offset.x) * zoom, zoom * (pos.y - offset.y), size.x * zoom, size.y * zoom);
+  }
+
+  public void setPos(Vector2 v) {
+    this.pos = v.cpy();
+  }
+
+  public Vector2 getPos() {
+    return pos.cpy();
+  }
+
+  public Vector2 getSize() {
+    return size.cpy();
+  }
 
   @Override
   public void draw(GraphicsContext gc, Vector2 offset, double zoom, Vector2 newSize) {
