@@ -9,6 +9,7 @@ import de.htw.iconn.tools.Chooser;
 import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
+import de.htw.iconn.views.ImageBuilderController;
 import de.htw.iconn.views.PRTMAPController;
 import de.htw.iconn.views.RunHiddenController;
 
@@ -91,6 +92,11 @@ public class BenchmarkController extends AController {
     private ToggleButton btn_OpenShowFeatures; 
     private RunHiddenController showFeaturesController;
     private Stage showFeaturesStage;
+    
+    @FXML
+    private ToggleButton btn_OpenImageBuilder;
+    private ImageBuilderController imageBuilderController;
+    private Stage imageBuilderStage;
 	
 	// Evaluation
     @FXML
@@ -297,6 +303,38 @@ public class BenchmarkController extends AController {
             this.model.getFeatureViewer().show();
         } else {
             this.model.getFeatureViewer().close();
+        }
+    }
+    
+    @FXML
+    private void btn_OpenImageBuilderAction(ActionEvent event) {
+        try {
+        	if(!btn_OpenImageBuilder.isSelected()) {
+        		 this.imageBuilderStage.close();
+        		 return;
+        	}
+        	
+            this.imageBuilderController = (ImageBuilderController) new ImageBuilderController().loadController("../views/ImageBuilderView.fxml");
+            Parent root = (Parent) this.imageBuilderController.getView();
+
+            Scene scene = new Scene(root, 667, 400);
+            this.imageBuilderStage = new Stage();
+            this.imageBuilderStage.setTitle("Image Builder");
+            this.imageBuilderStage.setScene(scene);
+            
+            if(btn_OpenImageBuilder.isSelected()) {
+            	this.imageBuilderStage.show();
+            	this.imageBuilderController.setBenchmarkModel(this.getModel());
+            }
+            
+            imageBuilderStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                	btn_OpenImageBuilder.setSelected(false);
+                	imageBuilderStage.close();
+                }
+            });
+        } catch (IOException ex) {
+        	ex.printStackTrace();
         }
     }
 
