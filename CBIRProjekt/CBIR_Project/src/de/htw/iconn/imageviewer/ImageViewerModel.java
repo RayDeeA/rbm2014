@@ -50,7 +50,8 @@ public class ImageViewerModel {
   }
 
   public void setImages(Pic[] images) {
-
+    
+    paper = new Paper();
     ArrayList<ADrawable> elements = new ArrayList<>();
     for (Pic p : images) {
       elements.add(new Image(p));
@@ -63,6 +64,7 @@ public class ImageViewerModel {
 
     draw();
   }
+  
   void zoomFitCamera(double factor) {
     float w, h;
 
