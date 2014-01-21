@@ -71,6 +71,8 @@ public class BenchmarkController extends AController {
   private TextField              txt_MinData;
   @FXML
   private TextField              txt_MaxData;
+  @FXML
+  private Label					 lbl_MseResult;
   
   // Functions
   @FXML
@@ -335,6 +337,11 @@ public class BenchmarkController extends AController {
     } catch (IOException ex) {
       ex.printStackTrace();
     }
+  }
+  
+  @FXML
+  private void btn_perfomMseTestAction(ActionEvent event) {
+	  this.lbl_MseResult.setText("some value");
   }
   
   // Evaluation
