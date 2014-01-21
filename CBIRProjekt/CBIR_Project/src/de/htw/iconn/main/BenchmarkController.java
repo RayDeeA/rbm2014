@@ -146,7 +146,7 @@ public class BenchmarkController extends AController {
       this.initCmbImageManager();
       
       if (this.model.isShowImageViewer()) {
-        this.model.getImageViewer().show();
+        this.model.getImageViewerController().show();
       }
       this.model.globalUpdate();
     }
@@ -155,11 +155,11 @@ public class BenchmarkController extends AController {
   @FXML
   private void btn_OpenShowImagesAction(ActionEvent event) {
     this.model.setShowImageViewer(this.btn_OpenShowImages.isSelected());
-    if (this.model.getImageViewer() != null) {
+    if (this.model.getImageViewerController() != null) {
       if (this.model.isShowImageViewer()) {
-        this.model.getImageViewer().show();
+        this.model.getImageViewerController().show();
       } else {
-        this.model.getImageViewer().close();
+        this.model.getImageViewerController().close();
       }
     }
   }

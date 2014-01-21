@@ -32,7 +32,6 @@ import java.util.LinkedList;
 public class BenchmarkModel {
   
   private final BenchmarkController               controller;
-  private ImageViewer                             imageViewer;
   private ImageViewerController                   imageViewerController;
   private FeatureViewer                           featureViewer;
   private final PRTMAPController                  prtmapController;
@@ -128,7 +127,6 @@ public class BenchmarkModel {
   
   public void setImageManager(File file) {
     this.imageManager = new ImageManager(file, sorted, this.imageEdgeSize, this.binarizeImages, this.invertImages, this.minData, this.maxData);
-    this.imageViewer = new ImageViewer(imageManager);
     this.imageViewerController.getModel().setImages(imageManager.getImages());
     this.rbmTrainer = new RBMTrainer();
     this.globalUpdate();
@@ -198,8 +196,8 @@ public class BenchmarkModel {
     this.prtmapController.addGraph(result);
   }
   
-  public ImageViewer getImageViewer() {
-    return this.imageViewer;
+  public ImageViewerController getImageViewerController() {
+    return this.imageViewerController;
   }
   
   public void initFeatureViewer(BenchmarkController benchmarkController) {
