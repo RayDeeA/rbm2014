@@ -3,8 +3,6 @@ package de.htw.iconn.imageviewer;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.badlogic.gdx.math.Vector2;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -14,15 +12,15 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import com.badlogic.gdx.math.Vector2;
+
 import de.htw.iconn.main.AController;
-import de.htw.iconn.views.PRTMAPModel;
 
 public class ImageViewerController extends AController implements EventHandler {
 
