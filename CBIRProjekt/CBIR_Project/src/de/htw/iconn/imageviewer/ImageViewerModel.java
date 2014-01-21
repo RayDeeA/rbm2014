@@ -10,7 +10,6 @@ import javafx.scene.input.ScrollEvent;
 
 import com.badlogic.gdx.math.Vector2;
 
-import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.Pic;
 import de.htw.iconn.imageviewer.drawables.ADrawable;
 import de.htw.iconn.imageviewer.drawables.FlowGroup;
@@ -51,7 +50,8 @@ public class ImageViewerModel {
   }
 
   public void setImages(Pic[] images) {
-
+    
+    paper = new Paper();
     ArrayList<ADrawable> elements = new ArrayList<>();
     for (Pic p : images) {
       elements.add(new Image(p));
@@ -64,6 +64,7 @@ public class ImageViewerModel {
 
     draw();
   }
+  
   void zoomFitCamera(double factor) {
     float w, h;
 
