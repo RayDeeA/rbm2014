@@ -6,7 +6,6 @@
 
 package de.htw.iconn.views;
 
-import de.htw.iconn.rbm.ARBMAdapter;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.settings.RBMSettingsMainController;
 import de.htw.iconn.settings.RBMSettingsWeightsController;

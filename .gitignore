@@ -1,5 +1,6 @@
 *.class
 *.classpath
+CBIRProjekt/bin
 CBIRProjekt/cma/bin
 CBIRProjekt/RBMLogs
 CBIRProjekt/test.xml

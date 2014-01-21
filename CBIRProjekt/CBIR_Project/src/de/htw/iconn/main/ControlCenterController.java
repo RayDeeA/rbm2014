@@ -85,9 +85,7 @@ public class ControlCenterController extends AController {
             Logger.getLogger(ControlCenterController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
+
     private void addRemover(){
         ObservableList<MenuItem> items = mnu_removeRBM.getItems();
         int rbmIndex = items.size();

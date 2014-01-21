@@ -1,12 +1,14 @@
 package de.htw.iconn.rbm;
 
+import de.htw.iconn.image.DataStatistics;
 import de.htw.iconn.logistic.ILogistic;
+
 import java.util.Random;
 
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
-public class RBMJBlasOpti implements IRBM {
+public class RBMJBlasAVG implements IRBM {
 
     private final float learnRate;
     private final ILogistic logisticFunction;
@@ -15,7 +17,7 @@ public class RBMJBlasOpti implements IRBM {
 
     private FloatMatrix weights;
 
-    public RBMJBlasOpti(int inputSize, int outputSize, float learningRate, ILogistic logisticFunction, boolean useSeed, int seed, float[][] weights) {
+    public RBMJBlasAVG(int inputSize, int outputSize, float learningRate, ILogistic logisticFunction, boolean useSeed, int seed, float[][] weights) {
         this.learnRate = learningRate;
         this.logisticFunction = logisticFunction;
 
@@ -45,6 +47,9 @@ public class RBMJBlasOpti implements IRBM {
     @Override
     public float error(float[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
+        
+        FloatMatrix avgVector = DataStatistics.getMean(data);
+        data.subiColumnVector(avgVector);
 
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
         final FloatMatrix dataWithBiasTrans = dataWithBias.transpose();
@@ -80,6 +85,9 @@ public class RBMJBlasOpti implements IRBM {
         
         // neg_visible_probs
         logisticFunction.function(visible);
+        
+        FloatMatrix visibleAvgVector = DataStatistics.getMean(visible);
+        visible.subiColumnVector(visibleAvgVector);
 
         // Fix Bias
         visible.putColumn(0, resetBiasVisible);
@@ -99,14 +107,16 @@ public class RBMJBlasOpti implements IRBM {
     @Override
     public void train(float[][] trainingData, StoppingCondition stop, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
+
+        FloatMatrix avgVector = DataStatistics.getMean(data);
+        data.subiColumnVector(avgVector);
         
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
-        
         final FloatMatrix dataWithBiasTrans = dataWithBias.transpose();
         final FloatMatrix localWeights = this.weights;
         final FloatMatrix hidden = new FloatMatrix(dataWithBias.rows, localWeights.columns);
         FloatMatrix hiddenStates = new FloatMatrix(dataWithBias.rows, localWeights.columns);
-        final FloatMatrix visible = new FloatMatrix(hidden.rows, localWeights.rows);
+        FloatMatrix visible = new FloatMatrix(hidden.rows, localWeights.rows);
         final FloatMatrix posAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
         final FloatMatrix negAssociations = new FloatMatrix(dataWithBiasTrans.rows, hidden.columns);
         final FloatMatrix resetBiasHidden = FloatMatrix.ones(hidden.getRows(), 1);
@@ -136,6 +146,9 @@ public class RBMJBlasOpti implements IRBM {
             
             // neg_visible_probs
             logisticFunction.function(visible);
+            
+            FloatMatrix visibleAvgVector = DataStatistics.getMean(visible);
+            visible.subiColumnVector(visibleAvgVector);
 
             // Fix Bias
             visible.putColumn(0, resetBiasVisible);
@@ -152,9 +165,10 @@ public class RBMJBlasOpti implements IRBM {
             // Update weights
             localWeights.addi((posAssociations.sub(negAssociations)).div(data.getRows()).mul(this.learnRate));
             error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(visible), 2.0f).sum() / trainingData.length / localWeights.getRows());
-
+            
             stop.update(error);
         }
+
         System.out.println(error);
     }
 
@@ -167,8 +181,14 @@ public class RBMJBlasOpti implements IRBM {
         final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
 
+        FloatMatrix localWeights = this.weights.dup();
+        final FloatMatrix c = localWeights.getRow(0);  
+        final FloatMatrix u = DataStatistics.getMean(c);
+        final FloatMatrix cNew = c.sub((u.transpose()).mmul(localWeights));
+        localWeights.putRow(0, cNew);
+        
         // Calculate the activations of the hidden units.
-        final FloatMatrix hiddenActivations = dataWithBias.mmul(this.weights);
+        final FloatMatrix hiddenActivations = dataWithBias.mmul(localWeights);
 
         // Calculate the probabilities of turning the hidden units on.
         FloatMatrix hiddenNodes = logisticFunction.function(hiddenActivations);
@@ -201,8 +221,14 @@ public class RBMJBlasOpti implements IRBM {
         final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
 
+        FloatMatrix localWeights = this.weights.dup();
+        final FloatMatrix c = localWeights.getRow(0);  
+        final FloatMatrix u = new FloatMatrix(localWeights.getRows()).fill(0.8f);
+        final FloatMatrix cNew = c.sub((u.transpose()).mmul(localWeights));
+        localWeights.putRow(0, cNew);
+        
         // Calculate the activations of the visible units.
-        final FloatMatrix visibleActivations = dataWithBias.mmul(weights.transpose());
+        final FloatMatrix visibleActivations = dataWithBias.mmul(localWeights.transpose());
 
         // Calculate the probabilities of turning the visible units on.
         FloatMatrix visibleNodes = logisticFunction.function(visibleActivations);

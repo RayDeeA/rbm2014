@@ -119,6 +119,7 @@ public class ImageViewer { //extends AController implements IVisualizeObserver
                 ImageViewer.this.show();
             }
         };
+        
         this.scene.widthProperty().addListener(onResize);
         this.scene.heightProperty().addListener(onResize);
 

@@ -44,11 +44,12 @@ public class DataConverter {
 
             data[i] = intensity;
         }
+        
         if(binarize) {
         	binarizeImage(data);
         }
         
-        float scale = maxData - minData;
+      float scale = maxData - minData;
     	for(int i = 0; i < data.length; i++) {
     		data[i] = minData + data[i] * scale;
     	}
@@ -70,25 +71,11 @@ public class DataConverter {
             int g = (argb >> 8) & 0xFF;
             int b = (argb) & 0xFF;
             
-            float intensity = Math.max(0, Math.min(1.0f, (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f));
-            
-            if(invert) {
-            	intensity = 1.0f - intensity;
-            }
-
+            float intensity = Math.max(0.0f, Math.min(1.0f, (float)(0.299 * r + 0.587 * g + 0.114 * b) / 255.0f));
             data[p] = intensity;
         }
-        if(binarize) {
-        	binarizeImage(data);
-        }
-        
-        float scale = maxData - minData;
-    	for(int i = 0; i < data.length; i++) {
-    		float value = data[i];
-    		data[i] = minData + value * scale;
-    	}
 
-        return data;
+        return processPixelIntensityData(data, edgeLength, binarize, invert, minData, maxData);
     }
     
     private static void binarizeImage(float[] data) {

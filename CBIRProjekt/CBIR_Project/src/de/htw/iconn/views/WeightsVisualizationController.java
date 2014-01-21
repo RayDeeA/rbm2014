@@ -7,7 +7,6 @@ package de.htw.iconn.views;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.enhancement.IVisualizeObserver;
 import de.htw.iconn.enhancement.RBMInfoPackage;
-import de.htw.iconn.rbm.ARBMAdapter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
