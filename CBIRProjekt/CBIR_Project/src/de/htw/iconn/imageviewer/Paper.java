@@ -16,6 +16,7 @@ public class Paper {
 	}
 
 	public Paper() {
+	  autoSize();
 	}
 
 	public void autoSize() {

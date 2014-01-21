@@ -6,16 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class ADrawable {
 
-	protected final Vector2 pos = new Vector2();
-	protected final Vector2 size = new Vector2();
+//	protected final Vector2 pos = new Vector2();
+//	protected final Vector2 size = new Vector2();
 
-	public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
+  public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom);
+  public abstract void draw(GraphicsContext gc, Vector2 offset, double zoom, Vector2 newSize);
 
-	public Vector2 getPos() {
-		return pos.cpy();
-	}
+	public abstract Vector2 getPos();
 
-	public Vector2 getSize() {
-		return size.cpy();
-	}
+	public abstract Vector2 getSize();
+  public abstract void setPos(Vector2 p) ;
 }
