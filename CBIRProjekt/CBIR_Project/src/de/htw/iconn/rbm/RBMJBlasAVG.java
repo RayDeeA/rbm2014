@@ -16,6 +16,7 @@ public class RBMJBlasAVG implements IRBM {
     private float error;
 
     private FloatMatrix weights;
+    private FloatMatrix avgVector;
 
     public RBMJBlasAVG(int inputSize, int outputSize, float learningRate, ILogistic logisticFunction, boolean useSeed, int seed, float[][] weights) {
         this.learnRate = learningRate;
@@ -48,7 +49,7 @@ public class RBMJBlasAVG implements IRBM {
     public float error(float[][] trainingData, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
         
-        FloatMatrix avgVector = DataStatistics.getMean(data);
+        avgVector = DataStatistics.getMean(data);
         data.subiColumnVector(avgVector);
 
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
@@ -86,8 +87,7 @@ public class RBMJBlasAVG implements IRBM {
         // neg_visible_probs
         logisticFunction.function(visible);
         
-        FloatMatrix visibleAvgVector = DataStatistics.getMean(visible);
-        visible.subiColumnVector(visibleAvgVector);
+        visible.subiColumnVector(avgVector);
 
         // Fix Bias
         visible.putColumn(0, resetBiasVisible);
@@ -108,7 +108,7 @@ public class RBMJBlasAVG implements IRBM {
     public void train(float[][] trainingData, StoppingCondition stop, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
 
-        FloatMatrix avgVector = DataStatistics.getMean(data);
+        avgVector = DataStatistics.getMean(data);
         data.subiColumnVector(avgVector);
         
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
@@ -147,8 +147,7 @@ public class RBMJBlasAVG implements IRBM {
             // neg_visible_probs
             logisticFunction.function(visible);
             
-            FloatMatrix visibleAvgVector = DataStatistics.getMean(visible);
-            visible.subiColumnVector(visibleAvgVector);
+            visible.subiColumnVector(avgVector);
 
             // Fix Bias
             visible.putColumn(0, resetBiasVisible);
@@ -163,7 +162,7 @@ public class RBMJBlasAVG implements IRBM {
             forkBlas.pmmuli(visible.transpose(), hidden, negAssociations);
 
             // Update weights
-            localWeights.addi((posAssociations.sub(negAssociations)).div(data.getRows()).mul(this.learnRate));
+            localWeights.addi((posAssociations.sub(negAssociations)).div((float)data.getRows()).mul(this.learnRate));
             error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(visible), 2.0f).sum() / trainingData.length / localWeights.getRows());
             
             stop.update(error);
@@ -176,19 +175,15 @@ public class RBMJBlasAVG implements IRBM {
     public float[][] getHidden(float[][] data, boolean binarizeHidden) {
 
         FloatMatrix dataMatrix = new FloatMatrix(data);
+        avgVector = DataStatistics.getMean(dataMatrix);
+        dataMatrix.subiColumnVector(avgVector);
 
         // Insert bias units of 1 into the first column of data.
         final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
-
-        FloatMatrix localWeights = this.weights.dup();
-        final FloatMatrix c = localWeights.getRow(0);  
-        final FloatMatrix u = DataStatistics.getMean(c);
-        final FloatMatrix cNew = c.sub((u.transpose()).mmul(localWeights));
-        localWeights.putRow(0, cNew);
         
         // Calculate the activations of the hidden units.
-        final FloatMatrix hiddenActivations = dataWithBias.mmul(localWeights);
+        final FloatMatrix hiddenActivations = dataWithBias.mmul(this.weights);
 
         // Calculate the probabilities of turning the hidden units on.
         FloatMatrix hiddenNodes = logisticFunction.function(hiddenActivations);
@@ -216,19 +211,13 @@ public class RBMJBlasAVG implements IRBM {
     public float[][] getVisible(float[][] data, boolean binarizeVisible) {
 
         FloatMatrix dataMatrix = new FloatMatrix(data);
-
+        
         // Insert bias units of 1 into the first column of data.
         final FloatMatrix oneVector = FloatMatrix.ones(dataMatrix.getRows(), 1);
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(oneVector, dataMatrix);
-
-        FloatMatrix localWeights = this.weights.dup();
-        final FloatMatrix c = localWeights.getRow(0);  
-        final FloatMatrix u = new FloatMatrix(localWeights.getRows()).fill(0.8f);
-        final FloatMatrix cNew = c.sub((u.transpose()).mmul(localWeights));
-        localWeights.putRow(0, cNew);
         
         // Calculate the activations of the visible units.
-        final FloatMatrix visibleActivations = dataWithBias.mmul(localWeights.transpose());
+        final FloatMatrix visibleActivations = dataWithBias.mmul(this.weights.transpose());
 
         // Calculate the probabilities of turning the visible units on.
         FloatMatrix visibleNodes = logisticFunction.function(visibleActivations);

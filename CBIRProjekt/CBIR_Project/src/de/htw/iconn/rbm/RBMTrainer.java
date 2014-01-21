@@ -67,7 +67,7 @@ public class RBMTrainer {
         boolean useSeed = weightsModel.isUseSeed();
         float[][] weights = weightsModel.getWeights();
 
-        return new RBMJBlasOpti(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights);
+        return new RBMJBlasAVG(inputSize, outputSize, learningRate, logisticFunction, useSeed, seed, weights);
     }
 
     public void trainSingleRBM(RBMSettingsController controller) {
