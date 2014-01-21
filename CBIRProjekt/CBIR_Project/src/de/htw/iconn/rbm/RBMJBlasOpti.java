@@ -100,8 +100,10 @@ public class RBMJBlasOpti implements IRBM {
     public void train(float[][] trainingData, StoppingCondition stop, boolean binarizeHidden, boolean binarizeVisible) {
         FloatMatrix data = new FloatMatrix(trainingData);
         
+        /*
         int inputSize = trainingData.length;
         int dataSize = trainingData[0].length;
+        
         
         float[] avgVector = new float[inputSize];
         
@@ -115,7 +117,8 @@ public class RBMJBlasOpti implements IRBM {
         
         FloatMatrix avg = new FloatMatrix(avgVector);
         
-        // final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(avg, data);
+        final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(avg, data);
+        */
         final FloatMatrix dataWithBias = FloatMatrix.concatHorizontally(FloatMatrix.ones(data.getRows(), 1), data);
         
         
