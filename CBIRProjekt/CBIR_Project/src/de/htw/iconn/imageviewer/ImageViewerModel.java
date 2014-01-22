@@ -37,31 +37,25 @@ public class ImageViewerModel {
 		setSize(new Vector2(600, 400));
 
 		gc = canvas.getGraphicsContext2D();
-
-		paper = new Paper();
-		// paper.addDrawable(new Image(new Pic()));
-		// paper.autoSize();
-
 		camera = new Camera();
-		zoomFitCamera(.9f);
-		centerCamera();
-
-		draw();
 	}
 
 	public void setImages(Pic[] images) {
 
+		// sort images according to rank
 		java.util.Arrays.sort(images);
 
 		paper = new Paper();
+
 		ArrayList<ADrawable> elements = new ArrayList<>();
 		for (Pic p : images) {
 			elements.add(new Image(p));
 		}
+
 		paper.addDrawable(new FlowGroup(elements, canvas));
 		paper.autoSize();
 
-		zoomFitCamera(.9f);
+		zoomFitCamera(.95f);
 		centerCamera();
 
 		draw();
