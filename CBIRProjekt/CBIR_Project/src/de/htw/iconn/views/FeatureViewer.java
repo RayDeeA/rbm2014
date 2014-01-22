@@ -56,7 +56,7 @@ public class FeatureViewer extends AController {
       
       float[] visibleData = rbmTrainer.getVisibleAllRBMs1D(benchmarkController.getModel(), hiddenData, false);
       
-      BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0);
+      BufferedImage image = DataConverter.pixelDataToImage(visibleData, 0, this.benchmarkController.getModel().isRgb());
       
       Pic pic = new Pic();
       pic.setDisplayImage(image);

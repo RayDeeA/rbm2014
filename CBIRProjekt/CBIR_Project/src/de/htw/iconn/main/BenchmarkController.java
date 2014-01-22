@@ -66,6 +66,8 @@ public class BenchmarkController extends AController {
   @FXML
   private CheckBox               cbx_Shuffle;
   @FXML
+  private CheckBox				 cbx_RGB;
+  @FXML
   private TextField              txt_imageEdgeSize;
   @FXML
   private TextField              txt_MinData;
@@ -181,6 +183,11 @@ public class BenchmarkController extends AController {
   @FXML
   private void cbx_ShuffleAction(ActionEvent event) {
     this.model.setShuffleImages(this.cbx_Shuffle.isSelected());
+  }
+  
+  @FXML
+  private void cbx_RGBAction(ActionEvent event) {
+	this.model.setRgb(this.cbx_RGB.isSelected());
   }
   
   @FXML

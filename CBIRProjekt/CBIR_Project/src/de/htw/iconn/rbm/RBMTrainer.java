@@ -308,19 +308,19 @@ public class RBMTrainer {
     }
     
     public void updateRBMs(BenchmarkModel benchmarkModel){
-
-        int inputSize = benchmarkModel.getInputSize();
         float[][] data = benchmarkModel.getInputData();
+        int inputSize = benchmarkModel.getImageEdgeSize() * benchmarkModel.getImageEdgeSize();
+        
         LinkedList<RBMSettingsController> rbmSettingsList = benchmarkModel.getRbmSettingsList();
         for(RBMSettingsController settingsController : rbmSettingsList){
             RBMSettingsModel settingsModel = settingsController.getModel();
             RBMSettingsMainModel mainModel = settingsModel.getController(RBMSettingsMainController.class).getModel();
             RBMSettingsWeightsModel weightsModel = settingsModel.getController(RBMSettingsWeightsController.class).getModel();
-            settingsModel.setData(data);
             mainModel.setInputSize(inputSize);
+            settingsModel.setData(data);
             float[][] weights = weightsModel.getWeights();
             if(weights != null){
-                if(weights.length != inputSize + 1 || weights[0].length != mainModel.getOutputSize() + 1){
+                if(weights.length != mainModel.getInputSize() + 1 || weights[0].length != mainModel.getOutputSize() + 1){
                     weightsModel.setWeights(null);
                 }
             }

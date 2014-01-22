@@ -11,7 +11,7 @@ public class TrainingQualityTest {
 	
 	public static float getMSE(BenchmarkModel benchmarkModel) {
 		File folder = Chooser.openDirectoryChooser("CBIR_Project/images");
-		ImageManager imageManager = new ImageManager(folder, benchmarkModel.isSorted(), benchmarkModel.getImageEdgeSize(), benchmarkModel.isBinarizeImages(), benchmarkModel.isInvertImages(), benchmarkModel.getMinData(), benchmarkModel.getMaxData());
+		ImageManager imageManager = new ImageManager(folder, benchmarkModel);
 		
 		float[][] originalData = imageManager.getImageData();
 		float[][] synthesizedData;

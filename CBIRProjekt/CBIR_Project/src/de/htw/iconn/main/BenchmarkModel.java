@@ -58,6 +58,7 @@ public class BenchmarkModel {
   private float                                   maxData           = 1.0f;
   @Conserve
   private int                                     imageEdgeSize     = 28;
+private boolean isRgb;
   
   public boolean isBinarizeImages() {
     return binarizeImages;
@@ -83,8 +84,25 @@ public class BenchmarkModel {
     return invertImages;
   }
   
+  public boolean isRgb() {
+	  return isRgb;
+  }
+
+  public void setRgb(boolean isRgb) {
+	  this.isRgb = isRgb;
+	    for (int i = 0; i < rbmSettingsList.size(); ++i) {
+	      rbmSettingsList.get(i).getModel().getController(RBMSettingsMainController.class).getModel().setRgb(this.isRgb);
+	    }
+	    this.imageManager.applyChanges(this);
+	    this.imageViewerController.getModel().setImages(this.imageManager);
+	    this.globalUpdate();
+  }
+  
   public void setImageEdgeSize(int imageEdgeSize) {
     this.imageEdgeSize = imageEdgeSize;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public int getSelectedMAPTest() {
@@ -127,8 +145,8 @@ public class BenchmarkModel {
   }
   
   public void setImageManager(File file) {
-    this.imageManager = new ImageManager(file, sorted, this.imageEdgeSize, this.binarizeImages, this.invertImages, this.minData, this.maxData);
-    this.imageViewerController.getModel().setImages(imageManager.getImages());
+    this.imageManager = new ImageManager(file, this);
+    this.imageViewerController.getModel().setImages(imageManager);
     this.rbmTrainer = new RBMTrainer();
     this.globalUpdate();
   }
@@ -143,22 +161,37 @@ public class BenchmarkModel {
   
   public void setInvertImages(boolean invertImages) {
     this.invertImages = invertImages;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public void setBinarizeImages(boolean binarizeImages) {
     this.binarizeImages = binarizeImages;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public void setShuffleImages(boolean shuffled) {
     this.sorted = !shuffled;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public void setMinData(float minData) {
     this.minData = minData;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public void setMaxData(float maxData) {
     this.maxData = maxData;
+    this.imageManager.applyChanges(this);
+    this.imageViewerController.getModel().setImages(this.imageManager);
+    this.globalUpdate();
   }
   
   public void setShowImageViewer(boolean showImageViewer) {
@@ -210,7 +243,8 @@ public class BenchmarkModel {
   }
   
   public int getInputSize() {
-    return this.imageEdgeSize * this.imageEdgeSize;
+	  int size = this.imageEdgeSize * this.imageEdgeSize;
+	  return (this.isRgb) ? size * 3 : size;
   }
   
   public float[][] getInputData() {
@@ -245,4 +279,6 @@ public class BenchmarkModel {
   public float getMSE() {
 	  return TrainingQualityTest.getMSE(this);
   }
+
+  
 }
