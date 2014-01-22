@@ -2,31 +2,30 @@ package de.htw.iconn.image;
 
 import java.awt.image.BufferedImage;
 
-public class Pic extends Object{
+public class Pic implements Comparable<Pic> {
 
 	private String name;
 	private String type;
 	private int id;
-	
-	
+
 	private boolean isSelected;
-	private int rank;                 	// Position bei sortierter 1D-Reihenfolge
+	private int rank; // Position bei sortierter 1D-Reihenfolge
 	private float distance;
 	private int typeOccurrence;
-	
-	private float[] data;	
-	private float[] featureVector;	
-	
+
+	private float[] data;
+	private float[] featureVector;
+
 	// Originalgr����e des Bildes
-	private int origWidth; 
+	private int origWidth;
 	private int origHeight;
-	
-	// Zeichenpositionen 
+
+	// Zeichenpositionen
 	private int xStart = 0;
 	private int xLen = 0;
 	private int yStart = 0;
 	private int yLen = 0;
-	
+
 	// zur Visualisierung
 	private BufferedImage bImage;
 	private BufferedImage featureImage;
@@ -162,9 +161,18 @@ public class Pic extends Object{
 	public void setData(float[] data) {
 		this.data = data;
 	}
-	
+
 	public float[] getData() {
 		return this.data;
 	}
-	
+
+	@Override
+	public int compareTo(Pic argument) {
+		if (rank < argument.getRank())
+			return -1;
+		if (rank > argument.getRank())
+			return 1;
+		return 0;
+	}
+
 }

@@ -51,6 +51,8 @@ public class ImageViewerModel {
 
 	public void setImages(Pic[] images) {
 
+		java.util.Arrays.sort(images);
+
 		paper = new Paper();
 		ArrayList<ADrawable> elements = new ArrayList<>();
 		for (Pic p : images) {
@@ -128,9 +130,11 @@ public class ImageViewerModel {
 	}
 
 	void draw() {
+		// draw background
 		gc.setFill(new Color(0.2, 0.2, 0.2, 1));
 		gc.fillRect(0, 0, getSize().x, getSize().y);
 
+		// draw all drawables
 		for (ADrawable d : paper.getDrawables()) {
 			d.draw(gc, camera.getPos(), camera.getZoomFactor());
 		}
