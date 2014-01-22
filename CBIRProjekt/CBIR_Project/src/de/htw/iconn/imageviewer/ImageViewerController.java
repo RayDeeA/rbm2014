@@ -45,7 +45,6 @@ public class ImageViewerController extends AController implements EventHandler {
     root.getChildren().add(canvas);
     scene = new Scene(root, width, height);
     
-    
     viewStage.setScene(scene);
     viewStage.setOnCloseRequest(this);
     model = new ImageViewerModel(this);

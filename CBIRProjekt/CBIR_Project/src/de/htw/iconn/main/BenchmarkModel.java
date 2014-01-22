@@ -8,6 +8,7 @@ package de.htw.iconn.main;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.statistics.PrecisionRecallTester;
 import de.htw.iconn.statistics.PrecisionRecallTestResult;
+import de.htw.iconn.evaluation.TrainingQualityTest;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.image.Pic;
@@ -239,5 +240,9 @@ public class BenchmarkModel {
   
   public void setImages(Pic[] images) {
     this.imageViewerController.getModel().setImages(images);
+  }
+
+  public float getMSE() {
+	  return TrainingQualityTest.getMSE(this);
   }
 }

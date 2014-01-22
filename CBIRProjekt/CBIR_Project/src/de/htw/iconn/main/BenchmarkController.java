@@ -341,7 +341,7 @@ public class BenchmarkController extends AController {
   
   @FXML
   private void btn_perfomMseTestAction(ActionEvent event) {
-	  this.lbl_MseResult.setText("some value");
+	  lbl_MseResult.setText(String.valueOf((this.model.getMSE())));
   }
   
   // Evaluation
