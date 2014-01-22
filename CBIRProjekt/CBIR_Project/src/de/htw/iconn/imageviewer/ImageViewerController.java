@@ -33,14 +33,18 @@ public class ImageViewerController extends AController implements EventHandler {
   Canvas                   canvas;
   Scene                    scene;
   
+  private final int width = 600;
+  private final int height = 400;
+  
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     
-    canvas = new Canvas(600, 400);
+    canvas = new Canvas(width, height);
     
     Group root = new Group();
     root.getChildren().add(canvas);
-    scene = new Scene(root);
+    scene = new Scene(root, width, height);
+    
     
     viewStage.setScene(scene);
     viewStage.setOnCloseRequest(this);
