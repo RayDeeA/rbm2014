@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -17,136 +18,139 @@ import de.htw.iconn.imageviewer.drawables.Image;
 
 public class ImageViewerModel {
 
-  private final ImageViewerController controller;
+	private final ImageViewerController controller;
 
-  Camera                              camera;
-  Paper                               paper;
+	Camera camera;
+	Paper paper;
 
-  Vector2                             pos               = new Vector2(0, 0);
+	Vector2 pos = new Vector2(0, 0);
 
-  Canvas                              canvas;
-  GraphicsContext                     gc;
+	Canvas canvas;
+	GraphicsContext gc;
 
-  private Vector2                     lastMousePosition = new Vector2(0, 0);
+	private Vector2 lastMousePosition = new Vector2(0, 0);
 
+	ImageViewerModel(ImageViewerController controller) {
+		this.controller = controller;
+		canvas = controller.canvas;
 
-  ImageViewerModel(ImageViewerController controller) {
-    this.controller = controller;
-    canvas = controller.canvas;
+		setSize(new Vector2(600, 400));
 
-    setSize(new Vector2(600, 400));
+		gc = canvas.getGraphicsContext2D();
 
-    gc = canvas.getGraphicsContext2D();
+		paper = new Paper();
+		// paper.addDrawable(new Image(new Pic()));
+		// paper.autoSize();
 
-    paper = new Paper();
-    // paper.addDrawable(new Image(new Pic()));
-    // paper.autoSize();
+		camera = new Camera();
+		zoomFitCamera(.9f);
+		centerCamera();
 
-    camera = new Camera();
-    zoomFitCamera(.9f);
-    centerCamera();
+		draw();
+	}
 
-    draw();
-  }
+	public void setImages(Pic[] images) {
 
-  public void setImages(Pic[] images) {
-    
-    paper = new Paper();
-    ArrayList<ADrawable> elements = new ArrayList<>();
-    for (Pic p : images) {
-      elements.add(new Image(p));
-    }
-    paper.addDrawable(new FlowGroup(elements, canvas));
-    paper.autoSize();
+		paper = new Paper();
+		ArrayList<ADrawable> elements = new ArrayList<>();
+		for (Pic p : images) {
+			elements.add(new Image(p));
+		}
+		paper.addDrawable(new FlowGroup(elements, canvas));
+		paper.autoSize();
 
-    zoomFitCamera(.9f);
-    centerCamera();
+		zoomFitCamera(.9f);
+		centerCamera();
 
-    draw();
-  }
-  
-  void zoomFitCamera(double factor) {
-    float w, h;
+		draw();
+	}
 
-    w = getSize().x / paper.getSize().x;
-    h = getSize().y / paper.getSize().y;
+	void zoomFitCamera(double factor) {
+		float w, h;
 
-    camera.setZoomFactor((float) (factor * Math.min(w, h)));
-  }
+		w = getSize().x / paper.getSize().x;
+		h = getSize().y / paper.getSize().y;
 
-  void onKeyPressed(KeyEvent e) {
-    System.out.println(e.getCharacter());
-  }
+		camera.setZoomFactor((float) (factor * Math.min(w, h)));
+	}
 
-  Vector2 getMousePos(MouseEvent e) {
-    float a = (float) e.getX();
-    float b = (float) e.getY();
-    return new Vector2(a, b);
-  }
+	void onKeyPressed(KeyEvent e) {
+		System.out.println(e.getCharacter());
+	}
 
-  Vector2 getMousePos(ScrollEvent e) {
-    float a = (float) e.getX();
-    float b = (float) e.getY();
-    return new Vector2(a, b);
-  }
+	Vector2 getMousePos(MouseEvent e) {
+		float a = (float) e.getX();
+		float b = (float) e.getY();
+		return new Vector2(a, b);
+	}
 
-  void onResize(int w, int h) {
-    setSize(new Vector2(w, h));
-  }
+	Vector2 getMousePos(ScrollEvent e) {
+		float a = (float) e.getX();
+		float b = (float) e.getY();
+		return new Vector2(a, b);
+	}
 
-  void onMouseWheel(ScrollEvent e) {
-    
-    Vector2 mpos = getMousePos(e);
-    Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera.getZoomFactor()));
+	void onResize(int w, int h) {
+		setSize(new Vector2(w, h));
+	}
 
-    if (e.getDeltaY() > 0)
-      camera.setZoomFactor(camera.getZoomFactor() * 1.1f);
-    else
-      camera.setZoomFactor(camera.getZoomFactor() / 1.1f);
+	void onMouseWheel(ScrollEvent e) {
 
-    Vector2 newPos = (a.mul(camera.getZoomFactor())).sub(getMousePos(e));
-    
-    camera.setRelPos(newPos);
-  }
+		Vector2 mpos = getMousePos(e);
+		Vector2 a = (mpos.add(camera.getRelPos())).mul((float) (1 / camera
+				.getZoomFactor()));
 
-  void onMouseDown(MouseEvent e) {
-    lastMousePosition.set(getMousePos(e));
-  }
+		if (e.getDeltaY() > 0)
+			camera.setZoomFactor(camera.getZoomFactor() * 1.1f);
+		else
+			camera.setZoomFactor(camera.getZoomFactor() / 1.1f);
 
-  void onMouseDragging(MouseEvent e) {
-    Vector2 offset = lastMousePosition.sub(getMousePos(e));
-    camera.setPos(camera.getPos().add(offset.mul(1 / camera.getZoomFactor())));
-    lastMousePosition.set(getMousePos(e));
-  }
+		Vector2 newPos = (a.mul(camera.getZoomFactor())).sub(getMousePos(e));
 
-  void centerCamera() {
-    Vector2 desiredPaperSize = paper.getSize().mul(camera.getZoomFactor());
-    Vector2 tmp = desiredPaperSize.sub(getSize());
-    camera.setPos(tmp.mul(1 / (2 * camera.getZoomFactor())));
-  }
+		camera.setRelPos(newPos);
+	}
 
-  void draw() {
-    gc.fillRect(0, 0, getSize().x, getSize().y);
+	void onMouseDown(MouseEvent e) {
+		lastMousePosition.set(getMousePos(e));
+	}
 
-    for (ADrawable d : paper.getDrawables()) {
-      d.draw(gc, camera.getPos(), camera.getZoomFactor());
-    }
-  }
+	void onMouseDragging(MouseEvent e) {
+		Vector2 offset = lastMousePosition.sub(getMousePos(e));
+		camera.setPos(camera.getPos().add(
+				offset.mul(1 / camera.getZoomFactor())));
+		lastMousePosition.set(getMousePos(e));
+	}
 
-  void setSize(Vector2 s) {
-    canvas.setWidth(s.x);
-    canvas.setHeight(s.y);
-  }
+	void centerCamera() {
+		Vector2 desiredPaperSize = paper.getSize().mul(camera.getZoomFactor());
+		Vector2 tmp = desiredPaperSize.sub(getSize());
+		camera.setPos(tmp.mul(1 / (2 * camera.getZoomFactor())));
+	}
 
-  Vector2 getSize() {
-    return new Vector2((float) canvas.getWidth(), (float) canvas.getHeight());
-  }
+	void draw() {
+		gc.setFill(new Color(0.2, 0.2, 0.2, 1));
+		gc.fillRect(0, 0, getSize().x, getSize().y);
 
-  void setPos(Vector2 p) {
-    pos.set(p);
-  }
+		for (ADrawable d : paper.getDrawables()) {
+			d.draw(gc, camera.getPos(), camera.getZoomFactor());
+		}
+	}
 
-  Vector2 getPos() {
-    return pos;
-  }
+	void setSize(Vector2 s) {
+		canvas.setWidth(s.x);
+		canvas.setHeight(s.y);
+	}
+
+	Vector2 getSize() {
+		return new Vector2((float) canvas.getWidth(),
+				(float) canvas.getHeight());
+	}
+
+	void setPos(Vector2 p) {
+		pos.set(p);
+	}
+
+	Vector2 getPos() {
+		return pos;
+	}
 }
