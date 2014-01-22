@@ -24,12 +24,16 @@ import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -37,6 +41,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -105,6 +110,11 @@ public class BenchmarkController extends AController {
   // Evaluation
   @FXML
   private ComboBox<?>            cmb_mAPTests;
+    @FXML
+    private Font x1;
+    @FXML
+    private Button btn_cancelTraining;
+  
   
   // Training
   
@@ -386,7 +396,8 @@ public class BenchmarkController extends AController {
   
   @FXML
   private void btn_trainAllAction(ActionEvent event) {
-    this.model.trainRBMs();
+      model.trainRBMs();
+
   }
   
   @FXML
@@ -423,4 +434,10 @@ public class BenchmarkController extends AController {
       lbl_imageSetSelected.setText(this.model.getImageManager().getImageSetName());
     }
   }
+
+    @FXML
+    private void btn_cancelAction(ActionEvent event) {
+        this.model.cancelTraining();
+    }
+
 }

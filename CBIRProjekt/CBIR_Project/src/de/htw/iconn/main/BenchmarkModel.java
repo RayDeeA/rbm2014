@@ -280,5 +280,7 @@ private boolean isRgb;
 	  return TrainingQualityTest.getMSE(this);
   }
 
-  
+    void cancelTraining() {
+        this.rbmTrainer.cancelTraining();
+    }
 }

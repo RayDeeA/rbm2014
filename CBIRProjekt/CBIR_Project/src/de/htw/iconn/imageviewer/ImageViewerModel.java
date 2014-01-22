@@ -50,17 +50,20 @@ public class ImageViewerModel {
     draw();
   }
   
-  public void setImages(Pic[] images) {
-	    paper = new Paper();
-	    ArrayList<ADrawable> elements = new ArrayList<>();
-	    for (Pic p : images) {
-	      elements.add(new Image(p));
-	    }
-	    paper.addDrawable(new FlowGroup(elements, canvas));
-	    paper.autoSize();
+	public void setImages(Pic[] images) {
+		java.util.Arrays.sort(images);
 
 	    zoomFitCamera(.9f);
 	    centerCamera();
+
+		paper = new Paper();
+		ArrayList<ADrawable> elements = new ArrayList<>();
+		for (Pic p : images) {
+			elements.add(new Image(p));
+		}
+		paper.addDrawable(new FlowGroup(elements, canvas));
+		paper.autoSize();
+		zoomFitCamera(.9f);
 
 	    draw();
   }
