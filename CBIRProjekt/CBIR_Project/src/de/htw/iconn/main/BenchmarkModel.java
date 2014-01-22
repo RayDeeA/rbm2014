@@ -245,4 +245,8 @@ public class BenchmarkModel {
   public float getMSE() {
 	  return TrainingQualityTest.getMSE(this);
   }
+
+    void cancelTraining() {
+        this.rbmTrainer.cancelTraining();
+    }
 }

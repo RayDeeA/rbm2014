@@ -140,7 +140,7 @@ public class RBMSettingsController extends AController {
     
     @FXML
     private void btn_startRBMTrainingAction(ActionEvent event) {
-    	trainer.trainSingleRBM(this);
+//    	trainer.trainSingleRBM(this);
     }
 
 	@FXML

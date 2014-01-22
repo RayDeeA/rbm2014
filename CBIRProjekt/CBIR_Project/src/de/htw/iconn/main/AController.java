@@ -9,12 +9,13 @@ package de.htw.iconn.main;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 
 /**
  *
  * @author Moritz
  */
-public abstract class AController implements Initializable, IFXController {
+public abstract class AController implements Initializable {
    
     protected Object loadController(String url) throws IOException
     {
@@ -24,4 +25,6 @@ public abstract class AController implements Initializable, IFXController {
     }
 
     abstract public void update();
+    abstract public Node getView();
+    
 }
