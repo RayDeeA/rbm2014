@@ -7,9 +7,6 @@ package de.htw.iconn.image;
 
 import java.awt.image.BufferedImage;
 
-import de.htw.iconn.main.AController;
-import de.htw.iconn.enhancement.IVisualizeObserver;
-import de.htw.iconn.enhancement.RBMInfoPackage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -19,8 +16,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;

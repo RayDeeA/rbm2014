@@ -71,7 +71,11 @@ public class ImageViewerModel {
 	}
 
 	void onKeyPressed(KeyEvent e) {
-		System.out.println(e.getCharacter());
+		System.out.println("Key Pressed: " + e.getCharacter());
+		switch (e.getCharacter()) {
+		case "R":
+			break;
+		}
 	}
 
 	Vector2 getMousePos(MouseEvent e) {
