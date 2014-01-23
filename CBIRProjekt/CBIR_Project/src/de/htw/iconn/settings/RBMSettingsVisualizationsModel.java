@@ -5,6 +5,7 @@
  */
 package de.htw.iconn.settings;
 
+import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.views.WeightsVisualizationController;
@@ -18,21 +19,25 @@ public class RBMSettingsVisualizationsModel {
     private final RBMSettingsVisualizationsController controller;
     private final ErrorViewController errorViewController;
     private final WeightsVisualizationController weightsVisualizationController;
+	private final ImageViewerController imageViewController;
     
     @Conserve
     private boolean showWeights = false;
     @Conserve
     private boolean showErrorGraph = false;
     @Conserve
+    private boolean showFeatures = false;
+    @Conserve
     private int weightsInterval = 1;
     @Conserve
     private int errorInterval = 1;
+    @Conserve
+    private int featuresInterval = 1;
 
-    RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, 
-            ErrorViewController errorViewController,
-            WeightsVisualizationController weightsVisualizationController) {
+    RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, ErrorViewController errorViewController, WeightsVisualizationController weightsVisualizationController, ImageViewerController imageViewController) {
         this.weightsVisualizationController = weightsVisualizationController;
         this.errorViewController = errorViewController;
+        this.imageViewController = imageViewController;
         this.controller = controller;    
     }
 
@@ -72,11 +77,31 @@ public class RBMSettingsVisualizationsModel {
         return this.errorViewController;
     }
 
-    /**
+    public boolean isShowFeatures() {
+		return showFeatures;
+	}
+
+	public void setShowFeatures(boolean showFeatures) {
+		this.showFeatures = showFeatures;
+	}
+
+	public int getFeaturesInterval() {
+		return featuresInterval;
+	}
+
+	public void setFeaturesInterval(int featuresInterval) {
+		this.featuresInterval = featuresInterval;
+	}
+
+	/**
      * @return the weightsVisualizationController
      */
     public WeightsVisualizationController getWeightsVisualizationController() {
         return weightsVisualizationController;
+    }
+    
+    public ImageViewerController getImageViewController() {
+        return imageViewController;
     }
 
 }

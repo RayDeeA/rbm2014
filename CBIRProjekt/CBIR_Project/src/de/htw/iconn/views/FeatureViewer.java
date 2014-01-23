@@ -25,7 +25,7 @@ import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.settings.RBMSettingsMainController;
 
-public class FeatureViewer extends AController {
+public class FeatureViewer extends AController  {
   
   private BenchmarkController benchmarkController;
   ImageViewerController       imageViewerController;

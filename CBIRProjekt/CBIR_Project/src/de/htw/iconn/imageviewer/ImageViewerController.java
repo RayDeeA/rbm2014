@@ -1,6 +1,8 @@
 package de.htw.iconn.imageviewer;
 
+import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -20,9 +22,19 @@ import javafx.stage.Stage;
 
 import com.badlogic.gdx.math.Vector2;
 
+import de.htw.iconn.enhancement.IVisualizeObserver;
+import de.htw.iconn.enhancement.RBMInfoPackage;
+import de.htw.iconn.image.DataConverter;
+import de.htw.iconn.image.Pic;
+import de.htw.iconn.logistic.DefaultLogisticMatrixFunction;
 import de.htw.iconn.main.AController;
+import de.htw.iconn.rbm.IRBM;
+import de.htw.iconn.rbm.RBMJBlasAVG;
+import de.htw.iconn.rbm.RBMTrainer;
+import de.htw.iconn.settings.RBMSettingsController;
+import de.htw.iconn.settings.RBMSettingsMainController;
 
-public class ImageViewerController extends AController implements EventHandler {
+public class ImageViewerController extends AController implements EventHandler, IVisualizeObserver {
   
   private final Stage      viewStage = new Stage();
   
@@ -133,6 +145,36 @@ public class ImageViewerController extends AController implements EventHandler {
   @Override
   public void update() {
     // TODO Auto-generated method stub
+  }
+  
+  @Override
+  public void update(RBMInfoPackage pack) {
+	  
+	  int inputSize =  pack.getWeights().length;
+	  int outputSize = pack.getWeights()[0].length;
+      
+      IRBM rbm = new RBMJBlasAVG(inputSize, outputSize, 0.01f, new DefaultLogisticMatrixFunction(), false, 0, pack.getWeights());
+      
+      Pic[] pics = new Pic[outputSize];
+      
+      for (int i = 0; i < outputSize; i++) {
+        float[][] hiddenData = new float[1][outputSize];
+        hiddenData[0][i] = 1.0f;
+        
+        float[][] visibleData = rbm.getVisible(hiddenData, false);
+        
+        BufferedImage image = DataConverter.pixelDataToImage(visibleData[0], 0, false);
+        
+        Pic pic = new Pic();
+        pic.setDisplayImage(image);
+        pic.setOrigWidth(image.getWidth());
+        pic.setOrigHeight(image.getHeight());
+        pic.setRank(i);
+        pics[i] = pic;
+      }
+      
+      this.getModel().setImages(pics);
+      // return pics;
   }
   
 }

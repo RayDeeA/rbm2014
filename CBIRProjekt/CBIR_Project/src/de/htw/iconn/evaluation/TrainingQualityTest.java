@@ -21,13 +21,15 @@ public class TrainingQualityTest {
         float[][] hiddenDataForVis = trainer.getHiddenAllRBMs(benchmarkModel, originalData, false);
         synthesizedData = trainer.getVisibleAllRBMs(benchmarkModel, hiddenDataForVis, false);
         
-        float mean = 0.0f;
+        float error = 0.0f;
         for(int i = 0; i < originalData.length; i++) {
-        	mean += calcMSE(originalData[i], synthesizedData[i]);
+        	error += calcMSE(originalData[i], synthesizedData[i]);
         }
-        mean /= originalData.length;
         
-        return mean;
+        float norm = benchmarkModel.getImageEdgeSize() * benchmarkModel.getImageEdgeSize() * originalData.length;
+        error = (float) (255.0f * Math.sqrt( (1.0f / norm)  * error));
+        
+        return error;
 	}
 	
     private static float calcMSE(float[] data1, float[] data2) {
@@ -37,7 +39,7 @@ public class TrainingQualityTest {
     		float error = data1[i] - data2[i];
     		mse += error * error;
     	}
-    	mse /= (float)n;
+
     	return mse;
     }
 	

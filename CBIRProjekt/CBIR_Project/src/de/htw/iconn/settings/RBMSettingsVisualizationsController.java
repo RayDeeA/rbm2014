@@ -7,11 +7,13 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.enhancement.RBMEnhancer;
+import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.views.ErrorViewController;
+import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.views.WeightsVisualizationController;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -38,6 +40,8 @@ public class RBMSettingsVisualizationsController extends AController {
     private TextField txt_weightsInterval;
     @FXML
     private TextField txt_errorInterval;
+    @FXML
+    private TextField txt_featuresInterval;
 
     @FXML
     private AnchorPane view;
@@ -46,9 +50,13 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private CheckBox cbx_showErrorGraph;
     @FXML
+    private CheckBox cbx_showFeatures;
+    @FXML
     private Label lbl_weightsInterval;
     @FXML
     private Label lbl_errorInterval;
+    @FXML
+    private Label lbl_featuresInterval;
 
 
     /**
@@ -71,10 +79,16 @@ public class RBMSettingsVisualizationsController extends AController {
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ImageViewerController imageViewController = null;
+        try {
+        	imageViewController = (ImageViewerController) loadController("../views/ImageViewer.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lbl_errorInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         lbl_weightsInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
-        this.model = new RBMSettingsVisualizationsModel(this, errorViewController, 
-                weightsVisualizationController);
+        lbl_featuresInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
+        this.model = new RBMSettingsVisualizationsModel(this, errorViewController, weightsVisualizationController, imageViewController);
         
         this.update();
     }
@@ -105,8 +119,15 @@ public class RBMSettingsVisualizationsController extends AController {
         }
     }
 
-        private void cbx_showFeaturesAction(ActionEvent event) {
-        this.update();
+    @FXML
+    private void cbx_showFeaturesAction(ActionEvent event) {
+        this.model.setShowFeatures(cbx_showFeatures.isSelected());
+        if(cbx_showFeatures.isSelected()) {
+            this.model.getImageViewController().show();
+        }
+        else {
+            // this.model.getImageViewController().hide();
+        }
     }
 
     @Override
@@ -123,8 +144,10 @@ public class RBMSettingsVisualizationsController extends AController {
     public void update() {
         this.cbx_showErrorGraph.setSelected(this.model.isShowErrorGraph());
         this.cbx_showWeights.setSelected(this.model.isShowWeights());
+        this.cbx_showFeatures.setSelected(this.model.isShowFeatures());
         this.txt_weightsInterval.setText(new Integer(this.model.getWeightsInterval()).toString());
         this.txt_errorInterval.setText(new Integer(this.model.getErrorInterval()).toString());
+        this.txt_featuresInterval.setText(new Integer(this.model.getFeaturesInterval()).toString());
     }
 
     @FXML
@@ -144,11 +167,14 @@ public class RBMSettingsVisualizationsController extends AController {
 
         }
     }
+    
+    @FXML
+    private void txt_featuresIntervalKey(KeyEvent event) {
+        try {
+            this.model.setFeaturesInterval(Integer.parseInt(this.txt_featuresInterval.getText()));
+        } catch (NumberFormatException e) {
 
-
-    private void initFeaturesView() {
-//        this.featuresView = new ImageViewer(new ImageManager());
-//        this.featuresView.show();
+        }
     }
 
 }
