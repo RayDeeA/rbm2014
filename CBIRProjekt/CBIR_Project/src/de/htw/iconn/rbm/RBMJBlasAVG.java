@@ -8,9 +8,13 @@ import java.util.Random;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 
+import com.sun.xml.internal.bind.v2.util.FatalAdapter;
+
 public class RBMJBlasAVG implements IRBM {
 
-    private final float learnRate;
+    private float learnRate;
+    private float learnRatePrev;
+    
     private final ILogistic logisticFunction;
 
     private float error;
@@ -28,7 +32,7 @@ public class RBMJBlasAVG implements IRBM {
                 float[][] weightsTemp = new float[inputSize][outputSize];
                 for (int v = 0; v < inputSize; v++) {
                     for (int h = 0; h < outputSize; h++) {
-                        weightsTemp[v][h] = (float)(0.01f * random.nextGaussian());
+                        weightsTemp[v][h] = (float)(0.01 * random.nextGaussian());
                     }
                 }
                 this.weights = new FloatMatrix(weightsTemp);
@@ -161,6 +165,10 @@ public class RBMJBlasAVG implements IRBM {
             // neg_associations
             forkBlas.pmmuli(visible.transpose(), hidden, negAssociations);
 
+            // Adaptive learn rate
+           // this.learnRatePrev = learnRate;
+           // this.learnRate = (1.0f - 0.001f) * (1.0f - 0.001f) * learnRatePrev;
+            
             // Update weights
             localWeights.addi((posAssociations.sub(negAssociations)).div((float)data.getRows()).mul(this.learnRate));
             error = (float)Math.sqrt(MatrixFunctions.pow(dataWithBias.sub(visible), 2.0f).sum() / trainingData.length / localWeights.getRows());

@@ -177,11 +177,11 @@ public class ImageViewerModel implements IVisualizeObserver {
 	      
 	      IRBM rbm = new RBMJBlasAVG(inputSize, outputSize, 0.01f, new DefaultLogisticMatrixFunction(), false, 0, pack.getWeights());
 	      
-	      Pic[] pics = new Pic[outputSize];
+	      Pic[] pics = new Pic[outputSize - 1];
 	      
-	      for (int i = 0; i < outputSize; i++) {
-	        float[][] hiddenData = new float[1][outputSize];
-	        hiddenData[0][i] = 1.0f;
+	      for (int i = 0; i < outputSize - 1; i++) {
+	        float[][] hiddenData = new float[1][outputSize - 1];
+	        hiddenData[0][i] = 1.0f; 
 	        
 	        float[][] visibleData = rbm.getVisible(hiddenData, false);
 	        
@@ -196,6 +196,5 @@ public class ImageViewerModel implements IVisualizeObserver {
 	      }
 	      
 	      this.setImages(pics);
-	      // return pics;
 	  }
 }

@@ -143,9 +143,11 @@ public class RBMTrainer {
             rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, errorViewModel));
         }
 
-        ImageViewerModel featuresViewer = visualizationsModel.getImageViewController().getModel();
-        rbmEnhancer.addEnhancement(new TrainingVisualizer(featuresInterval, featuresViewer));
-         
+        
+        	ImageViewerModel featuresViewer = visualizationsModel.getImageViewController().getModel();
+        	rbmEnhancer.addEnhancement(new TrainingVisualizer(featuresInterval, featuresViewer));
+        
+        
         StoppingCondition stop;
         if (stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) {
             stop = new StoppingCondition(stoppingConditionModel.getEpochs(), stoppingConditionModel.getError());

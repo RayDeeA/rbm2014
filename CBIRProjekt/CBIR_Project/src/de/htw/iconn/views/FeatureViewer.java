@@ -32,7 +32,7 @@ public class FeatureViewer extends AController  {
   
   public FeatureViewer(BenchmarkController benchmarkController) {
     try {
-      imageViewerController = (ImageViewerController) loadController("../views/ImageViewer.fxml");
+      imageViewerController = (ImageViewerController) loadController("../views/imageviewer/ImageViewer.fxml");
     } catch (IOException ex) {
       Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
     }
