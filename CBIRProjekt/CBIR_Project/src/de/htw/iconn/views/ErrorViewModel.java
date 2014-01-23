@@ -2,7 +2,6 @@ package de.htw.iconn.views;
 
 import de.htw.iconn.enhancement.IVisualizeObserver;
 import de.htw.iconn.enhancement.RBMInfoPackage;
-import java.util.ArrayList;
 import java.util.LinkedList;
 public class ErrorViewModel implements IVisualizeObserver {
 
@@ -10,6 +9,8 @@ public class ErrorViewModel implements IVisualizeObserver {
 
     private final LinkedList<Float> errors;
     private final LinkedList<Integer> epochs;
+    private int lastEpoch = 0;
+    private float lastError = 0;
 
     public ErrorViewModel(ErrorViewController controller) {
         this.controller = controller;
@@ -19,8 +20,10 @@ public class ErrorViewModel implements IVisualizeObserver {
 
     @Override
     public void update(RBMInfoPackage pack) {
-        getErrors().add(pack.getError());
-        getEpochs().add(pack.getEpochs());
+        lastEpoch = pack.getEpochs();
+        lastError = pack.getError();
+        getErrors().add(getLastError());
+        getEpochs().add(getLastEpoch());
         controller.update();
     }
 
@@ -42,6 +45,20 @@ public class ErrorViewModel implements IVisualizeObserver {
      */
     public LinkedList<Integer> getEpochs() {
         return epochs;
+    }
+
+    /**
+     * @return the lastEpoch
+     */
+    public int getLastEpoch() {
+        return lastEpoch;
+    }
+
+    /**
+     * @return the lastError
+     */
+    public float getLastError() {
+        return lastError;
     }
 
 }
