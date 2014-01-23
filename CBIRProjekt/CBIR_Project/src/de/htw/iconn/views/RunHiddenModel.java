@@ -65,10 +65,10 @@ public class RunHiddenModel {
 
         File file = fileChooser.showOpenDialog(fileChooserStage);
         if (file != null) {
-            this.calcImageData = DataConverter.processPixelIntensityData(ImageHelper.loadImage(file), this.benchmarkModel.getImageEdgeSize(), this.benchmarkModel.isBinarizeImages(), this.benchmarkModel.isInvertImages(), this.benchmarkModel.getMinData(), this.benchmarkModel.getMaxData());
+            this.calcImageData = DataConverter.processPixelData(ImageHelper.loadImage(file), this.benchmarkModel.getImageEdgeSize(), this.benchmarkModel.isBinarizeImages(), this.benchmarkModel.isInvertImages(), this.benchmarkModel.getMinData(), this.benchmarkModel.getMaxData(), this.benchmarkModel.isRgb());
 
             ImageScaler imageScaler = new ImageScaler();
-            WritableImage image = SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(DataConverter.pixelIntensityDataToImage(this.calcImageData, this.benchmarkModel.getMinData()), visWidth, visHeight), null);
+            WritableImage image = SwingFXUtils.toFXImage(imageScaler.getScaledImageNeirestNeighbour(DataConverter.pixelDataToImage(this.calcImageData, this.benchmarkModel.getMinData(), this.benchmarkModel.isRgb()), visWidth, visHeight), null);
 
             return image;
         } else {
@@ -105,7 +105,7 @@ public class RunHiddenModel {
         }
         
         this.mse = calcMSE(this.calcImageData, visibleDataForVis);
-        this.visibleImage = DataConverter.pixelIntensityDataToImage(visibleDataForVis, 0.0f);
+        this.visibleImage = DataConverter.pixelDataToImage(visibleDataForVis, 0.0f, this.benchmarkModel.isRgb());
         BufferedImage hiddenImage = new BufferedImage(hiddenImageEdgeLength, hiddenImageEdgeLength + 1, BufferedImage.TYPE_INT_RGB);
         hiddenImage.setRGB(0, 0, hiddenImageEdgeLength, hiddenImageEdgeLength + 1, hiddenImagePixels, 0, hiddenImageEdgeLength);
         this.hiddenImage = hiddenImage;
@@ -188,7 +188,7 @@ public class RunHiddenModel {
 		RBMTrainer trainer = new  RBMTrainer();
 		float[] visibleData = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenData, false);
 
-		BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0);
+		BufferedImage image = DataConverter.pixelDataToImage(visibleData, 0, this.benchmarkModel.isRgb());
 		
 		ImageScaler imageScaler = new ImageScaler();
 

@@ -106,26 +106,26 @@ public class ErrorViewController extends AController implements EventHandler {
         final Integer[] epochs = this.getModel().getEpochs().toArray(new Integer[0]);
         
             series.getData().clear();
-        if(errors.length == 0) {
-            
-            double[] doubles = new double[inc++];
-            for (int i = 0; i < doubles.length; i++) {
-                doubles[i] = Math.random();              
-            }
-            for (int i = 0; i < doubles.length; i++) {
-                series.getData().add(new XYChart.Data<Number, Number>(
-                      i, 
-                      doubles[i]));            
-            }
-            
-
-        } else {
+//        if(errors.length == 0) {
+//            
+//            double[] doubles = new double[inc++];
+//            for (int i = 0; i < doubles.length; i++) {
+//                doubles[i] = Math.random();              
+//            }
+//            for (int i = 0; i < doubles.length; i++) {
+//                series.getData().add(new XYChart.Data<Number, Number>(
+//                      i, 
+//                      doubles[i]));            
+//            }
+//            
+//
+//        } else {
             for (int i = 0; i < epochs.length; i++) {
                 series.getData().add(new XYChart.Data<Number, Number>(
                       epochs[i], 
                       errors[i]));      
             }
-        }
+//        }
 
        
 

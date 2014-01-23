@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 
 import com.badlogic.gdx.math.Vector2;
 
+import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.Pic;
 import de.htw.iconn.imageviewer.drawables.ADrawable;
 import de.htw.iconn.imageviewer.drawables.FlowGroup;
@@ -35,13 +36,12 @@ public class ImageViewerModel {
 		canvas = controller.canvas;
 
 		setSize(new Vector2(600, 400));
-
 		gc = canvas.getGraphicsContext2D();
 		camera = new Camera();
+
 	}
 
 	public void setImages(Pic[] images) {
-
 		// sort images according to rank
 		java.util.Arrays.sort(images);
 
@@ -59,6 +59,11 @@ public class ImageViewerModel {
 		centerCamera();
 
 		draw();
+	}
+
+	public void setImages(ImageManager imageManager) {
+		Pic[] images = imageManager.getImages();
+		setImages(images);
 	}
 
 	void zoomFitCamera(double factor) {
@@ -133,6 +138,7 @@ public class ImageViewerModel {
 		gc.fillRect(0, 0, getSize().x, getSize().y);
 
 		// draw all drawables
+
 		for (ADrawable d : paper.getDrawables()) {
 			d.draw(gc, camera.getPos(), camera.getZoomFactor());
 		}

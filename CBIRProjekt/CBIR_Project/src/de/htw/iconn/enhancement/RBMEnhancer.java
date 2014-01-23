@@ -3,6 +3,7 @@ package de.htw.iconn.enhancement;
 import de.htw.iconn.rbm.IRBM;
 import de.htw.iconn.rbm.StoppingCondition;
 import java.util.LinkedList;
+import javafx.concurrent.Task;
 
 public class RBMEnhancer implements IRBM {
 	
@@ -11,6 +12,8 @@ public class RBMEnhancer implements IRBM {
 	private final LinkedList<IRBMEndTrainingEnhancement> endEnhancements;
         private final RBMInfoPackage info;
         public final static int BASE_INTERVAL = 100;
+        private Task<Void> task;
+        
 	
 	public RBMEnhancer(IRBM rbm) {
 		super();
@@ -42,7 +45,7 @@ public class RBMEnhancer implements IRBM {
 	@Override
 	public void train(float[][] trainingData, StoppingCondition stop, boolean useHiddenStates, boolean useVisibleStates) {
 		boolean updateModel;
-		while(stop.isNotDone()) {
+		while(stop.isNotDone() && !task.isCancelled()) {
 			updateModel = true;
                         
                         StoppingCondition intervalStop = new StoppingCondition(
@@ -98,5 +101,12 @@ public class RBMEnhancer implements IRBM {
 	public float[][] getWeights() {
 		return rbm.getWeights();
 	}
+
+    /**
+     * @param task the task to set
+     */
+    public void setTask(Task<Void> task) {
+        this.task = task;
+    }
 
 }

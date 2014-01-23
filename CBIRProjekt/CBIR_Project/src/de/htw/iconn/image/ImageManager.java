@@ -1,5 +1,6 @@
 package de.htw.iconn.image;
 
+import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.tools.ShuffleArrayHelper;
 
 import java.awt.Graphics2D;
@@ -22,14 +23,18 @@ public class ImageManager {
     private File imageDirectory;
     private HashMap<String, List<Pic>> imageGroups;
 
-    public ImageManager(File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+	private BenchmarkModel benchmarkModel;
+
+    public ImageManager(File imageDirectory, BenchmarkModel benchmarkModel) {
+        this.benchmarkModel = benchmarkModel;
     	this.imageDirectory = imageDirectory;
         this.imageGroups = new HashMap<String, List<Pic>>();
-        this.loadImages(imageDirectory, sorted, edgeLength, binarize, invert, minData, maxData);
+        this.loadImages(imageDirectory);
     }
     
     public ImageManager(File imageDirectory) {
     	this.imageDirectory = imageDirectory;
+    	this.loadImages(imageDirectory);
     }
 
     public int getImageCount() {
@@ -53,7 +58,7 @@ public class ImageManager {
      *
      * @param imageDirectory
      */
-    public void loadImages(final File imageDirectory, boolean sorted, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+    public void loadImages(final File imageDirectory) {
         this.imageDirectory = imageDirectory;
 
         // besorge alle gültige Bilddateien aus dem Verzeichnis
@@ -74,7 +79,7 @@ public class ImageManager {
         // lade alle Bilder
         List<Pic> list = new ArrayList<Pic>();
         for (int i = 0; i < imageCount; i++) {
-            Pic image = loadImage(imageFiles[i], edgeLength, binarize, invert, minData, maxData);
+            Pic image = loadImage(imageFiles[i]);
             if (image != null) {
                 image.setId(i);
                 list.add(image);
@@ -94,7 +99,7 @@ public class ImageManager {
             }
         }
         
-        if (!sorted) {
+        if (!this.benchmarkModel.isSorted()) {
             Pic[] picsShuffled = new Pic[this.images.length];
             System.arraycopy(this.images, 0, picsShuffled, 0, this.images.length);
             ShuffleArrayHelper<Pic> picsShuffler = new ShuffleArrayHelper<>();
@@ -140,10 +145,18 @@ public class ImageManager {
      * @param imageFile
      * @return
      */
-    private Pic loadImage(File imageFile, int edgeLength, boolean binarize, boolean invert, float minData, float maxData) {
+    private Pic loadImage(File imageFile) {
+    	
+    	int edgeLength = this.benchmarkModel.getImageEdgeSize();
+    	boolean binarize = this.benchmarkModel.isBinarizeImages();
+    	boolean invert = this.benchmarkModel.isInvertImages();
+    	float minData = this.benchmarkModel.getMinData();
+    	float maxData = this.benchmarkModel.getMaxData();
+    	boolean isRgb = this.benchmarkModel.isRgb();
+    	
         float[] imageData = null;
         try {
-        	imageData = DataConverter.processPixelIntensityData(ImageIO.read(imageFile), edgeLength, binarize, invert, minData, maxData);
+        	imageData = DataConverter.processPixelData(ImageIO.read(imageFile), edgeLength, binarize, invert, minData, maxData, isRgb);
         } catch (Exception e) {
             System.out.println("Could not load: " + imageFile.getAbsolutePath());
             e.printStackTrace();
@@ -172,7 +185,7 @@ public class ImageManager {
         currPic.setOrigHeight(ih);
         currPic.setData(imageData);
         
-        BufferedImage image = DataConverter.pixelIntensityDataToImage(imageData, minData);
+        BufferedImage image = DataConverter.pixelDataToImage(imageData, minData, isRgb);
         
         // Bild verkleinern
         BufferedImage currBi = new BufferedImage(nw, nh, BufferedImage.TYPE_INT_ARGB);
@@ -199,5 +212,10 @@ public class ImageManager {
 			data[i] = this.images[i].getData();
 		}
 		return data;
+	}
+
+	public void applyChanges(BenchmarkModel benchmarkModel) {
+		this.benchmarkModel = benchmarkModel;
+		loadImages(this.imageDirectory);
 	}
 }

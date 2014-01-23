@@ -54,7 +54,7 @@ public class ImageBuilderModel {
 			
 			float[] visibleData = rbmTrainer.getVisibleAllRBMs1D(benchmarkModel, hiddenData, false);
 
-			BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0);
+			BufferedImage image = DataConverter.pixelDataToImage(visibleData, 0, this.benchmarkModel.isRgb());
 			
 			ImageScaler imageScaler = new ImageScaler();
 
@@ -69,7 +69,7 @@ public class ImageBuilderModel {
 		RBMTrainer trainer = new RBMTrainer();
 		float[] visibleData = trainer.getVisibleAllRBMs1D(this.benchmarkModel, hiddenData, false);
 		
-		BufferedImage image = DataConverter.pixelIntensityDataToImage(visibleData, 0.0f);
+		BufferedImage image = DataConverter.pixelDataToImage(visibleData, 0.0f, this.benchmarkModel.isRgb());
 		
 		ImageScaler imageScaler = new ImageScaler();
 
