@@ -18,12 +18,12 @@ import de.htw.iconn.enhancement.RBMInfoPackage;
 import de.htw.iconn.image.DataConverter;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.image.Pic;
-import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.main.BenchmarkController;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.settings.RBMSettingsMainController;
+import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 public class FeatureViewer extends AController  {
   

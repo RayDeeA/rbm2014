@@ -21,7 +21,7 @@
         <Label fx:id="lbl_errorInterval" minHeight="14.000091552734375" prefHeight="15.0" text="x 100" GridPane.columnIndex="3" GridPane.rowIndex="1" />
         <CheckBox fx:id="cbx_showFeatures" mnemonicParsing="false" onAction="#cbx_showFeaturesAction" text="Features" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <Label id="Interval" text="Interval" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <TextField fx:id="txt_FeaturesInterval" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_featuresIntervalKey" prefWidth="-1.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+        <TextField id="txt_FeaturesInterval" fx:id="txt_featuresInterval" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#txt_featuresIntervalKey" prefWidth="-1.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
         <Label fx:id="lbl_FeaturesInterval" text="x 100" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       </children>
       <columnConstraints>

@@ -28,7 +28,10 @@ import de.htw.iconn.main.BenchmarkModel;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.views.ErrorViewModel;
+import de.htw.iconn.views.imageviewer.ImageViewerModel;
+
 import java.util.LinkedList;
+
 import javafx.concurrent.Task;
 
 /**
@@ -126,6 +129,7 @@ public class RBMTrainer {
 
         int weightsInterval = visualizationsModel.getWeightsInterval();
         int errorInterval = visualizationsModel.getErrorInterval();
+        int featuresInterval = visualizationsModel.getFeaturesInterval();
         //int featuresInterval = visualizationsModel.getFeaturesInterval();
 
         if (visualizationsModel.isShowWeights()) {
@@ -139,13 +143,9 @@ public class RBMTrainer {
             rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, errorViewModel));
         }
 
-        // TODO
-        /*
-         if (visualizationsModel.isShowFeatures()) {
-         ImageViewer featuresViewer = visualizationsModel.getFeatureViewer();
-         rbmEnhancer.addEnhancement(new TrainingVisualizer(errorInterval, featuresViewer));
-         }
-         */
+        ImageViewerModel featuresViewer = visualizationsModel.getImageViewController().getModel();
+        rbmEnhancer.addEnhancement(new TrainingVisualizer(featuresInterval, featuresViewer));
+         
         StoppingCondition stop;
         if (stoppingConditionModel.isEpochsOn() && stoppingConditionModel.isErrorOn()) {
             stop = new StoppingCondition(stoppingConditionModel.getEpochs(), stoppingConditionModel.getError());

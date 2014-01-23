@@ -6,12 +6,12 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.tools.Chooser;
-import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.ImageBuilderController;
 import de.htw.iconn.views.PRTMAPController;
 import de.htw.iconn.views.RunHiddenController;
+import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,7 +135,7 @@ public class BenchmarkController extends AController {
     
     ImageViewerController imageViewerController = null;
     try {
-      imageViewerController = (ImageViewerController) loadController("../views/ImageViewer.fxml");
+      imageViewerController = (ImageViewerController) loadController("../views/imageviewer/ImageViewer.fxml");
     } catch (IOException ex) {
       Logger.getLogger(BenchmarkController.class.getName()).log(Level.SEVERE, null, ex);
     }

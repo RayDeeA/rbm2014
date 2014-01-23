@@ -1,4 +1,4 @@
-package de.htw.iconn.imageviewer;
+package de.htw.iconn.views.imageviewer;
 
 import java.util.ArrayList;
 

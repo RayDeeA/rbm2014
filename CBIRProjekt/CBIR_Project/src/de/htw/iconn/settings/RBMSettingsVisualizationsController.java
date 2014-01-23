@@ -7,11 +7,11 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.enhancement.RBMEnhancer;
-import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.main.AController;
 import de.htw.iconn.views.WeightsVisualizationController;
+import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +56,7 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private Label lbl_errorInterval;
     @FXML
-    private Label lbl_featuresInterval;
+    private Label lbl_FeaturesInterval;
 
 
     /**
@@ -81,13 +81,13 @@ public class RBMSettingsVisualizationsController extends AController {
         }
         ImageViewerController imageViewController = null;
         try {
-        	imageViewController = (ImageViewerController) loadController("../views/ImageViewer.fxml");
+        	imageViewController = (ImageViewerController) loadController("../views/imageviewer/ImageViewer.fxml");
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
         lbl_errorInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         lbl_weightsInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
-        lbl_featuresInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
+        lbl_FeaturesInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         this.model = new RBMSettingsVisualizationsModel(this, errorViewController, weightsVisualizationController, imageViewController);
         
         this.update();

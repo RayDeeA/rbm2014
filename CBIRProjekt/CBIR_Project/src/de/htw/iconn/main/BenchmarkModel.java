@@ -12,7 +12,6 @@ import de.htw.iconn.evaluation.TrainingQualityTest;
 import de.htw.iconn.image.ImageManager;
 import de.htw.iconn.image.ImageViewer;
 import de.htw.iconn.image.Pic;
-import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.rbm.RBMTrainer;
 import de.htw.iconn.settings.RBMSettingsMainController;
@@ -22,6 +21,7 @@ import de.htw.iconn.settings.RBMSettingsWeightsController;
 import de.htw.iconn.settings.RBMSettingsWeightsModel;
 import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.views.PRTMAPController;
+import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 import java.io.File;
 import java.util.LinkedList;

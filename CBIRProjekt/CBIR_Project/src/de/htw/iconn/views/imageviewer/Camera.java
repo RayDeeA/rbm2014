@@ -1,4 +1,4 @@
-package de.htw.iconn.imageviewer;
+package de.htw.iconn.views.imageviewer;
 
 import com.badlogic.gdx.math.Vector2;
 

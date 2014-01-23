@@ -5,10 +5,10 @@
  */
 package de.htw.iconn.settings;
 
-import de.htw.iconn.imageviewer.ImageViewerController;
 import de.htw.iconn.persistence.Conserve;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.views.WeightsVisualizationController;
+import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 /**
  *
