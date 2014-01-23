@@ -92,49 +92,10 @@ public class ErrorViewController extends AController implements EventHandler {
         return view;
     }
 
-    public void setDimensions(int inputSize, int outputSize) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setDisplayDimensions() {
-
-    }
-    private void buildGraph() {
-
-        final Float[] errors = this.getModel().getErrors().toArray(new Float[0]);
-        final Integer[] epochs = this.getModel().getEpochs().toArray(new Integer[0]);
-        
-            series.getData().clear();
-//        if(errors.length == 0) {
-//            
-//            double[] doubles = new double[inc++];
-//            for (int i = 0; i < doubles.length; i++) {
-//                doubles[i] = Math.random();              
-//            }
-//            for (int i = 0; i < doubles.length; i++) {
-//                series.getData().add(new XYChart.Data<Number, Number>(
-//                      i, 
-//                      doubles[i]));            
-//            }
-//            
-//
-//        } else {
-            for (int i = 0; i < epochs.length; i++) {
-                series.getData().add(new XYChart.Data<Number, Number>(
-                      epochs[i], 
-                      errors[i]));      
-            }
-//        }
-
-       
-
-//        if (errors.size() != 0) {
-//            
-//          series.getData().add(new XYChart.Data<Number, Number>(
-//                    epochs.getLast(), 
-//                    errors.getLast()));
-//        }
+    private void buildGraph() {            
+          series.getData().add(new XYChart.Data<Number, Number>(
+                    getModel().getLastEpoch(), 
+                    getModel().getLastError()));
     }
 
     @Override
