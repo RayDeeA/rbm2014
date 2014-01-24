@@ -6,6 +6,7 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.persistence.Conserve;
+import de.htw.iconn.views.BarthelVisualizationController;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.views.WeightsVisualizationController;
 import de.htw.iconn.views.imageviewer.ImageViewerController;
@@ -20,6 +21,7 @@ public class RBMSettingsVisualizationsModel {
     private final ErrorViewController errorViewController;
     private final WeightsVisualizationController weightsVisualizationController;
 	private final ImageViewerController imageViewController;
+	private final BarthelVisualizationController barthelVisualizationController;
     
     @Conserve
     private boolean showWeights = false;
@@ -28,16 +30,22 @@ public class RBMSettingsVisualizationsModel {
     @Conserve
     private boolean showFeatures = false;
     @Conserve
+    private boolean showBarthel = false;
+    @Conserve
     private int weightsInterval = 1;
     @Conserve
     private int errorInterval = 1;
     @Conserve
     private int featuresInterval = 1;
+    @Conserve
+    private int barthelInterval = 1;
 
-    RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, ErrorViewController errorViewController, WeightsVisualizationController weightsVisualizationController, ImageViewerController imageViewController) {
+
+    RBMSettingsVisualizationsModel(RBMSettingsVisualizationsController controller, ErrorViewController errorViewController, WeightsVisualizationController weightsVisualizationController, ImageViewerController imageViewController, BarthelVisualizationController barthelVisualizationController) {
         this.weightsVisualizationController = weightsVisualizationController;
         this.errorViewController = errorViewController;
         this.imageViewController = imageViewController;
+        this.barthelVisualizationController = barthelVisualizationController;
         this.controller = controller;    
     }
 
@@ -56,6 +64,22 @@ public class RBMSettingsVisualizationsModel {
     public void setErrorInterval(int errorInterval) {
         this.errorInterval = errorInterval;
     }
+    
+	public int getFeaturesInterval() {
+		return featuresInterval;
+	}
+
+	public void setFeaturesInterval(int featuresInterval) {
+		this.featuresInterval = featuresInterval;
+	}
+	
+	public int getBarthelInterval() {
+		return barthelInterval;
+	}
+
+	public void setBarthelInterval(int barthelInterval) {
+		this.barthelInterval = barthelInterval;
+	}
 
     public boolean isShowWeights() {
         return showWeights;
@@ -72,11 +96,7 @@ public class RBMSettingsVisualizationsModel {
     public void setShowErrorGraph(boolean showErrorGraph) {
         this.showErrorGraph = showErrorGraph;
     }
-
-    public ErrorViewController getErrorViewController() {
-        return this.errorViewController;
-    }
-
+    
     public boolean isShowFeatures() {
 		return showFeatures;
 	}
@@ -84,14 +104,18 @@ public class RBMSettingsVisualizationsModel {
 	public void setShowFeatures(boolean showFeatures) {
 		this.showFeatures = showFeatures;
 	}
-
-	public int getFeaturesInterval() {
-		return featuresInterval;
+	
+    public boolean isShowBarthel() {
+		return showBarthel;
 	}
 
-	public void setFeaturesInterval(int featuresInterval) {
-		this.featuresInterval = featuresInterval;
+	public void setShowBarthel(boolean showBarthel) {
+		this.showBarthel = showBarthel;
 	}
+
+    public ErrorViewController getErrorViewController() {
+        return this.errorViewController;
+    }
 
 	/**
      * @return the weightsVisualizationController
@@ -102,6 +126,10 @@ public class RBMSettingsVisualizationsModel {
     
     public ImageViewerController getImageViewController() {
         return imageViewController;
+    }
+    
+    public BarthelVisualizationController getBarthelVisualizationController() {
+        return barthelVisualizationController;
     }
 
 }

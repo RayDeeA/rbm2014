@@ -7,6 +7,7 @@
 package de.htw.iconn.settings;
 
 import de.htw.iconn.enhancement.RBMEnhancer;
+import de.htw.iconn.views.BarthelVisualizationController;
 import de.htw.iconn.views.ErrorViewController;
 import de.htw.iconn.views.FeatureViewer;
 import de.htw.iconn.main.AController;
@@ -42,6 +43,8 @@ public class RBMSettingsVisualizationsController extends AController {
     private TextField txt_errorInterval;
     @FXML
     private TextField txt_featuresInterval;
+    @FXML
+    private TextField txt_BarthelInterval;
 
     @FXML
     private AnchorPane view;
@@ -52,11 +55,16 @@ public class RBMSettingsVisualizationsController extends AController {
     @FXML
     private CheckBox cbx_showFeatures;
     @FXML
+    private CheckBox cbx_showBarthel;
+    
+    @FXML
     private Label lbl_weightsInterval;
     @FXML
     private Label lbl_errorInterval;
     @FXML
     private Label lbl_FeaturesInterval;
+    @FXML
+    private Label lbl_BarthelInterval;
 
 
     /**
@@ -85,10 +93,16 @@ public class RBMSettingsVisualizationsController extends AController {
         } catch (IOException ex) {
             Logger.getLogger(RBMSettingsVisualizationsController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        BarthelVisualizationController barthelVisualizationController = null;
+        try {
+        	barthelVisualizationController = (BarthelVisualizationController) loadController("../views/BarthelVisualizationView.fxml");
+        } catch (IOException ex) {
+            Logger.getLogger(BarthelVisualizationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lbl_errorInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         lbl_weightsInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
         lbl_FeaturesInterval.setText("x " + RBMEnhancer.BASE_INTERVAL);
-        this.model = new RBMSettingsVisualizationsModel(this, errorViewController, weightsVisualizationController, imageViewController);
+        this.model = new RBMSettingsVisualizationsModel(this, errorViewController, weightsVisualizationController, imageViewController, barthelVisualizationController);
         
         this.update();
     }
@@ -126,7 +140,18 @@ public class RBMSettingsVisualizationsController extends AController {
             this.model.getImageViewController().show();
         }
         else {
-            // this.model.getImageViewController().hide();
+            this.model.getImageViewController().close();
+        }
+    }
+    
+    @FXML
+    private void cbx_showBarthelAction(ActionEvent event) {
+        this.model.setShowBarthel(cbx_showBarthel.isSelected());
+        if(cbx_showBarthel.isSelected()) {
+            this.model.getBarthelVisualizationController().show();
+        }
+        else {
+        	this.model.getBarthelVisualizationController().hide();
         }
     }
 
@@ -172,6 +197,15 @@ public class RBMSettingsVisualizationsController extends AController {
     private void txt_featuresIntervalKey(KeyEvent event) {
         try {
             this.model.setFeaturesInterval(Integer.parseInt(this.txt_featuresInterval.getText()));
+        } catch (NumberFormatException e) {
+
+        }
+    }
+    
+    @FXML
+    private void txt_BarthelIntervalKey(KeyEvent event) {
+        try {
+            this.model.setBarthelInterval(Integer.parseInt(this.txt_BarthelInterval.getText()));
         } catch (NumberFormatException e) {
 
         }
