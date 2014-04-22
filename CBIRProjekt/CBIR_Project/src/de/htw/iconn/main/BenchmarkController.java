@@ -6,11 +6,12 @@
 package de.htw.iconn.main;
 
 import de.htw.iconn.tools.Chooser;
-import de.htw.iconn.settings.RBMSettingsController;
 import de.htw.iconn.views.DaydreamController;
 import de.htw.iconn.views.ImageBuilderController;
+import de.htw.iconn.views.InImageDetectorController;
 import de.htw.iconn.views.PRTMAPController;
 import de.htw.iconn.views.RunHiddenController;
+import de.htw.iconn.views.VanGoghController;
 import de.htw.iconn.views.imageviewer.ImageViewerController;
 
 import java.io.File;
@@ -24,11 +25,8 @@ import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -106,6 +104,17 @@ public class BenchmarkController extends AController {
   private ToggleButton           btn_OpenImageBuilder;
   private ImageBuilderController imageBuilderController;
   private Stage                  imageBuilderStage;
+  
+  @FXML
+  private ToggleButton 				btn_OpenInImageDetector;
+  private InImageDetectorController inImageDetectorController;
+  private Stage                  	inImageDetectorStage;
+  
+  @FXML
+  private ToggleButton btn_vanGogh;
+  private VanGoghController vanGoghController;
+  private Stage vanGoghStage;
+
   
   // Evaluation
   @FXML
@@ -354,6 +363,75 @@ public class BenchmarkController extends AController {
     } catch (IOException ex) {
       ex.printStackTrace();
     }
+  }
+  
+  @FXML
+  private void btn_OpenInImageDetectorAction(ActionEvent event) {
+      try {
+          if (!btn_OpenInImageDetector.isSelected()) {
+              this.inImageDetectorStage.close();
+              return;
+          }
+
+          this.inImageDetectorController = (InImageDetectorController) new InImageDetectorController().loadController("../views/InImageDetectorView.fxml");
+          Parent root = (Parent) this.inImageDetectorController.getView();
+
+          Scene scene = new Scene(root, 610, 400);
+          this.inImageDetectorStage = new Stage();
+          this.inImageDetectorStage.setTitle("Image Builder");
+          this.inImageDetectorStage.setScene(scene);
+
+          if (btn_OpenInImageDetector.isSelected()) {
+              this.inImageDetectorStage.show();
+              this.inImageDetectorController.setBenchmarkModel(this.getModel());
+          }
+
+          inImageDetectorStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+              public void handle(WindowEvent we) {
+                  btn_OpenInImageDetector.setSelected(false);
+                  inImageDetectorStage.close();
+              }
+          });
+      } catch (IOException ex) {
+          ex.printStackTrace();
+      }
+  }
+  
+  @FXML
+  private void btn_vanGoghAction(ActionEvent event) {
+      try {
+          if (!btn_vanGogh.isSelected()) {
+              if(this.vanGoghStage != null){
+                  this.vanGoghStage.close();
+              }
+              return;
+          }
+          
+          if(this.vanGoghStage == null || this.vanGoghController == null){
+
+              this.vanGoghController = (VanGoghController) new VanGoghController().loadController("../views/VanGogh.fxml");
+              Parent root = (Parent) this.vanGoghController.getView();
+
+              this.vanGoghController.setBenchmarkModel(this.getModel());
+
+              Scene scene = new Scene(root, 800, 600);
+              this.vanGoghStage = new Stage();
+              this.vanGoghStage.setTitle("Van Gogh Generator");
+              this.vanGoghStage.setScene(scene);
+              this.vanGoghStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                  public void handle(WindowEvent we) {
+                      btn_vanGogh.setSelected(false);
+                      vanGoghStage.close();
+                  }
+              });
+          }
+
+          this.vanGoghStage.show();
+
+          
+      } catch (IOException ex) {
+          ex.printStackTrace();
+      }
   }
   
   @FXML

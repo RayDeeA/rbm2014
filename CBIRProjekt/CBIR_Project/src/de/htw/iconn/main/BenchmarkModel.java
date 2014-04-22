@@ -58,7 +58,7 @@ public class BenchmarkModel {
   private float                                   maxData           = 1.0f;
   @Conserve
   private int                                     imageEdgeSize     = 28;
-private boolean isRgb;
+  private boolean 								  isRgb				= false;
   
   public boolean isBinarizeImages() {
     return binarizeImages;

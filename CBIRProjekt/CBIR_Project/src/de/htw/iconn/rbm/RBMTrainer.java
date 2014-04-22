@@ -30,8 +30,6 @@ import de.htw.iconn.settings.RBMSettingsModel;
 import de.htw.iconn.views.ErrorViewModel;
 import de.htw.iconn.views.imageviewer.ImageViewerModel;
 
-import java.util.LinkedList;
-
 import javafx.concurrent.Task;
 
 /**
